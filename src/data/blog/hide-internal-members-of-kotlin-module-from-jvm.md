@@ -17,7 +17,7 @@ Hello developers, in this article we’ll explore some things which need attenti
 
 If you are developing a library or SDK then it’s obvious that you don’t want to expose some classes or don’t want any member function or field of a class visible to the module which is going to implement your library.
 
-Kotlin has the following visibility modifiers: _public, protected, private and internal._ `internal` modifier means that the member is **_visible within the same module_**(For e.g. Gradle module, IntelliJ IDEA module, etc). This means other Kotlin modules can’t access classes/members marked with an**internal** modifier. This feature of Kotlin is helpful in a way such that you can easily access, modify and test the internal functionalities or properties of a module.
+Kotlin has the following visibility modifiers: _public, protected, private and internal._ `internal` modifier means that the member is **_visible within the same module_**(For e.g. Gradle module, IntelliJ IDEA module, etc). This means other Kotlin modules can’t access classes/members marked with an **internal** modifier. This feature of Kotlin is helpful in a way such that you can easily access, modify and test the internal functionalities or properties of a module.
 
 But this can lead to issues if not handled properly while developing library projects.
 

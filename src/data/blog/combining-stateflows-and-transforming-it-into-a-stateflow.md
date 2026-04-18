@@ -24,7 +24,7 @@ When the state of UI is represented as a single model class having immutable sta
 
 <script src="https://gist.github.com/PatilShreyas/4d6a402efd0c98c7509252debc3ed9cc.js"></script>
 
-Here, `LoginState` is a state model for the Login screen which has all immutable fields. In the ViewModel, three individual **mutable states**are created and they're combined to form an**immutable `LoginState`** . At the end, that stream is converted to `StateFlow<LoginState>` with using `stateIn()`. That's how we do it, right?
+Here, `LoginState` is a state model for the Login screen which has all immutable fields. In the ViewModel, three individual **mutable states **are created and they're combined to form an **immutable `LoginState`** . At the end, that stream is converted to `StateFlow<LoginState>` with using `stateIn()`. That's how we do it, right?
 
 ### Example 2 - Deriving Flow from multiple StateFlows
 

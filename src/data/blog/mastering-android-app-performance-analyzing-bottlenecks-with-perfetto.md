@@ -11,7 +11,7 @@ tags:
 coverImage: "../../assets/images/cover-mastering-android-app-performance-analyzing-bottlenecks-with-perfetto.jpeg"
 ---
 
-Hello Android-ers 🫡, after developing an application, we are mostly invested in improving the performance of the application and finding out the issues in the existing application that might be causing performance issues in the application. But finding out the exact root cause of performance bottleneck is sometimes tough. In this article, we are gonna see how to investigate performance bottlenecks in the application that might **cause UI slowness or janks**with the help of***Perfetto*** .
+Hello Android-ers 🫡, after developing an application, we are mostly invested in improving the performance of the application and finding out the issues in the existing application that might be causing performance issues in the application. But finding out the exact root cause of performance bottleneck is sometimes tough. In this article, we are gonna see how to investigate performance bottlenecks in the application that might **cause UI slowness or janks **with the help of***Perfetto*** .
 
 This article will demonstrate how to identify issues using Perfetto, using a simple example. 😃
 
@@ -77,7 +77,7 @@ Thread.sleep(Random.nextLong(500, 700))
 
 Look at the above snippet and understand the flow:
 
-*When the Activity is created, it starts animating the background of TextView continuously after some intervals.*When the lifecycle reaches the***RESUMED***state, we set colour and status text to TextView and just look at the functions that do the work of getting colour and text. We have to pretend that getting text and colour is doing some heavy computation which will be holding*MAIN THREAD*for around 500-700ms.* Also, whenever TextView is clicked, it does the same heavy computing and changes the text's size.
+*When the Activity is created, it starts animating the background of TextView continuously after some intervals. *When the lifecycle reaches the***RESUMED***state, we set colour and status text to TextView and just look at the functions that do the work of getting colour and text. We have to pretend that getting text and colour is doing some heavy computation which will be holding *MAIN THREAD *for around 500-700ms.* Also, whenever TextView is clicked, it does the same heavy computing and changes the text's size.
 
 
 ## 📐 Measuring this example with Perfetto
@@ -106,7 +106,7 @@ After expanding the application's package in which we are interested, it looks l
 
 In this, you can notice the timelines. Let's know what it means:
 
-***Expected Timeline:**Each slice represents the time given to the app for rendering the frame. To avoid janks in the system, the app is expected to finish within this time frame.***Actual Timeline:**These slices represent the actual time an app took to complete the frame (including GPU work) and send it to SurfaceFlinger for composition. If a slice in this timeline takes more time to execute as compared to its corresponding slice of "Expected Timeline", it's considered a**jank** . Such slices will be displayed in the 🔴RED colour. Otherwise 🟢GREEN.
+***Expected Timeline: **Each slice represents the time given to the app for rendering the frame. To avoid janks in the system, the app is expected to finish within this time frame.***Actual Timeline: **These slices represent the actual time an app took to complete the frame (including GPU work) and send it to SurfaceFlinger for composition. If a slice in this timeline takes more time to execute as compared to its corresponding slice of "Expected Timeline", it's considered a **jank** . Such slices will be displayed in the 🔴RED colour. Otherwise 🟢GREEN.
 
 
 And then a list of threads and corresponding slices of traces are listed.
@@ -171,7 +171,7 @@ By analyzing the trace, we have gained invaluable insights into the root cause o
 
 # 🧐 Conclusion
 
-Thus, we just diagnosed the performance issues of the main thread in this example to fix UI issues. The same can be done for the other parts of the application for the non-main thread as well to understand **what**XYZ operation is blocking**which** ABC thread and thus fixing those issues resulting in improving the performance.
+Thus, we just diagnosed the performance issues of the main thread in this example to fix UI issues. The same can be done for the other parts of the application for the non-main thread as well to understand **what **XYZ operation is blocking **which** ABC thread and thus fixing those issues resulting in improving the performance.
 
 Wow, you won't believe how easy it was to use Perfetto to uncover the bottlenecks in our application! And guess what? There's so much more we can do with Perfetto! 😍 Don't believe me? Check out the amazing resources below to become a Perfetto pro! 🤩
 
@@ -179,7 +179,7 @@ Wow, you won't believe how easy it was to use Perfetto to uncover the bottleneck
 
 I am confident that you will find this blog extremely helpful! 😀
 
-***"Sharing is Caring"***
+*** "Sharing is Caring" ***
 
 Thank you! 😄
 

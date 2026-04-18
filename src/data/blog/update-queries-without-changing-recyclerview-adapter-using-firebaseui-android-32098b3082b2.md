@@ -13,9 +13,9 @@ coverImage: "../../assets/images/cover-update-queries-without-changing-recyclerv
 
 In this article, you will learn how to change Firebase Realtime Database/Cloud Firestore queries without changing the whole adapter of a `RecyclerView` in Android by using the FirebaseUI-Android library.
 
-Let’s say you need to populate a list using *RecyclerView*to show data loaded from Firebase Realtime Database*or*Cloud Firestore and you have implemented a custom `RecyclerView.Adapter` to hold data or you used [FirebaseUI-Android](https://github.com/firebase/FirebaseUI-Android) which is an official open-source library developed by the Firebase team. In this article, we’re going to use the*FirebaseUI-Android* library.
+Let’s say you need to populate a list using *RecyclerView *to show data loaded from Firebase Realtime Database *or *Cloud Firestore and you have implemented a custom `RecyclerView.Adapter` to hold data or you used [FirebaseUI-Android](https://github.com/firebase/FirebaseUI-Android) which is an official open-source library developed by the Firebase team. In this article, we’re going to use the *FirebaseUI-Android* library.
 
-We’ll load data from Firebase Realtime Database/Cloud Firestore and populate a *RecyclerView (Simple + Paginated)*using the adapter*.* After that, we’ll change/filter the query based on some user interaction at runtime without changing whole adapter.
+We’ll load data from Firebase Realtime Database/Cloud Firestore and populate a *RecyclerView (Simple + Paginated)*using the adapter *.* After that, we’ll change/filter the query based on some user interaction at runtime without changing whole adapter.
 
 In the end, you will see app like this 👇. After clicking on one of the buttons, data in *RecyclerView* will be replaced by new data.
 
@@ -27,9 +27,9 @@ In the end, you will see app like this 👇. After clicking on one of the button
 
 FirebaseUI-Android provides a number of adapters, such as:
 
-*`FirebaseRecyclerAdapter` — or binding*Firebase Realtime Database**`FirebaseRecyclerPagingAdapter` — for binding*Firebase Realtime Database*with pagination support*`FirestoreRecyclerAdapter` — for binding *Cloud Firestore*
+*`FirebaseRecyclerAdapter` — or binding *Firebase Realtime Database**`FirebaseRecyclerPagingAdapter` — for binding *Firebase Realtime Database *with pagination support*`FirestoreRecyclerAdapter` — for binding *Cloud Firestore*
 
-*`FirestorePagingAdapter` — for binding*Cloud Firestore* with pagination support
+*`FirestorePagingAdapter` — for binding *Cloud Firestore* with pagination support
 
 ## ⚡️ Getting Started
 
@@ -61,7 +61,7 @@ implementation 'android.arch.paging:runtime:1.0.1'
 
 [https://github.com/firebase/quickstart-android](https://github.com/firebase/quickstart-android)
 
-## ⚡️ **How to Change the Query 🤔**In the adapter classes of*FirebaseUI*library, there’s a method `updateOptions()` which initialises an adapter with new options. Whenever this is invoked, the respective*RecyclerView* is populated with new data.
+## ⚡️ **How to Change the Query 🤔**In the adapter classes of *FirebaseUI *library, there’s a method `updateOptions()` which initialises an adapter with new options. Whenever this is invoked, the respective *RecyclerView* is populated with new data.
 
 ## 💻 Let’s Change the Queries 🔥
 

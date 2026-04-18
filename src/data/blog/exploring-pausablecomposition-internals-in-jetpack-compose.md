@@ -38,7 +38,7 @@ Imagine you're a chef preparing a big meal for an event. 👨‍🍳 Instead of 
 
 1. **Compose Incrementally:** Break down the composition of a big UI element into smaller, more manageable pieces.
 
-2. **Prepare Asynchronously:**Do this composition work*before* the UI is actually needed on screen, often using the idle time between frames.
+2. **Prepare Asynchronously: **Do this composition work *before* the UI is actually needed on screen, often using the idle time between frames.
 
 
 This pre-warming of composables means that when an item finally scrolls into view, most of the heavy lifting is already done, allowing it to show up almost instantly.
@@ -47,7 +47,7 @@ To visualize the concept, have a look on the below animation:
 
 ![](../../assets/images/content/exploring-pausablecomposition-internals-in-jetpack-compose/img-9bad970d.gif)
 
-As scrolling occurs, let's say items A, B, C, D, and E are already visible on the screen, and the next item is **F**. If item**F**has a complex layout or structure that requires more time for layout computation or other pre-processing before rendering on the UI, this pre-processing happens in chunks within the frame timeline (i.e., 16ms). So, if it requires 2 frames, the necessary pre-processing for**F**is completed over 2 frames***in the idle times***without causing any jank to the frames. Finally, it is drawn on the UI when it needs to be visible. The same process applies to items**G**and**H** .
+As scrolling occurs, let's say items A, B, C, D, and E are already visible on the screen, and the next item is **F **. If item **F** has a complex layout or structure that requires more time for layout computation or other pre-processing before rendering on the UI, this pre-processing happens in chunks within the frame timeline (i.e., 16ms). So, if it requires 2 frames, the necessary pre-processing for **F** is completed over 2 frames***in the idle times***without causing any jank to the frames. Finally, it is drawn on the UI when it needs to be visible. The same process applies to items **G** and **H** .
 
 ---
 
@@ -315,7 +315,7 @@ Here’s how they work together:
 
 After a deep dive into the Compose runtime, the design of `PausableComposition` is a really smart piece of performance engineering.
 
-***It's Not Magic, It's Deferral:**The main idea is to do work*before*it's urgent. By composing items during idle time, the work needed on the main thread during a fast scroll is much, much smaller.***Cooperative & Non-Blocking:**The `shouldPause` callback is a brilliant way to handle multitasking. It lets long-running composition tasks politely step aside for the more urgent task of rendering the current frame, which directly prevents jank.***Efficiency Through Batching:** The `RecordingApplier` avoids the overhead of many small, separate changes to the UI tree by grouping them into a single, efficient update.
+***It's Not Magic, It's Deferral: **The main idea is to do work *before *it's urgent. By composing items during idle time, the work needed on the main thread during a fast scroll is much, much smaller.***Cooperative & Non-Blocking: **The `shouldPause` callback is a brilliant way to handle multitasking. It lets long-running composition tasks politely step aside for the more urgent task of rendering the current frame, which directly prevents jank.***Efficiency Through Batching:** The `RecordingApplier` avoids the overhead of many small, separate changes to the UI tree by grouping them into a single, efficient update.
 
 
 While `PausableComposition` is an internal feature you may never use directly, understanding its existence and operation gives you a real appreciation for the smart decisions that make Jetpack Compose so performant. The next time you effortlessly scroll through a complex `LazyColumn` without a single stutter, you'll know about the clever, well-orchestrated dance happening just beneath the surface. ✅ This architecture not only solves today's performance challenges but also paves the way for even more advanced rendering strategies in the future of Compose.
@@ -326,7 +326,7 @@ I hope you got the idea about how this new API works in Jetpack Compose.
 
 Awesome. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
-***"Sharing is Caring"***
+*** "Sharing is Caring" ***
 
 Thank you! 😄
 

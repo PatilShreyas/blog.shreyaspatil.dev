@@ -11,11 +11,11 @@ Welcome Android developers 👋. This article is the first part of a series arti
 
 #### What is DataStore 🤷‍♀️?
 
-*Jetpack DataStore is a data storage solution.*It allows us to store key-value pairs (like `SharedPreferences`) or typed objects with [protocol buffers](https://developers.google.com/protocol-buffers)*(We’ll see it in next article)*.* DataStore uses Kotlin, Coroutines and Flow to store data asynchronously with consistency and transaction support 😍.
+*Jetpack DataStore is a data storage solution. *It allows us to store key-value pairs (like `SharedPreferences`) or typed objects with [protocol buffers](https://developers.google.com/protocol-buffers)*(We’ll see it in next article)*.* DataStore uses Kotlin, Coroutines and Flow to store data asynchronously with consistency and transaction support 😍.
 *In short, it’s the new data storage solution which is the replacement of `SharedPreferences`***.***#### Why DataStore**🤷‍♂**️* First and my favourite reason 😃 — Built with❤️ Kotlin, Coroutines and Flow.
 *If you have used `SharedPreferences` you might abuse or blamed it for something 😆 then `DataStore` is here to rescue!* `SharedPreference` has some drawbacks like it provided synchronous APIs -but it’s not MAIN-thread-safe! whereas DataStore is safe to use in UI thread because it uses `Dispatchers.IO` under the hood👀.
 *It’s safe from runtime exceptions!❌⚠️. What would be more satisfying that? 😅* It also provides a way to migrate from `SharedPreferences` 😍.
-*It provides*Type safety!* (Using Protocol buffers).
+*It provides *Type safety!* (Using Protocol buffers).
 
 These are some reasons which encourage us to use DataStore and finally say goodbye to beloved `SharedPreferences` 👋.
 
@@ -35,7 +35,7 @@ I think that’s enough introduction to `DataStore`. It’s time to write some c
 
 You can simply [clone or refer this repository](https://github.com/PatilShreyas/DataStoreExample) to get example code demonstrating `DataStore`📁.
 
-We’ll develop a sample Android application which stores a UI mode preference from user i.e. 🌞 *Light Mode*or 🌑*Dark Mode* .
+We’ll develop a sample Android application which stores a UI mode preference from user i.e. 🌞 *Light Mode *or 🌑*Dark Mode* .
 
 First of all, let’s add a Gradle dependency in `build.gradle` of your app module. Currently `1.0.0-alpha01` is the latest release. You can keep an eye [here](https://developer.android.com/topic/libraries/architecture/datastore) to get info about the latest version.
 
@@ -175,7 +175,7 @@ UiMode.DARK -> onDarkMode()
 
 👆 Here we’ve used `asLiveData()` flow extension function which gives emitted values from Flow in `LiveData`. *(Otherwise, we can also use*`lifecycleScope.launch{}`*here if you don’t like to use*`LiveData`*).*
 
-*We’re just updating*image resource*and*background color of root layout*when UI mode is changed.*(Actual mode can be changed using *`AppCompatDelegate.setDefaultNightMode()`*)*
+*We’re just updating *image resource *and *background color of root layout *when UI mode is changed.*(Actual mode can be changed using *`AppCompatDelegate.setDefaultNightMode()`*)*
 
 ```kotlin
 private fun onLightMode() {
@@ -225,4 +225,4 @@ Thank you! 😃
 
 # Resources
 
-**[PatilShreyas/DataStoreExample](https://github.com/PatilShreyas/DataStoreExample "https\://github.com/PatilShreyas/DataStoreExample")*****[DataStore | Android Developer](https://developer.android.com/topic/libraries/architecture/datastore "https\://developer.android.com/topic/libraries/architecture/datastore")***
+**[PatilShreyas/DataStoreExample](https://github.com/PatilShreyas/DataStoreExample "https\://github.com/PatilShreyas/DataStoreExample")** ***[DataStore | Android Developer](https://developer.android.com/topic/libraries/architecture/datastore "https\://developer.android.com/topic/libraries/architecture/datastore")***

@@ -7,9 +7,9 @@ tags:
 coverImage: "../../assets/images/cover-firestore-pagination-in-android-using-firebaseui-library-1d7fe1a75704.png"
 ---
 
-Hi everyone, In this article, we will learn to implement *Paging support*for*Firestore Database* in Android. Before starting to the topic, Let’s first take a look at the available components within the Firebase.
+Hi everyone, In this article, we will learn to implement *Paging support *for *Firestore Database* in Android. Before starting to the topic, Let’s first take a look at the available components within the Firebase.
 
-**FirebaseUI-Android**library has**FirestoreRecyclerAdapter**for easy implementation of the population of**Firestore Database**. But if the database is having a total number of children in thousands or around then it becomes a bad presentation of User Interface. Let’s take an example if you are implementing social media app and you are having around 100 Posts. If we load these Posts using*FirestoreRecyclerAdapter* then it will load all the Posts at the time of loading. So, this will be wastage of memory or hectic for the user to scroll down with a large list or it is not good to present in front of the application user. To overcome this, we will use pagination which will load Firestore Database document items in pages.
+**FirebaseUI-Android **library has **FirestoreRecyclerAdapter **for easy implementation of the population of **Firestore Database **. But if the database is having a total number of children in thousands or around then it becomes a bad presentation of User Interface. Let’s take an example if you are implementing social media app and you are having around 100 Posts. If we load these Posts using *FirestoreRecyclerAdapter* then it will load all the Posts at the time of loading. So, this will be wastage of memory or hectic for the user to scroll down with a large list or it is not good to present in front of the application user. To overcome this, we will use pagination which will load Firestore Database document items in pages.
 
 This API is available on [this](https://github.com/firebase/FirebaseUI-Android/tree/master/firestore) official **FirebaseUI** ’s GitHub repository.
 
@@ -23,7 +23,7 @@ This API is available on [this](https://github.com/firebase/FirebaseUI-Android/t
 
 Let’s get started to the code!
 
-Open *Android Studio.*Create a new project OR you can simply* clone this repository:*
+Open *Android Studio. *Create a new project OR you can simply* clone this repository:*
 
 [https://github.com/PatilShreyas/FirestorePagingDemo-Android](https://github.com/PatilShreyas/FirestorePagingDemo-Android)
 
@@ -228,7 +228,7 @@ Call this method when the containing Activity or Fragment stops:
 
 Stop Lifecycle of the Adapter
 
-> *Thus, we have implemented the**FirestoreRecycler Pagination**. 😃*You can see the* full app demo* on below-listed resources with source code and step-by-step guide.
+> *Thus, we have implemented the **FirestoreRecycler Pagination **. 😃*You can see the* full app demo* on below-listed resources with source code and step-by-step guide.
 
 Please have a clap for this article if you found it helpful!
 

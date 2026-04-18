@@ -9,16 +9,16 @@ coverImage: "../../assets/images/cover-scheduling-fcm-push-notifications-on-devi
 
 In this article, We will schedule On Device FCM (Firebase Cloud Messaging) Push Notifications *without using Cloud Pub/Sub or Cron jobs.*
 
-Hello everyone, If you’re developing an app where you want to send scheduled Notifications to users then you can achieve in many ways. You can use **Google Cloud Pub/Sub**using Firebase Cloud Functions. Cloud Pub/Sub and Cron jobs are costly solutions. In this demo, we’ll schedule FCM Notifications by just sending normal*Push Notification* to subscribed channel and we’ll process/schedule it on the device.
+Hello everyone, If you’re developing an app where you want to send scheduled Notifications to users then you can achieve in many ways. You can use **Google Cloud Pub/Sub **using Firebase Cloud Functions. Cloud Pub/Sub and Cron jobs are costly solutions. In this demo, we’ll schedule FCM Notifications by just sending normal *Push Notification* to subscribed channel and we’ll process/schedule it on the device.
 
 ### \# What will we do?
 
-*We’ll subscribe to FCM Topic.*We’ll send**Data**payload with scheduling information to the FCM topic.* Process received notification in a device, Schedule it using AlarmManager.
+*We’ll subscribe to FCM Topic. *We’ll send **Data **payload with scheduling information to the FCM topic.* Process received notification in a device, Schedule it using AlarmManager.
 * At the Scheduled time, create WorkManager for background processing and display notification on the system tray.
 
 ### \# What are the Advantages of using this technique? 😕
 
-Imagine you have developed **XYZ**app which is related to**Online Shopping***and you always provides*exciting discount/offers*to users. It has**5000**active user installs. Imagine Following 2 Scenarios with respect to the above data.**\# Scenario 1:**You have scheduled a***50%**discount offer***notification to send on 12:00 am using Google Cloud Pub/Sub. This offer is going to expire in**5 minutes.**Out of**5000 users,**only**3000 users**are online at that time. Remaining 2000 users will receive notification after they’ll turn on data and till that time, the offer will be expired!😔 Thus, you’ll lose**2000**users 😐.**\#️ Scenario 2:**You have scheduled a***50%**discount offer***notification to send on 12:00 am using the method we discussed earlier. Suppose we sent**Data**payload on 09:00 pm (i.e. Before 3 hours). In between that time period. All online users will receive payload on device and notification will be scheduled. Consider, out of**5000 users, 4500 users**were online between 9 pm to 12 am. Then all these 4500 users will receive a notification. Most exciting🤩 will be… Though users are**offline on 12 am** still notification is displayed (because they already received notification earlier on device). Thus we’ll not lose many users.😀
+Imagine you have developed **XYZ **app which is related to **Online Shopping***and you always provides *exciting discount/offers *to users. It has **5000 **active user installs. Imagine Following 2 Scenarios with respect to the above data.**\# Scenario 1: **You have scheduled a***50%**discount offer***notification to send on 12:00 am using Google Cloud Pub/Sub. This offer is going to expire in **5 minutes. **Out of **5000 users, **only **3000 users **are online at that time. Remaining 2000 users will receive notification after they’ll turn on data and till that time, the offer will be expired!😔 Thus, you’ll lose **2000 **users 😐.**\#️ Scenario 2: **You have scheduled a***50%**discount offer***notification to send on 12:00 am using the method we discussed earlier. Suppose we sent **Data **payload on 09:00 pm (i.e. Before 3 hours). In between that time period. All online users will receive payload on device and notification will be scheduled. Consider, out of **5000 users, 4500 users **were online between 9 pm to 12 am. Then all these 4500 users will receive a notification. Most exciting🤩 will be… Though users are **offline on 12 am** still notification is displayed (because they already received notification earlier on device). Thus we’ll not lose many users.😀
 
 Thus from above both scenarios, the Second scenario seems efficient and useful for some use cases. Let’s implement it!
 
@@ -28,7 +28,7 @@ I have created a repository on GitHub. You can take reference of it. [ **PatilSh
 
 [https://github.com/PatilShreyas/FCM-OnDeviceNotificationScheduler](https://github.com/PatilShreyas/FCM-OnDeviceNotificationScheduler)
 
-*Set up Project on Firebase Console*Download a google-services.json configuration file and paste it in**/app**directory of the project.*Add dependencies in build.gradle of*app* module.
+*Set up Project on Firebase Console *Download a google-services.json configuration file and paste it in**/app **directory of the project. *Add dependencies in build.gradle of *app* module.
 
 ```groovy
 dependencies {
@@ -44,7 +44,7 @@ implementation 'android.arch.work:work-runtime:1.0.1'
 }
 ```
 
-**Service*and*BroadcastReceiver* declarations in Manifest:
+**Service *and *BroadcastReceiver* declarations in Manifest:
 
 ```xml
 <service
@@ -58,7 +58,7 @@ android:exported="false">
 <receiver android:name=".fcm.NotificationBroadcastReceiver" />
 ```
 
-*In**MainActivity.kt,**subscribe to FCM Notification Channel. Let’s say we’re subscribing to***discount-offers*** FCM Channel.
+*In **MainActivity.kt, **subscribe to FCM Notification Channel. Let’s say we’re subscribing to***discount-offers*** FCM Channel.
 
 ```kotlin
 FirebaseMessaging.getInstance().subscribeToTopic("discount-offers")
@@ -87,7 +87,7 @@ We’ll send FCM **Data** payload as below.
 }
 ```
 
-When we send payload, if **isScheduled**is false then the notification is displayed instantly otherwise it’s displayed on**scheduledTime.**Format of scheduledTime:**YYYY-MM-DD HH:MM:SS.***In**MyFirebaseMessagingService** , whenever Notification is received, onMessageReceived() is invoked. We have to do all the process of scheduling in this method. We have to parse data.
+When we send payload, if **isScheduled **is false then the notification is displayed instantly otherwise it’s displayed on **scheduledTime. **Format of scheduledTime: **YYYY-MM-DD HH:MM:SS.***In **MyFirebaseMessagingService** , whenever Notification is received, onMessageReceived() is invoked. We have to do all the process of scheduling in this method. We have to parse data.
 
 ```kotlin
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -163,7 +163,7 @@ NotificationUtil(applicationContext).showNotification(title, message)
 
 We’re using AlarmManager to set one-time (non-repeating) Alarm. We have parsed scheduledTime using **SimpleDateFormat** class to get its millisecond value.
 
-Finally, we have scheduled alarm using **set()**method. It sets non-repeating one time alarm in the system and executes exactly on specified millies value.**RTC_WAKEUP**flag will trigger the alarm according to the time of the clock which will wake up the device when it goes off. At that time, onReceive() of**NotificationBroadcastReceiver** will be executed. Let’s see an implementation of it.
+Finally, we have scheduled alarm using **set()**method. It sets non-repeating one time alarm in the system and executes exactly on specified millies value. **RTC_WAKEUP **flag will trigger the alarm according to the time of the clock which will wake up the device when it goes off. At that time, onReceive() of **NotificationBroadcastReceiver** will be executed. Let’s see an implementation of it.
 
 ```kotlin
 class NotificationBroadcastReceiver : BroadcastReceiver() {
@@ -193,7 +193,7 @@ Log.d(javaClass.name, "WorkManager is Enqueued.")
 }
 ```
 
-In this, we’ll get data from the Intent and create **WorkManager**data. We’ll create**OneTimeWorkRequest** because this work should only be executed once. In the end, we’ll enqueue work and execution of Work will be started. Thus, doWork() method of ScheduledWorker is executed.
+In this, we’ll get data from the Intent and create **WorkManager **data. We’ll create **OneTimeWorkRequest** because this work should only be executed once. In the end, we’ll enqueue work and execution of Work will be started. Thus, doWork() method of ScheduledWorker is executed.
 
 ```kotlin
 class ScheduledWorker(appContext: Context, workerParams: WorkerParameters) :
@@ -251,7 +251,7 @@ I have sent below payload with to the FCM Channel ( ***discount-offers*** ).
 }
 ```
 
-**🚀**See output below and notice that**Internet/Wi-Fi**is**OFF** still at exactly 02:12 pm I’m getting a notification on the system tray 😃.
+**🚀**See output below and notice that **Internet/Wi-Fi **is **OFF** still at exactly 02:12 pm I’m getting a notification on the system tray 😃.
 
 ![At exact 02:12, Notification is displayed though Data is OFF.](../../assets/images/content/scheduling-fcm-push-notifications-on-device-android-2d3bb9653b4d/img-5c2e816a.gif)
 

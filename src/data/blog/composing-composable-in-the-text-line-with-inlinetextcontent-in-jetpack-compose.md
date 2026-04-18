@@ -58,7 +58,7 @@ Now let’s proceed 👉
 
 Here we’ve created Map of `String` i.e. _id_ and `InlineTextContent`. As discussed earlier, we can have multiple pairs of id and inline content. `PlaceHolder` is required to `InlineTextContent` which takes _width, height_ and _vertical alignment_ for inline content. The value specified to width and height defines the size of the composable in the text line and is always proportional to the size of a _Text_. Now insider the content, we have specified `Box` layout with _Rectangular_ shape having _color_ and some _rotation_.
 
-Finally, we have used `BasicText` and provided **AnnotatedString**i.e. `text` which we created earlier and**Map of Inline Content** .
+Finally, we have used `BasicText` and provided **AnnotatedString **i.e. `text` which we created earlier and **Map of Inline Content** .
 
 Yes, that’s all needed! 😃 Now just run the app and see magic ✨.
 

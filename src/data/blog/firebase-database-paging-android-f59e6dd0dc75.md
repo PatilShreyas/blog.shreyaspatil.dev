@@ -7,13 +7,13 @@ tags:
 coverImage: "../../assets/images/cover-firebase-database-paging-android-f59e6dd0dc75.png"
 ---
 
-Hi everyone, In this article, we will learn to implement *Paging support*for*Firebase Database* in Android. Before starting to the topic, Let’s first take a look at the available components within the Firebase.
+Hi everyone, In this article, we will learn to implement *Paging support *for *Firebase Database* in Android. Before starting to the topic, Let’s first take a look at the available components within the Firebase.
 
-**FirebaseUI-Android**library has**FirebaseRecyclerAdapter**for easy implementation of the population of**Firebase Realtime Database**. But if the database is having a total number of children in thousands or around then it becomes a bad presentation of User Interface. Let’s take an example if you are implementing social media app and you are having around 100 Posts. If we load these Posts using*FirebaseRecyclerAdapter* then it will load all the Posts at the time of loading. So, this will be wastage of memory or hectic for the user to scroll down with a large list or it is not good to present in front of the application user. To overcome this, we will use pagination which will load Firebase Database items in pages.
+**FirebaseUI-Android **library has **FirebaseRecyclerAdapter **for easy implementation of the population of **Firebase Realtime Database **. But if the database is having a total number of children in thousands or around then it becomes a bad presentation of User Interface. Let’s take an example if you are implementing social media app and you are having around 100 Posts. If we load these Posts using *FirebaseRecyclerAdapter* then it will load all the Posts at the time of loading. So, this will be wastage of memory or hectic for the user to scroll down with a large list or it is not good to present in front of the application user. To overcome this, we will use pagination which will load Firebase Database items in pages.
 
-Recently, Firebase has released the **Firestore Database.**To support pagination with Firestore database**FirebaseUI-Android**library has provided the**API**for that purpose as**FirestorePagingAdapter**but still, it’s not available for**Realtime Database.** Firebase Realtime Database is also important in some type of applications such as chatting apps. Because its speed is faster than Firestore. So, there is a need for pagination in Firebase Database too.
+Recently, Firebase has released the **Firestore Database. **To support pagination with Firestore database **FirebaseUI-Android **library has provided the **API **for that purpose as **FirestorePagingAdapter **but still, it’s not available for **Realtime Database.** Firebase Realtime Database is also important in some type of applications such as chatting apps. Because its speed is faster than Firestore. So, there is a need for pagination in Firebase Database too.
 
-For this purpose, I have developed **AP I**to implement Firebase Realtime Database Pagination in*RecyclerView*. This will help you to populate your Firebase Database items in*RecyclerView*with paging support. FirebaseUI-Android will soon publish this API officially. It's expected to be released in***version-4.4.0*** officially. Till it will happen, let’s have a look…
+For this purpose, I have developed **AP I **to implement Firebase Realtime Database Pagination in *RecyclerView *. This will help you to populate your Firebase Database items in *RecyclerView *with paging support. FirebaseUI-Android will soon publish this API officially. It's expected to be released in***version-4.4.0*** officially. Till it will happen, let’s have a look…
 
 This API is available on [this](https://github.com/PatilShreyas/FirebaseRecyclerPagination) GitHub repository.
 
@@ -29,9 +29,9 @@ Demo of *Firebase Database Pagination* Library Implementation
 
 Let’s get start to the code!
 
-Open *Android Studio.*Create a new project OR you can simply [* clone this repository:* ](https://github.com/PatilShreyas/FirebaseRecyclerPagination.git)
+Open *Android Studio. *Create a new project OR you can simply [* clone this repository:* ](https://github.com/PatilShreyas/FirebaseRecyclerPagination.git)
 
-First of all, go to Firebase Console and create a new Android Project. Download configuration file i.e. *google-services.json*and place it in the**/app** directory.
+First of all, go to Firebase Console and create a new Android Project. Download configuration file i.e. *google-services.json *and place it in the**/app** directory.
 
 In this app, you are showing a paginated list of Posts. Posts will load in `RecyclerView.`
 

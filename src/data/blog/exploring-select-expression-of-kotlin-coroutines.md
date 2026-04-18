@@ -22,7 +22,7 @@ In Kotlin coroutines, the "select" expression makes it possible to await multipl
 
 The select expression can be used in some of the use cases while application development. _For example_,
 
-- There's a scenario in which you want to process **"X"**thing when anyone from data**"A"**or**"B"** becomes available first.
+- There's a scenario in which you want to process ** "X" **thing when anyone from data** "A" **or** "B" ** becomes available first.
 - You are running a few operations concurrently and whichever finishes (_or returns result_) first, proceed with the result of the winner operation i.e. data race.
 
 ...And a lot of use cases like this.
@@ -71,7 +71,7 @@ dialog.dismiss()
 }
 ```
 
-In this example, a `dialog` will be get dismissed when either the **"Close"**button is clicked or the**"OK"** button is clicked.
+In this example, a `dialog` will be get dismissed when either the ** "Close" **button is clicked or the** "OK" ** button is clicked.
 
 You can also select results from the values produced by the Channel APIs like the following 👇🏻.
 
@@ -111,7 +111,7 @@ These were some basic examples of select expression.
 
 ---
 
-> **Note:**When multiple clauses can be selected at the same time, the first one which was executed of them gets selected on the priority i.e. the select function is biased toward the first clause. Use [***`selectUnbiased`*** ](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.selects/select-unbiased.html) for an unbiased selection among the clauses which simply shuffles/randomizes the selection.
+> **Note: **When multiple clauses can be selected at the same time, the first one which was executed of them gets selected on the priority i.e. the select function is biased toward the first clause. Use [***`selectUnbiased`*** ](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.selects/select-unbiased.html) for an unbiased selection among the clauses which simply shuffles/randomizes the selection.
 
 ### List of supported select methods
 

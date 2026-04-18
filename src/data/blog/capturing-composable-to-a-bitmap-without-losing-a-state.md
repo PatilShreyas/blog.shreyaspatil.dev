@@ -24,7 +24,7 @@ Hey Composers 👋🏻,
 
 I'm the maintainer of a library - [Capturable](https://github.com/PatilShreyas/Capturable), *that helps you to convert composable content into a Bitmap image easily* . In the very first release of it, as there was no dedicated API from compose, I used to wrap composable content inside a `ComposeView` and then draw a View's Canvas into a Bitmap. Later in Compose 1.6.x, the API was added by which we can redirect rendering into `android.graphics.Picture`, which can then be used to create a Bitmap.
 
-*The*[*official documentation*](https://developer.android.com/jetpack/compose/graphics/draw/modifiers#composable-to-bitmap)*has a guide for capturing the composable content into a Bitmap as follows**OR**see this*[*snippet* ](https://github.com/android/snippets/blob/5ae1f7852164d98d055b3cc6b463705989cff231/compose/snippets/src/main/java/com/example/compose/snippets/graphics/AdvancedGraphicsSnippets.kt#L93) ⬇️
+*The*[*official documentation*](https://developer.android.com/jetpack/compose/graphics/draw/modifiers#composable-to-bitmap)*has a guide for capturing the composable content into a Bitmap as follows **OR **see this*[*snippet* ](https://github.com/android/snippets/blob/5ae1f7852164d98d055b3cc6b463705989cff231/compose/snippets/src/main/java/com/example/compose/snippets/graphics/AdvancedGraphicsSnippets.kt#L93) ⬇️
 
 [![https://developer.android.com/jetpack/compose/graphics/draw/modifiers#composable-to-bitmap](../../assets/images/content/capturing-composable-to-a-bitmap-without-losing-a-state/img-32a3fdaf.png)](https://developer.android.com/jetpack/compose/graphics/draw/modifiers#composable-to-bitmap)
 
@@ -34,7 +34,7 @@ Now it's an interesting part 😁 because I started seeing issues with this and 
 
 ## Issue 🧐
 
-Let's say we have a screen on which content can be changed at any time in the runtime i.e. ***stateful content***then this issue was easily reproducible.*For example, you want to capture content having a network image (which will be loaded in future), or a simple count-down like continuously changing screen, etc.*
+Let's say we have a screen on which content can be changed at any time in the runtime i.e. ***stateful content***then this issue was easily reproducible. *For example, you want to capture content having a network image (which will be loaded in future), or a simple count-down like continuously changing screen, etc.*
 
 Let's build a simple continuous counter and try to add a capturing modifier to it. Here is what the code would look like.
 
@@ -276,7 +276,7 @@ That's it!
 
 Awesome 🤩. I trust you've picked up some valuable insights from this. If you like this write-up, do share it 😉, because...
 
-***"Sharing is Caring"***
+*** "Sharing is Caring" ***
 
 Thank you! 😄
 

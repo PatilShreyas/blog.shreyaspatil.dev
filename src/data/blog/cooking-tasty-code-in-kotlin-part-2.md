@@ -90,12 +90,12 @@ As you can see above, we can actually access `someData` of _Success_ and `messag
 
 ## ⭐️ Inner Class
 
-- How to access the value of outer class in nested classes? Let's say you want to access ***`this`***scope of a class from nested class. Don’t worry,**_inner class_** in Kotlin is here to help you 😃
+- How to access the value of outer class in nested classes? Let's say you want to access ***`this`***scope of a class from nested class. Don’t worry, **_inner class_** in Kotlin is here to help you 😃
 - See this first 👇
 
 <script src="https://gist.github.com/PatilShreyas/de474d4a9a29cb3eaac600eed9f9ca12.js"></script>
 
-There’s an **Outer**class and it has two nested classes under it i.e.**_Inner1_**and**_Inner2_** . As you can see, `Inner1` can’t access ❌ the `value` of an outer class and `Inner2` which is declared using keyword `inner` can access it ✅.
+There’s an **Outer **class and it has two nested classes under it i.e. **_Inner1_ **and **_Inner2_** . As you can see, `Inner1` can’t access ❌ the `value` of an outer class and `Inner2` which is declared using keyword `inner` can access it ✅.
 
 > **Observe carefully:** In main(),
 > If you see **#1,** we can directly create instance of `Inner1` and access its member.

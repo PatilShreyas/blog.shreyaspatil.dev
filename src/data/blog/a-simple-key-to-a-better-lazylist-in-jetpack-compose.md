@@ -57,7 +57,7 @@ MyItemRow(item)
 
 Think of it like a primary key in a database table. It gives Compose a way to track each item individually, even if the list changes.
 
-**Why is this important?*****Performance Boost 🚀:**When you add, remove, or reorder items in your list, Compose uses these keys to understand which items have changed. This allows it to be much smarter. For example, if you reorder items, Compose can just move the corresponding composables without completely redrawing them. This avoids unnecessary work and makes your app feel smoother.***Stable Identity:**The key tells Compose, "Hey, this item is the same one as before, it's just in a different position now." Remember that `DiffUtil.ItemCallback` in RecyclerView? 🤔**What happens if you don't specify a key?**If you skip the key, Compose falls back to using the item's**position (or index)** in the list as its identifier. For a list that never changes, this is perfectly fine. But for a dynamic list where items can be added or removed, this can lead to some unexpected problems. Because whenever the list changes, even if some items in the list might not have been changed, it’ll still cause recompositions for such items.
+**Why is this important?** ***Performance Boost 🚀: **When you add, remove, or reorder items in your list, Compose uses these keys to understand which items have changed. This allows it to be much smarter. For example, if you reorder items, Compose can just move the corresponding composables without completely redrawing them. This avoids unnecessary work and makes your app feel smoother.***Stable Identity: **The key tells Compose, "Hey, this item is the same one as before, it's just in a different position now." Remember that `DiffUtil.ItemCallback` in RecyclerView? 🤔**What happens if you don't specify a key? **If you skip the key, Compose falls back to using the item's **position (or index)** in the list as its identifier. For a list that never changes, this is perfectly fine. But for a dynamic list where items can be added or removed, this can lead to some unexpected problems. Because whenever the list changes, even if some items in the list might not have been changed, it’ll still cause recompositions for such items.
 
 The most important rule for keys is that they **must be unique** . If two items have the same key, your app will crash with an error.
 
@@ -133,7 +133,7 @@ Now, let's perform a few actions on the UI:
 
 1. Click + on **Apple** -&gt; logs `Apple has changed`
 
-2. Click “ **Remove first**” on top -&gt; It removed the first item from list i.e.**Apple**-&gt; Now**Banana** is in 1st place. But it’s still keeping the state of old item along with highlighted background
+2. Click “ **Remove first**” on top -&gt; It removed the first item from list i.e. **Apple**-&gt; Now **Banana** is in 1st place. But it’s still keeping the state of old item along with highlighted background
 
 3. Click + on **Orange** -&gt; logs `Grape has changed`
 
@@ -235,7 +235,7 @@ newContent.content
 
 When you provide a `key`, that `key` is used to look up the item in `lambdasCache`. Since your key is stable and unique (like `fruit.id`), Compose can always find the correct composable along with its remembered state.
 
-But if you **don't**provide a key, Compose uses the item's**index** as the key. So when "Apple" at index 0 is removed, "Banana" moves to index 0. Compose looks in the cache for index 0 and finds the old composable that belonged to "Apple", and reuses it for "Banana".
+But if you **don't **provide a key, Compose uses the item's **index** as the key. So when "Apple" at index 0 is removed, "Banana" moves to index 0. Compose looks in the cache for index 0 and finds the old composable that belonged to "Apple", and reuses it for "Banana".
 
 This cached content is then passed to `subcompose`, which is the mechanism that actually creates and manages the UI tree for that item.
 
@@ -261,7 +261,7 @@ I hope you got the idea about how important it is to provide key to LazyList API
 
 Awesome. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
-***"Sharing is Caring"***
+*** "Sharing is Caring" ***
 
 Thank you! 😄 Happy composing! 😎
 

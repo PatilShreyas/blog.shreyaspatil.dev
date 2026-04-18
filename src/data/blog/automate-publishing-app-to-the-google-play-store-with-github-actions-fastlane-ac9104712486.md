@@ -23,13 +23,13 @@ As you know, we won’t need to visit Play Console to deploy our app. So we will
 
 ### Generating Google Play Credentials (.json) 🔒
 
-*Open the [Google Play Console](https://play.google.com/apps/publish/)*Go to**Settings → API Access →**Click**‘Create new service account’**and follow steps mentioned in a dialog.*In GCP console, Click**‘➕CREATE SERVICE ACCOUNT’***Provide service account name → Click**‘Create’***Then select role**‘Service Account User’**(As below image) and click**‘Continue’** .
+*Open the [Google Play Console](https://play.google.com/apps/publish/)*Go to **Settings → API Access →**Click**‘Create new service account’**and follow steps mentioned in a dialog. *In GCP console, Click**‘➕CREATE SERVICE ACCOUNT’***Provide service account name → Click**‘Create’***Then select role**‘Service Account User’**(As below image) and click**‘Continue’** .
 
 ![](../../assets/images/content/automate-publishing-app-to-the-google-play-store-with-github-actions-fastlane-ac9104712486/img-d45be03e.png)
 
-*Next step is optional so click**‘Done’**.*Then you’ll see list of service accounts, Click Action menu of service account which you just created →**Create Key →**Select ‘Key Type’ as**‘JSON’ →**Click**‘CREATE’**![](../../assets/images/content/automate-publishing-app-to-the-google-play-store-with-github-actions-fastlane-ac9104712486/img-e2c3d7c2.png)* Then the credentials file will be downloaded to your machine.*Keep that file safe.*
+*Next step is optional so click**‘Done’**. *Then you’ll see list of service accounts, Click Action menu of service account which you just created →**Create Key →**Select ‘Key Type’ as**‘JSON’ →**Click**‘CREATE’**![](../../assets/images/content/automate-publishing-app-to-the-google-play-store-with-github-actions-fastlane-ac9104712486/img-e2c3d7c2.png)* Then the credentials file will be downloaded to your machine. *Keep that file safe.*
 
-*Come back to the Play Console → Click**‘DONE’**on dialog. You’ll see service account which you just created.*Click**'GRANT ACCESS'** → Select the application which you want to allow to publish → Make sure you’ve checked ‘Releases’ section.
+*Come back to the Play Console → Click**‘DONE’**on dialog. You’ll see service account which you just created. *Click**'GRANT ACCESS'** → Select the application which you want to allow to publish → Make sure you’ve checked ‘Releases’ section.
 
 ![](../../assets/images/content/automate-publishing-app-to-the-google-play-store-with-github-actions-fastlane-ac9104712486/img-d8408171.png)
 
@@ -100,7 +100,7 @@ This will encode Google play configuration file and see generated `.b64` file. N
 
 ![](../../assets/images/content/automate-publishing-app-to-the-google-play-store-with-github-actions-fastlane-ac9104712486/img-4b4841db.png)
 
-Do the same procedure for the Keystore file and add Keystore file’s *Base64**encoded**content* and other configurations as secret. Now secrets of Action would look like 👇
+Do the same procedure for the Keystore file and add Keystore file’s *Base64 **encoded **content* and other configurations as secret. Now secrets of Action would look like 👇
 
 ![](../../assets/images/content/automate-publishing-app-to-the-google-play-store-with-github-actions-fastlane-ac9104712486/img-c392114c.png)
 

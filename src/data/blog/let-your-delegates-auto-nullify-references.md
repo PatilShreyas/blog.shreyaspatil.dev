@@ -67,7 +67,7 @@ Let’s understand it
 - ***`AutoCleanedValue`*** is implementing a `ReadWriteProperty` which is a base interface from the standard library that can be used for implementing property delegates of read-write properties.
 - It has two parameters in the constructor i.e. `fragment` _(since we are making it for Fragment as of now)_ and `initializer` lambda (_Optional_) which provides the initial value which might be helpful for immutable types.
 - There’s a field `_value` which will act as a backing field for references.
-- On initialization, we are observing the **View**lifecycle of a fragment and _nullifying it_**_when the view lifecycle is destroyed_** .
+- On initialization, we are observing the **View **lifecycle of a fragment and _nullifying it_ **_when the view lifecycle is destroyed_** .
 - In short, anybody can’t access the reference once Fragment’s `onDestoryView()` lifecycle method is called.
 - If the value is retrieved and if the current value is `null` due to Fragment's lifecycle then its value will be re-initialized with the help of `initializer` (_if it's provided_).
 

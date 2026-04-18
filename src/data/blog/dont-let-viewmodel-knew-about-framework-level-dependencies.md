@@ -25,7 +25,7 @@ In MVVM architecture, it suggests separating the data presentation logic(Views o
 
 *In Android, ViewModel is a part of Android's Architecture component.* UI shouldn't hold the logic, have to move it to ViewModel.
 *UI will subscribe to any state changes in ViewModel and will update UI accordingly (_reactive approach_).* ViewModel is lifecycle aware and can survive changes.
-*🔴 ViewModel should not hold Android framework references (_**Not Mandatory** _). _For e.g. Activity, Context, View, Drawable, etc._
+*🔴 ViewModel should not hold Android framework references (_ **Not Mandatory** _). _For e.g. Activity, Context, View, Drawable, etc._
 
 ### 🤔 Why ViewModel shouldn't hold framework references?
 
@@ -33,13 +33,13 @@ As we discussed earlier that ViewModel is lifecycle aware but `View` is not. Man
 
 ## 🥽 Continue...
 
-As you can see _in the title_, I've mentioned ***"Don't let ViewModel knew about FRAMEWORK LEVEL DEPENDENCIES"*** . So let's discuss what's exactly _Framework Level Dependencies_.
+As you can see _in the title_, I've mentioned *** "Don't let ViewModel knew about FRAMEWORK LEVEL DEPENDENCIES" *** . So let's discuss what's exactly _Framework Level Dependencies_.
 
 So as you might be aware of _[AndroidViewModel](https://developer.android.com/reference/android/arch/lifecycle/AndroidViewModel)_ and have used already for some rare cases.
 
 > **`AndroidViewModel`** is a `ViewModel` that has Application Context awareness.
 
-Now when we are introducing `Context` in ViewModel, the last point 🔴 mentioned above is breaking. Why? Because `Context` is a part of Android's framework. Then it ***decreases***_testability, modularity and maintainability_ of the codebase. No matter our application is small scale or large scale but having tests is always good because it acts as a safeguard as it gets expanding. That thing is breaking by using `AndroidViewModel`. Because it doesn't let us write**unit tests** for that part of code (_integration testing is possible only_) ☹. After all, everyone knows how tricky it is to control memory leaks from the usage of `Context` if something goes wrong.
+Now when we are introducing `Context` in ViewModel, the last point 🔴 mentioned above is breaking. Why? Because `Context` is a part of Android's framework. Then it ***decreases***_testability, modularity and maintainability_ of the codebase. No matter our application is small scale or large scale but having tests is always good because it acts as a safeguard as it gets expanding. That thing is breaking by using `AndroidViewModel`. Because it doesn't let us write **unit tests** for that part of code (_integration testing is possible only_) ☹. After all, everyone knows how tricky it is to control memory leaks from the usage of `Context` if something goes wrong.
 
 ## Why do we need `AndroidViewModel`? 🤔
 
@@ -64,7 +64,7 @@ Have you seen this code😕? Let's discuss ***key issues*** with this.
 #### 👎 Disadvantages of this approach
 
 *The `ViewModel` is not unit-testable.* If we need to use sessions in let's say another `ViewModel` we'll again need to copy the same code there. _It'll lead to code duplication_👯‍♂️.
-*Hard to maintain if something changes.*Lost single-responsibility principle since ViewModel does**everything** .
+*Hard to maintain if something changes. *Lost single-responsibility principle since ViewModel does **everything** .
 
 Isn't it painful? 🤕
 
@@ -86,8 +86,8 @@ Now, it's time to refactor and clean up `UserViewModel` 🧹.
 
 #### 👍 Advantages of this approach
 
-***Only**`SessionManager` and its implementation will be responsible for managing user session related business. Thus, we achieved the Single-responsibility principle from**S**OLID.* ViewModel now only care about executing required business and updating UI state accordingly. `SessionManager` is handling session management.
-*Now `UserViewModel` is referencing**interface**`SessionManager` not a _class_ so it (ViewModel) doesn't care or know what's happening under the hood. It means, now ViewModel doesn't have knowledge of Framework dependencies 😀.* If any other `ViewModel` or part of code needs to handle the session management then they just get an instance of `SessionManager` and that's all!
+***Only**`SessionManager` and its implementation will be responsible for managing user session related business. Thus, we achieved the Single-responsibility principle from **S** OLID.* ViewModel now only care about executing required business and updating UI state accordingly. `SessionManager` is handling session management.
+*Now `UserViewModel` is referencing **interface**`SessionManager` not a _class_ so it (ViewModel) doesn't care or know what's happening under the hood. It means, now ViewModel doesn't have knowledge of Framework dependencies 😀.* If any other `ViewModel` or part of code needs to handle the session management then they just get an instance of `SessionManager` and that's all!
 *Easy to maintain.* Testable
 
 #### 👎 Disadvantages of this approach

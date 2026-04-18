@@ -9,7 +9,7 @@ coverImage: "../../assets/images/cover-making-google-apps-like-navigation-drawer
 
 In this article, you will learn to implement Google Apps like Navigation View — Drawer in Android apps easily! 😃
 
-Hello Developers, You might use Google’s Apps like *Gmail, Google Photos, Google Drive, Keep Notes, etc.*You have seen their Navigation drawer and it seems much attractive 😍 and best Material Design implementation there. After this, you wished to implement it. Right? You might search on Google*“How to implement Gmail like navigation drawer?”*or*“How to implement Google apps like Navigation Drawer”* But you found nothing helpful 😧. Then Here it is… 😃 In this article, I’ll explain to you how to achieve it.
+Hello Developers, You might use Google’s Apps like *Gmail, Google Photos, Google Drive, Keep Notes, etc. *You have seen their Navigation drawer and it seems much attractive 😍 and best Material Design implementation there. After this, you wished to implement it. Right? You might search on Google*“How to implement Gmail like navigation drawer?”*or*“How to implement Google apps like Navigation Drawer”* But you found nothing helpful 😧. Then Here it is… 😃 In this article, I’ll explain to you how to achieve it.
 
 ![](../../assets/images/content/making-google-apps-like-navigation-drawer-material-design-c8781d9ff8c8/img-75cfb609.png)
 
@@ -27,7 +27,7 @@ MaterialNavigationView library is built upon Google’s Material Design library.
 
 ### ⭐️ Do you know How Simple it is?
 
-*Just import Android Studio’s*Navigation Drawer Activity*Template.* Replace NavigationView class with Library class name.
+*Just import Android Studio’s *Navigation Drawer Activity *Template.* Replace NavigationView class with Library class name.
 
 And you’re done 🚀. Unbelievable? Let’s see…
 
@@ -116,7 +116,7 @@ Currently, two values are accepted to a flag `itemStyle`. If it is not specified
 app:itemStyle="default_style"/>
 ```
 
-***rounded_right :**This flag sets design to a menu item of Navigation drawer as**\*Rounded Corners**at right*** as you can see below.
+***rounded_right : **This flag sets design to a menu item of Navigation drawer as**\*Rounded Corners **at right*** as you can see below.
 
 ![itemStyle as \ *\*rounded_right\*\* ](../../assets/images/content/making-google-apps-like-navigation-drawer-material-design-c8781d9ff8c8/img-8143fc9d.png)
 
@@ -126,7 +126,7 @@ app:itemStyle="default_style"/>
 app:itemStyle="rounded_right"/>
 ```
 
-***rounded_rectangle :**This flag sets design to a menu item of Navigation drawer as***Rounded Rectangular Corners*** as you can see below.
+***rounded_rectangle : **This flag sets design to a menu item of Navigation drawer as***Rounded Rectangular Corners*** as you can see below.
 
 ![](../../assets/images/content/making-google-apps-like-navigation-drawer-material-design-c8781d9ff8c8/img-b04ceb8b.png)
 
@@ -136,13 +136,13 @@ app:itemStyle="rounded_right"/>
 app:itemStyle="rounded_rectangle"/>
 ```
 
-### 💻 **Activity Code:**All the programmatic way of implementation of MaterialNavigationView is the same as NavigationView. Just change is the class name only. Two methods are added in this new class as follows.**setItemStyle(int itemStyle)*** : This method sets the Item Style of Menu in MaterialNavigationView at runtime. itemStyle should be one of the following constants :
+### 💻 **Activity Code: **All the programmatic way of implementation of MaterialNavigationView is the same as NavigationView. Just change is the class name only. Two methods are added in this new class as follows. **setItemStyle(int itemStyle)*** : This method sets the Item Style of Menu in MaterialNavigationView at runtime. itemStyle should be one of the following constants :
 
 1. `MaterialNavigationView.ITEM_STYLE_DEFAULT`
 2. `MaterialNavigationView.ITEM_STYLE_ROUND_RIGHT`
 3. `MaterialNavigationView.ITEM_STYLE_ROUND_RECTANGLE`
 
-**getItemStyle()***: It returns the value of the**itemStyle** of the menu.
+**getItemStyle()***: It returns the value of the **itemStyle** of the menu.
 
 Here is a demo…
 
@@ -162,6 +162,6 @@ navView.setItemStyle(MaterialNavigationView.ITEM_STYLE_ROUND_RECTANGLE)
 
 ![](../../assets/images/content/making-google-apps-like-navigation-drawer-material-design-c8781d9ff8c8/img-8709bf8d.png) ![](../../assets/images/content/making-google-apps-like-navigation-drawer-material-design-c8781d9ff8c8/img-095a9193.png) ![](../../assets/images/content/making-google-apps-like-navigation-drawer-material-design-c8781d9ff8c8/img-666a39f5.png)
 
-**Thanks for reading this article 😃. If you find it helpful, please share it with other’s who need it. Someone said…**>**“Sharing is Caring”**### Here is a link of**GitHub** Repository:
+**Thanks for reading this article 😃. If you find it helpful, please share it with other’s who need it. Someone said…**>**“Sharing is Caring”**### Here is a link of **GitHub** Repository:
 
 [https://github.com/PatilShreyas/MaterialNavigationView-Android/](https://github.com/PatilShreyas/MaterialNavigationView-Android/)

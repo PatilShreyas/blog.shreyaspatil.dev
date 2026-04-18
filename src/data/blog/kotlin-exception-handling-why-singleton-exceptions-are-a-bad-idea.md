@@ -84,7 +84,7 @@ These little things can easily be overlooked, but they have a big impact overall
 
 Awesome 🤩. I trust you've picked up some valuable insights from this. If you like this write-up, do share it 😉, because...
 
-***"Sharing is Caring"***
+*** "Sharing is Caring" ***
 
 Thank you! 😄
 

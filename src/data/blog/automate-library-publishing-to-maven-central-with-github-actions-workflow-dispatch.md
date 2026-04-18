@@ -142,7 +142,7 @@ _Keep the reference of secret key content and **make sure it's a single line val
 
 ### Add secrets 🤫
 
-To add secret key and credentials, navigate to repository " **Settings**", then "**Secrets** ". As you can see here 👇
+To add secret key and credentials, navigate to repository " **Settings** ", then " **Secrets** ". As you can see here 👇
 
 
 ![GitHub Action Secrets](../../assets/images/content/automate-library-publishing-to-maven-central-with-github-actions-workflow-dispatch/img-fb67413e.png)

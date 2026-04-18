@@ -21,11 +21,11 @@ For implementation, we’ll perform the below steps.
 
 ## ⚡️ Setting up Google Sheets:
 
-*Sign in with your Google Account.*Go to your [Google Drive](https://drive.google.com/drive/my-drive) and create a new*‘Google Sheets’*document where you want to store your responses and Open that.*Setup**header columns** of sheet and you’ll see like this.
+*Sign in with your Google Account. *Go to your [Google Drive](https://drive.google.com/drive/my-drive) and create a new*‘Google Sheets’*document where you want to store your responses and Open that. *Setup **header columns** of sheet and you’ll see like this.
 
-![Initialized Google Sheet. (Selected Part of URL is **Sheet ID**).](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-8310c772.png)*Initialized Google Sheet. (Selected Part of URL is**Sheet ID**).*
+![Initialized Google Sheet. (Selected Part of URL is **Sheet ID**).](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-8310c772.png)*Initialized Google Sheet. (Selected Part of URL is **Sheet ID**).*
 
-As above, I’ve set up header columns of the sheet. You can see I’ve highlighted part of the URL. It is the ***Sheet ID***of our current document. Just copy it, we’ll require it in the next step.*Every document has a unique**Sheet ID.****As in below Image, Just go to**Tools → Script Editor.**
+As above, I’ve set up header columns of the sheet. You can see I’ve highlighted part of the URL. It is the ***Sheet ID***of our current document. Just copy it, we’ll require it in the next step. *Every document has a unique **Sheet ID.** **As in below Image, Just go to **Tools → Script Editor.**
 
 ![Launching AppScript Editor.](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-87a1e775.png)
 
@@ -44,7 +44,7 @@ First of all, we’ll have to Open our spreadsheet, we can open that using `Spre
 
 **Sheet ID** which we’ve copied in the previous step has to be passed in this method.
 
-Here, we’ll retrieve parameters using `request.parameter` . Finally, by using a method `appendRow([])`, we’ll insert feedback data into Google Sheet. In the end, we’ll return a JSON response with status: ***SUCCESS/FAILED***.*Select from tab,**Publish → Deploy as web app**![Deploying the Web app](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-83e2d5be.png)* Deploying the Web app*
+Here, we’ll retrieve parameters using `request.parameter` . Finally, by using a method `appendRow([])`, we’ll insert feedback data into Google Sheet. In the end, we’ll return a JSON response with status: ***SUCCESS/FAILED***. *Select from tab, **Publish → Deploy as web app **![Deploying the Web app](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-83e2d5be.png)* Deploying the Web app*
 
 *You’ll see a window like this, Just ensure that select ‘Execute the app’ as ‘**Me’**and ‘Who has access to the app’ as ‘***Anyone, even anonymous’.***![](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-a96a4d41.png)* Authorization is required! Just review permissions. Then select your Google Account.
 
@@ -52,7 +52,7 @@ Here, we’ll retrieve parameters using `request.parameter` . Finally, by using 
 
 *You’ll see like this, Just expand that ‘Advanced’ and click on ‘***Go to YOUR_PROJECT_NAME (unsafe)’.*** As I’ve highlighted below.
 
-![Proceed this…](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-6f4d1440.png) *Proceed this…****Allow** these permissions and then you’re done!
+![Proceed this…](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-6f4d1440.png) *Proceed this…** **Allow** these permissions and then you’re done!
 
 ![Review and allow permissions.](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-b56f1222.png) *Review and allow permissions.*
 
@@ -64,7 +64,7 @@ Here, we’ll retrieve parameters using `request.parameter` . Finally, by using 
 
 ## ⚡️ Setting up Flutter 💙 App:
 
-*Init a flutter directory using `flutter create PROJECT_NAME` .*In***pubspec.yaml,*** add the following dependency.
+*Init a flutter directory using `flutter create PROJECT_NAME` . *In***pubspec.yaml,*** add the following dependency.
 
 ```
 dependencies:
@@ -94,7 +94,7 @@ Finally, we’ve created an *async* method `submitForm(FeedbackForm)` which take
 
 <script src="https://gist.github.com/PatilShreyas/905c2d390751be49a5b3642badb66963.js"></script>
 
-We have created a Form with four *TextFields*and a*‘Submit Feedback’* button.
+We have created a Form with four *TextFields *and a*‘Submit Feedback’* button.
 
 Whenever the button is pressed, a form is validated first. Then, we’re instantiating `FeedbackForm` object from TextField values. Finally, we’re passing that object to the`submitForm()` method of `FormController` .
 
@@ -127,7 +127,7 @@ Thank You! 😃
 
 ## ☑️ Repository:
 
-Here’s GitHub repo which contains **Flutter**+ Google**AppScript** Code.
+Here’s GitHub repo which contains **Flutter**+ Google **AppScript** Code.
 
 [https://github.com/PatilShreyas/Flutter2GoogleSheets-Demo](https://github.com/PatilShreyas/Flutter2GoogleSheets-Demo)
 

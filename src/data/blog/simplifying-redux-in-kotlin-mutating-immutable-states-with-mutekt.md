@@ -63,13 +63,13 @@ error = "Error Occurred"
 }
 ```
 
-In such code, `_state` is a **private**and**mutable**StateFlow that can be mutated in ViewModel. So whenever the state needs to be updated, `_state` should be updated with the method `update {}` that gives the existing state model in the lambda parameter allowing us to copy and modify state using `.copy()` method.**There are some disadvantages to this approach if the following things are not handled with care by developers:***The new state should be updated atomically and with synchronization otherwise, state inconsistency will occur (*i.e.*`update{}` method of StateFlow). If the `update{}` method is not used and if the state is modified directly (*as follows* ), the state would lose.
+In such code, `_state` is a **private **and **mutable **StateFlow that can be mutated in ViewModel. So whenever the state needs to be updated, `_state` should be updated with the method `update {}` that gives the existing state model in the lambda parameter allowing us to copy and modify state using `.copy()` method. **There are some disadvantages to this approach if the following things are not handled with care by developers:***The new state should be updated atomically and with synchronization otherwise, state inconsistency will occur (*i.e.*`update{}` method of StateFlow). If the `update{}` method is not used and if the state is modified directly (*as follows* ), the state would lose.
 
 ```kotlin
 _state.value = _state.value.copy(...) // ❌
 ```
 
-*By development mistake, while updating a new state if the previous state is not copied (*by*`it.copy()`) the previous state will be lost.*For example, directly assigning a new model is as follows.* In the following snippet, if previously `loggedInUserId` or `error` is set, then it would be lost!
+*By development mistake, while updating a new state if the previous state is not copied (*by*`it.copy()`) the previous state will be lost. *For example, directly assigning a new model is as follows.* In the following snippet, if previously `loggedInUserId` or `error` is set, then it would be lost!
 
 ```kotlin
 _state.value = LoginState(isLoading = true) // ❌
@@ -80,7 +80,7 @@ _state.value = LoginState(isLoading = true) // ❌
 
 ### 2\. Combining multiple states to form a new one
 
-Assuming we have a same-state model `data class` as seen in the previous approach, In this approach, multiple ***mutable***StateFlows are created and***they're combined to form a readable final state stream***.*For example, see this implementation:*
+Assuming we have a same-state model `data class` as seen in the previous approach, In this approach, multiple ***mutable***StateFlows are created and***they're combined to form a readable final state stream***. *For example, see this implementation:*
 
 ```kotlin
 class LoginViewModel: ViewModel() {
@@ -114,7 +114,7 @@ isLoading.value = false
 }
 ```
 
-This approach is better than the previously discussed approach, but a lot of boilerplate is needed for setting up states. Also, as the application is maintained in the future and new states are introduced in the application, for `N` states, `N` mutable streams need to be created, same needs to be fed to `combine()` function, and inside it, need to instantiate that *state model.*Also, in `stateIn()` the method, you again need to provide the initial value of a `LoginState` (*to make it a StateFlow).*
+This approach is better than the previously discussed approach, but a lot of boilerplate is needed for setting up states. Also, as the application is maintained in the future and new states are introduced in the application, for `N` states, `N` mutable streams need to be created, same needs to be fed to `combine()` function, and inside it, need to instantiate that *state model. *Also, in `stateIn()` the method, you again need to provide the initial value of a `LoginState` (*to make it a StateFlow).*
 
 In my opinion, as code progresses and new states are required, it can become burdensome. This is because every time a new state is introduced, refactoring will be needed to fit it into the architecture.
 
@@ -122,7 +122,7 @@ In my opinion, as code progresses and new states are required, it can become bur
 
 ### 3\. Exposing individual states without model
 
-In this approach, individual read-only streams are exposed ( *without having a single state model*) and let UI consume it as per its need.*See example:*
+In this approach, individual read-only streams are exposed ( *without having a single state model*) and let UI consume it as per its need. *See example:*
 
 ```kotlin
 class LoginViewModel: ViewModel() {
@@ -141,7 +141,7 @@ fun login() {
 }
 ```
 
-As we can see, for `N` states, we need to create `N x 2` fields i.e. **one mutable stream**and**one transformed immutable stream**from*the corresponding mutable stream* . There's no harm in doing this, but again as the number of new states is introduced in the future, it becomes scattered. So managing this, in the long run, can be overhead.
+As we can see, for `N` states, we need to create `N x 2` fields i.e. **one mutable stream **and **one transformed immutable stream **from *the corresponding mutable stream* . There's no harm in doing this, but again as the number of new states is introduced in the future, it becomes scattered. So managing this, in the long run, can be overhead.
 
 ---
 
@@ -149,7 +149,7 @@ We've taken a look at all the current approaches being used and considered their
 
 ## 🔮What is *Mutekt* ?
 
-Mutekt is a Kotlin-multiplatform utility that ***simplifies mutating "immutable" state models***😁 which is based on KSP (Kotlin Symbol Processing). This is inspired by the concept*Redux*and [*Immer*from JS](https://immerjs.github.io/immer/) world that let you write simpler immutable update logic using "mutating" syntax which helps simplify most reducer implementations.**So you just need to focus on actual development and*Mutekt*will write a boilerplate for you!** 😎.
+Mutekt is a Kotlin-multiplatform utility that ***simplifies mutating "immutable" state models***😁 which is based on KSP (Kotlin Symbol Processing). This is inspired by the concept *Redux *and [*Immer *from JS](https://immerjs.github.io/immer/) world that let you write simpler immutable update logic using "mutating" syntax which helps simplify most reducer implementations. **So you just need to focus on actual development and *Mutekt *will write a boilerplate for you!** 😎.
 
 ### 🪄How to use its magic?
 
@@ -203,7 +203,7 @@ error = null
 )
 ```
 
-By this, you'll directly get instances on which you can **directly mutate**the state. Also, there's a method `asStateFlow()` that then returns a***read-only state stream*** so that it can be exposed. See this ⬇️
+By this, you'll directly get instances on which you can **directly mutate **the state. Also, there's a method `asStateFlow()` that then returns a***read-only state stream*** so that it can be exposed. See this ⬇️
 
 ```kotlin
 // Read-only state stream
@@ -227,17 +227,17 @@ error = "Error Occurred
 }
 ```
 
-Voila! 😁 This is so simple! So in the future, whenever new states are added, just add them in that **interface**and just build the project. The required boilerplate will be taken care of by***Mutekt*** for you 😎. As simple as this ⬇️.
+Voila! 😁 This is so simple! So in the future, whenever new states are added, just add them in that **interface **and just build the project. The required boilerplate will be taken care of by***Mutekt*** for you 😎. As simple as this ⬇️.
 
 ![](../../assets/images/content/simplifying-redux-in-kotlin-mutating-immutable-states-with-mutekt/img-d670d7c6.gif)
 
-COOL! You can explore more about the usages of [ **Mutekt**](https://github.com/PatilShreyas/mutekt) in the Multiplatform project and can also refer to [***this Pull Request***](https://github.com/PatilShreyas/NotyKT/pull/633) which demonstrates how to migrate to the Mutekt from existing state management solutions 😁.*Mutekt*is not rocket science. It generates a similar boilerplate that we discussed in the second approach earlier. But it saves your time so you just define your model and let***Mutekt***do that boilerplate generation work for you which is repetitive and allows you to maintain your codebase easily. You can [learn here about exactly what code is generated by***Mutekt*** ](https://github.com/PatilShreyas/mutekt/wiki/Generated-Code-with-Mutekt).
+COOL! You can explore more about the usages of [ **Mutekt**](https://github.com/PatilShreyas/mutekt) in the Multiplatform project and can also refer to [***this Pull Request***](https://github.com/PatilShreyas/NotyKT/pull/633) which demonstrates how to migrate to the Mutekt from existing state management solutions 😁. *Mutekt *is not rocket science. It generates a similar boilerplate that we discussed in the second approach earlier. But it saves your time so you just define your model and let***Mutekt***do that boilerplate generation work for you which is repetitive and allows you to maintain your codebase easily. You can [learn here about exactly what code is generated by***Mutekt*** ](https://github.com/PatilShreyas/mutekt/wiki/Generated-Code-with-Mutekt).
 
 ---
 
 I hope that you will find this blog extremely helpful! 😀
 
-***"Sharing is Caring"***
+*** "Sharing is Caring" ***
 
 Thank you! 😄
 

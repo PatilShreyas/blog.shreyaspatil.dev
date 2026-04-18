@@ -115,7 +115,7 @@ Also, as per the best practices, we are going to run these benchmark tests obvio
 
 Now just run these benchmarks on variety of the devices and analyse the results. I ran these benchmarks on 3 devices on total out of which 2 were physical devices and last one was an emulator.
 
-***Why 3 devices?**because* I was unable to believe the results, so I decided to run these on different devices.
+***Why 3 devices? **because* I was unable to believe the results, so I decided to run these on different devices.
 
 Cool, let’s see the analysis after performing the benchmarks on the “Before” and “After” variants.
 
@@ -131,7 +131,7 @@ I couldn't believe these results! So, I ran a second round of benchmark tests on
 
 ![](../../assets/images/content/benchmark-insights-direct-state-propagation-vs-lambda-based-state-in-jetpack-compose/img-3a33470a.png)
 
-Surprisingly, when comparing the lambda-based approach with the direct state approach, there was a huge reduction in the UI jank percentage by **30-33%**! And not only that, but there was a**reduction**in maximum heap memory consumption***by***800 KB to 2134 KB***🤯 (*this is 10 iterations’ data and that too with running benchmark tests twice*). Also, at the***99th percentile*** , negative results were observed.
+Surprisingly, when comparing the lambda-based approach with the direct state approach, there was a huge reduction in the UI jank percentage by **30-33%**! And not only that, but there was a **reduction **in maximum heap memory consumption***by***800 KB to 2134 KB***🤯 (*this is 10 iterations’ data and that too with running benchmark tests twice*). Also, at the***99th percentile*** , negative results were observed.
 
 Then I decided to run these benchmarks on another device, but I didn't have one with me. That's when I remembered that Firebase Test Lab devices are now accessible through Android Studio. There are a variety of devices available there, just like real devices in the cloud. This opened up exciting possibilities for further testing!
 
@@ -165,8 +165,8 @@ After running 6 rounds of benchmark tests on 3 different devices, I finally gain
 | --- | --- |
 | **Frame count** | 🟨 No major change |
 | **Jank Percent** | 🟩 Major improvement in jank percentage in the low-end devices in lambda-based state variant without Full R8 mode enabled. Minimal improvements when full R8 mode is turned on. |
-| **Frame time**| 🟩 🟥 10ms (minimum) to 200ms (maximum - P99) reduction in frame time in the lambda-based state variant. Low-end devices benefited the most. Occasionally, at P99 on low-end devices, there was a slight decrease in performance when**R8 is disabled**. Very minimal gains when**Full R8 mode is enabled** . |
-| **Memory**| 🟩 Significant improvements were seen in the lambda-based state variant, with a reduction of about 2000 KB in heap size consumption**irrespective of R8 is enabled or not** . |
+| **Frame time**| 🟩 🟥 10ms (minimum) to 200ms (maximum - P99) reduction in frame time in the lambda-based state variant. Low-end devices benefited the most. Occasionally, at P99 on low-end devices, there was a slight decrease in performance when **R8 is disabled **. Very minimal gains when **Full R8 mode is enabled** . |
+| **Memory**| 🟩 Significant improvements were seen in the lambda-based state variant, with a reduction of about 2000 KB in heap size consumption **irrespective of R8 is enabled or not** . |
 
 <div data-node-type="callout">
 <div data-node-type="callout-emoji">📈</div>
@@ -185,7 +185,7 @@ Using lambda-based state is actually improving the runtime performance across lo
 
 > When a function is called, memory is allocated for the function's local variables, parameters, and return value. Additionally, if the function creates new objects or data structures, these will also consume heap memory. The impact on heap memory depends on the complexity of the function and the amount of data it processes or generates.
 
-As you might have learnt from the previous blog that even if compose compiler skips the re-composition of the UI, it’s still invoking the functions and actually performs lot of operations and also checks the equality of the state models every time the state parameters are changed. So **maybe**that has some cost associated with it,**maybe**when data changes so fast, there are so many unnecessary invocations are happening causing unnecessary memory allocation in the heap,**maybe**that’s what this lambda-based state approach is avoiding and that’s why we are seeing the advantages after using lambdas over direct states.**Learning?**
+As you might have learnt from the previous blog that even if compose compiler skips the re-composition of the UI, it’s still invoking the functions and actually performs lot of operations and also checks the equality of the state models every time the state parameters are changed. So **maybe **that has some cost associated with it, **maybe **when data changes so fast, there are so many unnecessary invocations are happening causing unnecessary memory allocation in the heap, **maybe **that’s what this lambda-based state approach is avoiding and that’s why we are seeing the advantages after using lambdas over direct states. **Learning?**
 
 For me, the takeaway was that using stateful lambdas doesn't really have any major downsides. In fact, it's super helpful in situations where data updates quickly and leading it to update on the UI. Plus, less janks and memory benefits observed as this approach works great on low-end devices too.
 
@@ -193,7 +193,7 @@ For me, the takeaway was that using stateful lambdas doesn't really have any maj
 
 Awesome 🤩. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
-***"Sharing is Caring"***
+*** "Sharing is Caring" ***
 
 Thank you! 😄
 

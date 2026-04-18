@@ -11,13 +11,13 @@ tags:
 coverImage: "../../assets/images/cover-accessing-device-location-using-sim-card-6cdb15645bef.jpeg"
 ---
 
-These days, almost many apps use the device location📍. There might be some use case in your app which is strongly dependent on the user’s location. *For example*, if you have developed a*social*app 💬 which shows posts of users and imagine you’ve feature which shows trending posts in user’s**nearby area**. For such use case, you’ll get a user’s device location and after some*processing*, you’ll be able to manage this feature for your*cool* app.
+These days, almost many apps use the device location📍. There might be some use case in your app which is strongly dependent on the user’s location. *For example *, if you have developed a *social *app 💬 which shows posts of users and imagine you’ve feature which shows trending posts in user’s **nearby area **. For such use case, you’ll get a user’s device location and after some *processing *, you’ll be able to manage this feature for your *cool* app.
 
 But wait… 🤔
 
 #### What if your app user’s enabled Mock location? 😮
 
-If your *cool*app users have enabled mock locations then your feature will not work as expected. If the user is currently at*Mumbai, India*and he enabled mock location and showing his location at*Beijing, China*😩 then that Indian user will see useless Chinese content in the app. Your *cool* app’s cool feature won’t work as expected 😢
+If your *cool *app users have enabled mock locations then your feature will not work as expected. If the user is currently at *Mumbai, India *and he enabled mock location and showing his location at *Beijing, China*😩 then that Indian user will see useless Chinese content in the app. Your *cool* app’s cool feature won’t work as expected 😢
 
 ![](../../assets/images/content/accessing-device-location-using-sim-card-6cdb15645bef/img-21bb34f8.gif)
 
@@ -31,7 +31,7 @@ The famous app *TikTok app* extracts SIM Card📶 details and fetches the user�
 
 ## How did we come up with this Idea? 💡
 
-We at [ScaleReal](http://scalereal.com/) were developing a product which was heavily dependent on the user’s location and we thought *“What if GPS location isn’t available due to conditions like device failure or bad weather or if the user provides fake location”*🤔. We thoroughly studied these scenarios with all aspects 🧐 and came with the solution of using SIM card details to extract at least the*cell tower location*of the user. This solution helped us to pinpoint the user's location using*cell tower triangulation*and the results were even better when we wrote a custom algorithm on top of these two. In turn a***better***product! 😄*In this article, we’ll learn to access the device’s cell tower location by extracting SIM Card details from the device. So let’s start implementation.*>**Note:** GPS is not involved in this process. So doesn’t matter if it’s enabled tr disabled!
+We at [ScaleReal](http://scalereal.com/) were developing a product which was heavily dependent on the user’s location and we thought *“What if GPS location isn’t available due to conditions like device failure or bad weather or if the user provides fake location”*🤔. We thoroughly studied these scenarios with all aspects 🧐 and came with the solution of using SIM card details to extract at least the *cell tower location *of the user. This solution helped us to pinpoint the user's location using *cell tower triangulation *and the results were even better when we wrote a custom algorithm on top of these two. In turn a***better***product! 😄*In this article, we’ll learn to access the device’s cell tower location by extracting SIM Card details from the device. So let’s start implementation.*>**Note:** GPS is not involved in this process. So doesn’t matter if it’s enabled tr disabled!
 
 ![](../../assets/images/content/accessing-device-location-using-sim-card-6cdb15645bef/img-ceb4fd23.gif)
 
@@ -39,7 +39,7 @@ We at [ScaleReal](http://scalereal.com/) were developing a product which was hea
 
 First of all, we’ll need to get API for accessing Geolocation information. I’ve seen two APIs for such use case🤔.
 
-*[Google’s Geolocation API](https://developers.google.com/maps/documentation/geolocation/overview)— This API is good to go with but requires a billing account to be enabled for your project🤑.*[Unwiredlabs OpenCellID](https://opencellid.org/)— This API is amazing and easy to use and the world’s largest open database of cell towers😍. *(We’re using this API for geolocation)*Just go to above link and*Sign Up your account*and you’ll get*API key* . See API documentation [here](https://unwiredlabs.com/api#documentation) for more details about accessing API.
+*[Google’s Geolocation API](https://developers.google.com/maps/documentation/geolocation/overview)— This API is good to go with but requires a billing account to be enabled for your project🤑.*[Unwiredlabs OpenCellID](https://opencellid.org/)— This API is amazing and easy to use and the world’s largest open database of cell towers😍. *(We’re using this API for geolocation)*Just go to above link and *Sign Up your account *and you’ll get *API key* . See API documentation [here](https://unwiredlabs.com/api#documentation) for more details about accessing API.
 
 ## How API Works?🤔
 
@@ -52,7 +52,7 @@ From your app, you just have to send this data payload to API:
 Let’s understand these parameters:
 
 *`radio`— Network type. For e.g. GSM, LTE, etc*`mcc`—*Mobile Country Code* used to identify the country which a mobile subscriber belongs to.
-*`mnc`— Used to uniquely identify a mobile subscribers**network**the**MCC**is combined with a Mobile**Network**Code.* `lac`— Location Area Code
+*`mnc`— Used to uniquely identify a mobile subscribers **network **the **MCC **is combined with a Mobile **Network **Code.* `lac`— Location Area Code
 * `cid`— Cell ID
 
 When you request API with above details, you’ll get a response from API as below👇.
@@ -184,9 +184,9 @@ return cellInfo
 
 The same method can be repeated for other network types.
 
-Okay! By this, we’ve completed the **main**part of the application✨. As you can see, we***haven’t used GPS or location service*** in this app.
+Okay! By this, we’ve completed the **main **part of the application✨. As you can see, we***haven’t used GPS or location service*** in this app.
 
-Now just send this information along as data payload to the API and you’ll get a *response*which will include*location* details 🔥.
+Now just send this information along as data payload to the API and you’ll get a *response *which will include *location* details 🔥.
 
 - - -
 

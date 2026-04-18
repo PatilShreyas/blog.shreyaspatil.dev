@@ -25,7 +25,7 @@ Before starting the implementation details, let’s understand a few things.
 ## What is Fastlane? 🏃
 
 *[Fastlane](https://fastlane.tools/) is a toolkit that does a lot of things, like generating screenshots, dealing with code signing, and releasing your application and much more.* It’s the easiest way to automate beta deployments and releases for your iOS and Android apps. 🚀
-*It has a plugin system that makes it easy to extend its functionality. There are plugins for all sorts of workflows, such as for publishing app on to the Google Play Store — and even one for**Firebase App Distribution**!* This tool is easy to use locally as well as CI workflows 😃.
+*It has a plugin system that makes it easy to extend its functionality. There are plugins for all sorts of workflows, such as for publishing app on to the Google Play Store — and even one for **Firebase App Distribution **!* This tool is easy to use locally as well as CI workflows 😃.
 
 With this short introduction to the tools, we're going to use under our belt. let’s dive into the implementation.
 
@@ -69,7 +69,7 @@ fastlane add_plugin firebase_app_distribution
 
 ![](../../assets/images/content/quickly-distribute-your-app-with-firebase-app-distribution-using-github-actions-fastlane/img-d8828b52.png)
 
-*Create a private JSON key and move the key to a location accessible to your build environment.*Be sure to keep this file somewhere safe*, as it grants administrator access to App Distribution in your Firebase project.*Keep this file in the root directory of your project.*(In this example, I’m keeping the name of this file as *`firebase_credentials.json`*)*
+*Create a private JSON key and move the key to a location accessible to your build environment. *Be sure to keep this file somewhere safe *, as it grants administrator access to App Distribution in your Firebase project. *Keep this file in the root directory of your project.*(In this example, I’m keeping the name of this file as *`firebase_credentials.json`*)*
 
 ---
 

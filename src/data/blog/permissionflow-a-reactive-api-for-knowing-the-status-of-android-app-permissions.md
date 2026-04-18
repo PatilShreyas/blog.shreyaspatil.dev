@@ -19,11 +19,11 @@ To simplify this issue, ***PermissionFlow*** is here!
 
 ## What is PermissionFlow?
 
-[PermissionFlow is an open-source library](https://github.com/PatilShreyas/permission-flow-android) which provides a reactive API for tracking the state of permissions across an Android app. This means that the data module (or any layer in the app) can subscribe to the state of ***ANY**permission*** and be notified immediately when the permission state changes. PermissionFlow makes it easy to track the state of permissions across an Android app. This can help to improve the modularity, testability, and maintainability of your app.
+[PermissionFlow is an open-source library](https://github.com/PatilShreyas/permission-flow-android) which provides a reactive API for tracking the state of permissions across an Android app. This means that the data module (or any layer in the app) can subscribe to the state of ***ANY **permission*** and be notified immediately when the permission state changes. PermissionFlow makes it easy to track the state of permissions across an Android app. This can help to improve the modularity, testability, and maintainability of your app.
 
 Here are some additional benefits of using PermissionFlow:
 
-***Reactive API:**PermissionFlow provides a reactive API that makes it easy to track the state of permissions. This means that you can subscribe to the state of permission and be notified immediately when the permission state changes.***Easy to use:**PermissionFlow is an easy-to-use library that can be used in any Android project. It has a simple API that makes it easy to get started.***Tracks permission grants from app settings:**It also tracks the permission changes in the app granted by users from the app settings.***Safe:**PermissionFlow is a safe library that uses Kotlin Flow APIs to track the state of permissions. This means that you can be confident that your app will not leak memory or trouble the app's main thread when tracking permissions.***Testable API:**Due to the simplicity of its API, it can be tested easily with mocks/fakes.***Jetpack Compose support:** Yes, PermissionFlow also supports Jetpack Compose in which you can listen to the states of permission in compose UI.
+***Reactive API: **PermissionFlow provides a reactive API that makes it easy to track the state of permissions. This means that you can subscribe to the state of permission and be notified immediately when the permission state changes.***Easy to use: **PermissionFlow is an easy-to-use library that can be used in any Android project. It has a simple API that makes it easy to get started.***Tracks permission grants from app settings: **It also tracks the permission changes in the app granted by users from the app settings.***Safe: **PermissionFlow is a safe library that uses Kotlin Flow APIs to track the state of permissions. This means that you can be confident that your app will not leak memory or trouble the app's main thread when tracking permissions.***Testable API: **Due to the simplicity of its API, it can be tested easily with mocks/fakes.***Jetpack Compose support:** Yes, PermissionFlow also supports Jetpack Compose in which you can listen to the states of permission in compose UI.
 
 
 ---
@@ -168,7 +168,7 @@ If you want to check it out, see some [examples in the repository](https://githu
 
 ---
 
-***"Sharing is Caring"***
+*** "Sharing is Caring" ***
 
 Thank you! 😄
 

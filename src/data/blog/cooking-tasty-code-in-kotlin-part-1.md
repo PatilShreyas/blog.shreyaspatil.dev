@@ -48,12 +48,12 @@ That’s enough introduction I guess and now I think we should start talking abo
 
 <script src="https://gist.github.com/PatilShreyas/14355549b89955c50116b745ace33ece.js"></script>
 
-*If you see above snippet, you’ll notice function `startSomething()` has parameter `config` as default argument which will be considered if parameter not provided by caller function.*It’s a very helpful feature where we can allow a developer to configure things. We can even replace**Builder**pattern** using default arguments in Kotlin. We can achieve it using default arguments + named arguments.
+*If you see above snippet, you’ll notice function `startSomething()` has parameter `config` as default argument which will be considered if parameter not provided by caller function. *It’s a very helpful feature where we can allow a developer to configure things. We can even replace **Builder **pattern** using default arguments in Kotlin. We can achieve it using default arguments + named arguments.
 
 ## ⭐️ Named Arguments Function
 
 *Ideally, functions should not have more than 3–4 parameters.* But if your function has many parameters then there’s a possibility that wrong value might be assigned to the wrong parameter (as we are humans 😆). Here named arguments comes to rescue.
-*As we discussed in the previous section, we can use functions _over_**_Builder pattern_**_in Kotlin._* Even we can safely change the order of parameters without any conflicts.
+*As we discussed in the previous section, we can use functions _over_ **_Builder pattern_ **_in Kotlin._* Even we can safely change the order of parameters without any conflicts.
 
 <script src="https://gist.github.com/PatilShreyas/f150d4169971ff0da3a4e3e8c373d97b.js"></script>
 
@@ -141,11 +141,11 @@ Now as you can see, we have marked `processList()` as `inline`. Now see generate
 
 ## ⭐️ Reified type parameters in Inline Function
 
-*How to access the type of parameter in Inline function 🤔.***_reified_**keyword comes to rescue here.* See code first 👇
+*How to access the type of parameter in Inline function 🤔.***_reified_ **keyword comes to rescue here.* See code first 👇
 
 <script src="https://gist.github.com/PatilShreyas/75d95253585d5f23ce573f606c5ed100.js"></script>
 
-As you can see, now the type of class is accessible inside the function, almost as if it were a normal class. Since the function is inlined, no reflection is needed. Otherwise, without reified we might need to use **_reflections_**to deserialize that JSON**_._**## ⭐️ Typealias* It allows you to specify an alternative name for existing types.
+As you can see, now the type of class is accessible inside the function, almost as if it were a normal class. Since the function is inlined, no reflection is needed. Otherwise, without reified we might need to use **_reflections_ **to deserialize that JSON **_._**## ⭐️ Typealias* It allows you to specify an alternative name for existing types.
 *If the type name is too long you can introduce a different shorter name and use the new one instead.* For example, see this 👇, here we used type alias `Features` to shorten the long generic type
 
 <script src="https://gist.github.com/PatilShreyas/674466cfa912f05a0571d068c9686fd9.js"></script>

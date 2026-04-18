@@ -19,13 +19,13 @@ Hey Kotliners 👋🏻, Kotlin coroutines are now widely used and many of its AP
 
 Before jumping on the topic, let's understand the need.
 
-You can consider any use case in which Flow produces a lot of data within a small period that can't even skipped. Imagine we are developing an application in which we heavily log analytics. *For example, we store logs when the user clicks on the button, user interactions, scrolls, etc*. It means we can assume: that whenever a user is doing something, we can say 5-6 analytic events per 2-3 seconds need to be persisted in the database (*or need to be sent on the network* ).
+You can consider any use case in which Flow produces a lot of data within a small period that can't even skipped. Imagine we are developing an application in which we heavily log analytics. *For example, we store logs when the user clicks on the button, user interactions, scrolls, etc *. It means we can assume: that whenever a user is doing something, we can say 5-6 analytic events per 2-3 seconds need to be persisted in the database (*or need to be sent on the network* ).
 
-Imagine we are solving the use case like above with the Flow APIs. In such cases, if we are doing operations like DB persistence or network calls frequently, then it can block our business logic for a little time. *For example,**presentational data saving/fetching should be prioritized over saving/fetching analytical data for any app*** . These DB calls or network operations happen on reserved thread pools that get busy doing unimportant things. In such cases, if we could get the data in the chunks after fixed intervals then that would solve such issues. Let's see how can we achieve that 😎.
+Imagine we are solving the use case like above with the Flow APIs. In such cases, if we are doing operations like DB persistence or network calls frequently, then it can block our business logic for a little time. *For example, **presentational data saving/fetching should be prioritized over saving/fetching analytical data for any app*** . These DB calls or network operations happen on reserved thread pools that get busy doing unimportant things. In such cases, if we could get the data in the chunks after fixed intervals then that would solve such issues. Let's see how can we achieve that 😎.
 
 ### What's the advantage of collecting Flow items in the chunks?
 
-When a lot of data is produced within a short period, then processing each data individually becomes costly because **a thread**has to process it. But, if we start processing the same data in bulk, it's not as costly as it is for an individual item.*Example: Bulk insertion of items in an SQLite table is always better than inserting each item individually.*
+When a lot of data is produced within a short period, then processing each data individually becomes costly because **a thread **has to process it. But, if we start processing the same data in bulk, it's not as costly as it is for an individual item. *Example: Bulk insertion of items in an SQLite table is always better than inserting each item individually.*
 
 ---
 
@@ -67,7 +67,7 @@ So, this is what basic logic looks like:
 
 But there is a problem 🤔. Whenever the upstream Flow is ended, this `TimeChunkedFlow` will continue emitting `[]` (empty list) and will start behaving like a hot♨️ flow even if a cold🧊flow is used. It's because we have launched a child coroutine and collected its job in `emitterJob` and it's never canceled so `collect()` is never unblocked.
 
-But wait! If we cancel it directly at the end, it will never emit the last chunk of the Flow ( *because the coroutine job might be cancelled before emitting*the*last chunked items in the collector).***So we have to complete the execution of the job carefully by emitting the last chunk as well.**
+But wait! If we cancel it directly at the end, it will never emit the last chunk of the Flow ( *because the coroutine job might be cancelled before emitting *the *last chunked items in the collector).***So we have to complete the execution of the job carefully by emitting the last chunk as well.**
 
 For this, we'll introduce a flag `isFlowCompleted` that will be helpful for us to break the loop whenever the flow completes ⬇️.
 
@@ -95,7 +95,7 @@ Just remember that if the upstream flow doesn't produce any item within the spec
 
 ### But, There's a catch! 🔴
 
-If the Flow ***gets cancelled within the emission of the next chunk***, then data will be lost for that specific intermediate chunk which was going to be emitted. It means the collector will never receive data of the last chunk if it's cancelled before collecting that. So use it wisely by knowing your use cases suitably.**So there'll be always a problem with cancellable**`CoroutineScope`**s** . If you want a workaround for it just for a certain use case, you can wait for cancellation and emit the remaining chunk in the collector as follows:
+If the Flow ***gets cancelled within the emission of the next chunk***, then data will be lost for that specific intermediate chunk which was going to be emitted. It means the collector will never receive data of the last chunk if it's cancelled before collecting that. So use it wisely by knowing your use cases suitably. **So there'll be always a problem with cancellable**`CoroutineScope`**s** . If you want a workaround for it just for a certain use case, you can wait for cancellation and emit the remaining chunk in the collector as follows:
 
 <script src="https://gist.github.com/PatilShreyas/b7be1ab0ebb524980bde3f4c47012950.js"></script>
 
@@ -113,7 +113,7 @@ So `chunked()` won't be useful for you if you don't want to lose the data in the
 
 Awesome 🤩. I trust you've picked up some valuable insights from this. If you like this write-up, do share it 😉, because...
 
-***"Sharing is Caring"***
+*** "Sharing is Caring" ***
 
 Thank you! 😄
 
