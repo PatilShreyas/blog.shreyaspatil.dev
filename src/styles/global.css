@@ -23,7 +23,6 @@ html[data-theme="dark"] {
 @theme inline {
   --font-app: var(--font-merriweather);
   --font-heading: var(--font-inter);
-  --font-mono: var(--font-jetbrains-mono);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
@@ -84,8 +83,7 @@ pre:hover {
 }
 
 code {
-  @apply rounded-md bg-muted/50 px-1.5 py-0.5 text-sm font-medium;
-  font-family: var(--font-mono, monospace);
+  @apply rounded-md bg-muted/50 px-1.5 py-0.5 font-mono text-sm font-medium;
 }
 
 pre code {
@@ -101,10 +99,6 @@ pre::-webkit-scrollbar-track {
 }
 pre::-webkit-scrollbar-thumb {
   @apply rounded-full bg-muted/80 hover:bg-accent/50;
-}
-
-pre, code {
-  font-family: var(--font-mono, monospace) !important;
 }
 
 /* GitHub Gist Embeds */

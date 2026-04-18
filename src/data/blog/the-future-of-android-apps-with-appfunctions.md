@@ -47,17 +47,17 @@ As of now, the latest version of AppFunctions is v1.0.0-alpha08, so if you're re
 
 ```kotlin
 dependencies {
-val appfunversion = "1.0.0-alpha08"
+    val appfunversion = "1.0.0-alpha08"
 
-implementation("androidx.appfunctions:appfunctions-service:$appfunversion")
-implementation("androidx.appfunctions:appfunctions:$appfunversion")
-ksp("androidx.appfunctions:appfunctions-compiler:$appfunversion")
+    implementation("androidx.appfunctions:appfunctions-service:$appfunversion")
+    implementation("androidx.appfunctions:appfunctions:$appfunversion")
+    ksp("androidx.appfunctions:appfunctions-compiler:$appfunversion")
 }
 
 // Configure KSP
 ksp {
-arg("appfunctions:aggregateAppFunctions", "true")
-arg("appfunctions:generateMetadataFromSchema", "false")
+    arg("appfunctions:aggregateAppFunctions", "true")
+    arg("appfunctions:generateMetadataFromSchema", "false")
 }
 ```
 
@@ -67,54 +67,65 @@ NotyKT is a simple note-taking app that supports the following operations: creat
 // A model to expose via AppFunctions
 @AppFunctionSerializable(isDescribedByKDoc = true)
 data class Note(
-/ **The note's identifier* /
-val id: String,
-/ *The note's title* /
-val title: String,
-/ *The note's content* /
-val content: String,
+    /** The note's identifier */
+    val id: String,
+    /** The note's title */
+    val title: String,
+    /** The note's content */
+    val content: String,
 )
 
 // Function's entry point
 class NotyAppFunctions @Inject constructor(
-@LocalRepository private val repository: NotyNoteRepository
+    @LocalRepository private val repository: NotyNoteRepository
 ) {
-/ ***Lists all available notes.*
-*@param appFunctionContext The context in which the AppFunction is executed.* /
-@AppFunction(isDescribedByKDoc = true)
-suspend fun listNotes(appFunctionContext: AppFunctionContext): List<Note> =
-repository.getAllNotes().map { Note(it.id, it.title, it.note) }
+    /**
+     * Lists all available notes.
+     * @param appFunctionContext The context in which the AppFunction is executed.
+     */
+    @AppFunction(isDescribedByKDoc = true)
+    suspend fun listNotes(appFunctionContext: AppFunctionContext): List<Note> =
+        repository.getAllNotes().map { Note(it.id, it.title, it.note) }
 
-/ ***Adds a new note to the app.*
-*@param appFunctionContext The context in which the AppFunction is executed.* @param title The title of the note.
-*@param content The note's content.* /
-@AppFunction(isDescribedByKDoc = true)
-suspend fun createNote(
-appFunctionContext: AppFunctionContext,
-title: String,
-content: String,
-): Note? = / *Implementation* /
+    /**
+     * Adds a new note to the app.
+     * @param appFunctionContext The context in which the AppFunction is executed.
+     * @param title The title of the note.
+     * @param content The note's content.
+     */
+    @AppFunction(isDescribedByKDoc = true)
+    suspend fun createNote(
+        appFunctionContext: AppFunctionContext,
+        title: String,
+        content: String,
+    ): Note? = /* Implementation */
 
-/ ***Edits a single note.*
-*@param appFunctionContext The context in which the AppFunction is executed.* @param noteId The target note's ID.
-*@param title The note's title if it should be updated.* @param content The new content if it should be updated.
-* /
-@AppFunction(isDescribedByKDoc = true)
-suspend fun editNote(
-appFunctionContext: AppFunctionContext,
-noteId: String,
-title: String?,
-content: String?,
-): Note? = / *Implementation* /
+    /**
+     * Edits a single note.
+     * @param appFunctionContext The context in which the AppFunction is executed.
+     * @param noteId The target note's ID.
+     * @param title The note's title if it should be updated.
+     * @param content The new content if it should be updated.
+     */
+    @AppFunction(isDescribedByKDoc = true)
+    suspend fun editNote(
+        appFunctionContext: AppFunctionContext,
+        noteId: String,
+        title: String?,
+        content: String?,
+    ): Note? = /* Implementation */
 
-/ ***Deletes a single note.*
-*@param appFunctionContext The context in which the AppFunction is executed.* @param noteId The target note's ID.
-**@return Whether the note was deleted or not.* /
-@AppFunction(isDescribedByKDoc = true)
-suspend fun deleteNote(
-appFunctionContext: AppFunctionContext,
-noteId: String,
-): Boolean = / *Implementation* /
+    /**
+     * Deletes a single note.
+     * @param appFunctionContext The context in which the AppFunction is executed.
+     * @param noteId The target note's ID.
+     * @return Whether the note was deleted or not.
+     */
+    @AppFunction(isDescribedByKDoc = true)
+    suspend fun deleteNote(
+        appFunctionContext: AppFunctionContext,
+        noteId: String,
+    ): Boolean = /* Implementation */
 }
 ```
 
