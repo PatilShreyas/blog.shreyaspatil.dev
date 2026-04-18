@@ -13,7 +13,7 @@ coverImage: "../../assets/images/cover-navigating-screens-in-jetpack-compose-dev
 
 Hey Android developers 👋,
 
-Now everyone is aware that Jetpack Compose is the future of Android UI development. DevFest India 2021 just happened this month ( *October 2021*) and it's a treasure of learning for everyone. I was also one of the speakers for the mobile track where I spoke about*** "Navigating screens in Jetpack Compose" *** on the second day. It's a great experience for me as well to speak at such a large conference. Here are the details of the session.
+Now everyone is aware that Jetpack Compose is the future of Android UI development. DevFest India 2021 just happened this month ( *October 2021*) and it's a treasure of learning for everyone. I was also one of the speakers for the mobile track where I spoke about***"Navigating screens in Jetpack Compose"*** on the second day. It's a great experience for me as well to speak at such a large conference. Here are the details of the session.
 
 > If you somehow missed attending the session, then these are resources for you!
 
@@ -49,7 +49,7 @@ allowfullscreen>
 
 *Navigating dialogs* Navigating with arguments
 
-*Navigating with *OPTIONAL *arguments* Deep linking in Navigation
+*Navigating with*OPTIONAL*arguments* Deep linking in Navigation
 
 *Hilt and Navigation* Interview questions
 
@@ -62,4 +62,4 @@ If you found this helpful, I'll be super glad to help.
 
 Thank you! 😀
 
-* "Sharing is caring" *
+*"Sharing is caring"*

@@ -22,13 +22,13 @@ coverImage: "../../assets/images/cover-effortless-compose-compiler-report-analys
 
 Hey Androiders 👋🏻, If you're building an app with Jetpack Compose, you might know that to make your app perform well with as few recompositions as possible, you should use stable parameters in the composable function, and so on.
 
-To do this, the [Compose compiler report](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#compose-compiler) helps you check the status of a *Composable *function, whether it's a restartable function or a skippable function. The report includes statistics of composable functions based on various parameters, details of classes, and **specifics of a composable function**(*which is our main focus* ).
+To do this, the [Compose compiler report](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#compose-compiler) helps you check the status of a *Composable*function, whether it's a restartable function or a skippable function. The report includes statistics of composable functions based on various parameters, details of classes, and**specifics of a composable function**(*which is our main focus* ).
 
 After following the steps mentioned [here](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#setup) for generating a report, the report of composable functions looks like this ( *this is a sample report* ) ⬇️.
 
 ![](../../assets/images/content/effortless-compose-compiler-report-analysis/img-b6660eb4.png)
 
-This text file contains all the information about the composable functions in the module. It shows whether each function is **restartable, skippable, **or **inline **. Additionally, it includes details about each parameter of the function and its **stability** .
+This text file contains all the information about the composable functions in the module. It shows whether each function is **restartable, skippable,**or**inline**. Additionally, it includes details about each parameter of the function and its**stability** .
 
 Now imagine an application built entirely with Jetpack Compose, containing many Composable functions. How can a developer look at this report and check what’s working well and what’s not in their project? Since this generates reports in `json`, `csv`, and `txt` files, they are not easily traceable for developers. Additionally, the reports on Composable functions and classes become large and difficult to review. It’s quite tedious, isn't it?
 
@@ -52,7 +52,7 @@ After syncing the project, you'll see tasks will be generated as per the variant
 
 ![](https://patilshreyas.github.io/compose-report-to-html/images/gradle-plugin-example.png)
 
-To generate the report, run the Gradle task ( *or directly run the task from the tasks pane available on the right side of IDE*). *Example:*
+To generate the report, run the Gradle task ( *or directly run the task from the tasks pane available on the right side of IDE*).*Example:*
 
 ```kotlin
 ./gradlew :app:releaseComposeCompilerHtmlReport
@@ -97,7 +97,7 @@ Parses `-classes.txt` file and separates stable and unstable classes out of it a
 
 Cool 😎, what more could a developer need since it helps highlight the issues? After reading the report, developers can focus on fixing the problems instead of spending too much time on the raw report.
 
-Not only that, but the plugin is highly ***customizable***. If you want to focus only on the Composable function part, specifically the unstable composable functions, you can configure the plugin to only have this info in the report. *For example: You can configure as follows to only include the unstable composable functions in the report at the specified directory.*
+Not only that, but the plugin is highly ***customizable***. If you want to focus only on the Composable function part, specifically the unstable composable functions, you can configure the plugin to only have this info in the report.*For example: You can configure as follows to only include the unstable composable functions in the report at the specified directory.*
 
 ```kotlin
 htmlComposeCompilerReport {
@@ -127,7 +127,7 @@ You can explore the plugin and its usage further by visiting the [official docum
 
 Awesome 🤩. I trust you've picked up some valuable insights from this. If you like this write-up, do share it 😉, because...
 
-*** "Sharing is Caring" ***
+***"Sharing is Caring"***
 
 Thank you! 😄
 

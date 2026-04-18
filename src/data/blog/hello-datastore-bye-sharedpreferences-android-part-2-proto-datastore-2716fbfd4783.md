@@ -26,7 +26,7 @@ That’s enough introduction for Proto DataStore to get started… It’s time t
 
 You can simply [clone or refer this repository](https://github.com/PatilShreyas/DataStoreExample) to get example code demonstrating DataStore.
 
-What we’ll be implementing? So we’ll be developing a *Food *app 😋 where a list of food items will be displayed and we’ll provide a filter to the user for food preference options. Like Food type as 🟢***VEG***or 🔴***NON-VEG***and Food taste as***SWEET***or***SPICY*** 😋. So that user can filter his favourite food according to his choice. You can see a demo here. This is how it’ll be look alike👇.
+What we’ll be implementing? So we’ll be developing a *Food*app 😋 where a list of food items will be displayed and we’ll provide a filter to the user for food preference options. Like Food type as 🟢***VEG***or 🔴***NON-VEG***and Food taste as***SWEET***or***SPICY*** 😋. So that user can filter his favourite food according to his choice. You can see a demo here. This is how it’ll be look alike👇.
 
 ![An example application using Proto DataStore](../../assets/images/content/hello-datastore-bye-sharedpreferences-android-part-2-proto-datastore-2716fbfd4783/img-60f249f7.gif)
 
@@ -99,7 +99,7 @@ val taste: FoodTaste?
 
 #### Define Protobuf
 
-*Now we can’t directly store this model as it is using Proto DataStore. We’ll need to define a schema in a *proto *file. *Create a new file called `food_preference.proto` in the path `app/src/main/proto` as following 👇 (*See [this](https://developers.google.com/protocol-buffers/docs/overview) for syntax guide* ).
+*Now we can’t directly store this model as it is using Proto DataStore. We’ll need to define a schema in a*proto*file.*Create a new file called `food_preference.proto` in the path `app/src/main/proto` as following 👇 (*See [this](https://developers.google.com/protocol-buffers/docs/overview) for syntax guide* ).
 
 ```protobuf
 syntax = "proto3";
@@ -235,7 +235,7 @@ That’s all about `FoodPreferenceManager` 😃. Now let’s implement it in our
 
 #### Set up Activity
 
-Here I’ll assume that you’re implementing this app with `RecyclerView` in `Activity` and you’ve implemented `ViewModel` for getting data i.e. list of food items from *Repository. (For demo purposes, here I’ve created a sample DataSource which gives a dummy list of food items). *So I’ll directly show you implementation related to *DataStore *. You can refer to***[this](https://github.com/PatilShreyas/DataStoreExample/blob/master/app/src/main/java/dev/shreyaspatil/datastore/example/proto/ProtoDatastoreActivity.kt)*** class for more information.
+Here I’ll assume that you’re implementing this app with `RecyclerView` in `Activity` and you’ve implemented `ViewModel` for getting data i.e. list of food items from *Repository. (For demo purposes, here I’ve created a sample DataSource which gives a dummy list of food items).*So I’ll directly show you implementation related to*DataStore*. You can refer to***[this](https://github.com/PatilShreyas/DataStoreExample/blob/master/app/src/main/java/dev/shreyaspatil/datastore/example/proto/ProtoDatastoreActivity.kt)*** class for more information.
 
 So let’s make *Activity*
 

@@ -62,7 +62,7 @@ val value2: String = getData()
 }
 ```
 
-Here, in this case, we'll directly get a compile-time **error 🔴**in IDE saying " *Variable 'value2' must be initialized* " as below 👇🏻
+Here, in this case, we'll directly get a compile-time **error 🔴**in IDE saying "*Variable 'value2' must be initialized* " as below 👇🏻
 
 ![](../../assets/images/content/runtime-surprise-kotlin-breaks-non-nullability-promise-on-developer-cheating-in-field-initialization/img-c57cebdd.png)
 
@@ -80,7 +80,7 @@ That's all!
 
 ## Conclusion 💡
 
-As observed, Kotlin will generate a compile-time error if you attempt direct initialization, but it may **not catch **the issue **when there is an indirect dependency through a method call. This situation**<mark>compromises Kotlin's guarantee of non-nullability for fields on the JVM</mark>** , potentially leading to runtime crashes that can significantly disrupt the implementation.
+As observed, Kotlin will generate a compile-time error if you attempt direct initialization, but it may **not catch**the issue**when there is an indirect dependency through a method call. This situation**<mark>compromises Kotlin's guarantee of non-nullability for fields on the JVM</mark>** , potentially leading to runtime crashes that can significantly disrupt the implementation.
 
 To fix such scenarios, always make sure to ***<mark>verify the order of declaration of fields to avoid indirect dependency on the uninitialized field</mark>*** .
 
@@ -90,7 +90,7 @@ Awesome 🤩. I trust you've picked up some valuable insights into addressing in
 
 If you like this write-up, do share it 😉, because...
 
-*** "Sharing is Caring" ***
+***"Sharing is Caring"***
 
 Thank you! 😄
 

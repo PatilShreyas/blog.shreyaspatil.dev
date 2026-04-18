@@ -29,11 +29,11 @@ Here’s a quick ⚡️ explanation for the above script:
 
 ### Deploy New version 🚀 :
 
-*Once AppScript is ready, again deploy your AppScript by Selecting a tab: **Publish → Deploy as a web app.***Assign a new version to your app and click ‘***Deploy***’ 🚀.* After that, you can check if it’s working or not by visiting that URL. You’ll see it like below.
+*Once AppScript is ready, again deploy your AppScript by Selecting a tab:**Publish → Deploy as a web app.***Assign a new version to your app and click ‘***Deploy***’ 🚀.* After that, you can check if it’s working or not by visiting that URL. You’ll see it like below.
 
 ![URL response](../../assets/images/content/getting-data-from-google-sheets-flutter-app-part-2-d6e689fdbbed/img-362832fe.png) *URL response*
 
-*Nice😍. This is working perfectly! Now let’s start *Flutter* 💙.
+*Nice😍. This is working perfectly! Now let’s start*Flutter* 💙.
 
 ## ⚡️ Let’s Flutter 💙:
 
@@ -83,7 +83,7 @@ You can try the web version of this app [here](https://patilshreyas.github.io/Fl
 
 ## ☑️ Resources:
 
-Here’s GitHub repo which contains **Flutter**+ Google **AppScript** Code.
+Here’s GitHub repo which contains **Flutter**+ Google**AppScript** Code.
 
 - [ **PatilShreyas/Flutter2GoogleSheets-Demo** ](https://github.com/PatilShreyas/Flutter2GoogleSheets-Demo)
 

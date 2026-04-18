@@ -11,12 +11,12 @@ Hello Android developers, in this article we’ll take a look at publishing Andr
 
 ## What is GitHub Package Registry? 🤷‍♀️
 
-*With GPR, you can safely publish and consume packages. *It supports various types of packages for *maven, NPM, Docker, NuGet, RubyGems, etc.*
+*With GPR, you can safely publish and consume packages.*It supports various types of packages for*maven, NPM, Docker, NuGet, RubyGems, etc.*
 
 ## What’s different in GitHub Package Registry? 🤷‍♀️
 
-*In the Android library context, comparing it with *Bintray / JCenter / MavenCentral, *GPR provides security for consuming package.* Anybody directly can’t use the package without an access token.
-*If you want to develop a private Android library only for some authenticated developers. *For e.g. You have to develop an Android library only for a specific organisation. The only organisation will be able to use this library. Comparing this with Bintray, then it’s PAID*💰*for private packages.* That’s how GPR is the right choice in some cases.
+*In the Android library context, comparing it with*Bintray / JCenter / MavenCentral,*GPR provides security for consuming package.* Anybody directly can’t use the package without an access token.
+*If you want to develop a private Android library only for some authenticated developers.*For e.g. You have to develop an Android library only for a specific organisation. The only organisation will be able to use this library. Comparing this with Bintray, then it’s PAID*💰*for private packages.* That’s how GPR is the right choice in some cases.
 
 That’s a short introduction about GPR 😃.
 
@@ -32,7 +32,7 @@ In this example, we’ll set up a GitHub Actions workflow which will be triggere
 
 Considering you already have developed your library we’ll directly start with configuring setup for publishing it to GPR.
 
-*Open `build.gradle` file of your library module. *Apply *maven-publish* plugin at the top of the file.
+*Open `build.gradle` file of your library module.*Apply*maven-publish* plugin at the top of the file.
 
 ```gradle
 apply plugin: 'com.android.library'
@@ -41,7 +41,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
 ```
 
-*Declare Android library details such as *group, artifact, version, name, etc* as below 👇
+*Declare Android library details such as*group, artifact, version, name, etc* as below 👇
 
 ```groovy
 ext {
@@ -165,7 +165,7 @@ run: chmod +x gradlew
 run: bash ./gradlew :simplelibrary:assemble
 ```
 
-*Now if the above build is successful then we can proceed to publish the package to GPR. *Use `secrets.GITHUB_TOKEN` which is exposed by GitHub Actions CI already.*
+*Now if the above build is successful then we can proceed to publish the package to GPR.*Use `secrets.GITHUB_TOKEN` which is exposed by GitHub Actions CI already.*
 
 ```yaml
 - name: Publish to GitHub Package Registry 🚀

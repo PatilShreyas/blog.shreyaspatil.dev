@@ -11,7 +11,7 @@ tags:
 coverImage: "../../assets/images/cover-leveraging-the-snapshot-mutation-policies-of-jetpack-compose.jpeg"
 ---
 
-Hey Composers 👋🏻, The heart💚 of Jetpack Compose is a **State **that tells compose when to recompose UI. In the state management with compose, we can specify policies by which we can tell compose when exactly to recompose and it's a***Snapshot Mutation Policy*** in compose. Let's see it in detail.
+Hey Composers 👋🏻, The heart💚 of Jetpack Compose is a **State**that tells compose when to recompose UI. In the state management with compose, we can specify policies by which we can tell compose when exactly to recompose and it's a***Snapshot Mutation Policy*** in compose. Let's see it in detail.
 
 ## 🕵🏻Preface
 
@@ -72,7 +72,7 @@ Compose standard library comes with pre-defined snapshot mutation policies:
 
 This policy treats values of a `State` as equivalent if they are structurally (==) equal.
 
-Setting [`MutableState.value`](https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState#value()) to its current structurally (==) equal value is not considered a change. That is a reason why Google recommends using **data class **whenever a state model is created because **data class** implements method `equals()` under the hood which then ultimately helps this mutation policy to work well.
+Setting [`MutableState.value`](https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState#value()) to its current structurally (==) equal value is not considered a change. That is a reason why Google recommends using **data class**whenever a state model is created because**data class** implements method `equals()` under the hood which then ultimately helps this mutation policy to work well.
 
 This is how `StructuralEqualityPolicy` is implemented:
 
@@ -188,7 +188,7 @@ Thus, `SnapshotMutationPolicy` can be helpful if used properly for the need of u
 
 Hope you find this blog helpful 😀.
 
-*** "Sharing is Caring" ***
+***"Sharing is Caring"***
 
 Thank you! 😄
 

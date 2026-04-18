@@ -16,12 +16,12 @@ In this post, we are going to dive deep into the **internals** of Composition Lo
 
 When you call `LocalContentColor.current` in your Compose code, a lot happens behind the scenes. Behind that simple property access lies a smart system of persistent maps, value holders, and composer integration that passes values down your composition tree efficiently. In this deep dive, we'll trace that journey through the actual AndroidX source code and understand exactly how ***CompositionLocal*** works under the hood.
 
-## **🤔 What Problem Does CompositionLocal Solve? **Compose passes data through the composition tree explicitly via parameters to composable functions. While this is often the simplest approach, it becomes annoying when:* Data is needed by many components deep in the tree (prop drilling)
+## **🤔 What Problem Does CompositionLocal Solve?**Compose passes data through the composition tree explicitly via parameters to composable functions. While this is often the simplest approach, it becomes annoying when:* Data is needed by many components deep in the tree (prop drilling)
 
 * Components need to pass data between one another while keeping implementation details private
 
 
-CompositionLocal provides an **implicit **way to have data flow through a composition hierarchy without explicitly passing it through every intermediate composable. Think of it like " **ambient** " data that's just *there* when you need it.
+CompositionLocal provides an **implicit**way to have data flow through a composition hierarchy without explicitly passing it through every intermediate composable. Think of it like "**ambient**" data that's just*there* when you need it.
 
 If you need a quick refresher, here is the basic usage pattern:
 
@@ -45,7 +45,7 @@ Text("Hello, $name")
 }
 ```
 
-### **📋 Prerequisites **This article assumes you're familiar with:* Compose basics (composables, recomposition, `remember`)
+### **📋 Prerequisites**This article assumes you're familiar with:* Compose basics (composables, recomposition, `remember`)
 
 *State in compose (`MutableState` and `mutableStateOf` for state management)* Basic Kotlin features (data classes, lambdas, `lazy` delegate)
 
@@ -77,7 +77,7 @@ At the heart of the CompositionLocal system is a carefully designed class hierar
 
 **Understanding the hierarchy:*** `CompositionLocal<T>` is the sealed base class that holds the `current` property you use to read values. It's sealed so that all implementations are controlled within the Compose runtime.
 
-*`ProvidableCompositionLocal<T>` adds the ability to *provide *values using `provides`, `providesDefault`, and `providesComputed`. *The three concrete implementations (`Dynamic`, `Static`, `Computed`) decide *how *values are stored and *how* changes trigger recomposition.
+*`ProvidableCompositionLocal<T>` adds the ability to*provide*values using `provides`, `providesDefault`, and `providesComputed`.*The three concrete implementations (`Dynamic`, `Static`, `Computed`) decide*how*values are stored and*how* changes trigger recomposition.
 
 
 ### **The Base Class: CompositionLocal**
@@ -109,7 +109,7 @@ The `@Stable` annotation tells the Compose compiler that this class has stable e
 
 **What if you try to access** `.current` outside a `@Composable` function? You'll get a compile-time error:
 
-> * "@Composable invocations can only happen from the context of a @Composable function" * .
+> *"@Composable invocations can only happen from the context of a @Composable function"* .
 
 The Compose compiler enforces this because `current` needs access to `currentComposer`, which only exists during composition.
 
@@ -268,7 +268,7 @@ The `isDynamic` flag decides the recomposition strategy:
 
 ![](../../assets/images/content/exploring-compositionlocal-api-internals-in-jetpack-compose/img-b01f99e8.png)
 
-**Why two strategies? **First, a quick note on the **snapshot system **: This is Compose's change-tracking mechanism. When you read `state.value`, Compose records that your composable depends on that state. When the state changes later, Compose knows exactly which composables need to recompose - it's like an automatic subscription system.***Dynamic **wraps values in `MutableState`, so the snapshot system tracks exactly which composables read the value. When the value changes, only those specific composables recompose. This is great for values that change often (theme colors, user preferences).***Static** stores values directly without snapshot tracking. When the value changes, Compose doesn't know who read it, so it must recompose the entire subtree under the provider. This sounds wasteful, but it skips the overhead of snapshot tracking - perfect for values that rarely or never change (Android Context, configuration objects).
+**Why two strategies?**First, a quick note on the**snapshot system**: This is Compose's change-tracking mechanism. When you read `state.value`, Compose records that your composable depends on that state. When the state changes later, Compose knows exactly which composables need to recompose - it's like an automatic subscription system.***Dynamic**wraps values in `MutableState`, so the snapshot system tracks exactly which composables read the value. When the value changes, only those specific composables recompose. This is great for values that change often (theme colors, user preferences).***Static** stores values directly without snapshot tracking. When the value changes, Compose doesn't know who read it, so it must recompose the entire subtree under the provider. This sounds wasteful, but it skips the overhead of snapshot tracking - perfect for values that rarely or never change (Android Context, configuration objects).
 
 
 ## **🏭 Factory Functions**
@@ -426,7 +426,7 @@ currentComposer.buildContext().getCompositionLocalScope()
 )
 ```
 
-**When do you need this? **Components like `Dialog` and `Popup` create **separate window compositions**- they're not children in the composition tree. Without special handling, your theme colors and other locals wouldn't flow through. **Realistic example - Custom Dialog:**
+**When do you need this?**Components like `Dialog` and `Popup` create**separate window compositions**- they're not children in the composition tree. Without special handling, your theme colors and other locals wouldn't flow through.**Realistic example - Custom Dialog:**
 
 ```kotlin
 @Composable
@@ -459,7 +459,7 @@ color = LocalContentColor.current // ✅ Works
 }
 ```
 
-**How it works internally: **The `CompositionContext` abstract class has a `getCompositionLocalScope()` method. When you create a child composition (like inside `Dialog`), it calls this method on its parent context to inherit locals. By providing `capturedContext`, you're bridging the gap between separate compositions.***##**🔧 Under the Hood: The Internal Implementation**
+**How it works internally:**The `CompositionContext` abstract class has a `getCompositionLocalScope()` method. When you create a child composition (like inside `Dialog`), it calls this method on its parent context to inherit locals. By providing `capturedContext`, you're bridging the gap between separate compositions.***##**🔧 Under the Hood: The Internal Implementation**
 
 Now that we've covered how to use CompositionLocals, let's dive into how they actually work. We'll explore three key pieces:
 
@@ -628,7 +628,7 @@ This single line does a lot:
 4. Cast back to `T` (the unchecked cast is safe because the key and value types are linked)
 
 
-### **Concrete Implementation **The actual storage uses a **trie-based **persistent hash map from *kotlinx.collections.immutable *.***A trie is a tree structure where keys are broken into smaller pieces*** (like individual hash digits) - this allows multiple maps to share common branches, making copy-on-write operations efficient:
+### **Concrete Implementation**The actual storage uses a**trie-based**persistent hash map from*kotlinx.collections.immutable*.***A trie is a tree structure where keys are broken into smaller pieces*** (like individual hash digits) - this allows multiple maps to share common branches, making copy-on-write operations efficient:
 
 ```kotlin
 // Source: PersistentCompositionLocalMap.kt
@@ -680,7 +680,7 @@ Now we reach the core implementation in `GapComposer`. This is where the value h
 
 This push/pop pattern means nested providers work correctly - inner providers shadow outer ones, and exiting a provider restores the outer scope.
 
-### **Getting the Current Scope **Before diving into the code, a quick note on `reader`: Compose stores the composition tree in a `SlotTable` - a flat, array-based data structure using a gap buffer algorithm. The `reader` is a `SlotReader` that navigates this structure. It provides methods like:* `parent` / `parent(group)` - get parent group index
+### **Getting the Current Scope**Before diving into the code, a quick note on `reader`: Compose stores the composition tree in a `SlotTable` - a flat, array-based data structure using a gap buffer algorithm. The `reader` is a `SlotReader` that navigates this structure. It provides methods like:* `parent` / `parent(group)` - get parent group index
 
 *`groupKey(group)` - get the key identifying a group type* `groupAux(group)` - get auxiliary data stored with a group (like provider maps)
 
@@ -891,18 +891,18 @@ Now that we've seen the implementation details, here's a quick summary of how th
 | Window insets | Static | Changes require full layout recalculation anyway |
 | Computed accent colors | Computed | Derived from base theme color |
 
-## **💡 Practical Insights**###**Performance Things to Know **1. **Dynamic locals have per-read overhead** : Each `LocalXxx.current` records a snapshot read. For locals read in tight loops or many places, this adds up.
+## **💡 Practical Insights**###**Performance Things to Know**1.**Dynamic locals have per-read overhead** : Each `LocalXxx.current` records a snapshot read. For locals read in tight loops or many places, this adds up.
 
 2. **Static locals have per-change overhead** : Changing a static local recomposes everything below the provider. But if it never changes, there's no overhead.
 
-3. **Computed locals run on every read **: The lambda runs each time you call `.current`. Keep computations cheap, or use dynamic locals with remembered computed values.***The CompositionLocal system shows thoughtful API design:***Simple surface API **: `provides` and `.current` cover 99% of use cases***Layered complexity **: Value holders, persistent maps, and composer integration work together smoothly***Clear trade-offs **: Dynamic vs static makes the performance implications obvious***Efficient implementation** : Structural sharing, lazy evaluation, and precise invalidation minimize overhead
+3. **Computed locals run on every read**: The lambda runs each time you call `.current`. Keep computations cheap, or use dynamic locals with remembered computed values.***The CompositionLocal system shows thoughtful API design:***Simple surface API**: `provides` and `.current` cover 99% of use cases***Layered complexity**: Value holders, persistent maps, and composer integration work together smoothly***Clear trade-offs**: Dynamic vs static makes the performance implications obvious***Efficient implementation** : Structural sharing, lazy evaluation, and precise invalidation minimize overhead
 
 
 The sealed class hierarchy ensures type safety. Value holders abstract storage strategies. Persistent maps enable efficient scope management. And the composer integration ties it all together with the rest of the composition system.
 
 Understanding these internals helps you make better decisions: use `compositionLocalOf` for values that might change, `staticCompositionLocalOf` for stable configuration, and `compositionLocalWithComputedDefaultOf` for derived values. Place providers as close to consumers as practical, and remember that every `LocalXxx.current` call has implications for recomposition tracking.
 
-***Awesome. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...*** "Sharing is Caring" ***
+***Awesome. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...***"Sharing is Caring"***
 
 Thank you! 😄 Happy composing! 😎
 

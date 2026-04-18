@@ -23,7 +23,7 @@ Today is different. 😉
 
 This post is about how I changed the way I work, not what I work on. And honestly, it's the best productivity change I've made in years as a Software Engineer.
 
-***## 🧠**A quick fact before we begin. **Research shows that humans are actually terrible at multitasking.***The brain can't do two complex tasks at the same time***. It switches rapidly between them, and every switch has a cost. Psychologists call these " *switch costs.* " They decrease your productivity by up to 40%, increase errors, and hurt short-term memory. The more you switch, the more tired your brain gets and the worse your work becomes.
+***## 🧠**A quick fact before we begin.**Research shows that humans are actually terrible at multitasking.***The brain can't do two complex tasks at the same time***. It switches rapidly between them, and every switch has a cost. Psychologists call these "*switch costs.* " They decrease your productivity by up to 40%, increase errors, and hurt short-term memory. The more you switch, the more tired your brain gets and the worse your work becomes.
 
 Every time you drop a half-finished feature to review a PR, your brain pays a tax. Every time you jump from debugging a crash to writing new code, you pay it again.
 
@@ -39,11 +39,11 @@ That's what this post is about.
 
 It's random day's morning and you've been in the zone for 45 minutes. Deep in a feature branch, working through some tricky state management and architecture-related logic in the app, and finally, *finally* , the pieces are coming together for the new feature you're going to develop. Your editor is exactly how you left it. You know exactly where everything is in the code. You are, for once, actually in flow.
 
-Then Slack lights up ➡️ **A production crash, reported overnight **. Users are hitting some crashes 💣 on the **login **screen **on certain Android devices. Now you've to fix that crash on priority and do a hotfix too. Scroll down a bit and there's a teammate waiting on your PR review. They've been blocked since yesterday, and the comment timestamp is starting to feel accusatory. You stare at your terminal. One of these has to wait. Two of them will kill your context. You'll spend the next hour not doing any of them well, jumping between half-finished thoughts and losing the thread on all three. The important thing is that***all of this has to be done in the same project!***
+Then Slack lights up ➡️ **A production crash, reported overnight**. Users are hitting some crashes 💣 on the**login**screen**on certain Android devices. Now you've to fix that crash on priority and do a hotfix too. Scroll down a bit and there's a teammate waiting on your PR review. They've been blocked since yesterday, and the comment timestamp is starting to feel accusatory. You stare at your terminal. One of these has to wait. Two of them will kill your context. You'll spend the next hour not doing any of them well, jumping between half-finished thoughts and losing the thread on all three. The important thing is that***all of this has to be done in the same project!***
 
 Then I found a better way.
 
-Most developers use AI tools like a search engine. *One question, one answer, one task at a time *. But Claude Code*(Anthropic's AI agent that runs in your terminal)*, combined with git's **worktree feature**(*which most developers never read about in the docs*), makes something different possible:**<mark class="bg-yellow-200 dark:bg-yellow-500/30">you can run multiple AI agents in parallel, each working on a separate task, while you focus on just one thing</mark>** . One developer, multiple agents, multiple tasks, all moving forward.
+Most developers use AI tools like a search engine. *One question, one answer, one task at a time*. But Claude Code*(Anthropic's AI agent that runs in your terminal)*, combined with git's**worktree feature**(*which most developers never read about in the docs*), makes something different possible:**<mark class="bg-yellow-200 dark:bg-yellow-500/30">you can run multiple AI agents in parallel, each working on a separate task, while you focus on just one thing</mark>** . One developer, multiple agents, multiple tasks, all moving forward.
 
 By the end of this post, you'll know how to set up multiple AI agents across isolated git worktrees, so you can work on a crash fix, a feature screen, and a code review all at the same time, without losing context on any of them.
 
@@ -161,11 +161,11 @@ claude --worktree
 
 So yeah, if you don't want to manage worktrees manually, this is the way to go 🚀.
 
-### **Step 3: Give Each Agent Its Task 📝**Let's write prompts that say exactly what done looks like. **For the feature agent (Terminal 1):**> "Implement the onboarding screen as described in `docs/onboarding-spec.md`. It should be built in Jetpack Compose and: (1) show a 3-step progress indicator, (2) validate each field before allowing the user to advance to the next step, (3) call `/api/onboarding/complete` via the existing `OnboardingRepository` on the final step. Write unit tests for the ViewModel logic. Don't touch the auth flow or `LoginActivity`." **For the bug agent (Terminal 2):**> "Investigate and fix the NullPointerException on the login screen described in `bug-reports/2026-02-27-login.md`. The crash reproduces on API 28 and below. Reproduce it first with a unit test, then fix the root cause. Don't change the login UI or touch `LoginViewModel`." *(as this is just an example, the actual prompts would be very detailed).*###**Meanwhile: You Do the PR Review 👀**You hit Enter on both prompts, watch the agents start up, then switch to Terminal 3. Pull up the PR diff. Your teammate's work, 400 lines, needs a proper look. You open the first file. Launch***agent***in**\# Terminal 3** as well and maybe you could use it to understand your teammate's work or take help in reviewing that.
+### **Step 3: Give Each Agent Its Task 📝**Let's write prompts that say exactly what done looks like.**For the feature agent (Terminal 1):**> "Implement the onboarding screen as described in `docs/onboarding-spec.md`. It should be built in Jetpack Compose and: (1) show a 3-step progress indicator, (2) validate each field before allowing the user to advance to the next step, (3) call `/api/onboarding/complete` via the existing `OnboardingRepository` on the final step. Write unit tests for the ViewModel logic. Don't touch the auth flow or `LoginActivity`."**For the bug agent (Terminal 2):**> "Investigate and fix the NullPointerException on the login screen described in `bug-reports/2026-02-27-login.md`. The crash reproduces on API 28 and below. Reproduce it first with a unit test, then fix the root cause. Don't change the login UI or touch `LoginViewModel`."*(as this is just an example, the actual prompts would be very detailed).*###**Meanwhile: You Do the PR Review 👀**You hit Enter on both prompts, watch the agents start up, then switch to Terminal 3. Pull up the PR diff. Your teammate's work, 400 lines, needs a proper look. You open the first file. Launch***agent***in**\# Terminal 3** as well and maybe you could use it to understand your teammate's work or take help in reviewing that.
 
-> *Review **the**<TASK\_NAME>**PR of my colleague: .*
+> *Review**the**<TASK\_NAME>**PR of my colleague: .*
 >
-> *\- Check **if**<condition 1>*>*\- Give me a review summary including suggestions*>*\- Why there is usage of API in the change?*>*\- Or anything else here...*
+> *\- Check**if**<condition 1>*>*\- Give me a review summary including suggestions*>*\- Why there is usage of API in the change?*>*\- Or anything else here...*
 
 Behind you, Terminals 1 and 2 are still running. Agent is reading files, making a plan, running commands. You can peek over or ignore it completely. The work is happening either way.
 
@@ -187,7 +187,7 @@ Tests are green. ✅ It found the spec, read the composable, wrote the ViewModel
 
 You finish the PR review, leave your comments, approve it. Then you check back in.
 
-**Terminal 1: **the onboarding feature is drafted, two ViewModel tests passing, files updated exactly where the spec said. **Terminal 2: **the login crash on API 28 reproduced, root cause found (a null pointer in the token refresh path), fix committed with a test that now passes. Both agents finished without asking me anything. No interruptions, no clarifying questions on this run. It feels the same way every time. **Terminal 3:** It reviewed your colleague's PR, clarified your questions and also highlighted some changes your colleague should do.
+**Terminal 1:**the onboarding feature is drafted, two ViewModel tests passing, files updated exactly where the spec said.**Terminal 2:**the login crash on API 28 reproduced, root cause found (a null pointer in the token refresh path), fix committed with a test that now passes. Both agents finished without asking me anything. No interruptions, no clarifying questions on this run. It feels the same way every time.**Terminal 3:** It reviewed your colleague's PR, clarified your questions and also highlighted some changes your colleague should do.
 
 You didn't manage them. You didn't step in. You did your own work, and when you came back, so had they.
 
@@ -252,7 +252,7 @@ Worktrees don't work well for every situation. Skip them when:
 
 In these cases, running agents in parallel will cause conflicts or wasted work. Run them one at a time instead, and keep the parallel setup for tasks that are truly independent of each other.
 
-## **⏱️ The Time Math **Let's put some real numbers on this. Those three tasks from this morning (*new onboarding screen, login crash fix, PR review* ) are a pretty normal engineer morning. Here's roughly how the time looks across three different ways of working:
+## **⏱️ The Time Math**Let's put some real numbers on this. Those three tasks from this morning (*new onboarding screen, login crash fix, PR review* ) are a pretty normal engineer morning. Here's roughly how the time looks across three different ways of working:
 
 ![](../../assets/images/content/you-can-t-multitask-your-ai-agent-can/img-04802c8c.png)
 
@@ -265,7 +265,7 @@ That's not a small difference. That's shipping three things in a morning instead
 
 The bottleneck was never your skill. It was the one-task-at-a-time model. AI agents remove that limit, if you let them.
 
-## **💡 What This Actually Changed **The speed improvement was real, but that's not what I think about. What changed was how day feel. I stopped staring at three tasks trying to figure out which one to sacrifice. Instead of " *what do I have to skip today?* " it became " *what do I want to work on while the rest gets handled?* "
+## **💡 What This Actually Changed**The speed improvement was real, but that's not what I think about. What changed was how day feel. I stopped staring at three tasks trying to figure out which one to sacrifice. Instead of "*what do I have to skip today?*" it became "*what do I want to work on while the rest gets handled?* "
 
 You're not just a developer anymore. **<mark class="bg-yellow-200 dark:bg-yellow-500/30">You're the person who decides what gets built and reviews what comes back. The agents handle the actual execution.</mark>**I remember the moment it really hit me. There was a bug that another team's member was supposed to fix, something that only showed up in a very specific edge case. I gave it to an agent as a side task while I worked on a new feature. Ten minutes later I looked over and it was fixed. A day of putting it off, gone in the time it took to write one decent prompt.***
 
@@ -273,7 +273,7 @@ Do definitely try it on your next feature. Set up two worktrees, give your AI ag
 
 Awesome. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
-*** "Sharing is Caring" ***
+***"Sharing is Caring"***
 
 Thank you! 😄 Happy vide coding! 😎
 

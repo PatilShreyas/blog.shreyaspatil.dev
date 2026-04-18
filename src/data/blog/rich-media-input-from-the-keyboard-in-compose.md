@@ -77,7 +77,7 @@ As commented [here](https://issuetracker.google.com/issues/198323023#comment21),
 
 Awesome 🤩. I trust you've picked up some valuable insights from this. If you like this write-up, do share it 😉, because...
 
-*** "Sharing is Caring" ***
+***"Sharing is Caring"***
 
 Thank you! 😄
 

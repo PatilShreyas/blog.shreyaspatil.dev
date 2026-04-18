@@ -55,9 +55,9 @@ emitState(LoginUiState.ShowToast("Operation failed!"))
 }
 ```
 
-In this snippet, you can catch that there is a very UI-specific state got added: `ShowToast`. Also, it's used generically for different business operations: **1. **Logging in and **2.** Resetting password.
+In this snippet, you can catch that there is a very UI-specific state got added: `ShowToast`. Also, it's used generically for different business operations: **1.**Logging in and**2.** Resetting password.
 
-Now, what's the issue with it? The issue is that we are letting ViewModel know about the UI components used in the screen i.e. ***Toast**(in this case)*. In the future, instead of toast, if we want to show an error dialog/snackbar, then we have to again touch the ViewModel. This *tight coupling *between *UI and ViewModel* shouldn't happen.
+Now, what's the issue with it? The issue is that we are letting ViewModel know about the UI components used in the screen i.e. ***Toast**(in this case)*. In the future, instead of toast, if we want to show an error dialog/snackbar, then we have to again touch the ViewModel. This*tight coupling*between*UI and ViewModel* shouldn't happen.
 
 This is how the state for it should be modelled
 
@@ -78,7 +78,7 @@ Imagine, we have an application with UI like this 👇🏻
 
 ![](../../assets/images/content/viewmodel-for-ui-business-not-ui-operations/img-ef915773.gif)
 
-In this, you can see we have a bottom sheet that expands on click and collapses on clicking it again. Then one of the **anti-patterns **developers do is *holding that user interaction state in the ViewModel* as follows:
+In this, you can see we have a bottom sheet that expands on click and collapses on clicking it again. Then one of the **anti-patterns**developers do is*holding that user interaction state in the ViewModel* as follows:
 
 ```kotlin
 data class HomeUiState(
@@ -98,7 +98,7 @@ state = state.copy(expandPreferencesBottomSheet = !isExpanded)
 }
 ```
 
-Thus, the UI calls *this method (*`togglePreferenceBottomSheet()`*)*of ViewModel for expanding/collapsing the bottom sheet. But, the bottom sheet is a UI component and not the business of the UI. The UI component should **manage its own state upon user interactions** . ViewModel should not modify the user interaction state for a component.
+Thus, the UI calls *this method (*`togglePreferenceBottomSheet()`*)*of ViewModel for expanding/collapsing the bottom sheet. But, the bottom sheet is a UI component and not the business of the UI. The UI component should**manage its own state upon user interactions** . ViewModel should not modify the user interaction state for a component.
 
 What should be done here? 🤔
 
@@ -126,7 +126,7 @@ bottomSheetState.isExpanded = !isExpanded
 
 That's enough!
 
-There can be exceptions for some situations where for the business use case, you want some UI operation to happen. *For example, showing a dialog or expanding a bottom sheet dialog on some operation failure. *But even in such scenarios, our state variable should just update **data of failure **and not the **state of the UI component.** In such scenarios, the name of a state variable matters a lot. Like this 👇🏻
+There can be exceptions for some situations where for the business use case, you want some UI operation to happen. *For example, showing a dialog or expanding a bottom sheet dialog on some operation failure.*But even in such scenarios, our state variable should just update**data of failure**and not the**state of the UI component.** In such scenarios, the name of a state variable matters a lot. Like this 👇🏻
 
 ```kotlin
 data class HomeUiState(
@@ -151,9 +151,9 @@ These were just two examples of the demonstration of anti-patterns developers un
 
 ## What's the conclusion? 🤔
 
-*When we say,*** "ViewModel should handle the business of the UI" ***it doesn't mean we should include literally " **everything** " related to UI in ViewModel. *ViewModel should hold **only **data **which is required for UI. Let UI decide* how it wants to present that data *.* UI should be dependent on *ViewModel for executing business *and ViewModel should provide a state for UI. *UI should blindly depend on the state provided by ViewModel* .
+*When we say,***"ViewModel should handle the business of the UI"***it doesn't mean we should include literally "**everything**" related to UI in ViewModel.*ViewModel should hold**only**data**which is required for UI. Let UI decide* how it wants to present that data*.*UI should be dependent on*ViewModel for executing business*and ViewModel should provide a state for UI.*UI should blindly depend on the state provided by ViewModel* .
 
-*ViewModel should **not be aware **of the *UI component used in the UI *.* UI components (*such as bottom sheet, dialog, etc*) should take care of managing their own state on user interactions (*like collapsing/expanding sheet, closing dialog, etc* ).
+*ViewModel should**not be aware**of the*UI component used in the UI*.*UI components (*such as bottom sheet, dialog, etc*) should take care of managing their own state on user interactions (*like collapsing/expanding sheet, closing dialog, etc* ).
 
 *UI should only tell ViewModel about the event which is produced via user interactions on UI components for further business execution (*for example, calling ViewModel method on the Login button click* ).
 

@@ -21,7 +21,7 @@ Jetpack compose is getting good attention and many developers and organizations 
 
 We want to create a `TextField` in which users can type either _amount or message_. If an amount is entered, it should be formatted and replaced in the `TextField`.
 
-For example: If an input is fully numeric like _ **250000 **_. Then in the TextField, we have to modify it like _ **2,50,000** _. Otherwise, the text should be displayed as it is (i.e. treated as a message)
+For example: If an input is fully numeric like _ **250000**_. Then in the TextField, we have to modify it like _**2,50,000** _. Otherwise, the text should be displayed as it is (i.e. treated as a message)
 
 That's the simple case, isn't it? 😀
 
@@ -196,7 +196,7 @@ offsetMapping = offsetMapping
 }
 ```
 
-In the offset mapping, we provided offset based on commas. For example, when "2,50,000" is input then the offset of a transformed string will be always computed as **current offset **and **addition of a number of commas** . And exactly reverse process for the transformed to original text's offset. This will help us in defining cursor position in the visualized and actual input text.
+In the offset mapping, we provided offset based on commas. For example, when "2,50,000" is input then the offset of a transformed string will be always computed as **current offset**and**addition of a number of commas** . And exactly reverse process for the transformed to original text's offset. This will help us in defining cursor position in the visualized and actual input text.
 
 Okay, Let's run this and see results 👇
 

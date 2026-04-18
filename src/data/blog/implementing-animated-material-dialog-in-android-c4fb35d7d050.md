@@ -129,7 +129,7 @@ After running this code, its ***output*** will be as…
 
 ![ **Animated Material Dialogs.** Material Dialog at left and Bottom Sheet Material Dialog at right.](../../assets/images/content/implementing-animated-material-dialog-in-android-c4fb35d7d050/img-d3a16e54.gif)
 
-Animations in this library are implemented using Lottie animation library. You can get free animations files [here](https://lottiefiles.com/). You can find varieties of animation files on [https://lottiefiles.com](https://lottiefiles.com/). ` *.json` file downloaded from *LottieFiles *should be placed in android project. There are two ways to place the animation file (`* .json`).
+Animations in this library are implemented using Lottie animation library. You can get free animations files [here](https://lottiefiles.com/). You can find varieties of animation files on [https://lottiefiles.com](https://lottiefiles.com/). ` *.json` file downloaded from*LottieFiles*should be placed in android project. There are two ways to place the animation file (`* .json`).
 
 For example, here `delete_anim.json` animation file is used to show file delete animation.
 

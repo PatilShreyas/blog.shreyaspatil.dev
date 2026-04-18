@@ -75,7 +75,7 @@ Now notice there’s one more method: `isDispatcherNeeded`. Official docs say:
 
 So if `isDispatchNeeded` returns true then it submits the tasks to the threadpool/executor/handler otherwise synchronously on the current thread.
 
-In `HandlerContext`, `isDispatchNeeded()` returns true if currently flag `invokeImmediately` is false and current looper is not as same as Handler’s (Main thread’s) looper. It means whenever these conditions are met, a task will be dispatched and `dispatch()` method will be invoked and ultimately for main thread it’ll execute task by posting the task to Handler (`handler.post{}`) by adding it to main thread’s event queue. It means, if currently task is being executed on the main thread and if flag `invokeImmediately` is **true **then this method will return **false** . In such case, dispatch won’t be performed and it’ll immediately executed on the same thread synchronously.
+In `HandlerContext`, `isDispatchNeeded()` returns true if currently flag `invokeImmediately` is false and current looper is not as same as Handler’s (Main thread’s) looper. It means whenever these conditions are met, a task will be dispatched and `dispatch()` method will be invoked and ultimately for main thread it’ll execute task by posting the task to Handler (`handler.post{}`) by adding it to main thread’s event queue. It means, if currently task is being executed on the main thread and if flag `invokeImmediately` is **true**then this method will return**false** . In such case, dispatch won’t be performed and it’ll immediately executed on the same thread synchronously.
 
 <details data-node-type="hn-details-summary"><summary>Do you know that Dispatchers.Unconfined also works in similar way?</summary><div data-type="detailsContent"><code>Dispatchers.Unconfined</code> <em>also</em> uses the <code>isDispatchNeeded</code> check, but its implementation <em>always</em> returns <code>false</code>, leading to immediate execution in the current thread. However, unlike <code>Main.immediate</code>, if it suspends and resumes, it continues in the thread the suspending function used, which can lead to unpredictable thread switching.</div></details>
 
@@ -147,9 +147,9 @@ viewModel.process(it.toString())
 
 Understanding the snippet:
 
-*`MainViewModel`: This ViewModel hoists a `state` for UI consumption. It has a method `process()` which upon execution launched task on `viewModelScope` with **PRODUCER\_DISPATCHER **as discussed above and it just sets value coming from UI to the `_state`.* `MainActivity`: Simple activity that renders Composable `Screen`
+*`MainViewModel`: This ViewModel hoists a `state` for UI consumption. It has a method `process()` which upon execution launched task on `viewModelScope` with**PRODUCER\_DISPATCHER**as discussed above and it just sets value coming from UI to the `_state`.* `MainActivity`: Simple activity that renders Composable `Screen`
 
-*`observeState()` method observes a state coming from ViewModel and subscribed to the flow on **CONSUMER\_DISPATCHER **. Notice that we also have logged something there with current stacktrace details. We’ll use it later to understand the sequence of execution.* On clicking the "Process" button on the UI, `executeProcess()` is called. This function calls `viewModel.process()` five times, passing numbers from 1 to 5.
+*`observeState()` method observes a state coming from ViewModel and subscribed to the flow on**CONSUMER\_DISPATCHER**. Notice that we also have logged something there with current stacktrace details. We’ll use it later to understand the sequence of execution.* On clicking the "Process" button on the UI, `executeProcess()` is called. This function calls `viewModel.process()` five times, passing numbers from 1 to 5.
 
 
 Here’s how UI looks like (Compose preview):
@@ -229,16 +229,16 @@ Let’s visualize how this combination is working:
 
 ![](../../assets/images/content/understanding-dispatchers-main-and-mainimmediate/img-f23e04c0.png)
 
-Okay, **why only 1 item is getting collected on the UI side? **Since we are using StateFlow here, StateFlow API has conflation behaviour. In the context of Flows (*and data streams in general*), conflation means that if a producer emits new values faster than a collector can process them,***the intermediate, unprocessed values are effectively dropped***. The collector is***guaranteed to get the most recent value***, but it might miss some values that were emitted while it was busy processing a previous one. **StateFlow's Conflation Behavior:**`StateFlow` is designed specifically as a **state holder **. It always holds a single, current `value`. Its conflation behavior is **inherent and fundamental** to its design:
+Okay, **why only 1 item is getting collected on the UI side?**Since we are using StateFlow here, StateFlow API has conflation behaviour. In the context of Flows (*and data streams in general*), conflation means that if a producer emits new values faster than a collector can process them,***the intermediate, unprocessed values are effectively dropped***. The collector is***guaranteed to get the most recent value***, but it might miss some values that were emitted while it was busy processing a previous one.**StateFlow's Conflation Behavior:**`StateFlow` is designed specifically as a**state holder**. It always holds a single, current `value`. Its conflation behavior is**inherent and fundamental** to its design:
 
-1. **Value Updates: **When you update the `value` of a `StateFlow` (either by assigning to `mutableStateFlow.value` or using `tryEmit` or `emit`), the new value *immediately replaces *the previously held value. `StateFlow` doesn't maintain a buffer or queue of past values beyond the *current* one.
+1. **Value Updates:**When you update the `value` of a `StateFlow` (either by assigning to `mutableStateFlow.value` or using `tryEmit` or `emit`), the new value*immediately replaces*the previously held value. `StateFlow` doesn't maintain a buffer or queue of past values beyond the*current* one.
 
-2. **Collector Perspective: **When a collector is attached to a `StateFlow` (using `.collect { ... }`), it first receives the *current *value. Then, whenever a *new *value is emitted *after* the collector has finished processing the previous one, the collector receives that new value.
+2. **Collector Perspective:**When a collector is attached to a `StateFlow` (using `.collect { ... }`), it first receives the*current*value. Then, whenever a*new*value is emitted*after* the collector has finished processing the previous one, the collector receives that new value.
 
-3. **The Conflation: **If multiple values are emitted to the `StateFlow`*while *a collector is still busy processing a previously received value, that collector will **only receive the very last value** that was emitted before it became ready again. All the intermediate values emitted during its processing time are missed by that specific collector – they are conflated.
+3. **The Conflation:**If multiple values are emitted to the `StateFlow`*while*a collector is still busy processing a previously received value, that collector will**only receive the very last value** that was emitted before it became ready again. All the intermediate values emitted during its processing time are missed by that specific collector – they are conflated.
 
 
-In our case, each time a value is produced by the ViewModel, it is collected from the UI side on the Main dispatcher. Before the dispatch can occur ( *main thread’s event queue polling*) and execute the flow collection on the consumer's side (`Handler.post{}`), the ViewModel finishes processing all the items submitted to it from "1" to "5." This happens because it runs synchronously on the same thread, and no separate dispatch occurs while setting the state of the ViewModel. **Consumer doesn’t gets chance to collect all the items and before that ViewModel finishes setting the last state as “5”** , so UI just gets that. Even if the UI state is cleared and if "Process" is clicked again, the same thing happens. Since the previous state was "5" and the new state is still "5" after processing and this time as well consumer doesn’t gets chance to listen to all the updates and last state is “5” again, the emission is skipped because `StateFlow` only emits values if they are distinct.
+In our case, each time a value is produced by the ViewModel, it is collected from the UI side on the Main dispatcher. Before the dispatch can occur ( *main thread’s event queue polling*) and execute the flow collection on the consumer's side (`Handler.post{}`), the ViewModel finishes processing all the items submitted to it from "1" to "5." This happens because it runs synchronously on the same thread, and no separate dispatch occurs while setting the state of the ViewModel.**Consumer doesn’t gets chance to collect all the items and before that ViewModel finishes setting the last state as “5”** , so UI just gets that. Even if the UI state is cleared and if "Process" is clicked again, the same thing happens. Since the previous state was "5" and the new state is still "5" after processing and this time as well consumer doesn’t gets chance to listen to all the updates and last state is “5” again, the emission is skipped because `StateFlow` only emits values if they are distinct.
 
 ## Example 3: Produce on `Main`, Consume on `immediate`
 
@@ -357,17 +357,17 @@ setLoading(false)
 
 # Why Choose `immediate`?
 
-We've dug deep into *how*`Dispatchers.Main` and `Dispatchers.Main.immediate` work differently, especially regarding the `isDispatchNeeded` check and interaction with the `Handler`. This might leave you wondering: *why* would you explicitly choose `immediate`? And why did the AndroidX team decide to make `Dispatchers.Main.immediate` the default dispatcher for key extension scopes like `lifecycleScope` and `viewModelScope`?
+We've dug deep into *how*`Dispatchers.Main` and `Dispatchers.Main.immediate` work differently, especially regarding the `isDispatchNeeded` check and interaction with the `Handler`. This might leave you wondering:*why* would you explicitly choose `immediate`? And why did the AndroidX team decide to make `Dispatchers.Main.immediate` the default dispatcher for key extension scopes like `lifecycleScope` and `viewModelScope`?
 
-The core reasons boil down to **performance optimization **and **immediacy** , particularly targeting the common case where coroutine work starts on the main thread and needs to interact with the UI promptly.
+The core reasons boil down to **performance optimization**and**immediacy** , particularly targeting the common case where coroutine work starts on the main thread and needs to interact with the UI promptly.
 
 1. **Avoiding Unnecessary Overhead:***As we saw, `Dispatchers.Main`*always* posts the coroutine's execution block (as a `Runnable`) to the main thread's `Handler` queue.
 
-*If your code launching or resuming the coroutine is *already *on the main thread, this `post` operation, while generally fast, still represents a small amount of overhead: creating the `Runnable`, enqueueing it, and waiting for the `Looper` to process it in a subsequent pass.*`Dispatchers.Main.immediate`, thanks to its `isDispatchNeeded` check returning `false` when already on the main looper, skips this [`handler.post`](http://handler.post)`()` step entirely in that specific scenario. It executes the code *directly* and synchronously within the current execution flow. This micro-optimization avoids the queueing delay and object allocation associated with the post.
+*If your code launching or resuming the coroutine is*already*on the main thread, this `post` operation, while generally fast, still represents a small amount of overhead: creating the `Runnable`, enqueueing it, and waiting for the `Looper` to process it in a subsequent pass.*`Dispatchers.Main.immediate`, thanks to its `isDispatchNeeded` check returning `false` when already on the main looper, skips this [`handler.post`](http://handler.post)`()` step entirely in that specific scenario. It executes the code*directly* and synchronously within the current execution flow. This micro-optimization avoids the queueing delay and object allocation associated with the post.
 
-2. **Enhanced Responsiveness:***Beyond raw performance, `immediate` provides, well, *immediacy* . Imagine a button click handler (running on the main thread) launching a coroutine using `viewModelScope` to update some state and maybe show a loading indicator immediately.
+2. **Enhanced Responsiveness:***Beyond raw performance, `immediate` provides, well,*immediacy* . Imagine a button click handler (running on the main thread) launching a coroutine using `viewModelScope` to update some state and maybe show a loading indicator immediately.
 
-*With `Dispatchers.Main.immediate`, that initial `setLoading(true)` call inside the coroutine runs *right now *, within the same event cycle as the button click handler.* With `Dispatchers.Main`, that `setLoading(true)` would be posted to the Handler and run slightly later, after the current block of main thread work finishes and the Looper processes the queued item. While often imperceptible, using `immediate` guarantees the operation happens synchronously when possible, which can contribute to a snappier feel for UI updates initiated from the main thread.
+*With `Dispatchers.Main.immediate`, that initial `setLoading(true)` call inside the coroutine runs*right now*, within the same event cycle as the button click handler.* With `Dispatchers.Main`, that `setLoading(true)` would be posted to the Handler and run slightly later, after the current block of main thread work finishes and the Looper processes the queued item. While often imperceptible, using `immediate` guarantees the operation happens synchronously when possible, which can contribute to a snappier feel for UI updates initiated from the main thread.
 
 
 **The AndroidX Choice:**
@@ -384,7 +384,7 @@ I hope you got the idea about how exactly dispatcher `Main` and `immediate` work
 
 Awesome 🤩. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
-*** "Sharing is Caring" ***
+***"Sharing is Caring"***
 
 Thank you! 😄
 

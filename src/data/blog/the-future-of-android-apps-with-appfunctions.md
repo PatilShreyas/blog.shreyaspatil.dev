@@ -17,7 +17,7 @@ Hello Androiders 👋🏻!
 
 We are currently witnessing the most significant shift in mobile computing since the invention of the App Store. We have officially entered the **Era of Agentic AI** , where the "search bar" is being replaced by the "chat bubble."
 
-For a decade, we’ve obsessively optimized for Deep Links and SEO to make our Android apps discoverable and openable from Google Search. But in a world where users ask an AI Agent to * "book a flight" *or* "summarize my notes" *instead of opening an app, those old tools are becoming obsolete. If an AI Agent can’t "see" inside your app, your app doesn't exist. So, how do you make your app's functionalities discoverable to the brains of the future? The answer is **Android AppFunctions** . It's the new bridge that lets your app's core logic step out of the UI and into the world of autonomous agents. 🚀
+For a decade, we’ve obsessively optimized for Deep Links and SEO to make our Android apps discoverable and openable from Google Search. But in a world where users ask an AI Agent to *"book a flight"*or*"summarize my notes"*instead of opening an app, those old tools are becoming obsolete. If an AI Agent can’t "see" inside your app, your app doesn't exist. So, how do you make your app's functionalities discoverable to the brains of the future? The answer is**Android AppFunctions** . It's the new bridge that lets your app's core logic step out of the UI and into the world of autonomous agents. 🚀
 
 ## What is AppFunctions?
 
@@ -240,11 +240,11 @@ However, this doesn't mean any random app can be installed as an agent app to in
 
 ![](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-8b8a458d.png)
 
-***What are your thoughts on this new thing? I'm genuinely excited about its potential widespread use in apps. With the advancements in voice support and AI agents, this could become a standout feature in the future trends of Android development. Can imagine how it could be used:** "Repeat the last ordered Indian dish for me on Zomato" *** "I need to make a chocolate cake for four people; please order all the necessary ingredients from Swiggy Instamart." *** "Schedule a cab for airport for tomorrow 05:45 AM via Uber" *** "Compose a lovely poem to wish my friend X a happy birthday and send it to him on WhatsApp." *** "Send 500 to X for cab share via UPI app" * then it finds the X's details from phonebook and just prompts to enter the pin for payment, that's it!
+***What are your thoughts on this new thing? I'm genuinely excited about its potential widespread use in apps. With the advancements in voice support and AI agents, this could become a standout feature in the future trends of Android development. Can imagine how it could be used:**"Repeat the last ordered Indian dish for me on Zomato"***"I need to make a chocolate cake for four people; please order all the necessary ingredients from Swiggy Instamart."***"Schedule a cab for airport for tomorrow 05:45 AM via Uber"***"Compose a lovely poem to wish my friend X a happy birthday and send it to him on WhatsApp."***"Send 500 to X for cab share via UPI app"* then it finds the X's details from phonebook and just prompts to enter the pin for payment, that's it!
 
 
 and so on...
 
-** **If you found this useful, share it, it really helps*🙏** "Sharing is caring" 🤝🏻**Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.***## 📚References* [AppFunctions](https://developer.android.com/ai/appfunctions)
+****If you found this useful, share it, it really helps*🙏**"Sharing is caring" 🤝🏻**Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.***## 📚References* [AppFunctions](https://developer.android.com/ai/appfunctions)
 
 *[NotyKT](https://github.com/PatilShreyas/NotyKT/)* [Agent demo app](https://github.com/PatilShreyas/appfunctions-notyagent-app)

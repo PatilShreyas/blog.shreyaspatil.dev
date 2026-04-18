@@ -33,14 +33,14 @@ Refer to the below GIF for understanding the counting semaphore visually
 
 ![Semaphore](https://i.imgur.com/rwi2CtI.gif)
 
-Here, Semaphore **S **has***maximum 4 permits initially*** . It means only four processes will be able to access particular resources concurrently.
+Here, Semaphore **S**has***maximum 4 permits initially*** . It means only four processes will be able to access particular resources concurrently.
 
 - Here **P1, P2, P3, P4, P5, P6** trying to acquire the permit from the Semaphore.
 - As per the FIFO, **P1, P2, P3, P4** acquire the permits and Semaphore does not have permits available (i.e. 0).
-- Thus **P5 **and **P6** wait till the permit is available.
-- As **P4 **and **P2 **complete and release the lock from Semaphore (_ **P1 **and **P3 **still running_). 2 permits become available in the semaphore, and thus **P5 **and **P6** acquire a permit to execute.
-- By the time, **P1 **and **P3** also complete and release semaphore permit.
-- After completion of **P5 **and **P6** , they release the semaphore lock, and the Semaphore now has all permits retained (i.e. back to 4).
+- Thus **P5**and**P6** wait till the permit is available.
+- As **P4**and**P2**complete and release the lock from Semaphore (_**P1**and**P3**still running_). 2 permits become available in the semaphore, and thus**P5**and**P6** acquire a permit to execute.
+- By the time, **P1**and**P3** also complete and release semaphore permit.
+- After completion of **P5**and**P6** , they release the semaphore lock, and the Semaphore now has all permits retained (i.e. back to 4).
 
 That's all the basic things to know about the Semaphores.
 
@@ -62,7 +62,7 @@ What if we provide our own dispatcher for this function? We know that we can cre
 
 Here, the fixed thread pool of 12 threads will be created and all these 12 threads will be active forever. Thus threads can be wasted. Also, there is no freedom for us to specify parallelism or concurrency if we want to control it for mapping some lists based on the use case.
 
-Let's say there are two lists **A **and **B** . We know that mapping list **A** is not that heavy so we want to map with 2 items concurrently (max 2 threads) but we are aware that list **B** is heavier to map so we want to map 10 items concurrently (max 10 threads). So what can we do? Will we create custom dispatchers for every different need? Big No 🤯, that's not gonna help because this way we'll end up using a lot of system resources and wasting threads❌.
+Let's say there are two lists **A**and**B**. We know that mapping list**A**is not that heavy so we want to map with 2 items concurrently (max 2 threads) but we are aware that list**B** is heavier to map so we want to map 10 items concurrently (max 10 threads). So what can we do? Will we create custom dispatchers for every different need? Big No 🤯, that's not gonna help because this way we'll end up using a lot of system resources and wasting threads❌.
 
 This is the situation where semaphore is the solution 😀
 

@@ -28,7 +28,7 @@ Hi everyone, I'm excited to share that this is the 51st blog post I'm writing. I
 
 In 2019, during my second year of engineering college, I was just a someone who was learning and building apps in Android at that time, working on my new Android app project. I used the Firebase UI SDK to display data from the Firebase Realtime Database. I needed to show data in pages, but at that time, the official Firebase UI library didn't support pagination. Until then, I wasn't even aware of GitHub and open source. Then I learned about open source and GitHub and discovered that the [FirebaseUI-Android SDK](https://github.com/firebase/FirebaseUI-Android) is open source, and we can contribute code to it. First, I cloned it, developed a pagination API, and open-sourced it [internally](https://github.com/PatilShreyas/FirebaseRecyclerPagination) on my own GitHub account ( *later I contributed it to the official SDK* 😀). I used my version of the API in my Android app, continued using it, and saw that it was serving its purpose.
 
-I thought I should spread the word about it since it was useful for me and could help others too if they needed it. I already had accounts on Twitter and LinkedIn ( *I just wasn't very active*), so I logged in again and noticed that many popular Android developers were writing posts on **medium.com **. At that time,***ProAndroidDev, MindOrks, AndroidPub***, and others were well-known publishers in the AndroidDev community. So, I signed up on medium.com and wrote my first article. I decided to submit it to [ProAndroidDev](https://proandroiddev.com/), and after a few hours, I received a couple of suggestions for improvements from their editors. I addressed all the feedback, and they approved my post. Finally, on **April 8, 2019 **, I published my first tech blog 🎉. I kept the title very simple: “**Firebase Database Pagination - Android 🔥** “.
+I thought I should spread the word about it since it was useful for me and could help others too if they needed it. I already had accounts on Twitter and LinkedIn ( *I just wasn't very active*), so I logged in again and noticed that many popular Android developers were writing posts on**medium.com**. At that time,***ProAndroidDev, MindOrks, AndroidPub***, and others were well-known publishers in the AndroidDev community. So, I signed up on medium.com and wrote my first article. I decided to submit it to [ProAndroidDev](https://proandroiddev.com/), and after a few hours, I received a couple of suggestions for improvements from their editors. I addressed all the feedback, and they approved my post. Finally, on**April 8, 2019**, I published my first tech blog 🎉. I kept the title very simple: “**Firebase Database Pagination - Android 🔥** “.
 
 [https://proandroiddev.com/firebase-database-paging-android-f59e6dd0dc75](https://proandroiddev.com/firebase-database-paging-android-f59e6dd0dc75)
 
@@ -38,7 +38,7 @@ After publishing the blog, the next day on the 9th of April’s night, I shared 
 
 I read this early in the morning and felt so happy. It was satisfying to know that what I did helped someone. I realized that whatever we share as a learning experience can be useful to anyone, whether it's simple beginner stuff or complex advanced topics. This one message cleared all my fears that I was getting before publishing the article and boosted my confidence. That's when I decided to keep writing articles on medium.com.
 
-As time went on, I started creating my open-source libraries on GitHub and exploring some Android APIs. Then I wrote a few more articles and published them on **MindOrks **and **ProAndroidDev **. I also published an article on the official **Firebase Developers** Medium publication. If you notice, all my early blogs were mostly tutorials kind of stuff and nothing more 😅. I was also getting a good response from them, so continued it. My initial blogs be like 👇🏻
+As time went on, I started creating my open-source libraries on GitHub and exploring some Android APIs. Then I wrote a few more articles and published them on **MindOrks**and**ProAndroidDev**. I also published an article on the official**Firebase Developers** Medium publication. If you notice, all my early blogs were mostly tutorials kind of stuff and nothing more 😅. I was also getting a good response from them, so continued it. My initial blogs be like 👇🏻
 
 ![](../../assets/images/content/51-my-developer-blogging-journey-so-far/img-10373dd0.png)
 
@@ -48,7 +48,7 @@ As I published open-source projects and content, I began gaining followers on Tw
 
 I was also exploring ***Flutter***for cross-platform app development during this time. I learned about***Google AppScript***and how I could use it as an API for data operations in Google Sheets. So, I created a simple proof of concept with Flutter, made it open-source on GitHub, and [wrote an article](https://medium.com/mindorks/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d?source=user_profile_page---------43-------------5b88bf6959e5---------------) about it. When I published it, the response was surprising. Within a day, I gained many followers on GitHub, Twitter, and LinkedIn. That repository received many stars on GitHub and became the**#1 trending project in the Dart** language category. I wasn't even very skilled in Flutter at that time, but I learned about the growing popularity and strong community of Flutter developers 💪🏻.
 
-> **Fun fact: **Even after being a native app developer, my first repo that went**#1 trending **on GitHub was *Flutter* 😃. And till the date, that blog has more views than my other Android or Kotlin related blogs.
+> **Fun fact:**Even after being a native app developer, my first repo that went**#1 trending**on GitHub was*Flutter* 😃. And till the date, that blog has more views than my other Android or Kotlin related blogs.
 
 ![](../../assets/images/content/51-my-developer-blogging-journey-so-far/img-207b787e.png)
 
@@ -74,7 +74,7 @@ During the lockdown, I wanted to encourage blogging among my friends and college
 
 # 🤔 That one opinionated blog
 
-I was feeling confident in development and began forming opinions about different concepts. While reading the release notes of Kotlin Coroutines, I discovered an API called **StateFlow. **By looking at it, it looked like an advanced version of **LiveData **to me. Till that time, it was not mentioned anywhere whether it’s gonna replace LiveData or not. I wrote a simple blog explaining how the StateFlow API could be used instead of LiveData in Android. Since I wasn't sure if it was truly a replacement, I added a question mark "?" at the end of the title. The title of that blog became:**“🌊 StateFlow, end of LiveData?”**
+I was feeling confident in development and began forming opinions about different concepts. While reading the release notes of Kotlin Coroutines, I discovered an API called **StateFlow.**By looking at it, it looked like an advanced version of**LiveData**to me. Till that time, it was not mentioned anywhere whether it’s gonna replace LiveData or not. I wrote a simple blog explaining how the StateFlow API could be used instead of LiveData in Android. Since I wasn't sure if it was truly a replacement, I added a question mark "?" at the end of the title. The title of that blog became:**“🌊 StateFlow, end of LiveData?”**
 
 [https://medium.com/scalereal/stateflow-end-of-livedata-a473094229b3?source=user_profile_page---------38-------------5b88bf6959e5---------------](https://medium.com/scalereal/stateflow-end-of-livedata-a473094229b3?source=user_profile_page---------38-------------5b88bf6959e5---------------)
 
@@ -105,7 +105,7 @@ I continued writing blogs, and now you're reading my 51st blog here! Do you thin
 
 ![](../../assets/images/content/51-my-developer-blogging-journey-so-far/img-81c539fc.webp)
 
-Until 2021, I wasn't very good at English (and maybe I'm still not). My general communication skills were poor. I only understood tech concepts and could write about them, but I made a lot of grammatical mistakes. If you read my early blogs, you'll notice this and easily find many English-related errors. This caused me a lot of anxiety when I was about to hit the " **Publish** " button for my first blog post. I used to think, " *What will people think if they see my writing?* " and " *How will they judge me?* ". However, I pressed that button for the first time and continued to do so many more times. My writing was very simple; I never used complicated words in any of my blogs. I avoided fancy English words and complex language. It was straightforward enough for any beginner to understand. But still, I was not so confident about my writing style and one day, a developer from community sent me a message on Twitter (now X). He mentioned that he likes whatever I like, then he wrote this:
+Until 2021, I wasn't very good at English (and maybe I'm still not). My general communication skills were poor. I only understood tech concepts and could write about them, but I made a lot of grammatical mistakes. If you read my early blogs, you'll notice this and easily find many English-related errors. This caused me a lot of anxiety when I was about to hit the " **Publish**" button for my first blog post. I used to think, "*What will people think if they see my writing?*" and "*How will they judge me?* ". However, I pressed that button for the first time and continued to do so many more times. My writing was very simple; I never used complicated words in any of my blogs. I avoided fancy English words and complex language. It was straightforward enough for any beginner to understand. But still, I was not so confident about my writing style and one day, a developer from community sent me a message on Twitter (now X). He mentioned that he likes whatever I like, then he wrote this:
 
 ![](../../assets/images/content/51-my-developer-blogging-journey-so-far/img-0790aaed.png)
 
@@ -140,7 +140,7 @@ Later on, I started having my blog posts reviewed by my tech-savvy friends and c
 
 ![](../../assets/images/content/51-my-developer-blogging-journey-so-far/img-9287f60f.webp)
 
-Once you hit "Publish," your work isn't done! I always shared my posts on Twitter, LinkedIn, Facebook, Reddit, Hackernews, as well as on community Slack channels like Kotlinlang. Newsletters like [AndroidWeekly.net](https://androidweekly.net) and [KotlinWeekly.net](https://kotlinweekly.net) are fantastic for reaching the right readers. Every Sunday, when my blogs were featured in these newsletters, I noticed a spike in viewers on the analytics graph. It just works well ✈️. Many people hesitate to share what they've created ( *I did too when I was a beginner, but I learned by watching others*). But you have to do it. **If you don’t, who else will? **When you share your work, there will come a time when *others start sharing your blog links on their feeds *if it’s really a good quality work. Over time, Google search became my top source of organic referrals for my blogs (*Thanks to the SEO of Medium and Hashnode* so far).
+Once you hit "Publish," your work isn't done! I always shared my posts on Twitter, LinkedIn, Facebook, Reddit, Hackernews, as well as on community Slack channels like Kotlinlang. Newsletters like [AndroidWeekly.net](https://androidweekly.net) and [KotlinWeekly.net](https://kotlinweekly.net) are fantastic for reaching the right readers. Every Sunday, when my blogs were featured in these newsletters, I noticed a spike in viewers on the analytics graph. It just works well ✈️. Many people hesitate to share what they've created ( *I did too when I was a beginner, but I learned by watching others*). But you have to do it.**If you don’t, who else will?**When you share your work, there will come a time when*others start sharing your blog links on their feeds*if it’s really a good quality work. Over time, Google search became my top source of organic referrals for my blogs (*Thanks to the SEO of Medium and Hashnode* so far).
 
 ---
 
@@ -168,7 +168,7 @@ I hope this article encourages anyone who isn't confident enough to hit that "Pu
 
 If you notice, I end every blog with this line 😄👇🏻
 
-*** "Sharing is Caring" ***
+***"Sharing is Caring"***
 
 Thank you! 😄
 
