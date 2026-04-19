@@ -36,6 +36,9 @@ html[data-theme="dark"] {
     scrollbar-width: auto;
     scrollbar-color: var(--color-muted) transparent;
   }
+  img {
+    @apply mx-auto border border-border rounded-lg img-shimmer;
+  }
   html {
     @apply overflow-y-scroll scroll-smooth;
   }
@@ -156,4 +159,20 @@ pre::-webkit-scrollbar-thumb {
   border: 0;
   border-radius: 0.75rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@utility img-shimmer {
+  background-image: linear-gradient(
+    90deg, 
+    var(--muted) 0%, 
+    var(--border) 50%, 
+    var(--muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
 }
