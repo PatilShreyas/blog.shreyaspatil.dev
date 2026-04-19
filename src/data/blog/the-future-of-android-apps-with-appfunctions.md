@@ -243,7 +243,7 @@ This is what testing looks like!
 I attempted to mimic the agent app to get a sense of it ( _though it's not an actual agent, just hardcoded actions triggered by specific messages_ ), and it appears as follows:
 
 <video controls width="100%" poster="/assets/videos/the-future-of-android-apps-with-appfunctions/poster.gif">
-<source src="/assets/videos/the-future-of-android-apps-with-appfunctions/demo.webm" type="video/webm">
+<source src="https://github.com/PatilShreyas/appfunctions-notyagent-app/raw/refs/heads/main/demo.webm" type="video/webm">
 Your browser does not support the video tag.
 </video>
 
