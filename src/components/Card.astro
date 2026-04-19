@@ -22,6 +22,7 @@ const { title, description, coverImage, ...props } = data;
     coverImage && (
       <a
         href={getPath(id, filePath)}
+        data-astro-prefetch="hover"
         class="aspect-video w-full flex-shrink-0 img-shimmer overflow-hidden rounded-xl border border-border/50 sm:w-64"
         aria-hidden="true"
         tabindex="-1"
@@ -40,6 +41,7 @@ const { title, description, coverImage, ...props } = data;
   <div class="flex-1">
     <a
       href={getPath(id, filePath)}
+      data-astro-prefetch="hover"
       class:list={[
         "inline-block text-lg font-bold text-foreground decoration-accent/30 decoration-2 underline-offset-8 transition-all hover:text-accent hover:underline sm:text-xl",
         "focus-visible:no-underline focus-visible:underline-offset-0",
