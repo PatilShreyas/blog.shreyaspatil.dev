@@ -3,7 +3,7 @@
 @layer base {
   /* ===== Override default Tailwind Typography styles ===== */
   .app-prose {
-    @apply prose;
+    @apply prose prose-base sm:prose-lg max-w-none;
 
     h1,
     h2,
@@ -24,7 +24,7 @@
     figcaption,
     table,
     code {
-      @apply text-foreground/90 leading-relaxed;
+      @apply text-foreground/90 leading-[1.8];
     }
 
     a {
@@ -66,8 +66,17 @@
       }
     }
 
-    code {
-      @apply rounded bg-muted px-1.5 py-0.5 font-medium text-foreground before:content-none after:content-none;
+    code:not(pre code) {
+      @apply rounded-sm bg-foreground/5 px-[0.3em] py-[0.1em] font-mono text-[1.05em]! font-medium text-foreground before:content-none after:content-none;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    :where(h1, h2, h3, h4, h5, h6) code:not(pre code) {
+      @apply text-[1em]! font-bold px-[0.4em];
+    }
+
+    html[data-theme="dark"] code {
+      @apply bg-foreground/15;
     }
 
     .astro-code code {
