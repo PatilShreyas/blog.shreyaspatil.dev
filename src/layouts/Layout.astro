@@ -168,7 +168,7 @@ const structuredData = {
     <ClientRouter />
 
     <!-- Minimal inline script to prevent FOUC - sets theme immediately -->
-    <script is:inline>
+    <script is:inline define:vars={{ themeColors: SITE.themeColors }}>
       (function () {
         const initialColorScheme = ""; // "light" | "dark"
         const currentTheme = localStorage.getItem("theme");
@@ -185,6 +185,13 @@ const structuredData = {
 
         // Set theme immediately to prevent flash
         document.firstElementChild?.setAttribute("data-theme", themeValue);
+
+        // Set the background color in <meta theme-color ... />
+        const bgColor = themeColors[themeValue];
+        if (bgColor) {
+          const meta = document.querySelector("meta[name='theme-color']");
+          if (meta) meta.setAttribute("content", bgColor);
+        }
 
         // Export minimal API for external script
         window.theme = {

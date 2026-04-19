@@ -32,7 +32,7 @@ html[data-theme="dark"] {
 
 @layer base {
   * {
-    @apply border-border outline-accent/75 transition-colors duration-300;
+    @apply border-border outline-accent/75;
     scrollbar-width: auto;
     scrollbar-color: var(--color-muted) transparent;
   }
@@ -43,7 +43,7 @@ html[data-theme="dark"] {
     @apply overflow-y-scroll;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/30 selection:text-foreground;
+    @apply flex min-h-svh flex-col bg-background font-app text-foreground transition-colors duration-300 selection:bg-accent/30 selection:text-foreground;
   }
   h1,
   h2,
@@ -55,7 +55,7 @@ html[data-theme="dark"] {
   }
   a,
   button {
-    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+    @apply outline-offset-1 outline-accent transition-colors duration-300 focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -83,7 +83,7 @@ html[data-theme="dark"] {
 
 /* Code Block Styling */
 pre {
-  @apply rounded-xl p-4 shadow-sm transition-all;
+  @apply rounded-xl p-4 shadow-sm transition-all duration-300;
 }
 
 html[data-theme="light"] pre {

@@ -16,7 +16,7 @@ const { title, description, coverImage, ...props } = data;
 ---
 
 <li
-  class="group my-12 flex flex-col gap-6 transition-all sm:flex-row sm:items-start sm:gap-8"
+  class="group my-12 flex flex-col gap-6 transition-colors duration-300 sm:flex-row sm:items-start sm:gap-8"
 >
   {
     coverImage && (
@@ -43,13 +43,11 @@ const { title, description, coverImage, ...props } = data;
       href={getPath(id, filePath)}
       data-astro-prefetch="hover"
       class:list={[
-        "inline-block text-lg font-bold text-foreground decoration-accent/30 decoration-2 underline-offset-8 transition-all hover:text-accent hover:underline sm:text-xl",
+        "inline-block text-lg font-bold text-foreground decoration-accent/30 decoration-2 underline-offset-8 transition-colors duration-300 hover:text-accent hover:underline sm:text-xl",
         "focus-visible:no-underline focus-visible:underline-offset-0",
       ]}
     >
-      <Heading
-        style={{ viewTransitionName: slugifyStr(title.replaceAll(".", "-")) }}
-      >
+      <Heading>
         {
           postNum && (
             <span class="mr-2 font-mono text-base text-accent/80 sm:text-lg">
