@@ -75,4 +75,4 @@ Add new Markdown files to `src/data/blog/`. Ensure they follow the frontmatter s
 
 ---
 
-© 2026 [Shreyas Patil](https://shreyaspatil.dev)
+© 2026 [Shreyas Patil](https://shreyaspatil.dev) — Licensed under the [Apache License 2.0](LICENSE)
