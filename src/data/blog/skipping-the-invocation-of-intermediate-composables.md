@@ -122,9 +122,9 @@ Timer(57)
 
 This time, we are just seeing the equality check for `RemainingSeconds` and recomposition of `Timer` composable and this way little execution of `Screen$Column` and `Detail` composable functions is also skipped 🎉.
 
-<div data-node-type="callout">
-<div data-node-type="callout-emoji">😁</div>
-<div data-node-type="callout-text">So we've just skipped the intermediate composables otherwise they would have to see if they can skip by running their skippability checks, just so they can skip recomposing 😂.</div>
+<div class="post-callout">
+  <span class="emoji">😁</span>
+  <div class="content">So we've just skipped the intermediate composables otherwise they would have to see if they can skip by running their skippability checks, just so they can skip recomposing 😂.</div>
 </div>
 
 I believe we are not making any major improvements here, but we are saving a small amount of code execution time. This optimization can be particularly useful for screens where a deeply nested component is updated frequently, such as for animation states or similar scenarios. In such cases, it can reduce the number of equality checks and the number of times composable functions are invoked.

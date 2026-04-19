@@ -189,3 +189,34 @@ pre::-webkit-scrollbar-thumb {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
 }
+
+/* Native Post Callouts */
+.post-callout {
+  @apply my-8 flex items-start gap-4 rounded-2xl border border-accent/20 bg-accent/5 p-6 shadow-sm transition-all hover:shadow-md;
+}
+
+.post-callout .emoji {
+  @apply select-none text-2xl filter grayscale-[0.2];
+}
+
+.post-callout .content {
+  @apply flex-1 font-medium leading-relaxed text-foreground/90;
+}
+
+/* Dark mode refinement */
+html[data-theme="dark"] .post-callout {
+  @apply border-white/10 bg-white/5;
+}
+
+html[data-theme="dark"] .post-callout .content {
+  @apply text-foreground;
+}
+
+/* Native Highlight (mark) */
+mark {
+  @apply rounded-sm bg-accent/25 px-1 text-inherit transition-colors;
+}
+
+html[data-theme="dark"] mark {
+  @apply bg-accent/40;
+}

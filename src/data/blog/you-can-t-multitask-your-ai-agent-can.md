@@ -1,4 +1,4 @@
-﻿---
+---
 title: "You Can't Multitask. Your AI Agent Can."
 pubDatetime: 2026-03-02T04:00:00.000Z
 description: "Boost your productivity with AI agents. Learn how to delegate complex tasks to AI tools like Claude Code and Gemini to overcome human multitasking limitations."
@@ -47,7 +47,7 @@ Then Slack lights up ➡️ **A production crash, reported overnight**. Users ar
 
 Then I found a better way.
 
-Most developers use AI tools like a search engine. One question, one answer, one task at a time. But Claude Code (Anthropic's AI agent that runs in your terminal), combined with git's **worktree feature** (which most developers never read about in the docs), makes something different possible: **<mark class="bg-yellow-200 dark:bg-yellow-500/30">you can run multiple AI agents in parallel, each working on a separate task, while you focus on just one thing</mark>**. One developer, multiple agents, multiple tasks, all moving forward.
+Most developers use AI tools like a search engine. One question, one answer, one task at a time. But Claude Code (Anthropic's AI agent that runs in your terminal), combined with git's **worktree feature** (which most developers never read about in the docs), makes something different possible: **<mark>you can run multiple AI agents in parallel, each working on a separate task, while you focus on just one thing</mark>**. One developer, multiple agents, multiple tasks, all moving forward.
 
 By the end of this post, you'll know how to set up multiple AI agents across isolated git worktrees, so you can work on a crash fix, a feature screen, and a code review all at the same time, without losing context on any of them.
 
@@ -190,9 +190,9 @@ _(as this is just an example, the actual prompts would be very detailed)._
 
 You hit Enter on both prompts, watch the agents start up, then switch to Terminal 3. Pull up the PR diff. Your teammate's work, 400 lines, needs a proper look. You open the first file. Launch agent in **Terminal 3** as well and maybe you could use it to understand your teammate's work or take help in reviewing that.
 
-> **Review the <TASK_NAME> PR of my colleague:**
+> **Review the `<TASK_NAME>` PR of my colleague:**
 >
-> - Check if <condition 1>
+> - Check if `<condition 1>`
 > - Give me a review summary including suggestions
 > - Why there is usage of API in the change?
 > - Or anything else here...
@@ -317,7 +317,7 @@ The bottleneck was never your skill. It was the one-task-at-a-time model. AI age
 
 The speed improvement was real, but that's not what I think about. What changed was how day feel. I stopped staring at three tasks trying to figure out which one to sacrifice. Instead of "what do I have to skip today?" it became "what do I want to work on while the rest gets handled?"
 
-You're not just a developer anymore. **<mark class="bg-yellow-200 dark:bg-yellow-500/30">You're the person who decides what gets built and reviews what comes back. The agents handle the actual execution.</mark>**
+You're not just a developer anymore. **<mark>You're the person who decides what gets built and reviews what comes back. The agents handle the actual execution.</mark>**
 
 I remember the moment it really hit me. There was a bug that another team's member was supposed to fix, something that only showed up in a very specific edge case. I gave it to an agent as a side task while I worked on a new feature. Ten minutes later I looked over and it was fixed. A day of putting it off, gone in the time it took to write one decent prompt.
 

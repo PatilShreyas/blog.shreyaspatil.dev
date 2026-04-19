@@ -41,9 +41,9 @@ So, in this post, I won't dive into the details of the Compose implementation. I
 
 ![](../../assets/images/content/benchmark-insights-direct-state-propagation-vs-lambda-based-state-in-jetpack-compose/img-f8ad8229.png)
 
-<div data-node-type="callout">
-<div data-node-type="callout-emoji">🧑‍💻</div>
-<div data-node-type="callout-text">If you want to check out the code implementation, take a look <a target="_self" rel="noopener noreferrer nofollow" href="https://github.com/PatilShreyas/compose-benchmark-lambda" style="pointer-events: none">at this repository</a>.</div>
+<div class="post-callout">
+  <span class="emoji">🧑‍💻</span>
+  <div class="content">If you want to check out the code implementation, take a look <a target="_self" rel="noopener noreferrer nofollow" href="https://github.com/PatilShreyas/compose-benchmark-lambda">at this repository</a>.</div>
 </div>
 
 Since this is just a sample app pretending to be like a real app, I added fixed data that changes randomly at intervals. For example, market indices update every 300ms, the investment summary updates every 250ms, and the holdings list updates every 500ms. This means there will be a total of 9-10 data updates per second for the UI.
@@ -167,9 +167,9 @@ After running 6 rounds of benchmark tests on 3 different devices, I finally gain
 | **Frame time**   | 🟩 🟥 10ms (minimum) to 200ms (maximum - P99) reduction in frame time in the lambda-based state variant. Low-end devices benefited the most. Occasionally, at P99 on low-end devices, there was a slight decrease in performance when **R8 is disabled**. Very minimal gains when **Full R8 mode is enabled**. |
 | **Memory**       | 🟩 Significant improvements were seen in the lambda-based state variant, with a reduction of about 2000 KB in heap size consumption **irrespective of R8 is enabled or not**.                                                                                                                                  |
 
-<div data-node-type="callout">
-<div data-node-type="callout-emoji">📈</div>
-<div data-node-type="callout-text">To check the raw benchmark results, you can <a target="_self" rel="noopener noreferrer nofollow" href="https://github.com/PatilShreyas/compose-benchmark-lambda/blob/main/benchmark_result.md" style="pointer-events: none">checkout this document</a>.</div>
+<div class="post-callout">
+  <span class="emoji">📈</span>
+  <div class="content">To check the raw benchmark results, you can <a target="_self" rel="noopener noreferrer nofollow" href="https://github.com/PatilShreyas/compose-benchmark-lambda/blob/main/benchmark_result.md">checkout this document</a>.</div>
 </div>
 
 If you want to explore this project or run benchmarks, take a look at [this repository](https://github.com/PatilShreyas/compose-benchmark-lambda/).
