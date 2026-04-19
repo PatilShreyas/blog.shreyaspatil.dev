@@ -62,14 +62,24 @@ const structuredData = {
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Load Font -->
+    <!-- Load Font: Inter (Sans-serif) for Headings -->
     <Font
       cssVariable="--font-inter"
-      preload={[{ subset: "latin", weight: 400, style: "normal" }]}
+      preload={[
+        { subset: "latin", weight: 400, style: "normal" },
+        { subset: "latin", weight: 700, style: "normal" },
+        { subset: "latin", weight: 900, style: "normal" }
+      ]}
     />
+    <!-- Load Font: Merriweather (Serif) for Body -->
     <Font
       cssVariable="--font-merriweather"
-      preload={[{ subset: "latin", weight: 400, style: "normal" }]}
+      preload={[
+        { subset: "latin", weight: 400, style: "normal" },
+        { subset: "latin", weight: 400, style: "italic" },
+        { subset: "latin", weight: 700, style: "normal" },
+        { subset: "latin", weight: 700, style: "italic" }
+      ]}
     />
 
     {

@@ -5,16 +5,23 @@
   .app-prose {
     @apply prose prose-base sm:prose-lg max-w-none;
 
-    h1,
+    h1 {
+      @apply mb-8 mt-16 text-foreground font-heading font-black tracking-tighter leading-tight;
+    }
+
     h2,
     h3,
     h4,
     th {
-      @apply mb-3 text-foreground font-heading tracking-tight;
+      @apply mb-4 mt-12 text-foreground font-heading font-bold tracking-tight;
+    }
+
+    h2 {
+      @apply pt-8 border-t border-border/40 text-3xl;
     }
 
     h3 {
-      @apply italic;
+      @apply italic mt-10 text-xl;
     }
 
     p,
@@ -26,14 +33,22 @@
     code,
     mark {
       @apply text-foreground/90 leading-[1.8];
+      font-variant-ligatures: common-ligatures;
+      font-feature-settings: "kern" 1, "liga" 1;
+      text-rendering: optimizeLegibility;
+      hanging-punctuation: first last;
+    }
+
+    strong {
+      @apply font-bold text-foreground;
     }
 
     mark {
-      @apply bg-accent/30 rounded-sm px-1;
+      @apply bg-accent/25 rounded-sm px-1 text-inherit;
     }
 
     a {
-      @apply wrap-break-word text-foreground decoration-dashed underline-offset-4 hover:text-accent focus-visible:no-underline;
+      @apply wrap-break-word text-foreground decoration-accent/40 underline-offset-4 hover:text-accent hover:decoration-accent focus-visible:no-underline;
     }
 
     ul {
@@ -41,15 +56,19 @@
     }
 
     li {
-      @apply marker:text-accent;
+      @apply marker:text-accent/80;
     }
 
     hr {
-      @apply border-border;
+      @apply border-border/50 my-16;
     }
 
     img {
-      @apply mx-auto border border-border rounded-lg img-shimmer;
+      @apply mx-auto border border-border rounded-xl img-shimmer shadow-sm;
+    }
+
+    blockquote {
+      @apply border-s-4 border-s-accent/60 bg-accent/5 py-2 px-6 rounded-e-lg italic font-medium text-foreground/80;
     }
 
     figcaption {
@@ -87,10 +106,6 @@
 
     .astro-code code {
       @apply flex-[1_0_100%] bg-inherit p-0;
-    }
-
-    blockquote {
-      @apply border-s-accent/80 wrap-break-word opacity-80;
     }
 
     details {

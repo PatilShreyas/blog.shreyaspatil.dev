@@ -17,15 +17,20 @@ const { title, description, coverImage, ...props } = data;
 
 <li class="group my-12 flex flex-col gap-6 transition-all sm:flex-row sm:items-start sm:gap-8">
   {coverImage && (
-    <div class="img-shimmer aspect-video w-full flex-shrink-0 overflow-hidden rounded-xl border border-border/50 sm:w-64">
+    <a 
+      href={getPath(id, filePath)} 
+      class="img-shimmer aspect-video w-full flex-shrink-0 overflow-hidden rounded-xl border border-border/50 sm:w-64"
+      aria-hidden="true"
+      tabindex="-1"
+    >
       <Image 
         src={coverImage} 
-        alt={title}
+        alt=""
         width={600}
         height={338}
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
-    </div>
+    </a>
   )}
 
   <div class="flex-1">

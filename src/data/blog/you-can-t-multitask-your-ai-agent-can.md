@@ -1,4 +1,4 @@
----
+﻿---
 title: "You Can't Multitask. Your AI Agent Can."
 pubDatetime: 2026-03-02T04:00:00.000Z
 description: "Boost your productivity with AI agents. Learn how to delegate complex tasks to AI tools like Claude Code and Gemini to overcome human multitasking limitations."
@@ -89,8 +89,6 @@ This is the thing that clicked for me: **one worktree + one Claude Code session 
 ![Isolated Agent Workflow](../../assets/images/content/you-can-t-multitask-your-ai-agent-can/img-55bc9061.png)
 
 > "Three worktrees, three Claude Code sessions: three agents working in parallel while you stay focused on what only you can do."
-
-***
 
 ## ⚡ Let's continue: Three Tasks, Zero Blocking
 
