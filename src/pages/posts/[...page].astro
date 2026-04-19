@@ -22,7 +22,12 @@ const { page } = Astro.props;
   <Header />
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>
-      {page.data.map(data => <Card {...data} />)}
+      {page.data.map((data, index) => (
+        <Card 
+          {...data} 
+          postNum={page.total - (page.start + index)} 
+        />
+      ))}
     </ul>
   </Main>
 

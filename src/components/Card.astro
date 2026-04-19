@@ -6,9 +6,10 @@ import Datetime from "./Datetime.astro";
 
 type Props = {
   variant?: "h2" | "h3";
+  postNum?: number;
 } & CollectionEntry<"blog">;
 
-const { variant: Heading = "h2", id, data, filePath } = Astro.props;
+const { variant: Heading = "h2", id, data, filePath, postNum } = Astro.props;
 
 const { title, description, ...props } = data;
 ---
@@ -24,6 +25,7 @@ const { title, description, ...props } = data;
     <Heading
       style={{ viewTransitionName: slugifyStr(title.replaceAll(".", "-")) }}
     >
+      {postNum && <span class="text-accent/80 font-mono text-lg mr-2 sm:text-xl">#{postNum}</span>}
       {title}
     </Heading>
   </a>
