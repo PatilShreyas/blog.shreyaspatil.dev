@@ -196,11 +196,11 @@ pre::-webkit-scrollbar-thumb {
 }
 
 .post-callout .emoji {
-  @apply select-none text-2xl filter grayscale-[0.2];
+  @apply text-2xl grayscale-[0.2] filter select-none;
 }
 
 .post-callout .content {
-  @apply flex-1 font-medium leading-relaxed text-foreground/90;
+  @apply flex-1 leading-relaxed font-medium text-foreground/90;
 }
 
 /* Dark mode refinement */

@@ -1,5 +1,5 @@
 export const SITE = {
-  website: "https://blog.shreyaspatil.dev/",
+  website: import.meta.env.SITE_URL || "https://blog.shreyaspatil.dev/",
   author: "Shreyas Patil",
   profile: "https://shreyaspatil.dev/",
   desc: "Senior Android Engineer @ Deliveroo. Google Developer Expert for Android. Writing about Android, Kotlin, and AI.",
