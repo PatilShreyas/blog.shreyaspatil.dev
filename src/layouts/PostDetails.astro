@@ -292,6 +292,45 @@ const nextPost =
   }
   attachCopyButtons();
 
+  /** 
+   * Loads GitHub Gists dynamically for View Transitions compatibility.
+   * Standard Gist scripts use document.write, which breaks during SPA navigation.
+   */
+  function loadGists() {
+    const scripts = document.querySelectorAll("script[src^='https://gist.github.com']");
+    scripts.forEach(script => {
+      const src = script.getAttribute("src");
+      if (!src) return;
+
+      const callbackName = "gist_callback_" + Math.random().toString(36).substring(7);
+      
+      // JSONP Callback
+      window[callbackName] = function(gist) {
+        // Only inject stylesheet once
+        if (!document.querySelector(`link[href="${gist.stylesheet}"]`)) {
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = gist.stylesheet;
+          document.head.appendChild(link);
+        }
+        
+        const div = document.createElement("div");
+        div.innerHTML = gist.div;
+        script.parentNode.insertBefore(div, script);
+        script.remove();
+        
+        // Clean up callback
+        delete window[callbackName];
+      };
+      
+      const jsonpUrl = src.replace(/\.js$/, ".json") + `?callback=${callbackName}`;
+      const scriptTag = document.createElement("script");
+      scriptTag.src = jsonpUrl;
+      document.head.appendChild(scriptTag);
+    });
+  }
+  loadGists();
+
   /* Go to page start after page swap */
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
