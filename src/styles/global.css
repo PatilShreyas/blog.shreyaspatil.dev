@@ -227,7 +227,14 @@ html[data-theme="dark"] mark {
 }
 
 #lightbox-img {
-  @apply max-h-[85vh] max-w-[90vw] cursor-zoom-out object-contain transition-transform duration-300;
+  @apply max-h-[85vh] max-w-[90vw] cursor-grab object-contain;
+  transition: opacity 0.3s ease;
+  touch-action: none;
+  user-select: none;
+}
+
+#lightbox-img:active {
+  @apply cursor-grabbing;
 }
 
 .lightbox-close {

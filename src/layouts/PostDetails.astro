@@ -381,13 +381,24 @@ const nextPost =
     const zoomVal = lightbox.querySelector(".lightbox-zoom-val");
     const closeBtn = lightbox.querySelector(".lightbox-close");
 
+    // Touch, Pan & Zoom State
     let currentScale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let lastTranslateX = 0;
+    let lastTranslateY = 0;
+    let initialDistance = 0;
+    let initialScale = 1;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+
     const ZOOM_STEP = 0.25;
-    const MAX_ZOOM = 3;
+    const MAX_ZOOM = 4;
     const MIN_ZOOM = 0.5;
 
-    function updateZoom() {
-      lightboxImg.style.transform = `scale(${currentScale})`;
+    function updateTransform() {
+      lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale})`;
       zoomVal.innerText = `${Math.round(currentScale * 100)}%`;
       zoomOutBtn.disabled = currentScale <= MIN_ZOOM;
       zoomInBtn.disabled = currentScale >= MAX_ZOOM;
@@ -396,7 +407,12 @@ const nextPost =
     function openLightbox(src) {
       lightboxImg.src = src;
       currentScale = 1;
-      updateZoom();
+      translateX = 0;
+      translateY = 0;
+      lastTranslateX = 0;
+      lastTranslateY = 0;
+      updateTransform();
+      lightboxImg.style.willChange = "transform";
       lightbox.classList.add("active");
       document.body.style.overflow = "hidden";
     }
@@ -404,9 +420,15 @@ const nextPost =
     function closeLightbox() {
       lightbox.classList.remove("active");
       document.body.style.overflow = "";
-      // Clear src after transition to avoid flicker on next open
       setTimeout(() => {
-        if (!lightbox.classList.contains("active")) lightboxImg.src = "";
+        if (!lightbox.classList.contains("active")) {
+          lightboxImg.src = "";
+          translateX = 0;
+          translateY = 0;
+          lastTranslateX = 0;
+          lastTranslateY = 0;
+          currentScale = 1;
+        }
       }, 300);
     }
 
@@ -421,18 +443,23 @@ const nextPost =
     zoomInBtn.onclick = e => {
       e.stopPropagation();
       currentScale = Math.min(MAX_ZOOM, currentScale + ZOOM_STEP);
-      updateZoom();
+      updateTransform();
     };
     zoomOutBtn.onclick = e => {
       e.stopPropagation();
       currentScale = Math.max(MIN_ZOOM, currentScale - ZOOM_STEP);
-      updateZoom();
+      updateTransform();
     };
     closeBtn.onclick = closeLightbox;
     lightbox.onclick = closeLightbox;
     lightboxImg.onclick = e => {
       e.stopPropagation();
-      closeLightbox();
+      // Only close on click if we haven't moved much (to allow panning)
+      const movedX = Math.abs(translateX - lastTranslateX);
+      const movedY = Math.abs(translateY - lastTranslateY);
+      if (movedX < 5 && movedY < 5) {
+        if (currentScale <= 1) closeLightbox();
+      }
     };
 
     // Keyboard support
@@ -444,14 +471,16 @@ const nextPost =
     };
     document.addEventListener("keydown", handleKeydown);
 
-    // Touch Support (Pinch-to-Zoom)
-    let initialDistance = 0;
-    let initialScale = 1;
-
-    lightbox.addEventListener(
+    // Touch Events for Panning & Pinch-to-Zoom
+    lightboxImg.addEventListener(
       "touchstart",
       e => {
-        if (e.touches.length === 2) {
+        if (e.touches.length === 1) {
+          isDragging = true;
+          startX = e.touches[0].pageX - lastTranslateX;
+          startY = e.touches[0].pageY - lastTranslateY;
+        } else if (e.touches.length === 2) {
+          isDragging = false;
           initialDistance = Math.hypot(
             e.touches[0].pageX - e.touches[1].pageX,
             e.touches[0].pageY - e.touches[1].pageY
@@ -462,11 +491,16 @@ const nextPost =
       { passive: false }
     );
 
-    lightbox.addEventListener(
+    lightboxImg.addEventListener(
       "touchmove",
       e => {
-        if (e.touches.length === 2) {
-          e.preventDefault(); // Prevent page zoom
+        if (isDragging && e.touches.length === 1) {
+          e.preventDefault();
+          translateX = e.touches[0].pageX - startX;
+          translateY = e.touches[0].pageY - startY;
+          updateTransform();
+        } else if (e.touches.length === 2) {
+          e.preventDefault();
           const currentDistance = Math.hypot(
             e.touches[0].pageX - e.touches[1].pageX,
             e.touches[0].pageY - e.touches[1].pageY
@@ -476,11 +510,38 @@ const nextPost =
             MAX_ZOOM,
             Math.max(MIN_ZOOM, initialScale * ratio)
           );
-          updateZoom();
+          updateTransform();
         }
       },
       { passive: false }
     );
+
+    lightboxImg.addEventListener("touchend", () => {
+      isDragging = false;
+      lastTranslateX = translateX;
+      lastTranslateY = translateY;
+    });
+
+    // Also support mouse dragging
+    lightboxImg.addEventListener("mousedown", e => {
+      e.preventDefault();
+      isDragging = true;
+      startX = e.pageX - lastTranslateX;
+      startY = e.pageY - lastTranslateY;
+    });
+
+    window.addEventListener("mousemove", e => {
+      if (!isDragging) return;
+      translateX = e.pageX - startX;
+      translateY = e.pageY - startY;
+      updateTransform();
+    });
+
+    window.addEventListener("mouseup", () => {
+      isDragging = false;
+      lastTranslateX = translateX;
+      lastTranslateY = translateY;
+    });
   }
   setupLightbox();
 </script>
