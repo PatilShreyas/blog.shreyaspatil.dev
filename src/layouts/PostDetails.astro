@@ -477,4 +477,37 @@ const nextPost =
     );
   }
   setupLightbox();
+
+  /**
+   * Initializes Mermaid diagrams if they exist on the page.
+   */
+  function setupMermaid() {
+    const mermaidBlocks = document.querySelectorAll(".mermaid");
+    if (mermaidBlocks.length > 0) {
+      if (!window.mermaid) {
+        const script = document.createElement("script");
+        script.src =
+          "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js";
+        script.onload = () => {
+          const isDark =
+            document.documentElement.getAttribute("data-theme") === "dark";
+          window.mermaid.initialize({
+            startOnLoad: false,
+            theme: isDark ? "dark" : "default",
+          });
+          window.mermaid.run();
+        };
+        document.head.appendChild(script);
+      } else {
+        const isDark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        window.mermaid.initialize({
+          startOnLoad: false,
+          theme: isDark ? "dark" : "default",
+        });
+        window.mermaid.run();
+      }
+    }
+  }
+  setupMermaid();
 </script>
