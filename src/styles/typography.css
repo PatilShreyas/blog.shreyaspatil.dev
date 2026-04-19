@@ -10,7 +10,7 @@
     h3,
     h4,
     th {
-      @apply mb-3 text-foreground font-heading;
+      @apply mb-3 text-foreground font-heading tracking-tight;
     }
 
     h3 {
@@ -24,7 +24,7 @@
     figcaption,
     table,
     code {
-      @apply text-foreground;
+      @apply text-foreground/90 leading-relaxed;
     }
 
     a {
@@ -67,7 +67,7 @@
     }
 
     code {
-      @apply rounded bg-muted/75 p-1 wrap-break-word text-foreground before:content-none after:content-none;
+      @apply rounded bg-muted px-1.5 py-0.5 font-medium text-foreground before:content-none after:content-none;
     }
 
     .astro-code code {
@@ -93,7 +93,7 @@
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
-    @apply flex border bg-(--shiki-light-bg) text-(--shiki-light) outline-border [&_span]:text-(--shiki-light);
+    @apply flex bg-(--shiki-light-bg) text-(--shiki-light) [&_span]:text-(--shiki-light);
   }
 
   html[data-theme="dark"] .astro-code {

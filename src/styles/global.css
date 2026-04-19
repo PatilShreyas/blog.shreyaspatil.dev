@@ -5,19 +5,19 @@
 
 :root,
 html[data-theme="light"] {
-  --background: #fdfdfd;
-  --foreground: #282728;
-  --accent: #006cac;
-  --muted: #e6e6e6;
-  --border: #ece9e9;
+  --background: #F9F8F6;
+  --foreground: #1A1A1A; /* Darker for better contrast */
+  --accent: #8B7355;     /* More saturated accent for readability */
+  --muted: #EFE9E3;
+  --border: #D9CFC7;
 }
 
 html[data-theme="dark"] {
-  --background: #212737;
-  --foreground: #eaedf3;
-  --accent: #ff6b01;
-  --muted: #343f60;
-  --border: #ab4b08;
+  --background: #222831;
+  --foreground: #F9F8F6; /* High contrast off-white */
+  --accent: #DFD0B8;
+  --muted: #393E46;
+  --border: #948979;
 }
 
 @theme inline {
@@ -32,7 +32,7 @@ html[data-theme="dark"] {
 
 @layer base {
   * {
-    @apply border-border outline-accent/75;
+    @apply border-border outline-accent/75 transition-colors duration-300;
     scrollbar-width: auto;
     scrollbar-color: var(--color-muted) transparent;
   }
@@ -40,7 +40,7 @@ html[data-theme="dark"] {
     @apply overflow-y-scroll scroll-smooth;
   }
   body {
-    @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/75 selection:text-background;
+    @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/30 selection:text-foreground;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
@@ -75,11 +75,19 @@ html[data-theme="dark"] {
 
 /* Code Block Styling */
 pre {
-  @apply rounded-xl border border-border/50 bg-muted/30 p-4 shadow-sm transition-all;
+  @apply rounded-xl p-4 shadow-sm transition-all;
+}
+
+html[data-theme="light"] pre {
+  @apply bg-white;
+}
+
+html[data-theme="dark"] pre {
+  @apply bg-muted/60 shadow-inner;
 }
 
 pre:hover {
-  @apply border-accent/30 shadow-md;
+  @apply shadow-md ring-1 ring-accent/20;
 }
 
 code {

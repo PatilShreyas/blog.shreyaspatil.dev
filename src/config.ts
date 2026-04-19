@@ -2,7 +2,7 @@ export const SITE = {
   website: "https://blog.shreyaspatil.dev/",
   author: "Shreyas Patil",
   profile: "https://shreyaspatil.dev/",
-  desc: "Personal blog about Android, Kotlin, and AI development.",
+  desc: "Senior Android Engineer @ Deliveroo. Google Developer Expert for Android. Writing about Android, Kotlin, and AI.",
   title: "Shreyas Patil's Blog",
   ogImage: "astropaper-og.jpg",
   lightAndDarkMode: true,
