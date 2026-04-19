@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Simplifying Redux in Kotlin: \"mutating\" immutable states with Mutekt"
 pubDatetime: 2023-03-24T13:00:39.382Z
-description: "TODO: Add a description"
+description: "Simplify state management in Kotlin with Mutekt. Learn how to write 'mutating' syntax for immutable states in Redux-like architectures."
 tags:
 - javascript
 - android

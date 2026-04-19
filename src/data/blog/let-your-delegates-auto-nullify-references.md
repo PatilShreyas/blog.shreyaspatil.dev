@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Let your delegates auto-nullify references☠️"
 pubDatetime: 2021-03-12T13:39:24.000Z
-description: "TODO: Add a description"
+description: "Learn how to use Kotlin property delegates to automatically nullify references in Android, preventing memory leaks in Fragments and Activities."
 tags:
 - android-app-development
 - android

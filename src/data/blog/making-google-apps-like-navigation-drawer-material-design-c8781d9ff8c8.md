@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Making Google-Apps Like NavigationView — Android 📱"
 pubDatetime: 2019-09-10T17:26:01.369Z
-description: "TODO: Add a description"
+description: "Step-by-step guide to implementing a Google-style Navigation Drawer in Android using the MaterialNavigationView library for premium UI design."
 tags:
 - others
 coverImage: "../../assets/images/cover-making-google-apps-like-navigation-drawer-material-design-c8781d9ff8c8.png"

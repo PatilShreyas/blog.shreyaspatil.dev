@@ -1,7 +1,7 @@
-﻿---
+---
 title: "The Future of Android Apps with AppFunctions"
 pubDatetime: 2026-03-30T04:30:00.000Z
-description: "TODO: Add a description"
+description: "Explore the potential of Android AppFunctions for AI agents. Learn how apps can share functionality with intelligent assistants using self-describing functions."
 tags:
 - app-development
 - ai

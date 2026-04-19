@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Animated Material Dialog — Android 📱 😍🎨"
 pubDatetime: 2019-06-13T08:15:23.722Z
-description: "TODO: Add a description"
+description: "Learn how to create beautiful, animated Material Design dialogs in Android to enhance your app's user experience and visual appeal."
 tags:
 - others
 coverImage: "../../assets/images/cover-implementing-animated-material-dialog-in-android-c4fb35d7d050.png"

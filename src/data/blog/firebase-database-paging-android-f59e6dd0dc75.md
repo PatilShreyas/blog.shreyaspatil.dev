@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Firebase Database Pagination — Android 🔥"
 pubDatetime: 2019-04-08T13:53:22.495Z
-description: "TODO: Add a description"
+description: "Step-by-step guide to implementing pagination in Firebase Realtime Database using the FirebaseUI-Android library for smooth scrolling."
 tags:
 - others
 coverImage: "../../assets/images/cover-firebase-database-paging-android-f59e6dd0dc75.png"

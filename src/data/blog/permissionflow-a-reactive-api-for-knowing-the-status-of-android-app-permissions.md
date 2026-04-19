@@ -1,7 +1,7 @@
-﻿---
+---
 title: "PermissionFlow: A Reactive API for knowing the status of Android app permissions"
 pubDatetime: 2023-05-22T05:19:08.251Z
-description: "TODO: Add a description"
+description: "Introduction to PermissionFlow: A reactive API for Android that simplifies tracking permission status changes using Kotlin Coroutines and Flow."
 tags:
 - android-app-development
 - android-development

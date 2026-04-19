@@ -1,7 +1,7 @@
-﻿---
+---
 title: "🤖 Automate Publishing Android Library to Bintray using GitHub Actions 🚀"
 pubDatetime: 2020-05-01T08:47:20.059Z
-description: "TODO: Add a description"
+description: "Learn how to automate the publishing of your open-source Android libraries to Bintray using GitHub Actions CI whenever you create a new release."
 tags:
 - others
 coverImage: "../../assets/images/cover-automate-publishing-android-library-to-bintray-using-github-actions-9b8ad8ab2698.jpeg"

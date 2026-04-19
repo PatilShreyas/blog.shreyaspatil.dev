@@ -1,7 +1,7 @@
-﻿---
+---
 title: "DevOps-ify Android libraries with GitHub Actions and Package Registry🚀"
 pubDatetime: 2020-10-02T10:29:52.365Z
-description: "TODO: Add a description"
+description: "Learn how to use GitHub Package Registry (GPR) and GitHub Actions to safely publish and consume private or public Android libraries with ease."
 tags:
 - others
 coverImage: "../../assets/images/cover-devops-ify-android-libraries-with-github-actions-and-package-registry-5e7f69a83622.jpeg"

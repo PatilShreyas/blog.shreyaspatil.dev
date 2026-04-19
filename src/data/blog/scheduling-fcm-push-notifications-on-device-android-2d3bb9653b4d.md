@@ -1,7 +1,7 @@
-﻿---
+---
 title: "⏰Scheduling FCM Push Notifications🔔 On Device — Android📱"
 pubDatetime: 2019-12-19T02:44:55.478Z
-description: "TODO: Add a description"
+description: "Learn how to schedule FCM push notifications on-device in Android without expensive cloud cron jobs, using AlarmManager and WorkManager."
 tags:
 - others
 coverImage: "../../assets/images/cover-scheduling-fcm-push-notifications-on-device-android-2d3bb9653b4d.png"

@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Mastering Android App Performance: Analyzing Bottlenecks with Perfetto 🚦"
 pubDatetime: 2023-03-13T13:00:39.698Z
-description: "TODO: Add a description"
+description: "Master Android app performance profiling with Perfetto. Learn how to identify and fix UI janks and bottlenecks using system tracing."
 tags:
 - android-app-development
 - performance

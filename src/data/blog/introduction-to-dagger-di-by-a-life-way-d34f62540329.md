@@ -1,7 +1,7 @@
-﻿---
+---
 title: "🔪 Introduction to Dagger DI 💉 by a Life way!"
 pubDatetime: 2020-03-15T07:54:11.457Z
-description: "TODO: Add a description"
+description: "Demystifying Dependency Injection with Dagger. Learn DI concepts through real-life analogies and simplify your Android app architecture."
 tags:
  - others
 coverImage: "../../assets/images/cover-introduction-to-dagger-di-by-a-life-way-d34f62540329.png"

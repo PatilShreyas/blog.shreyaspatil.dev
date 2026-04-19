@@ -1,7 +1,7 @@
-﻿---
+---
 title: "Update Queries without changing RecyclerView Adapter using FirebaseUI — Android 🔥"
 pubDatetime: 2020-03-13T14:56:59.620Z
-description: "TODO: Add a description"
+description: "Learn how to update Firebase queries dynamically without recreating your RecyclerView adapter using the FirebaseUI-Android library."
 tags:
 - android-app-development
 - firebase

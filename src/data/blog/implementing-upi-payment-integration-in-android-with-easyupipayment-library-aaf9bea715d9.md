@@ -1,7 +1,7 @@
-﻿---
+---
 title: "💳UPI Payment Integration in Android with EasyUpiPayment library📱💸"
 pubDatetime: 2019-06-07T04:33:51.518Z
-description: "TODO: Add a description"
+description: "A quick guide to integrating UPI payments in your Android app using the EasyUpiPayment library for a seamless checkout experience."
 tags:
 - library
 - opensource
