@@ -1,0 +1,22 @@
+# Caching headers for Cloudflare Pages
+# Hashed assets from Astro (JS, CSS, Optimized Images)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Static assets
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Root images (favicons, og-images)
+/*.png
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/*.svg
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/*.jpg
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/*.ico
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+# Search index
+/pagefind/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=600
