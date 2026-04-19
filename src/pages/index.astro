@@ -94,26 +94,20 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
           <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
           <ul>
             {recentPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && (
-                  <Card 
-                    variant="h3" 
-                    {...data} 
-                    postNum={sortedPosts.length - sortedPosts.indexOf(data)} 
-                  />
-                )
+              (data) => (
+                <Card 
+                  variant="h3" 
+                  {...data} 
+                  postNum={sortedPosts.length - sortedPosts.indexOf(data)} 
+                />
+              )
             )}
           </ul>
         </section>
       )
     }
 
-    <div class="my-8 text-center">
-      <LinkButton href="/posts/">
-        All Posts
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
-    </div>
+
   </main>
   <Footer />
 </Layout>
