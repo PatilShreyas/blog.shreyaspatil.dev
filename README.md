@@ -28,7 +28,7 @@ This blog is built using **Astro v5**, **Tailwind CSS**, and **Pagefind** for hi
 git clone https://github.com/PatilShreyas/blog.shreyaspatil.dev.git
 
 # Install dependencies
-npm install
+npm install  # or pnpm install
 ```
 
 ### Local Development
@@ -56,9 +56,13 @@ The build process automatically:
 3.  Runs `pagefind` (Search indexing)
 4.  Syncs the search index to `public/` for local testing.
 
-### Deployment (Cloudflare Pages)
+### Deployment (Cloudflare)
 
-- **Build Command**: `npm run build`
+This blog is configured to deploy as a Cloudflare Workers Assets project. 
+
+- **Environment Variable**: Set `NODE_VERSION` to `20` in the Cloudflare Dashboard.
+- **Build Command**: `npm run build` (or `pnpm run build`)
+- **Deploy Command**: `npx wrangler deploy` (or `pnpm exec wrangler deploy`)
 - **Output Directory**: `dist`
 
 ## 📝 Writing Posts
