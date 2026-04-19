@@ -6,22 +6,22 @@
     @apply prose prose-base max-w-none sm:prose-lg;
 
     h1 {
-      @apply mt-16 mb-8 font-heading leading-tight font-black tracking-tighter text-foreground;
+      @apply mb-8 font-heading leading-tight font-black tracking-tighter text-foreground;
     }
 
     h2,
     h3,
     h4,
     th {
-      @apply mt-12 mb-4 font-heading font-bold tracking-tight text-foreground;
+      @apply mt-4 mb-4 font-heading font-bold tracking-tight text-foreground;
     }
 
     h2 {
-      @apply border-t border-border/40 pt-8 text-3xl;
+      @apply text-3xl;
     }
 
     h3 {
-      @apply mt-10 text-xl italic;
+      @apply text-xl italic;
     }
 
     p,
