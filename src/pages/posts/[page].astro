@@ -34,7 +34,7 @@ const { sortedPosts } = { sortedPosts: getSortedPosts(await getCollection("blog"
             <Card 
               variant="h3" 
               {...data} 
-              postNum={sortedPosts.length - sortedPosts.indexOf(data)} 
+              postNum={sortedPosts.length - sortedPosts.findIndex(p => p.id === data.id)} 
             />
           ))
         }

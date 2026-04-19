@@ -100,7 +100,7 @@ const paginatedRecentPosts = recentPosts.slice(0, SITE.postPerPage);
                 <Card 
                   variant="h3" 
                   {...data} 
-                  postNum={sortedPosts.length - sortedPosts.indexOf(data)} 
+                  postNum={sortedPosts.length - sortedPosts.findIndex(p => p.id === data.id)} 
                 />
               )
             )}
