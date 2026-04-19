@@ -54,7 +54,7 @@ _(Fun fact: Antigravity even generated the dynamic OG-images for the blog site u
 To give you an idea of how I worked with Antigravity, here is the type of prompt I used to automate the heaviest part of the migration:
 
 <div class="post-callout">
-  **Pro Tip: The Migration Prompt**
+  <strong>Pro Tip: The Migration Prompt</strong>
   "Iterate through all .md files in the blog directory. Find any image URLs hosted on cdn.hashnode.com. Download those images to src/assets/images/, giving them a slugified filename based on the post title. Finally, update the Markdown files to use the new local relative paths."
 </div>
 
@@ -100,18 +100,24 @@ I wanted to combine the best parts of Medium and Hashnode while giving it my own
 ```kotlin
 // Example of the new Shiki highlighting + diffs
 fun main() {
--    println("Hello Old World")
-+    println("Hello New Astro World! 👋")
+    println("Hello Old World") // [!code --]
+    println("Hello New Astro World! 👋") // [!code ++]
 }
 ```
 
 - **Medium Style Lightbox**: We built a custom, vanilla JavaScript pinch to zoom lightbox.
 
-<div class="post-callout">
-  **Try it out!** Click the cover image at the top of this post to see the lightbox in action. If you are on mobile, try a pinch gesture to zoom in on the details!
-</div>
-
 - **Native Callouts**: We stripped away the clunky HTML callouts from Hashnode and built native Markdown highlight components using clean CSS.
+- **Mermaid Diagrams**: We now have native support for [Mermaid.js](https://mermaid.js.org/). This means I can write technical flowcharts directly in Markdown without ever having to export an image again!
+
+```mermaid
+graph LR
+    A[Hashnode] -->|Export Posts| B[60 Markdown Files]
+    B -->|AI Asset Rescue| C[Local Images]
+    B & C -->|Astro Build| D[Static Site]
+    D -->|Wrangler Deploy| E[Cloudflare Edge]
+```
+
 - **Beautiful Typography**: I brought over my favorite font combination: **Merriweather** for the reading body and **Inter** for crisp headings.
 
 ### Phase 5: SEO and Deployment Magic
@@ -125,7 +131,7 @@ Finally, for deployment, we shifted to a purely static **assets only** deploymen
 npm run build && npx wrangler pages deploy dist
 ```
 
-The result? Instantaneous, globally distributed page loads that scored perfect 100s on [Lighthouse](https://developers.google.com/speed/docs/insights/v5/get-started).
+The result? Instantaneous, globally distributed page loads that feel incredibly snappy across both desktop and mobile.
 
 ---
 
@@ -140,7 +146,7 @@ However, these are completely acceptable trade offs for the incredible speed, co
 
 The best part? You can see exactly how it is built. **The entire repository is open source!** Feel free to check out the code, steal the lightbox feature, or fork it to build your own dream blog.
 
-Check out the source code here: [github.com/PatilShreyas/blogsite](https://github.com/PatilShreyas/blogsite)
+Check out the source code here: [patilshreyas/blog.shreyaspatil.dev](https://github.com/patilshreyas/blog.shreyaspatil.dev)
 
 And if you are reading this right now... congratulations! You are experiencing the final result of this journey on our brand new platform. Welcome to the new era of the blog! 🎉
 
