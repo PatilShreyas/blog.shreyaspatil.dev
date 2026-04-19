@@ -192,7 +192,7 @@ pre::-webkit-scrollbar-thumb {
 
 /* Native Post Callouts */
 .post-callout {
-  @apply my-8 flex items-start gap-4 rounded-2xl border border-accent/20 bg-accent/5 p-6 shadow-sm transition-all hover:shadow-md font-medium text-foreground/90;
+  @apply my-8 flex items-start gap-4 rounded-2xl border border-accent/20 bg-accent/5 p-6 font-medium text-foreground/90 shadow-sm transition-all hover:shadow-md;
 }
 
 .post-callout .emoji {
