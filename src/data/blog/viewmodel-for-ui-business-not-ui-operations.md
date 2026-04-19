@@ -3,15 +3,15 @@ title: "ViewModel: for UI business, not UI operations 😮"
 pubDatetime: 2022-12-19T12:30:42.713Z
 description: "Stop misusing ViewModels! Learn why ViewModels should handle UI business logic, not UI operations like showing toasts or navigation."
 tags:
-- android-app-development
-- ux
-- android
-- kotlin
-- state-management
+  - android-app-development
+  - ux
+  - android
+  - kotlin
+  - state-management
 coverImage: "../../assets/images/cover-viewmodel-for-ui-business-not-ui-operations.png"
 ---
 
-Hey tech Android🙋🏻‍♂️, this is an opinionated post about what ViewModels should do and what should not. It's based on recent experiences and seeing common mistakes or anti-patterns developers follow while developing Android applications with ***MVVM/MVI*** architecture. Let's see.
+Hey tech Android🙋🏻‍♂️, this is an opinionated post about what ViewModels should do and what should not. It's based on recent experiences and seeing common mistakes or anti-patterns developers follow while developing Android applications with **_MVVM/MVI_** architecture. Let's see.
 
 ## What is ViewModel?
 
@@ -57,7 +57,7 @@ emitState(LoginUiState.ShowToast("Operation failed!"))
 
 In this snippet, you can catch that there is a very UI-specific state got added: `ShowToast`. Also, it's used generically for different business operations: **1.**Logging in and**2.** Resetting password.
 
-Now, what's the issue with it? The issue is that we are letting ViewModel know about the UI components used in the screen i.e. ***Toast**(in this case)*. In the future, instead of toast, if we want to show an error dialog/snackbar, then we have to again touch the ViewModel. This*tight coupling*between*UI and ViewModel* shouldn't happen.
+Now, what's the issue with it? The issue is that we are letting ViewModel know about the UI components used in the screen i.e. **\*Toast**(in this case)*. In the future, instead of toast, if we want to show an error dialog/snackbar, then we have to again touch the ViewModel. This*tight coupling*between*UI and ViewModel\* shouldn't happen.
 
 This is how the state for it should be modelled
 
@@ -98,11 +98,11 @@ state = state.copy(expandPreferencesBottomSheet = !isExpanded)
 }
 ```
 
-Thus, the UI calls *this method (*`togglePreferenceBottomSheet()`*)*of ViewModel for expanding/collapsing the bottom sheet. But, the bottom sheet is a UI component and not the business of the UI. The UI component should**manage its own state upon user interactions** . ViewModel should not modify the user interaction state for a component.
+Thus, the UI calls _this method (_`togglePreferenceBottomSheet()`*)*of ViewModel for expanding/collapsing the bottom sheet. But, the bottom sheet is a UI component and not the business of the UI. The UI component should**manage its own state upon user interactions** . ViewModel should not modify the user interaction state for a component.
 
 What should be done here? 🤔
 
-First of all, the state field `expandPreferencesBottomSheet` should be part of the state model and ViewModel shouldn't be holding the state. Then, UI should decide on its own whether to collapse/expand on user interactions as follows. UI should only send data to ViewModel ( *for e.g. preference from the bottom sheet is updated* ):
+First of all, the state field `expandPreferencesBottomSheet` should be part of the state model and ViewModel shouldn't be holding the state. Then, UI should decide on its own whether to collapse/expand on user interactions as follows. UI should only send data to ViewModel ( _for e.g. preference from the bottom sheet is updated_ ):
 
 ```kotlin
 // Example Jetpack Compose Code
@@ -145,20 +145,19 @@ if (state.failureReason != null) {
 }
 ```
 
-Based on the state data we get from ViewModel ( *in this case,* `failureReason`), UI should decide how to present it. This way, ViewModel is not aware of the UI component, and UI is properly handling its logic.
+Based on the state data we get from ViewModel ( _in this case,_ `failureReason`), UI should decide how to present it. This way, ViewModel is not aware of the UI component, and UI is properly handling its logic.
 
 These were just two examples of the demonstration of anti-patterns developers unintentionally follow while working with UI state management and there are a lot like these. Let's conclude it.
 
 ## What's the conclusion? 🤔
 
-*When we say,***"ViewModel should handle the business of the UI"***it doesn't mean we should include literally "**everything**" related to UI in ViewModel.*ViewModel should hold**only**data**which is required for UI. Let UI decide* how it wants to present that data*.*UI should be dependent on*ViewModel for executing business*and ViewModel should provide a state for UI.*UI should blindly depend on the state provided by ViewModel* .
+\*When we say,***"ViewModel should handle the business of the UI"***it doesn't mean we should include literally "**everything**" related to UI in ViewModel._ViewModel should hold**only**data\*\*which is required for UI. Let UI decide_ how it wants to present that data*.*UI should be dependent on*ViewModel for executing business*and ViewModel should provide a state for UI._UI should blindly depend on the state provided by ViewModel_ .
 
-*ViewModel should**not be aware**of the*UI component used in the UI*.*UI components (*such as bottom sheet, dialog, etc*) should take care of managing their own state on user interactions (*like collapsing/expanding sheet, closing dialog, etc* ).
+*ViewModel should**not be aware**of the*UI component used in the UI*.*UI components (_such as bottom sheet, dialog, etc_) should take care of managing their own state on user interactions (_like collapsing/expanding sheet, closing dialog, etc_ ).
 
-*UI should only tell ViewModel about the event which is produced via user interactions on UI components for further business execution (*for example, calling ViewModel method on the Login button click* ).
+*UI should only tell ViewModel about the event which is produced via user interactions on UI components for further business execution (*for example, calling ViewModel method on the Login button click\* ).
 
-
-***
+---
 
 That's all about this post! If you like it, share it 👍🏻
 

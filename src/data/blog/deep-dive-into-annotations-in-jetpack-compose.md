@@ -3,16 +3,16 @@ title: "Deep dive into annotations in Jetpack Compose"
 pubDatetime: 2025-05-19T05:16:29.339Z
 description: "An extensive deep dive into annotations in Jetpack Compose. Understand how @Composable, @Stable, @ReadOnlyComposable, and others work under the hood."
 tags:
-- compose
-- app-development
-- optimization
-- android-app-development
-- performance
-- android
-- ui
-- kotlin
-- jetpack
-- jetpack-compose
+  - compose
+  - app-development
+  - optimization
+  - android-app-development
+  - performance
+  - android
+  - ui
+  - kotlin
+  - jetpack
+  - jetpack-compose
 coverImage: "../../assets/images/cover-deep-dive-into-annotations-in-jetpack-compose.png"
 ---
 
@@ -20,7 +20,7 @@ Hey Composers 👋, when walking through the internal code in different Compose 
 
 This post aims to demystify three such compiler annotations: `@ReadOnlyComposable`, `@NonRestartableComposable`, and `@NonSkippableComposable`. For Jetpack Compose developers already familiar with the basics, this exploration will provide clearer insights into how these annotations work, when to use them, and how they can help build even more polished and performant applications, complete with practical examples.
 
-***
+---
 
 ## ⚡ Quick Refresher
 
@@ -42,7 +42,7 @@ Restartable composables are functions that the Compose runtime can re-invoke ind
 
 A **restartable** composable function serves as a distinct "scope" where the recomposition process can initiate. It acts as a specific point of entry from which Jetpack Compose can begin re-executing code in response to state changes or updated parameters. Essentially, each non-inline composable function that returns `Unit` (the typical return type for UI-emitting composables) is transformed by the Compose compiler to establish such a scope. The compiler achieves this by wrapping the function's body within mechanisms that define this restartable boundary. This transformation includes injecting calls to functions like `startRestartGroup` and passing additional parameters such as a `Composer` instance and `changed` flags, which are instrumental in managing these scopes during runtime.
 
-When a state object, such as a `MutableState<T>`, that is read *within* the body of a restartable composable changes its value, the scope associated with that composable is invalidated. This invalidation marks the scope as "dirty" and schedules it for recomposition. Similarly, if a parameter passed *into* a restartable composable changes from its previous value, this also serves as a trigger for its re-evaluation, assuming the composable is not skipped for other reasons.
+When a state object, such as a `MutableState<T>`, that is read _within_ the body of a restartable composable changes its value, the scope associated with that composable is invalidated. This invalidation marks the scope as "dirty" and schedules it for recomposition. Similarly, if a parameter passed _into_ a restartable composable changes from its previous value, this also serves as a trigger for its re-evaluation, assuming the composable is not skipped for other reasons.
 
 So, in the above example: `MainScreen` and `ExpandableText` hoists a state that adds a capability in them to restart themselves.
 
@@ -64,20 +64,20 @@ The connection here is fundamental: a restartable scope provides the granularity
 
 ### **Summarizing concepts:**
 
-| **Parameters** | **Description** | **Role in Recomposition** | **How It's Achieved** |
-| :--- | :--- | :--- | :--- |
-| **Restartable** | A composable that serves as a "scope" or entry point where recomposition can begin. | Enables Compose to re-execute only a specific part of the UI tree. | Compiler marks most non-inline, `Unit`-returning composables as restartable (e.g., via `startRestartGroup`). |
-| **Skippable** | A composable whose execution can be skipped during recomposition if its inputs haven't changed. | Prevents unnecessary work, improving performance. | All inputs must be stable and unchanged (compared via `equals`). Compiler marks based on parameter stability. Not applicable to non-`Unit` returning functions. |
+| **Parameters**  | **Description**                                                                                 | **Role in Recomposition**                                          | **How It's Achieved**                                                                                                                                           |
+| :-------------- | :---------------------------------------------------------------------------------------------- | :----------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Restartable** | A composable that serves as a "scope" or entry point where recomposition can begin.             | Enables Compose to re-execute only a specific part of the UI tree. | Compiler marks most non-inline, `Unit`-returning composables as restartable (e.g., via `startRestartGroup`).                                                    |
+| **Skippable**   | A composable whose execution can be skipped during recomposition if its inputs haven't changed. | Prevents unnecessary work, improving performance.                  | All inputs must be stable and unchanged (compared via `equals`). Compiler marks based on parameter stability. Not applicable to non-`Unit` returning functions. |
 
 This comparative framework helps to clarify how these distinct but related concepts work together to achieve efficient recomposition.
 
-***
+---
 
 ## 🪧 Annotations
 
 ### 1. @ReadOnlyComposable: Reading Without Writing UI
 
-The `@ReadOnlyComposable` annotation is a marker for `@Composable` functions that are intended only to read from the current composition context and *must not emit any UI nodes*. Such functions might access `CompositionLocal` values (like `LocalContext.current` or theme attributes) or compute values based on the compositional environment. It establishes a contract with the compiler about the function's read-only nature regarding UI output.
+The `@ReadOnlyComposable` annotation is a marker for `@Composable` functions that are intended only to read from the current composition context and _must not emit any UI nodes_. Such functions might access `CompositionLocal` values (like `LocalContext.current` or theme attributes) or compute values based on the compositional environment. It establishes a contract with the compiler about the function's read-only nature regarding UI output.
 
 **How it helps?**
 
@@ -123,18 +123,18 @@ fun screenPadding(): Dp {
 }
 ```
 
-*Explanation:* These utility functions leverage the composable context (via `stringResource` and `dimensionResource`, which are themselves `@ReadOnlyComposable`) to fetch values. They don't emit UI but provide data for other composables.
+_Explanation:_ These utility functions leverage the composable context (via `stringResource` and `dimensionResource`, which are themselves `@ReadOnlyComposable`) to fetch values. They don't emit UI but provide data for other composables.
 
 **When to use it:**
 
-*   For utility functions that need to access `CompositionLocal`s (e.g., `LocalContext.current`, `LocalDensity.current`, `LocalLayoutDirection.current`) but do not render UI.
-*   For theme property accessors, as demonstrated in the `MaterialTheme` example.
-*   For any function that computes and returns a value based on compositional information, which will then be used by other UI-emitting composables.
+- For utility functions that need to access `CompositionLocal`s (e.g., `LocalContext.current`, `LocalDensity.current`, `LocalLayoutDirection.current`) but do not render UI.
+- For theme property accessors, as demonstrated in the `MaterialTheme` example.
+- For any function that computes and returns a value based on compositional information, which will then be used by other UI-emitting composables.
 
 > [!IMPORTANT]
 > **Constraint:** A crucial rule is that `@ReadOnlyComposable` functions can only call other `@Composable` functions that are also marked as `@ReadOnlyComposable`. Attempting to invoke a regular UI-emitting composable from within a `@ReadOnlyComposable` function will lead to a compile-time error. This restriction is vital for maintaining the integrity of the "no UI emission" contract. Furthermore, these functions should not introduce (write) side effects or host `State` in a way that would trigger the recomposition of other UI elements. Using `remember` inside a `@ReadOnlyComposable` function can also be problematic, as `remember` interacts with the composer to store values in the slot table, which isn't strictly a "read-only" operation.
 
-***
+---
 
 ### 2. @NonRestartableComposable - Controlling Recomposition Boundaries
 
@@ -169,39 +169,39 @@ fun UserProfileHeader(userState: State<User>) {
 }
 ```
 
-Here, `SimpleIconWrapper` does very little beyond calling the `Icon` composable. If its parameters (`icon`, `modifier`) are stable and seldom change in a way that would require `SimpleIconWrapper` itself to be the starting point of a recomposition, it *might* be a candidate.
+Here, `SimpleIconWrapper` does very little beyond calling the `Icon` composable. If its parameters (`icon`, `modifier`) are stable and seldom change in a way that would require `SimpleIconWrapper` itself to be the starting point of a recomposition, it _might_ be a candidate.
 
 **When to consider using it?**
 
-*   **Simple and Stateless:** It doesn't use `remember` to manage its own internal state. It primarily depends on the parameters passed to it.
-*   **Frequently Used (Potentially):** The benefits are more likely to be noticeable if the composable is instantiated many times, such as in a long list or a complex UI.
-*   **Leaf-like or a Thin Wrapper:** It often appears as a leaf node in the UI tree or as a very simple wrapper around another composable.
-*   **Optimization alternative:** When compiler reports show a function is `restartable` but not `skippable`, and making it skippable by stabilizing all parameters is impractical.
+- **Simple and Stateless:** It doesn't use `remember` to manage its own internal state. It primarily depends on the parameters passed to it.
+- **Frequently Used (Potentially):** The benefits are more likely to be noticeable if the composable is instantiated many times, such as in a long list or a complex UI.
+- **Leaf-like or a Thin Wrapper:** It often appears as a leaf node in the UI tree or as a very simple wrapper around another composable.
+- **Optimization alternative:** When compiler reports show a function is `restartable` but not `skippable`, and making it skippable by stabilizing all parameters is impractical.
 
 **Important Considerations and Caveats:**
 
-*   **Micro-optimization:** This is for fine-tuning performance. The actual gains are often very small and may not be noticeable.
-*   **Do profiling first:** Always use profiling tools (like Android Studio's Layout Inspector) to identify actual performance bottlenecks before applying such optimizations.
-*   **Risk of Incorrect UI:** If you incorrectly assume a composable doesn't need to be restartable, it could lead to unnecessary recompositions.
-*   **Not for Complex Logic:** If a composable has complex logic or could truly benefit from being skipped independently, it should remain restartable.
+- **Micro-optimization:** This is for fine-tuning performance. The actual gains are often very small and may not be noticeable.
+- **Do profiling first:** Always use profiling tools (like Android Studio's Layout Inspector) to identify actual performance bottlenecks before applying such optimizations.
+- **Risk of Incorrect UI:** If you incorrectly assume a composable doesn't need to be restartable, it could lead to unnecessary recompositions.
+- **Not for Complex Logic:** If a composable has complex logic or could truly benefit from being skipped independently, it should remain restartable.
 
 **Impact on recomposition scope**
 
-If a `@NonRestartableComposable` function *does* need to recompose (e.g., because one of its parameters changes), the recomposition will be initiated by its nearest restartable ancestor scope in the composable tree. This could potentially lead to a larger portion of the UI tree recomposing than if the function had its own dedicated restart scope. This trade-off is central to its use.
+If a `@NonRestartableComposable` function _does_ need to recompose (e.g., because one of its parameters changes), the recomposition will be initiated by its nearest restartable ancestor scope in the composable tree. This could potentially lead to a larger portion of the UI tree recomposing than if the function had its own dedicated restart scope. This trade-off is central to its use.
 
-***
+---
 
 ### 3. @NonSkippableComposable - Forcing Re-evaluation
 
-The `@NonSkippableComposable` annotation ensures that a composable function will *always* be executed (recomposed) whenever its parent composable recomposes, even if all of its own input parameters are stable and have not changed since the last composition. It effectively allows a composable to opt out of Compose's normal skipping mechanism.
+The `@NonSkippableComposable` annotation ensures that a composable function will _always_ be executed (recomposed) whenever its parent composable recomposes, even if all of its own input parameters are stable and have not changed since the last composition. It effectively allows a composable to opt out of Compose's normal skipping mechanism.
 
 **How it helps?**
 
 This annotation is useful in particular situations where the default skipping behavior is undesirable.
 
-*   It can be used when a composable has important side effects or internal logic that *must* be re-evaluated on every recomposition cycle of its parent.
-*   It serves as a mechanism to opt out of **"strong skipping"** mode for a specific composable if there's a need for it to be restartable but explicitly non-skippable.
-*   It can also be a tool for debugging, to ensure a specific composable is indeed being called during recomposition cycles as expected.
+- It can be used when a composable has important side effects or internal logic that _must_ be re-evaluated on every recomposition cycle of its parent.
+- It serves as a mechanism to opt out of **"strong skipping"** mode for a specific composable if there's a need for it to be restartable but explicitly non-skippable.
+- It can also be a tool for debugging, to ensure a specific composable is indeed being called during recomposition cycles as expected.
 
 **Example:**
 
@@ -236,38 +236,38 @@ In this scenario, `DebuggableCounterDisplay` will print its log message and redr
 
 **When to use it (Cautiously):**
 
-*   **Critical Side Effects:** For composables that contain critical side effects that absolutely must run on each parent recomposition. However, it's important to evaluate if these side effects are better managed by `LaunchedEffect`, `DisposableEffect`, or `SideEffect`.
-*   **Debugging:** For debugging purposes, to confirm that a particular composable is being invoked.
-*   **Strong Skipping Override:** When strong skipping mode is enabled, and there's a specific need for a restartable composable to *not* be skippable.
+- **Critical Side Effects:** For composables that contain critical side effects that absolutely must run on each parent recomposition. However, it's important to evaluate if these side effects are better managed by `LaunchedEffect`, `DisposableEffect`, or `SideEffect`.
+- **Debugging:** For debugging purposes, to confirm that a particular composable is being invoked.
+- **Strong Skipping Override:** When strong skipping mode is enabled, and there's a specific need for a restartable composable to _not_ be skippable.
 
 > [!WARNING]
 > **Performance Implication:** This annotation deliberately bypasses a core Compose optimization (skipping). Consequently, its overuse can lead to performance degradation, as composables will perform more work than might be strictly necessary.
 
-***
+---
 
 ## Key Differences in NonRestartableComposable & NonSkippableComposable
 
 While both `@NonRestartableComposable` and `@NonSkippableComposable` influence recomposition behavior and are listed as conditions that can make a composable ineligible for standard skipping, they operate on distinct aspects of the process.
 
-`@NonRestartableComposable` primarily affects whether the composable function establishes its *own restart scope*. `@NonSkippableComposable`, on the other hand, directly dictates whether the composable's execution can be *skipped* if its inputs remain unchanged when its parent recomposes.
+`@NonRestartableComposable` primarily affects whether the composable function establishes its _own restart scope_. `@NonSkippableComposable`, on the other hand, directly dictates whether the composable's execution can be _skipped_ if its inputs remain unchanged when its parent recomposes.
 
 Crucially, `@NonRestartableComposable` does **not** imply `@NonSkippableComposable`. A composable function can be non-restartable but still be skippable if its own parameters are stable. Conversely, a composable can be restartable yet be marked with `@NonSkippableComposable` to ensure it always re-executes with its parent.
 
 The following table provides a side-by-side comparison to clarify their distinct characteristics:
 
-| **Annotations** | `@NonRestartableComposable` | `@NonSkippableComposable` |
-| :--- | :--- | :--- |
-| **Primary Effect** | Prevents the composable from having its own independent restart scope. | Prevents the composable's execution from being skipped, even if inputs are unchanged. |
-| **If Inputs Change** | The nearest restartable parent scope initiates recomposition that includes this composable. | The composable always re-executes if its parent recomposes. |
-| **If Inputs Don't Change (and parent recomposes)** | Can still be skipped if its parameters are stable and unchanged. | Always re-executes. |
-| **Goal** | Micro-optimization for simple wrappers by avoiding restart scope allocation. | Forcing execution for side-effects, debugging, or explicitly opting out of strong skipping. |
-| **Interaction with Strong Skipping** | Remains unskippable (as strong skipping applies to *restartable* composables). | Explicitly makes a *restartable* composable non-skippable, overriding strong skipping's default. |
-| **Typical Use Case** | Small, stateless wrapper functions with stable inputs. | Debugging; specific side-effects (use with caution); opting out of strong skipping. |
-| **Performance Implication** | Saves minor overhead of a restart scope; potential for wider recomposition if it changes. | Deliberately incurs the cost of re-execution; bypasses a core optimization. |
+| **Annotations**                                    | `@NonRestartableComposable`                                                                 | `@NonSkippableComposable`                                                                        |
+| :------------------------------------------------- | :------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------- |
+| **Primary Effect**                                 | Prevents the composable from having its own independent restart scope.                      | Prevents the composable's execution from being skipped, even if inputs are unchanged.            |
+| **If Inputs Change**                               | The nearest restartable parent scope initiates recomposition that includes this composable. | The composable always re-executes if its parent recomposes.                                      |
+| **If Inputs Don't Change (and parent recomposes)** | Can still be skipped if its parameters are stable and unchanged.                            | Always re-executes.                                                                              |
+| **Goal**                                           | Micro-optimization for simple wrappers by avoiding restart scope allocation.                | Forcing execution for side-effects, debugging, or explicitly opting out of strong skipping.      |
+| **Interaction with Strong Skipping**               | Remains unskippable (as strong skipping applies to _restartable_ composables).              | Explicitly makes a _restartable_ composable non-skippable, overriding strong skipping's default. |
+| **Typical Use Case**                               | Small, stateless wrapper functions with stable inputs.                                      | Debugging; specific side-effects (use with caution); opting out of strong skipping.              |
+| **Performance Implication**                        | Saves minor overhead of a restart scope; potential for wider recomposition if it changes.   | Deliberately incurs the cost of re-execution; bypasses a core optimization.                      |
 
-Choosing between these annotations requires a clear understanding of *why* the default behavior needs to be altered.
+Choosing between these annotations requires a clear understanding of _why_ the default behavior needs to be altered.
 
-***
+---
 
 ## Interaction with Strong Skipping Mode
 
@@ -278,17 +278,17 @@ The key changes introduced by Strong Skipping Mode are:
 1.  **Composables with unstable parameters become skippable:** Under strong skipping, even if a composable function receives parameters of types that the compiler cannot infer as stable, the function can still be skipped. The comparison for these unstable parameters is done using instance equality (`===`).
 2.  **Lambdas with unstable captures are remembered/memoized:** The compiler automatically wraps lambda expressions, even those capturing unstable variables, in a `remember` call, using appropriate keys.
 
-Essentially, with strong skipping, *all restartable composable functions become skippable by default*.
+Essentially, with strong skipping, _all restartable composable functions become skippable by default_.
 
 ### `@NonSkippableComposable` as an Opt-Out
 
-In a strong skipping environment, the `@NonSkippableComposable` annotation becomes particularly important. If there is a *restartable* composable that should *not* be skipped, `@NonSkippableComposable` is the explicit way to enforce its re-execution.
+In a strong skipping environment, the `@NonSkippableComposable` annotation becomes particularly important. If there is a _restartable_ composable that should _not_ be skipped, `@NonSkippableComposable` is the explicit way to enforce its re-execution.
 
 ### `@NonRestartableComposable` and Strong Skipping
 
 Functions annotated with `@NonRestartableComposable` remain unskippable even when strong skipping is enabled. Since a `@NonRestartableComposable` function, by definition, lacks its own independent restart scope, the rules of strong skipping do not fundamentally alter its non-skippable nature in this context.
 
-***
+---
 
 ## Conclusion
 
@@ -298,13 +298,13 @@ Still, these annotations can often seem confusing, so it's **highly recommended 
 
 **Use tools like the Layout Inspector in Android Studio (to check recomposition counts), Jetpack Macrobenchmark for broader performance testing, and Compose compiler reports (for analyzing stability and skippability).**
 
-***
+---
 
 I hope you got the idea about how exactly these annotations works in Jetpack Compose.
 
 Awesome. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄
 

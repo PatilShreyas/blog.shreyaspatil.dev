@@ -3,19 +3,19 @@ title: "Kotlin Exception Handling: Why Singleton Exceptions are a bad idea"
 pubDatetime: 2024-09-18T12:56:49.894Z
 description: "Understand why using singleton exceptions in Kotlin can be a bad practice and how it affects stack traces and debugging in your applications."
 tags:
-- jvm
-- programming-blogs
-- mistakes
-- java
-- android
-- coding
-- best-practices
-- kotlin
-- exception-handling
-- kotlin-beginner
-- programming-tips
-- kotlin-multiplatform
-- exceptionhandling
+  - jvm
+  - programming-blogs
+  - mistakes
+  - java
+  - android
+  - coding
+  - best-practices
+  - kotlin
+  - exception-handling
+  - kotlin-beginner
+  - programming-tips
+  - kotlin-multiplatform
+  - exceptionhandling
 coverImage: "../../assets/images/cover-kotlin-exception-handling-why-singleton-exceptions-are-a-bad-idea.png"
 ---
 
@@ -74,17 +74,17 @@ So we want to print the **stack trace** if an error has occurred while getting t
 
 Wrong stack trace for the wrong method! 😏 This was expected because `object` **creates a singleton instance of class lazily** when it’s accessed for the first time. In the above sample, we called the method `getUserData()` before `getAppData()` and inside `getUserData()` method when `throw NoConnectivityException` was executed, the instance was created and kept forever. Next time when `getAppData()` throws the Exception, it’s throwing an Exception which was earlier created by `getUserData()` method 🤷🏻‍♂️.
 
-Now imagine what would happen if it's a critical exception that gets logged into your app's dashboard (*like 🔥Crashlytics or any other tool*). It could mislead developers 🌚.
+Now imagine what would happen if it's a critical exception that gets logged into your app's dashboard (_like 🔥Crashlytics or any other tool_). It could mislead developers 🌚.
 
 Ideally, **<mark>Exception instances shouldn’t be singletons!</mark>** If some Exceptions are only used internally to represent state or info that won't be monitored at scale, it might be okay to make them singletons. In places where the stack trace is important and shouldn't be ignored, it can be dangerous 🔴 for the app.
 
 These little things can easily be overlooked, but they have a big impact overall. Make sure to handle exceptions safely in your app 👍🏻.
 
-***
+---
 
 Awesome 🤩. I trust you've picked up some valuable insights from this. If you like this write-up, do share it 😉, because...
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄
 

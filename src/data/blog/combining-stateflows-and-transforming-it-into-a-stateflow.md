@@ -3,11 +3,11 @@ title: "Combining StateFlows and transforming it into a StateFlow"
 pubDatetime: 2022-06-24T12:30:00.989Z
 description: "Master the art of combining multiple StateFlows into a single transformed StateFlow. Explore utilities and best practices for managing complex states in Kotlin."
 tags:
-- multithreading
-- android
-- kotlin
-- coroutines
-- stateflow
+  - multithreading
+  - android
+  - kotlin
+  - coroutines
+  - stateflow
 coverImage: "../../assets/images/cover-combining-stateflows-and-transforming-it-into-a-stateflow.png"
 ---
 
@@ -17,7 +17,7 @@ In this blog, we are gonna do the experiment with the very 🔥hot [`StateFlow`]
 
 ## How it's used currently? 🤷
 
-Coroutine's `StateFlow` is really a useful API for handling stateful business in any application (*let's say in Android*) which is a pretty simple yet powerful stream. Let's discuss some common usage.
+Coroutine's `StateFlow` is really a useful API for handling stateful business in any application (_let's say in Android_) which is a pretty simple yet powerful stream. Let's discuss some common usage.
 
 ### Example 1 - UI State management
 
@@ -35,7 +35,7 @@ So assume we're building a library and exposing some API class that returns a `S
 
 Here, `getPreferenceState()` returns StateFlow of `PreferenceState` and just notice the second function `getMultiplePreferenceState()` which is just deriving a flow from multiple StateFlows, we'll discuss about it later.
 
-***
+---
 
 ## What's the problem? 🤔
 
@@ -51,14 +51,15 @@ In the Example 2, the method `getPreferenceState()` is fine which is returning `
 
 <script src="https://gist.github.com/PatilShreyas/62b42152d5d71b29a37ccdf4fb44c78d.js"></script>
 
-To convert combined flow into a StateFlow, `stateIn()` is used which needs a `CoroutineScope`. Thus, it ultimately restricts to ask for consumer's scope here (*which we don't want some time in some use cases. Example, we don't want to control when to start collecting flow, scope it to a specific scope, etc.*). Also, the initial state needs to calculate separately. That's the problem.
+To convert combined flow into a StateFlow, `stateIn()` is used which needs a `CoroutineScope`. Thus, it ultimately restricts to ask for consumer's scope here (_which we don't want some time in some use cases. Example, we don't want to control when to start collecting flow, scope it to a specific scope, etc._). Also, the initial state needs to calculate separately. That's the problem.
 
 In both examples, what we want is:
-> ***If all the flows which are being combined are StateFlows then derived/transformed Flow should also be StateFlow.***
+
+> **_If all the flows which are being combined are StateFlows then derived/transformed Flow should also be StateFlow._**
 
 Now, let's find out the solution for this.
 
-***
+---
 
 ## Solution 💡
 
@@ -78,7 +79,7 @@ Let's understand this:
 
 This is a core variant of `combineStates()` method and multiple variants of combineStates() can be added as per the need and number of parameters required.
 
-Let's say in the above Example 1, we need to combine three flows so *type safe function for combining three StateFlows would look like* 👇.
+Let's say in the above Example 1, we need to combine three flows so _type safe function for combining three StateFlows would look like_ 👇.
 
 <script src="https://gist.github.com/PatilShreyas/67c29058de6d016bf26f62f1d2eec552.js"></script>
 
@@ -103,11 +104,11 @@ So after all this, there are some problems with this solution due to which it ca
 
 If your use case is NOT affected by these mentioned issues, you can definitely use this approach for combining StateFlows and deriving another StateFlow from it.
 
-***
+---
 
-*If you have any feedback on this approach, I've also suggested this approach in the [GitHub issue](https://github.com/Kotlin/kotlinx.coroutines/issues/2631#issuecomment-1162673773).*
+_If you have any feedback on this approach, I've also suggested this approach in the [GitHub issue](https://github.com/Kotlin/kotlinx.coroutines/issues/2631#issuecomment-1162673773)._
 
-***
+---
 
 That's all, I hope you found this helpful 😉.
 
@@ -115,7 +116,7 @@ That's all, I hope you found this helpful 😉.
 
 Thank you! 😀
 
-***
+---
 
 ## 📚 Resources
 

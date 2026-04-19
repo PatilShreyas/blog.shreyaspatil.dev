@@ -19,11 +19,13 @@ const { noMarginTop = false, class: className, ...attrs } = Astro.props;
     class:list={[
       "py-8 sm:py-6",
       "border-t border-border/40",
-      "flex flex-col items-center justify-between sm:flex-row-reverse opacity-70 hover:opacity-100 transition-opacity",
+      "flex flex-col items-center justify-between opacity-70 transition-opacity hover:opacity-100 sm:flex-row-reverse",
     ]}
   >
     <Socials />
-    <div class="my-2 flex flex-col items-center whitespace-nowrap sm:flex-row text-sm">
+    <div
+      class="my-2 flex flex-col items-center text-sm whitespace-nowrap sm:flex-row"
+    >
       <span>Copyright &#169; {currentYear}</span>
       <span class="hidden sm:inline">&nbsp;|&nbsp;</span>
       <span>All rights reserved.</span>

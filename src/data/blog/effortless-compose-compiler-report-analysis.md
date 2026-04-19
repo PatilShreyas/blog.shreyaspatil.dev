@@ -3,28 +3,28 @@ title: "Effortless Compose Compiler report analysis"
 pubDatetime: 2024-05-20T12:30:51.434Z
 description: "A guide to analyzing Jetpack Compose compiler reports easily. Learn how to diagnose stability and skippability of your composables for better performance."
 tags:
-- compose
-- android-app-development
-- performance
-- opensource
-- android-development
-- debugging
-- android
-- ui
-- kotlin
-- android-studio
-- jetpack
-- kotlin-multiplatform
-- jetpack-compose
-- compose-multiplatform
+  - compose
+  - android-app-development
+  - performance
+  - opensource
+  - android-development
+  - debugging
+  - android
+  - ui
+  - kotlin
+  - android-studio
+  - jetpack
+  - kotlin-multiplatform
+  - jetpack-compose
+  - compose-multiplatform
 coverImage: "../../assets/images/cover-effortless-compose-compiler-report-analysis.jpeg"
 ---
 
 Hey Androiders 👋🏻, If you're building an app with Jetpack Compose, you might know that to make your app perform well with as few recompositions as possible, you should use stable parameters in the composable function, and so on.
 
-To do this, the [Compose compiler report](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#compose-compiler) helps you check the status of a *Composable* function, whether it's a restartable function or a skippable function. The report includes statistics of composable functions based on various parameters, details of classes, and **specifics of a composable function** (*which is our main focus*).
+To do this, the [Compose compiler report](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#compose-compiler) helps you check the status of a _Composable_ function, whether it's a restartable function or a skippable function. The report includes statistics of composable functions based on various parameters, details of classes, and **specifics of a composable function** (_which is our main focus_).
 
-After following the steps mentioned [here](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#setup) for generating a report, the report of composable functions looks like this (*this is a sample report*) ⬇️.
+After following the steps mentioned [here](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#setup) for generating a report, the report of composable functions looks like this (_this is a sample report_) ⬇️.
 
 ![](../../assets/images/content/effortless-compose-compiler-report-analysis/img-b6660eb4.png)
 
@@ -32,11 +32,11 @@ This text file contains all the information about the composable functions in th
 
 Now imagine an application built entirely with Jetpack Compose, containing many Composable functions. How can a developer look at this report and check what’s working well and what’s not in their project? Since this generates reports in `json`, `csv`, and `txt` files, they are not easily traceable for developers. Additionally, the reports on Composable functions and classes become large and difficult to review. It’s quite tedious, isn't it?
 
-***
+---
 
 ## 💡Solution
 
-I've developed a utility (*Gradle plugin as well as CLI*) that you can simply apply to your module. That's all you need to do, and the plugin will handle the rest, helping you focus on the areas that need your attention. In this post, let's focus on the usage of the Gradle plugin which is super easy to plug and play.
+I've developed a utility (_Gradle plugin as well as CLI_) that you can simply apply to your module. That's all you need to do, and the plugin will handle the rest, helping you focus on the areas that need your attention. In this post, let's focus on the usage of the Gradle plugin which is super easy to plug and play.
 
 [https://github.com/PatilShreyas/compose-report-to-html](https://github.com/PatilShreyas/compose-report-to-html)
 
@@ -50,11 +50,11 @@ plugins {
 }
 ```
 
-After syncing the project, you'll see tasks will be generated as per the variants and build types of your project. *Example:*
+After syncing the project, you'll see tasks will be generated as per the variants and build types of your project. _Example:_
 
 ![](https://patilshreyas.github.io/compose-report-to-html/images/gradle-plugin-example.png)
 
-To generate the report, run the Gradle task (*or directly run the task from the tasks pane available on the right side of IDE*). *Example:*
+To generate the report, run the Gradle task (_or directly run the task from the tasks pane available on the right side of IDE_). _Example:_
 
 ```bash
 ./gradlew :app:releaseComposeCompilerHtmlReport
@@ -87,7 +87,7 @@ Generates report from `.csv` file and represents in tabular format. It includes 
 
 ### 3. Composable Report
 
-Parses the `-composables.txt` file, separates composables with and without issues, and highlights the associated problems. This is our main focus. With this, we can separate the composable report based on ***stability*** and ***instability***, making it easier to find issues. It highlights the unstable parameters for better focus 👇🏻.
+Parses the `-composables.txt` file, separates composables with and without issues, and highlights the associated problems. This is our main focus. With this, we can separate the composable report based on **_stability_** and **_instability_**, making it easier to find issues. It highlights the unstable parameters for better focus 👇🏻.
 
 ![Composable Report](../../assets/images/content/effortless-compose-compiler-report-analysis/img-7ee1896d.png)
 
@@ -97,11 +97,11 @@ Parses `-classes.txt` file and separates stable and unstable classes out of it a
 
 ![Class Report](../../assets/images/content/effortless-compose-compiler-report-analysis/img-f48c8fb5.png)
 
-***
+---
 
 Cool 😎, what more could a developer need since it helps highlight the issues? After reading the report, developers can focus on fixing the problems instead of spending too much time on the raw report.
 
-Not only that, but the plugin is highly ***customizable***. If you want to focus only on the Composable function part, specifically the unstable composable functions, you can configure the plugin to only have this info in the report. *For example: You can configure as follows to only include the unstable composable functions in the report at the specified directory.*
+Not only that, but the plugin is highly **_customizable_**. If you want to focus only on the Composable function part, specifically the unstable composable functions, you can configure the plugin to only have this info in the report. _For example: You can configure as follows to only include the unstable composable functions in the report at the specified directory._
 
 ```kotlin
 htmlComposeCompilerReport {
@@ -121,25 +121,25 @@ Only Composables with issues. Isn't this nice? 😎
 
 You can explore the plugin and its usage further by visiting the [official documentation](https://patilshreyas.github.io/compose-report-to-html/use/using-gradle-plugin/). You can also see how to [use the CLI](https://patilshreyas.github.io/compose-report-to-html/use/using-cli/). If you want to extend this for your use cases, it's also available in the form of a [library as a maven artifact](https://patilshreyas.github.io/compose-report-to-html/use/using-utility-as-library/).
 
-***View sample app with implementation of this plugin:***
+**_View sample app with implementation of this plugin:_**
 
 [https://github.com/PatilShreyas/NotyKT/blob/0305688042f5809cfa4a10c9bcecf5740a446be4/noty-android/app/composeapp/build.gradle#L182-L185](https://github.com/PatilShreyas/NotyKT/blob/0305688042f5809cfa4a10c9bcecf5740a446be4/noty-android/app/composeapp/build.gradle#L182-L185)
 
-*Currently, this plugin does not support KMP's Compose multiplatform, but it will be added soon. If you're interested in solving this, feel free to contribute.*
+_Currently, this plugin does not support KMP's Compose multiplatform, but it will be added soon. If you're interested in solving this, feel free to contribute._
 
-***
+---
 
 Awesome 🤩. I trust you've picked up some valuable insights from this. If you like this write-up, do share it 😉, because...
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄
 
 Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.
 
-***
+---
 
 ## 📚 Resources
 
-*   [Official docs - Compose Report to HTML](https://patilshreyas.github.io/compose-report-to-html/)
-*   [GitHub - Compoe Report to HTML](https://github.com/PatilShreyas/compose-report-to-html)
+- [Official docs - Compose Report to HTML](https://patilshreyas.github.io/compose-report-to-html/)
+- [GitHub - Compoe Report to HTML](https://github.com/PatilShreyas/compose-report-to-html)

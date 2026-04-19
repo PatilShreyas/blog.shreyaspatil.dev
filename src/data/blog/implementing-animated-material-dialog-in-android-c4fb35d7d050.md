@@ -3,18 +3,18 @@ title: "Animated Material Dialog — Android 📱 😍🎨"
 pubDatetime: 2019-06-13T08:15:23.722Z
 description: "Learn how to create beautiful, animated Material Design dialogs in Android to enhance your app's user experience and visual appeal."
 tags:
-- others
+  - others
 coverImage: "../../assets/images/cover-implementing-animated-material-dialog-in-android-c4fb35d7d050.png"
 ---
 
 Hello everyone, in this article we will learn to implement animated, 😍 beautiful, rich and stylish 🎨 Material Dialog in the app using **MaterialDialog** android library.
 
 ![Screenshot of Google Files App.](../../assets/images/content/implementing-animated-material-dialog-in-android-c4fb35d7d050/img-b0997782.png)
-*Screenshot of [Google Files](https://files.google.com/) App.*
+_Screenshot of [Google Files](https://files.google.com/) App._
 
 Have you ever seen this dialog in [Google Files](https://files.google.com/) app? When I saw it, I was impressed by its structure and design and curious about its implementation and how it works! Then I decided to develop a library for it which will help many developers to implement such dialog easily in their Android apps. After this, I started work on it and finally, I successfully developed library — **MaterialDialog** 😍.
 
-***
+---
 
 ## 👉 About MaterialDialog Library
 
@@ -36,7 +36,7 @@ MaterialDialog library is built upon Google’s Material Design library. This AP
 
 > This is Bottom Sheet material dialog which has two material buttons which is created at bottom of device as you can see in the image. For e.g. Here you can see the animated Bottom Sheet Material Dialog with Animation, Title, Message and two buttons.
 
-***
+---
 
 ## 💻 Getting Started
 
@@ -44,11 +44,11 @@ This project is available on GitHub and you can clone this repository: [https://
 
 Implementation of this Library is so easy. This library is developed as similar as `AlertDialog` of Android so that structure of implementation is also similar.
 
-### * Prerequisite
+### \* Prerequisite
 
 #### i. Gradle
 
-In `build.gradle` of app module, include these dependencies. If you want to show animations, include *Lottie* animation library.
+In `build.gradle` of app module, include these dependencies. If you want to show animations, include _Lottie_ animation library.
 
 ```groovy
 dependencies {
@@ -65,7 +65,7 @@ dependencies {
 
 #### ii. Set up Material Theme
 
-Setting Material Theme to the app is necessary before implementing Material Dialog library. To set it up, update [styles.xml](https://github.com/PatilShreyas/MaterialDialog-Android/blob/master/app%5Csrc%5Cmain%5Cres%5Cvalues%5Cstyles.xml) of a *values* directory in the app.
+Setting Material Theme to the app is necessary before implementing Material Dialog library. To set it up, update [styles.xml](https://github.com/PatilShreyas/MaterialDialog-Android/blob/master/app%5Csrc%5Cmain%5Cres%5Cvalues%5Cstyles.xml) of a _values_ directory in the app.
 
 ```xml
 <resources>
@@ -100,7 +100,7 @@ If you want to customize dialog view, you can override the style in `styles.xml`
 </style>
 ```
 
-***
+---
 
 ## Create Dialog Instance
 
@@ -112,7 +112,7 @@ As there are two types of dialogs in the library. Material Dialogs are instantia
 
 <script src="https://gist.github.com/PatilShreyas/33a0ecf470ac84a7c70ce901c3a5950c.js"></script>
 
-After running this code, its ***output*** will be as:
+After running this code, its **_output_** will be as:
 
 ![Simple **Material Dialog**](../../assets/images/content/implementing-animated-material-dialog-in-android-c4fb35d7d050/img-d8f82002.png)
 
@@ -122,11 +122,11 @@ After running this code, its ***output*** will be as:
 
 <script src="https://gist.github.com/PatilShreyas/ed547d917b1c5b28af2864168666ebbc.js"></script>
 
-After running this code, its ***output*** will be as:
+After running this code, its **_output_** will be as:
 
 ![Simple **Bottom Sheet Material Dialog**](../../assets/images/content/implementing-animated-material-dialog-in-android-c4fb35d7d050/img-d54e271e.png)
 
-***
+---
 
 ## 🎞 Showing Animations
 
@@ -134,13 +134,13 @@ After running this code, its ***output*** will be as:
 
 ![**Animated Material Dialogs.** Material Dialog at left and Bottom Sheet Material Dialog at right.](../../assets/images/content/implementing-animated-material-dialog-in-android-c4fb35d7d050/img-d3a16e54.gif)
 
-Animations in this library are implemented using Lottie animation library. You can get free animations files [here](https://lottiefiles.com/). You can find varieties of animation files on [https://lottiefiles.com](https://lottiefiles.com/). `*.json` file downloaded from *LottieFiles* should be placed in android project. There are two ways to place the animation file (`*.json`).
+Animations in this library are implemented using Lottie animation library. You can get free animations files [here](https://lottiefiles.com/). You can find varieties of animation files on [https://lottiefiles.com](https://lottiefiles.com/). `*.json` file downloaded from _LottieFiles_ should be placed in android project. There are two ways to place the animation file (`*.json`).
 
 For example, here `delete_anim.json` animation file is used to show file delete animation.
 
 ### i. Using `Resource` File
 
-Downloaded `*.json` file should be placed in `raw` directory of ***res***.
+Downloaded `*.json` file should be placed in `raw` directory of **_res_**.
 
 ![raw directory](../../assets/images/content/implementing-animated-material-dialog-in-android-c4fb35d7d050/img-f48906ae.png)
 
@@ -169,7 +169,7 @@ LottieAnimationView animationView = mDialog.getAnimationView();
 // Do operations on animationView
 ```
 
-***
+---
 
 ## ◀️ Dialog State Listeners
 
@@ -177,16 +177,16 @@ There are three callback events and listeners for Dialog.
 
 Following are interfaces for implementations:
 
-*   **`OnShowListener()`** - Listens for dialog Show event. Its `onShow()` is invoked when dialog is displayed.
-*   **`OnCancelListener()`** - Listens for dialog Cancel event. Its `onCancel()` is invoked when dialog is cancelled.
-*   **`OnDismissListener()`** - Listens for dialog Dismiss event. Its `onDismiss()` is dismiss when dialog is dismissed.
+- **`OnShowListener()`** - Listens for dialog Show event. Its `onShow()` is invoked when dialog is displayed.
+- **`OnCancelListener()`** - Listens for dialog Cancel event. Its `onCancel()` is invoked when dialog is cancelled.
+- **`OnDismissListener()`** - Listens for dialog Dismiss event. Its `onDismiss()` is dismiss when dialog is dismissed.
 
-🎉 Hurrah!!! As thus, we have successfully implemented and demonstrated the use of ***MaterialDialog*** Android library. If you have any questions, suggestions and want any help you can contact me on details given at the end of the article.
+🎉 Hurrah!!! As thus, we have successfully implemented and demonstrated the use of **_MaterialDialog_** Android library. If you have any questions, suggestions and want any help you can contact me on details given at the end of the article.
 
 Thank You! 😃
 
 If you need any help get in touch with me on:
 [https://patilshreyas.github.io](https://patilshreyas.github.io)
 
-***GitHub Repository (Material Dialog):**
+**\*GitHub Repository (Material Dialog):**
 [https://github.com/PatilShreyas/MaterialDialog-Android](https://github.com/PatilShreyas/MaterialDialog-Android)

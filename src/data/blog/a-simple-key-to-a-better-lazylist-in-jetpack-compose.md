@@ -3,15 +3,15 @@ title: "A Simple key to a Better LazyList in Jetpack Compose"
 pubDatetime: 2025-10-08T12:00:28.507Z
 description: "Learn how to optimize Jetpack Compose LazyList performance using keys. Understand how keys help reduce recompositions and improve scrolling efficiency."
 tags:
-- compose
-- android-app-development
-- performance
-- android
-- ui
-- kotlin
-- kotlin-multiplatform
-- jetpack-compose
-- compose-multiplatform
+  - compose
+  - android-app-development
+  - performance
+  - android
+  - ui
+  - kotlin
+  - kotlin-multiplatform
+  - jetpack-compose
+  - compose-multiplatform
 coverImage: "../../assets/images/cover-a-simple-key-to-a-better-lazylist-in-jetpack-compose.png"
 ---
 
@@ -29,9 +29,9 @@ A while back, I posted a poll on [X](https://x.com/imShreyasPatil/status/1974419
 
 The results were interesting and mostly similar across both platforms!
 
-*   🟢 *Always use* — 60%
-*   🟡 *Sometimes* — 32%
-*   🔴 *Never/Didn’t know* — 8%
+- 🟢 _Always use_ — 60%
+- 🟡 _Sometimes_ — 32%
+- 🔴 _Never/Didn’t know_ — 8%
 
 This poll inspired me to write this post to shed some light on this important detail especially for 40% of Android developers.
 
@@ -69,7 +69,7 @@ The most important rule for keys is that they **must be unique**. If two items h
 
 Now, let's get to the fun part and see what can go wrong.
 
-***
+---
 
 ## What can go wrong if `key` is missing
 
@@ -143,7 +143,6 @@ Now, let's perform a few actions on the UI:
 2.  Click "**Remove first**" on top -> It removed the first item from list i.e. **Apple**. -> Now **Banana** is in 1st place. But it’s still keeping the state of old item along with highlighted background.
 3.  Click + on **Orange** -> logs `Grape has changed`
 4.  Click + on **Peach** -> logs `Strawberry has changed`
-
 
 See it here:
 
@@ -252,7 +251,7 @@ return subcomposeMeasureScope.subcompose(key, itemContent)
 
 By passing your stable `key` to `subcompose`, you ensure that the state is correctly associated with the data, not just the position.
 
-***
+---
 
 ## Conclusion
 
@@ -262,13 +261,13 @@ If your list is completely static and will never change, you can get away with n
 
 I think we should **make it a habit to always add a key**. You might think a list is static today, but requirements can change in future and then it’s easy to miss it in PR review. Adding a key from the start makes your code more robust and saves you from debugging some very confusing issues down the road.
 
-***
+---
 
 I hope you got the idea about how important it is to provide key to LazyList APIs.
 
 Awesome. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄 Happy composing! 😎
 

@@ -3,10 +3,10 @@ title: "Exploring CompositionLocal API internals in Jetpack Compose"
 pubDatetime: 2026-03-09T05:19:42.618Z
 description: "Deep dive into the internals of Jetpack Compose's CompositionLocal API. Trace how data flows implicitly through the composition tree under the hood."
 tags:
-- android-development
-- android
-- kotlin
-- jetpack-compose
+  - android-development
+  - android
+  - kotlin
+  - jetpack-compose
 coverImage: "../../assets/images/cover-exploring-compositionlocal-api-internals-in-jetpack-compose.png"
 ---
 
@@ -14,18 +14,18 @@ Hello Composers 👋,
 
 In this post, we are going to dive deep into the **internals** of Composition Local API of Jetpack Compose.
 
-When you call `LocalContentColor.current` in your Compose code, a lot happens behind the scenes. Behind that simple property access lies a smart system of persistent maps, value holders, and composer integration that passes values down your composition tree efficiently. In this deep dive, we'll trace that journey through the actual AndroidX source code and understand exactly how ***CompositionLocal*** works under the hood.
+When you call `LocalContentColor.current` in your Compose code, a lot happens behind the scenes. Behind that simple property access lies a smart system of persistent maps, value holders, and composer integration that passes values down your composition tree efficiently. In this deep dive, we'll trace that journey through the actual AndroidX source code and understand exactly how **_CompositionLocal_** works under the hood.
 
-***
+---
 
 ## **🤔 What Problem Does CompositionLocal Solve?**
 
 Compose passes data through the composition tree explicitly via parameters to composable functions. While this is often the simplest approach, it becomes annoying when:
 
-*   Data is needed by many components deep in the tree (prop drilling)
-*   Components need to pass data between one another while keeping implementation details private
+- Data is needed by many components deep in the tree (prop drilling)
+- Components need to pass data between one another while keeping implementation details private
 
-CompositionLocal provides an **implicit** way to have data flow through a composition hierarchy without explicitly passing it through every intermediate composable. Think of it like **"ambient"** data that's just *there* when you need it.
+CompositionLocal provides an **implicit** way to have data flow through a composition hierarchy without explicitly passing it through every intermediate composable. Think of it like **"ambient"** data that's just _there_ when you need it.
 
 If you need a quick refresher, here is the basic usage pattern:
 
@@ -49,16 +49,16 @@ fun UserProfile() {
 }
 ```
 
-***
+---
 
 ### **📋 Prerequisites**
 
 This article assumes you're familiar with:
 
-*   Compose basics (composables, recomposition, `remember`)
-*   State in compose (`MutableState` and `mutableStateOf` for state management)
-*   Basic Kotlin features (data classes, lambdas, `lazy` delegate)
-*   Have used Composition local API (like `LocalContext`, `LocalContentColor`, etc)
+- Compose basics (composables, recomposition, `remember`)
+- State in compose (`MutableState` and `mutableStateOf` for state management)
+- Basic Kotlin features (data classes, lambdas, `lazy` delegate)
+- Have used Composition local API (like `LocalContext`, `LocalContentColor`, etc)
 
 ### **🗺️ What We'll Explore**
 
@@ -72,7 +72,7 @@ In this deep dive, we'll cover:
 
 Let's start by understanding the class hierarchy that makes it all possible.
 
-***
+---
 
 ## **🏗️ The Type Hierarchy**
 
@@ -82,9 +82,9 @@ At the heart of the CompositionLocal system is a carefully designed class hierar
 
 **Understanding the hierarchy:**
 
-*   `CompositionLocal<T>` is the sealed base class that holds the `current` property you use to read values. It's sealed so that all implementations are controlled within the Compose runtime.
-*   `ProvidableCompositionLocal<T>` adds the ability to *provide* values using `provides`, `providesDefault`, and `providesComputed`.
-*   The three concrete implementations (`Dynamic`, `Static`, `Computed`) decide *how* values are stored and *how* changes trigger recomposition.
+- `CompositionLocal<T>` is the sealed base class that holds the `current` property you use to read values. It's sealed so that all implementations are controlled within the Compose runtime.
+- `ProvidableCompositionLocal<T>` adds the ability to _provide_ values using `provides`, `providesDefault`, and `providesComputed`.
+- The three concrete implementations (`Dynamic`, `Static`, `Computed`) decide _how_ values are stored and _how_ changes trigger recomposition.
 
 ### **The Base Class: CompositionLocal**
 
@@ -114,7 +114,7 @@ The `@Stable` annotation tells the Compose compiler that this class has stable e
 
 **What if you try to access `.current` outside a `@Composable` function?** You'll get a compile-time error:
 
-> *"@Composable invocations can only happen from the context of a @Composable function"*.
+> _"@Composable invocations can only happen from the context of a @Composable function"_.
 
 The Compose compiler enforces this because `current` needs access to `currentComposer`, which only exists during composition.
 
@@ -156,8 +156,8 @@ public abstract class ProvidableCompositionLocal<T> internal constructor(default
 
 The `infix` modifier enables the clean DSL syntax: `LocalColor provides Color.Red`. The three methods serve different purposes:
 
-*   `provides` - Always sets the value, overriding any parent-provided value.
-*   `providesDefault` - Only sets the value if no ancestor has already provided it. Useful for library components that want to offer a default but respect app-level overrides:
+- `provides` - Always sets the value, overriding any parent-provided value.
+- `providesDefault` - Only sets the value if no ancestor has already provided it. Useful for library components that want to offer a default but respect app-level overrides:
 
 ```kotlin
 // Library code: provide a default, but let app override
@@ -181,7 +181,7 @@ fun App() {
 }
 ```
 
-*   `providesComputed` - Derives the value from other CompositionLocals.
+- `providesComputed` - Derives the value from other CompositionLocals.
 
 The `providesComputed` option is powerful - it lets you derive values from other CompositionLocals. The lambda runs in `CompositionLocalAccessorScope`:
 
@@ -276,10 +276,10 @@ The `isDynamic` flag decides the recomposition strategy:
 
 **Why two strategies?** First, a quick note on the **snapshot system**: This is Compose's change-tracking mechanism. When you read `state.value`, Compose records that your composable depends on that state. When the state changes later, Compose knows exactly which composables need to recompose - it's like an automatic subscription system.
 
-*   **Dynamic** wraps values in `MutableState`, so the snapshot system tracks exactly which composables read the value. When the value changes, only those specific composables recompose. This is great for values that change often (theme colors, user preferences).
-*   **Static** stores values directly without snapshot tracking. When the value changes, Compose doesn't know who read it, so it must recompose the entire subtree under the provider. This sounds wasteful, but it skips the overhead of snapshot tracking - perfect for values that rarely or never change (Android Context, configuration objects).
+- **Dynamic** wraps values in `MutableState`, so the snapshot system tracks exactly which composables read the value. When the value changes, only those specific composables recompose. This is great for values that change often (theme colors, user preferences).
+- **Static** stores values directly without snapshot tracking. When the value changes, Compose doesn't know who read it, so it must recompose the entire subtree under the provider. This sounds wasteful, but it skips the overhead of snapshot tracking - perfect for values that rarely or never change (Android Context, configuration objects).
 
-***
+---
 
 ## **🏭 Factory Functions**
 
@@ -305,7 +305,7 @@ public fun <T> compositionLocalWithComputedDefaultOf(
 
 The `policy` parameter in `compositionLocalOf` is often ignored but important. By default, it uses `structuralEqualityPolicy()` which compares values using `==`. For large objects or objects with expensive equality checks, you might want `referenceEqualityPolicy()` (uses `===`) or a custom policy.
 
-***
+---
 
 ## **🔗 Providing and Consuming Values**
 
@@ -358,11 +358,11 @@ internal constructor(
 
 The multiple nullable fields (`value`, `state`, `compute`) represent different "modes" of providing a value. Only one is typically active at a time:
 
-| Mode | Primary field | When used |
-| :--- | :--- | :--- |
-| Direct value | `value` | Initial `provides` call (both static and dynamic) |
-| State reuse | `state` | When reusing an existing `DynamicValueHolder` across recompositions |
-| Computed | `compute` | `providesComputed` |
+| Mode         | Primary field | When used                                                           |
+| :----------- | :------------ | :------------------------------------------------------------------ |
+| Direct value | `value`       | Initial `provides` call (both static and dynamic)                   |
+| State reuse  | `state`       | When reusing an existing `DynamicValueHolder` across recompositions |
+| Computed     | `compute`     | `providesComputed`                                                  |
 
 The `isDynamic` flag determines whether the value eventually gets wrapped in a `MutableState` (by the ValueHolder), not which field is used in `ProvidedValue` itself.
 
@@ -392,13 +392,13 @@ The `@NonSkippableComposable` annotation is important - even if the provided val
 
 **API Variants:**
 
-| Function | Use Case |
-| :--- | :--- |
-| `CompositionLocalProvider(vararg values, content)` | Multiple values |
-| `CompositionLocalProvider(value, content)` | Single value (avoids array allocation) |
-| `CompositionLocalProvider(context, content)` | From a captured `CompositionLocalContext` |
-| `withCompositionLocal(value, content): T` | Returns a value (non-Unit) |
-| `withCompositionLocals(vararg values, content): T` | Multiple values, returns a value |
+| Function                                           | Use Case                                  |
+| :------------------------------------------------- | :---------------------------------------- |
+| `CompositionLocalProvider(vararg values, content)` | Multiple values                           |
+| `CompositionLocalProvider(value, content)`         | Single value (avoids array allocation)    |
+| `CompositionLocalProvider(context, content)`       | From a captured `CompositionLocalContext` |
+| `withCompositionLocal(value, content): T`          | Returns a value (non-Unit)                |
+| `withCompositionLocals(vararg values, content): T` | Multiple values, returns a value          |
 
 The `withCompositionLocal` variants are useful when you need to return a value from the content block instead of just rendering UI:
 
@@ -415,7 +415,7 @@ fun measureTextWidth(text: String, customDensity: Density): Int {
 }
 ```
 
-***
+---
 
 ### **🔀 Passing Locals Between Compositions**
 
@@ -481,7 +481,7 @@ fun MyScreen() {
 
 The `CompositionContext` abstract class has a `getCompositionLocalScope()` method. When you create a child composition (like inside `Dialog`), it calls this method on its parent context to inherit locals. By providing `capturedContext`, you're bridging the gap between separate compositions.
 
-***
+---
 
 ## **🔧 Under the Hood: The Internal Implementation**
 
@@ -499,12 +499,12 @@ Values in the CompositionLocal system are wrapped in `ValueHolder` instances. Th
 
 **The four holder types serve different purposes:**
 
-| **Holder** | **Storage** | **When Used** | **Snapshot Tracked?** |
-| :--- | :--- | :--- | :--- |
-| `StaticValueHolder` | Direct value | Static locals | ❌ No |
-| `DynamicValueHolder` | `MutableState<T>` | Dynamic locals | ✅ Yes |
-| `ComputedValueHolder` | Lambda | `providesComputed` | Depends on what it reads |
-| `LazyValueHolder` | Lazy delegate | Default values | ❌ No |
+| **Holder**            | **Storage**       | **When Used**      | **Snapshot Tracked?**    |
+| :-------------------- | :---------------- | :----------------- | :----------------------- |
+| `StaticValueHolder`   | Direct value      | Static locals      | ❌ No                    |
+| `DynamicValueHolder`  | `MutableState<T>` | Dynamic locals     | ✅ Yes                   |
+| `ComputedValueHolder` | Lambda            | `providesComputed` | Depends on what it reads |
+| `LazyValueHolder`     | Lazy delegate     | Default values     | ❌ No                    |
 
 ### **StaticValueHolder**
 
@@ -611,7 +611,7 @@ internal class LazyValueHolder<T>(
 
 Note this is a `class`, not a `data class` - each instance is unique. The lazy delegate makes sure the default factory runs at most once, even if multiple composables read the default.
 
-***
+---
 
 ## **🗺️ The Persistent Map Architecture**
 
@@ -651,7 +651,7 @@ This single line does a lot:
 
 ### **Concrete Implementation**
 
-The actual storage uses a **trie-based** persistent hash map from *kotlinx.collections.immutable*. **A trie is a tree structure where keys are broken into smaller pieces** (like individual hash digits) - this allows multiple maps to share common branches, making copy-on-write operations efficient:
+The actual storage uses a **trie-based** persistent hash map from _kotlinx.collections.immutable_. **A trie is a tree structure where keys are broken into smaller pieces** (like individual hash digits) - this allows multiple maps to share common branches, making copy-on-write operations efficient:
 
 ```kotlin
 // Source: PersistentCompositionLocalMap.kt
@@ -682,9 +682,9 @@ internal class PersistentCompositionLocalHashMap(
 }
 ```
 
-The `putValue` method shows the immutability pattern: instead of changing the map, it returns a new map (*or* `this` *if nothing changed*). The trie structure means only the path from root to the changed leaf is copied - everything else is shared.
+The `putValue` method shows the immutability pattern: instead of changing the map, it returns a new map (_or_ `this` _if nothing changed_). The trie structure means only the path from root to the changed leaf is copied - everything else is shared.
 
-***
+---
 
 ## **🧠 Composer Integration: The Heart of It**
 
@@ -692,7 +692,7 @@ Now we reach the core implementation in `GapComposer`. This is where the value h
 
 ![](../../assets/images/content/exploring-compositionlocal-api-internals-in-jetpack-compose/img-00e117f3.png)
 
-1.  `CompositionLocalProvider` calls `currentComposer.startProviders(values)` - since `currentComposer` is a `GapComposer` instance (*which implements the* `Composer` *interface*), it goes directly there.
+1.  `CompositionLocalProvider` calls `currentComposer.startProviders(values)` - since `currentComposer` is a `GapComposer` instance (_which implements the_ `Composer` _interface_), it goes directly there.
 2.  `GapComposer` saves the current scope and creates a new merged scope containing the provided values.
 3.  The content lambda executes with the new scope active.
 4.  When content calls `LocalXxx.current`, it calls `consume()` on the same `GapComposer`, which reads from the current scope.
@@ -704,9 +704,9 @@ This push/pop pattern means nested providers work correctly - inner providers sh
 
 Before diving into the code, a quick note on `reader`: Compose stores the composition tree in a `SlotTable` - a flat, array-based data structure using a gap buffer algorithm. The `reader` is a `SlotReader` that navigates this structure. It provides methods like:
 
-*   `parent` / `parent(group)` - get parent group index
-*   `groupKey(group)` - get the key identifying a group type
-*   `groupAux(group)` - get auxiliary data stored with a group (like provider maps)
+- `parent` / `parent(group)` - get parent group index
+- `groupKey(group)` - get the key identifying a group type
+- `groupAux(group)` - get auxiliary data stored with a group (like provider maps)
 
 Think of it as a cursor that can walk up and down the composition tree.
 
@@ -864,7 +864,7 @@ override fun endProvider() {
 
 This nesting allows Compose to store both the individual value holder (for reuse across recompositions) and the merged map (for scope resolution) in the slot table.
 
-***
+---
 
 ## **🔄 Putting It All Together: The Complete Flow**
 
@@ -874,7 +874,7 @@ Now that we've seen all the pieces, let's trace what happens when you write `Loc
 
 **The critical difference** is in the `DynamicValueHolder` path: calling `state.value` records a snapshot read. The snapshot system links this read to the current `RecomposeScope`. Later, when the state changes, only this scope (and others that read the same state) will recompose.
 
-***
+---
 
 ## **🔁 Invalidation and Recomposition**
 
@@ -899,15 +899,15 @@ Now that we've seen the implementation details, here's a quick summary of how th
 
 ### **When to Use Which (Examples):**
 
-| **Use Case** | **Type** | **Reason** |
-| :--- | :--- | :--- |
-| Theme colors 🎨 | Dynamic | May animate or change based on user preference |
-| Text styles | Dynamic | May change with accessibility settings |
-| Android Context | Static | Never changes during composition lifetime |
-| Window insets | Static | Changes require full layout recalculation anyway |
-| Computed accent colors | Computed | Derived from base theme color |
+| **Use Case**           | **Type** | **Reason**                                       |
+| :--------------------- | :------- | :----------------------------------------------- |
+| Theme colors 🎨        | Dynamic  | May animate or change based on user preference   |
+| Text styles            | Dynamic  | May change with accessibility settings           |
+| Android Context        | Static   | Never changes during composition lifetime        |
+| Window insets          | Static   | Changes require full layout recalculation anyway |
+| Computed accent colors | Computed | Derived from base theme color                    |
 
-***
+---
 
 ## **💡 Practical Insights**
 
@@ -917,31 +917,31 @@ Now that we've seen the implementation details, here's a quick summary of how th
 2.  **Static locals have per-change overhead**: Changing a static local recomposes everything below the provider. But if it never changes, there's no overhead.
 3.  **Computed locals run on every read**: The lambda runs each time you call `.current`. Keep computations cheap, or use dynamic locals with remembered computed values.
 
-***The CompositionLocal system shows thoughtful API design:***
+**_The CompositionLocal system shows thoughtful API design:_**
 
-*   **Simple surface API**: `provides` and `.current` cover 99% of use cases.
-*   **Layered complexity**: Value holders, persistent maps, and composer integration work together smoothly.
-*   **Clear trade-offs**: Dynamic vs static makes the performance implications obvious.
-*   **Efficient implementation**: Structural sharing, lazy evaluation, and precise invalidation minimize overhead.
+- **Simple surface API**: `provides` and `.current` cover 99% of use cases.
+- **Layered complexity**: Value holders, persistent maps, and composer integration work together smoothly.
+- **Clear trade-offs**: Dynamic vs static makes the performance implications obvious.
+- **Efficient implementation**: Structural sharing, lazy evaluation, and precise invalidation minimize overhead.
 
 The sealed class hierarchy ensures type safety. Value holders abstract storage strategies. Persistent maps enable efficient scope management. And the composer integration ties it all together with the rest of the composition system.
 
 Understanding these internals helps you make better decisions: use `compositionLocalOf` for values that might change, `staticCompositionLocalOf` for stable configuration, and `compositionLocalWithComputedDefaultOf` for derived values. Place providers as close to consumers as practical, and remember that every `LocalXxx.current` call has implications for recomposition tracking.
 
-***
+---
 
 Awesome. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄 Happy composing! 😎
 
 Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.
 
-***
+---
 
 ## **📚 Resources**
 
-*   [Source: CompositionLocal.kt](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/runtime/runtime/src/commonMain/kotlin/androidx/compose/runtime/CompositionLocal.kt)
-*   [Source: ValueHolders.kt](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/runtime/runtime/src/commonMain/kotlin/androidx/compose/runtime/ValueHolders.kt)
-*   [Source: PersistentCompositionLocalMap.kt](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/runtime/runtime/src/commonMain/kotlin/androidx/compose/runtime/PersistentCompositionLocalMap.kt)
+- [Source: CompositionLocal.kt](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/runtime/runtime/src/commonMain/kotlin/androidx/compose/runtime/CompositionLocal.kt)
+- [Source: ValueHolders.kt](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/runtime/runtime/src/commonMain/kotlin/androidx/compose/runtime/ValueHolders.kt)
+- [Source: PersistentCompositionLocalMap.kt](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/runtime/runtime/src/commonMain/kotlin/androidx/compose/runtime/PersistentCompositionLocalMap.kt)

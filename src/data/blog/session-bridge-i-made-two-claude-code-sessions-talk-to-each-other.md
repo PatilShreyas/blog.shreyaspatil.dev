@@ -3,13 +3,13 @@ title: "session-bridge: I Made Two Claude Code Sessions Talk to Each Other"
 pubDatetime: 2026-03-20T13:09:22.916Z
 description: "Building 'session-bridge': A Claude Code plugin that allows separate AI sessions to communicate and share context across different repositories."
 tags:
-- plugins
-- claudeai
-- agentic-ai
-- agentic-ai-development
-- claude-code
-- claude-plugin
-- claude-plugin
+  - plugins
+  - claudeai
+  - agentic-ai
+  - agentic-ai-development
+  - claude-code
+  - claude-plugin
+  - claude-plugin
 coverImage: "../../assets/images/cover-session-bridge-i-made-two-claude-code-sessions-talk-to-each-other.png"
 ---
 
@@ -17,11 +17,11 @@ Hi everyone 👋
 
 Every time I made breaking changes in a library, I had to manually explain them to the consumer app's Claude session. Copy-paste the diff. Re-explain what changed. Every single time. So I built a plugin to fix that.
 
-Oh, and I built the plugin *with* Claude Code as well. The irony isn't lost on me 😄
+Oh, and I built the plugin _with_ Claude Code as well. The irony isn't lost on me 😄
 
 This post is about that plugin, how I designed it, what broke, what I completely rethought, and what I finally shipped.
 
-***
+---
 
 ## The Situation 😮
 
@@ -33,7 +33,7 @@ These are separate repos for a reason. Different release cycles. Different teams
 
 So naturally I have **two Claude Code sessions**. One for each repo.
 
-I'm in the library session, deep into making breaking API changes. Renamed functions, changed type signatures, removed deprecated stuff. My agent knows *everything* about what I did and why. It has the full conversation, the full diff, the full context.
+I'm in the library session, deep into making breaking API changes. Renamed functions, changed type signatures, removed deprecated stuff. My agent knows _everything_ about what I did and why. It has the full conversation, the full diff, the full context.
 
 Now I need to update the consumer app to use the new library version.
 
@@ -49,7 +49,7 @@ The library agent and the consumer agent existed in complete isolation. They had
 
 I thought: why not give them a way to talk?
 
-***
+---
 
 ## The Idea 💡
 
@@ -75,9 +75,9 @@ Response from my-library:
 3. Removed refreshToken() (automatic now)
 ```
 
-The library agent responding with full context, because it's the *same agent* that made the changes. No copy-pasting. No explaining. Just agents talking.
+The library agent responding with full context, because it's the _same agent_ that made the changes. No copy-pasting. No explaining. Just agents talking.
 
-***
+---
 
 ## First Design Decisions 🧠
 
@@ -91,7 +91,7 @@ Before writing any code, I spent time on the architecture. A few decisions shape
 
 The core is 9 bash scripts and a `jq` dependency. No Node.js, no Python, no runtime. I wrote tests first — 124 test cases across 10 test files — and the tests caught so many edge cases before I ever ran the plugin manually.
 
-***
+---
 
 ## The Hook System Did Not Cooperate 😤
 
@@ -99,17 +99,17 @@ My original plan was to use Claude Code's `UserPromptSubmit` hook to auto-check 
 
 First I tried a command hook — a shell script that runs on every prompt. But the working directory when hooks execute isn't the project root, so the script couldn't find the bridge session file. After hours of debugging I rewrote the inbox scanner to not depend on working directory at all.
 
-Then I switched to a prompt-type hook, one that tells Claude what to do rather than running a script directly. My prompt said something like: *"Before responding, check if bridge-session exists, then run check-inbox.sh"*.
+Then I switched to a prompt-type hook, one that tells Claude what to do rather than running a script directly. My prompt said something like: _"Before responding, check if bridge-session exists, then run check-inbox.sh"_.
 
 Claude's reply:
 
-> *"This is a hook evaluation context without shell access to the user's system."*
+> _"This is a hook evaluation context without shell access to the user's system."_
 
 Right. 🙃
 
 Hooks were basically not going to work for what I needed. I ended up putting the inbox-check logic in the **bridge-awareness skill**, a piece of context that loads alongside the session and tells the agent how to behave with the bridge. Reliable enough, but not as automatic as I wanted.
 
-***
+---
 
 ## The Background Watcher Detour 🤖
 
@@ -119,13 +119,13 @@ So I built `bridge-watcher.sh`. A background bash process that polls the inbox e
 
 This worked. But it had problems:
 
-*   Every query triggered a `claude -p` call. That costs real money on your Anthropic account.
-*   The responses were generated from *approximated* context. I was sampling the agent's session history from outside and feeding it to a separate Claude process. Close, but not the real thing.
-*   The watcher was a whole separate process to manage: PID files, orphan detection, cleanup on crash.
+- Every query triggered a `claude -p` call. That costs real money on your Anthropic account.
+- The responses were generated from _approximated_ context. I was sampling the agent's session history from outside and feeding it to a separate Claude process. Close, but not the real thing.
+- The watcher was a whole separate process to manage: PID files, orphan detection, cleanup on crash.
 
 The more I looked at it, the more it felt like I was solving the wrong problem. But it took one more bug to make that obvious.
 
-***
+---
 
 ## The Bug That Ate Sessions 🐛
 
@@ -133,19 +133,19 @@ While the watcher was still in the picture, I hit a nasty bug: sessions were dis
 
 When you close Claude Code, it fires a `SessionEnd` hook which runs `cleanup.sh`. My cleanup script deletes the session directory. Fine.
 
-But here's the problem: if you restart Claude quickly, the new session re-registers *before* the old session's cleanup hook finishes. Then the old cleanup runs and deletes the brand new session. Peers try to connect and get "session not found."
+But here's the problem: if you restart Claude quickly, the new session re-registers _before_ the old session's cleanup hook finishes. Then the old cleanup runs and deletes the brand new session. Peers try to connect and get "session not found."
 
 The fix: `cleanup.sh` now checks the session's `lastHeartbeat` before deleting. If the session was updated recently, it means another Claude instance just claimed it. So cleanup exits silently and leaves it alone.
 
 This was fixable. But every fix revealed another crack. I was maintaining an architecture I didn't believe in.
 
-***
+---
 
 ## The Insight That Changed the Architecture 🤯
 
-I was looking at the watcher code and feeling like something was fundamentally wrong. It was calling `claude -p` for every incoming query. That costs money. And it was generating responses from a *sampled approximation* of the session context, not the real thing.
+I was looking at the watcher code and feeling like something was fundamentally wrong. It was calling `claude -p` for every incoming query. That costs money. And it was generating responses from a _sampled approximation_ of the session context, not the real thing.
 
-Then someone asked a simple question: *"Why don't we just have the session answer directly?"*
+Then someone asked a simple question: _"Why don't we just have the session answer directly?"_
 
 I stopped. Thought about it.
 
@@ -165,27 +165,27 @@ This is it. This is what the plugin should have been from day one. The watcher w
 
 `bridge-watcher.sh` got deleted. The plugin shrank by ~300 lines. API costs for auto-responses dropped to zero. Context quality went from "pretty good" to "perfect."
 
-***
+---
 
 ## Agents Can Ask Each Other Questions Too 💬
 
 While testing, I realised the agents sometimes need to ask each other clarifying questions before they can answer. Here's what that looked like:
 
-> **Consumer:** *"How should I handle the new error types?"*
+> **Consumer:** _"How should I handle the new error types?"_
 >
-> **Library:** *"What error types are you currently catching? Send me your error handler."*
+> **Library:** _"What error types are you currently catching? Send me your error handler."_
 >
-> **Consumer:** *(reads its own code, sends the relevant snippet)*
+> **Consumer:** _(reads its own code, sends the relevant snippet)_
 >
-> **Library:** *"Replace AuthError with AuthException. Here's the updated hierarchy..."*
+> **Library:** _"Replace AuthError with AuthException. Here's the updated hierarchy..."_
 
-This could deadlock. The consumer is blocked waiting for a response. The library wants to send a question back instead, but the consumer is waiting for an *answer*.
+This could deadlock. The consumer is blocked waiting for a response. The library wants to send a question back instead, but the consumer is waiting for an _answer_.
 
-The solution: the library sends its question *as a response*, with `inReplyTo` pointing to the original message ID. The consumer finds it (it's a match on `inReplyTo`), reads the question, sends a new query with the answer, and waits again. The library's listen loop picks that up and gives the final answer.
+The solution: the library sends its question _as a response_, with `inReplyTo` pointing to the original message ID. The consumer finds it (it's a match on `inReplyTo`), reads the question, sends a new query with the answer, and waits again. The library's listen loop picks that up and gives the final answer.
 
 No deadlock. One extra round trip. The conversation flows naturally.
 
-***
+---
 
 ## What It Looks Like Today 🎯
 
@@ -237,7 +237,7 @@ I was honestly surprised when this worked the first time. I typed a plain Englis
 
 This is the real goal. Not new commands to learn. Just two agents coordinating on your behalf while you describe the outcome you want.
 
-***
+---
 
 ## How it's helping me at least?
 
@@ -247,7 +247,7 @@ See it in action:
 
 [![](../../assets/images/content/session-bridge-i-made-two-claude-code-sessions-talk-to-each-other/img-3074d306.png)](https://github.com/PatilShreyas/claude-code-session-bridge)
 
-***
+---
 
 ## What's Missing (Being Honest) 🤔
 
@@ -257,7 +257,7 @@ See it in action:
 
 **Response latency is ~5-10 seconds end-to-end** (3-second poll interval plus the agent's response time). That's fine for this use case — cross-project coordination isn't real-time chat. But it's worth knowing.
 
-***
+---
 
 ## Why This Matters 🌍
 
@@ -271,7 +271,7 @@ Could the MCP version be cleaner? Yes. Would native Agent Teams integration be e
 
 Sometimes the simplest thing that could possibly work... is the right thing. ✌️
 
-***
+---
 
 The plugin is open source at [github.com/PatilShreyas/claude-code-session-bridge](https://github.com/PatilShreyas/claude-code-session-bridge). Try it, break it, tell me what's missing. And if you found this useful, share it, it really helps 🙏
 
@@ -279,4 +279,4 @@ The plugin is open source at [github.com/PatilShreyas/claude-code-session-bridge
 
 Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.
 
-*Fun fact: This blog was drafted by Claude Code, in the same session where I built the plugin 😉*
+_Fun fact: This blog was drafted by Claude Code, in the same session where I built the plugin 😉_

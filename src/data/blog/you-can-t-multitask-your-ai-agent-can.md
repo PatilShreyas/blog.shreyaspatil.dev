@@ -3,15 +3,15 @@ title: "You Can't Multitask. Your AI Agent Can."
 pubDatetime: 2026-03-02T04:00:00.000Z
 description: "Boost your productivity with AI agents. Learn how to delegate complex tasks to AI tools like Claude Code and Gemini to overcome human multitasking limitations."
 tags:
-- ai
-- productivity
-- git
-- multitasking
-- codex
-- ai-agents
-- gemini
-- vibe-coding
-- claude-code
+  - ai
+  - productivity
+  - git
+  - multitasking
+  - codex
+  - ai-agents
+  - gemini
+  - vibe-coding
+  - claude-code
 coverImage: "../../assets/images/cover-you-can-t-multitask-your-ai-agent-can.png"
 ---
 
@@ -23,7 +23,7 @@ Today is different. 😉
 
 This post is about how I changed the way I work, not what I work on. And honestly, it's the best productivity change I've made in years as a Software Engineer.
 
-***
+---
 
 ## 🧠 A quick fact before we begin.
 
@@ -37,7 +37,7 @@ But here's the thing: **AI agents don't have this problem.** 😄 They don't get
 
 That's what this post is about.
 
-***
+---
 
 ## 🧑🏻‍💻 Let's begin the story!
 
@@ -76,7 +76,7 @@ git worktree remove ../myapp-feature
 
 That's it. No extra setup needed. It ships with git.
 
-***
+---
 
 ### 🤖 Which AI agent?
 
@@ -129,7 +129,7 @@ You should see all three worktrees listed:
 
 If the branch doesn't exist yet, `git worktree add` creates it automatically. If it already exists remotely, use `-b` to create a proper local tracking branch: `git worktree add -b feature/onboarding-screen ../myapp-feature origin/feature/onboarding-screen`. Without the `-b` flag, passing a remote ref directly creates a detached HEAD instead of a named branch.
 
-***
+---
 
 ### Step 2: Launch Claude Code in Each Worktree
 
@@ -148,7 +148,7 @@ cd ~/myapp
 
 Each Claude session starts fresh and only sees its own folder. The agents don't know about each other. No shared state, no bleed-over between sessions. Terminal 3 is yours for the PR review. No agent needed there unless you want one.
 
-***
+---
 
 ### 💰 Claude CLI Bonus tip
 
@@ -168,7 +168,7 @@ claude --worktree
 
 So yeah, if you don't want to manage worktrees manually, this is the way to go 🚀.
 
-***
+---
 
 ### Step 3: Give Each Agent Its Task 📝
 
@@ -182,9 +182,9 @@ Let's write prompts that say exactly what done looks like.
 
 > "Investigate and fix the NullPointerException on the login screen described in `bug-reports/2026-02-27-login.md`. The crash reproduces on API 28 and below. Reproduce it first with a unit test, then fix the root cause. Don't change the login UI or touch `LoginViewModel`."
 
-*(as this is just an example, the actual prompts would be very detailed).*
+_(as this is just an example, the actual prompts would be very detailed)._
 
-***
+---
 
 ### Meanwhile: You Do the PR Review 👀
 
@@ -225,7 +225,7 @@ You finish the PR review, leave your comments, approve it. Then you check back i
 
 You didn't manage them. You didn't step in. You did your own work, and when you came back, so had they.
 
-***
+---
 
 ### Step 4: Clean Up the Worktrees 🧹
 
@@ -251,7 +251,7 @@ One thing worth knowing: removing a worktree only deletes the folder. Your branc
 
 Two PRs open, one PR reviewed and approved. All from a single morning session. That's the whole workflow.
 
-***
+---
 
 ## 🔧 Patterns That Make This Work
 
@@ -261,7 +261,7 @@ Use `../projectname-<branch-slug>` as your worktree path. Easy to find with a qu
 
 When all your worktrees follow the same prefix, a quick `ls ..` shows you everything that's active: `myapp`, `myapp-feature`, `myapp-bugfix`. No guessing which folder belongs to which task.
 
-***
+---
 
 ### Shell aliases
 
@@ -283,19 +283,19 @@ wt-clean feature/onboarding-screen
 
 `wt-new` builds the worktree path from your repo name and the branch you pass in. `wt-clean` removes it using the same pattern. One argument, done.
 
-***
+---
 
 ### When NOT to use worktrees ⚠️
 
 Worktrees don't work well for every situation. Skip them when:
 
-*   Tasks share a build cache with side effects (common in multi-module projects).
-*   Both tasks modify the same build files (such as `build.gradle`, `gradle/libs.versions.toml`).
-*   Task B depends on task A finishing first.
+- Tasks share a build cache with side effects (common in multi-module projects).
+- Both tasks modify the same build files (such as `build.gradle`, `gradle/libs.versions.toml`).
+- Task B depends on task A finishing first.
 
 In these cases, running agents in parallel will cause conflicts or wasted work. Run them one at a time instead, and keep the parallel setup for tasks that are truly independent of each other.
 
-***
+---
 
 ## ⏱️ The Time Math
 
@@ -311,7 +311,7 @@ That's not a small difference. That's shipping three things in a morning instead
 
 The bottleneck was never your skill. It was the one-task-at-a-time model. AI agents remove that limit, if you let them.
 
-***
+---
 
 ## 💡 What This Actually Changed
 
@@ -321,22 +321,22 @@ You're not just a developer anymore. **<mark class="bg-yellow-200 dark:bg-yellow
 
 I remember the moment it really hit me. There was a bug that another team's member was supposed to fix, something that only showed up in a very specific edge case. I gave it to an agent as a side task while I worked on a new feature. Ten minutes later I looked over and it was fixed. A day of putting it off, gone in the time it took to write one decent prompt.
 
-***
+---
 
 Do definitely try it on your next feature. Set up two worktrees, give your AI agent specific tasks with clear acceptance criteria, and go review that PR you've been putting off. See what's done when you come back. And when you ship more things early, tell me what you built in the comments below. 🚀
 
 Awesome. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄 Happy vibe coding! 😎
 
 Let's catch up on [ **X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.
 
-***
+---
 
 ## 📚 References
 
-*   [**Multitasking Research - APA**](https://www.apa.org/topics/research/multitasking)
-*   [**Git Worktree Documentation**](https://git-scm.com/docs/git-worktree)
-*   [**Parallel Claude Sessions - Documentation**](https://code.claude.com/docs/en/common-workflows#run-parallel-claude-code-sessions-with-git-worktrees)
+- [**Multitasking Research - APA**](https://www.apa.org/topics/research/multitasking)
+- [**Git Worktree Documentation**](https://git-scm.com/docs/git-worktree)
+- [**Parallel Claude Sessions - Documentation**](https://code.claude.com/docs/en/common-workflows#run-parallel-claude-code-sessions-with-git-worktrees)

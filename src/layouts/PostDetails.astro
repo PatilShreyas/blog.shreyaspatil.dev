@@ -113,13 +113,15 @@ const nextPost =
       >
       <EditPost {hideEditPost} {post} class="max-sm:hidden" />
     </div>
-    {coverImage && (
-      <img 
-        src={typeof coverImage === "string" ? coverImage : coverImage.src} 
-        alt={`Cover image for ${title}`} 
-        class="my-8 w-full rounded-lg object-cover shadow-lg border border-border img-shimmer" 
-      />
-    )}
+    {
+      coverImage && (
+        <img
+          src={typeof coverImage === "string" ? coverImage : coverImage.src}
+          alt={`Cover image for ${title}`}
+          class="my-8 w-full img-shimmer rounded-lg border border-border object-cover shadow-lg"
+        />
+      )
+    }
     <article
       id="article"
       class="app-prose mt-8 w-full max-w-app prose-pre:bg-(--shiki-light-bg) dark:prose-pre:bg-(--shiki-dark-bg)"
@@ -291,20 +293,23 @@ const nextPost =
   }
   attachCopyButtons();
 
-  /** 
+  /**
    * Loads GitHub Gists dynamically for View Transitions compatibility.
    * Standard Gist scripts use document.write, which breaks during SPA navigation.
    */
   function loadGists() {
-    const scripts = document.querySelectorAll("script[src^='https://gist.github.com']");
+    const scripts = document.querySelectorAll(
+      "script[src^='https://gist.github.com']"
+    );
     scripts.forEach(script => {
       const src = script.getAttribute("src");
       if (!src) return;
 
-      const callbackName = "gist_callback_" + Math.random().toString(36).substring(7);
-      
+      const callbackName =
+        "gist_callback_" + Math.random().toString(36).substring(7);
+
       // JSONP Callback
-      window[callbackName] = function(gist) {
+      window[callbackName] = function (gist) {
         // Only inject stylesheet once
         if (!document.querySelector(`link[href="${gist.stylesheet}"]`)) {
           const link = document.createElement("link");
@@ -312,17 +317,18 @@ const nextPost =
           link.href = gist.stylesheet;
           document.head.appendChild(link);
         }
-        
+
         const div = document.createElement("div");
         div.innerHTML = gist.div;
         script.parentNode.insertBefore(div, script);
         script.remove();
-        
+
         // Clean up callback
         delete window[callbackName];
       };
-      
-      const jsonpUrl = src.replace(/\.js$/, ".json") + `?callback=${callbackName}`;
+
+      const jsonpUrl =
+        src.replace(/\.js$/, ".json") + `?callback=${callbackName}`;
       const scriptTag = document.createElement("script");
       scriptTag.src = jsonpUrl;
       document.head.appendChild(scriptTag);

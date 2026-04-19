@@ -3,27 +3,27 @@ title: "Navigating Screens in Jetpack Compose (DevFest India 2021 - Mobile Track
 pubDatetime: 2021-10-26T16:03:04.587Z
 description: "Recap and resources from my DevFest India 2021 talk on Navigating Screens in Jetpack Compose. Learn the best practices for Compose navigation."
 tags:
-- developer
-- android
-- ui
-- kotlin
-- navigation
+  - developer
+  - android
+  - ui
+  - kotlin
+  - navigation
 coverImage: "../../assets/images/cover-navigating-screens-in-jetpack-compose-devfest-india-2021-mobile-track.png"
 ---
 
 Hey Android developers 👋,
 
-Now everyone is aware that Jetpack Compose is the future of Android UI development. DevFest India 2021 just happened this month (*October 2021*) and it's a treasure of learning for everyone. I was also one of the speakers for the mobile track where I spoke about ***"Navigating screens in Jetpack Compose"*** on the second day. It's a great experience for me as well to speak at such a large conference. Here are the details of the session.
+Now everyone is aware that Jetpack Compose is the future of Android UI development. DevFest India 2021 just happened this month (_October 2021_) and it's a treasure of learning for everyone. I was also one of the speakers for the mobile track where I spoke about **_"Navigating screens in Jetpack Compose"_** on the second day. It's a great experience for me as well to speak at such a large conference. Here are the details of the session.
 
 > If you somehow missed attending the session, then these are resources for you!
 
-***
+---
 
 ## What is DevFest
 
 DevFest India is the largest annual developer’s fest organized by Google Developer Groups across India. This year, it's for all of us for 3 exciting days packed with learning, networking, experimenting and swags for a few winners! [Know more about it](https://devfestindia.com/)
 
-***
+---
 
 ## Session Recording 📺
 
@@ -41,26 +41,26 @@ This is the YouTube video published by [GDG India](https://www.youtube.com/chann
     </iframe>
 </div>
 
-***
+---
 
 ## Topics covered 📚
 
-*   What's the navigation?
-*   How was navigation (Before Jetpack Compose)?
-*   Why Jetpack Compose navigation?
-*   Setting up Jetpack Compose navigation in a project
-*   Navigating screens
-*   Navigating to the Composable
-*   Navigating with options
-*   Navigating back
-*   Navigating dialogs
-*   Navigating with arguments
-*   Navigating with **OPTIONAL** arguments
-*   Deep linking in Navigation
-*   Hilt and Navigation
-*   Interview questions
+- What's the navigation?
+- How was navigation (Before Jetpack Compose)?
+- Why Jetpack Compose navigation?
+- Setting up Jetpack Compose navigation in a project
+- Navigating screens
+- Navigating to the Composable
+- Navigating with options
+- Navigating back
+- Navigating dialogs
+- Navigating with arguments
+- Navigating with **OPTIONAL** arguments
+- Deep linking in Navigation
+- Hilt and Navigation
+- Interview questions
 
-***
+---
 
 [View on LinkedIn](https://www.linkedin.com/posts/patil-shreyas_devfest-devfestindia21-devfest-activity-6857653913764585472-8sMg?utm_source=share&utm_medium=member_desktop&rcm=ACoAABUdUs4B-VoTZYn5iAoOP7UC0hoQURs4hlU)
 
@@ -68,4 +68,4 @@ If you found this helpful, I'll be super glad to help.
 
 Thank you! 😀
 
-*"Sharing is caring"*
+_"Sharing is caring"_

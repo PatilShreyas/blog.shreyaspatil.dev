@@ -3,16 +3,16 @@ title: "DroidCon: Debugging App Performance at Scale"
 pubDatetime: 2026-01-19T04:58:14.900Z
 description: "Recap of my DroidCon India 2025 talk on debugging Android app performance at scale. Watch the session and learn about performance profiling tools."
 tags:
-- app-development
-- android-app-development
-- performance
-- community
-- android
-- public-speaking
-- droidcon
-- app-performance
-- tech-talk
-- droidconindia
+  - app-development
+  - android-app-development
+  - performance
+  - community
+  - android
+  - public-speaking
+  - droidcon
+  - app-performance
+  - tech-talk
+  - droidconindia
 coverImage: "../../assets/images/cover-droidcon-debugging-app-performance-at-scale.png"
 ---
 
@@ -20,7 +20,7 @@ Hello 👋🏻,
 
 It was an absolutely amazing experience at DroidCon India 2025. Seeing so many Android engineers under one roof at the world's largest Android conference was something special. The energy at DroidCon India 2025 was high. There were incredible speakers, people from different backgrounds, and so many ideas coming together.
 
-***
+---
 
 ## Watch the Talk
 
@@ -42,7 +42,7 @@ allowfullscreen>
 
 [https://docs.google.com/presentation/d/1vUjziS5fX-0IlorgzchxVxrKbRYW9kBmLI08qaeQtJM/edit?usp=sharing](https://docs.google.com/presentation/d/1vUjziS5fX-0IlorgzchxVxrKbRYW9kBmLI08qaeQtJM/edit?usp=sharing)
 
-***
+---
 
 ## My Session: Android App Performance ⚡
 
@@ -54,7 +54,7 @@ I have always been a big fan of DroidCon. This event is very special to me. The 
 
 Now in 2025, it felt great to see it return to India. It was even better to be part of the **Program Committee**. It felt like a full circle moment for me to contribute to the event that inspired me when I was starting out.
 
-***
+---
 
 ## The Community
 
@@ -70,6 +70,6 @@ Some photos:
 
 ![](../../assets/images/content/droidcon-debugging-app-performance-at-scale/img-d5dde701.jpeg)
 
-***
+---
 
 A big thank you to everyone who attended, the organizers, and the volunteers who made DroidCon India 2025 a success. See you at the next one! 👋

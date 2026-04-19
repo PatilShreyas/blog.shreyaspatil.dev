@@ -3,11 +3,11 @@ title: "🕵️ Accessing device location using SIM Card 🗺️📍"
 pubDatetime: 2020-07-28T15:07:45.153Z
 description: "Discover a clever trick to access device location using SIM card info in Android. Learn how to handle mock location scenarios for better location accuracy."
 tags:
-- android-app-development
-- tricks
-- programming
-- android
-- google
+  - android-app-development
+  - tricks
+  - programming
+  - android
+  - google
 coverImage: "../../assets/images/cover-accessing-device-location-using-sim-card-6cdb15645bef.jpeg"
 ---
 
@@ -15,7 +15,7 @@ These days, almost many apps use the device location 📍. There might be some u
 
 But wait… 🤔
 
-***
+---
 
 ## What if your app users enabled Mock location? 😮
 
@@ -23,7 +23,7 @@ If your cool app users have enabled mock locations then your feature will not wo
 
 ![](../../assets/images/content/accessing-device-location-using-sim-card-6cdb15645bef/img-21bb34f8.gif)
 
-***
+---
 
 ## Then is there any solution? 🤷‍♀️
 
@@ -31,28 +31,28 @@ Yes 😃, for such use case you won’t need user’s perfect location. Just are
 
 The famous **TikTok** app extracts SIM Card 📶 details and fetches the user’s location for the perfect updates and avoiding spoofing of location.
 
-***
+---
 
 ## How did we come up with this Idea? 💡
 
-We at [ScaleReal](http://scalereal.com/) were developing a product which was heavily dependent on the user’s location and we thought *“What if GPS location isn’t available due to conditions like device failure or bad weather or if the user provides fake location”* 🤔. We thoroughly studied these scenarios with all aspects 🧐 and came with the solution of using SIM card details to extract at least the **cell tower location** of the user. This solution helped us to pinpoint the user's location using **cell tower triangulation** and the results were even better when we wrote a custom algorithm on top of these two. In turn a **better** product! 😄
+We at [ScaleReal](http://scalereal.com/) were developing a product which was heavily dependent on the user’s location and we thought _“What if GPS location isn’t available due to conditions like device failure or bad weather or if the user provides fake location”_ 🤔. We thoroughly studied these scenarios with all aspects 🧐 and came with the solution of using SIM card details to extract at least the **cell tower location** of the user. This solution helped us to pinpoint the user's location using **cell tower triangulation** and the results were even better when we wrote a custom algorithm on top of these two. In turn a **better** product! 😄
 
-*In this article, we’ll learn to access the device’s cell tower location by extracting SIM Card details from the device. So let’s start implementation.*
+_In this article, we’ll learn to access the device’s cell tower location by extracting SIM Card details from the device. So let’s start implementation._
 
 > **Note:** GPS is not involved in this process. So doesn’t matter if it’s enabled or disabled!
 
 ![](../../assets/images/content/accessing-device-location-using-sim-card-6cdb15645bef/img-ceb4fd23.gif)
 
-***
+---
 
 ## Let’s Start 🚀
 
 First of all, we’ll need to get API for accessing Geolocation information. I’ve seen two APIs for such use case 🤔:
 
-*   [**Google’s Geolocation API**](https://developers.google.com/maps/documentation/geolocation/overview) — This API is good to go with but requires a billing account to be enabled for your project 🤑.
-*   [**Unwiredlabs OpenCellID**](https://opencellid.org/) — This API is amazing and easy to use and the world’s largest open database of cell towers 😍. (We’re using this API for geolocation). Just go to above link and **Sign Up** your account and you’ll get **API key**. See API documentation [here](https://unwiredlabs.com/api#documentation) for more details about accessing API.
+- [**Google’s Geolocation API**](https://developers.google.com/maps/documentation/geolocation/overview) — This API is good to go with but requires a billing account to be enabled for your project 🤑.
+- [**Unwiredlabs OpenCellID**](https://opencellid.org/) — This API is amazing and easy to use and the world’s largest open database of cell towers 😍. (We’re using this API for geolocation). Just go to above link and **Sign Up** your account and you’ll get **API key**. See API documentation [here](https://unwiredlabs.com/api#documentation) for more details about accessing API.
 
-***
+---
 
 ## How API Works? 🤔
 
@@ -62,11 +62,11 @@ From your app, you just have to send this data payload to API:
 
 Let’s understand these parameters:
 
-*   `radio` — Network type. For e.g. GSM, LTE, etc.
-*   `mcc` — **Mobile Country Code** used to identify the country which a mobile subscriber belongs to.
-*   `mnc` — Used to uniquely identify a mobile subscribers **network** the **MCC** is combined with a Mobile **Network** Code.
-*   `lac` — Location Area Code
-*   `cid` — Cell ID
+- `radio` — Network type. For e.g. GSM, LTE, etc.
+- `mcc` — **Mobile Country Code** used to identify the country which a mobile subscriber belongs to.
+- `mnc` — Used to uniquely identify a mobile subscribers **network** the **MCC** is combined with a Mobile **Network** Code.
+- `lac` — Location Area Code
+- `cid` — Cell ID
 
 When you request API with above details, you’ll get a response from API as below 👇:
 
@@ -74,13 +74,13 @@ When you request API with above details, you’ll get a response from API as bel
 
 That’s the main thing! I hope now you have **API key** with you so let’s proceed to implementation 🚀.
 
-***
+---
 
 ## Getting Started 💻
 
 **Open Android Studio**. Create a new project or you can simply clone or import [this project](https://github.com/PatilShreyas/CellLocationFind-Android).
 
-***
+---
 
 ## Make Request model
 
@@ -110,7 +110,7 @@ object RadioType {
 }
 ```
 
-***
+---
 
 ## Make Response model
 
@@ -149,7 +149,7 @@ interface UnwiredLabsService {
 
 > **Note:** We have used Retrofit in this app. I’ll not show the whole implementation of it here. For that, you can refer app source code for implementation details. You can that here we’ve implemented ViewModel and Activity which is now able to communicate with API.
 
-***
+---
 
 ## Remember one thing! 🤨
 
@@ -159,7 +159,7 @@ For accessing the device’s network information you’ll need to include below 
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 ```
 
-***
+---
 
 ## Getting network Details 📶
 
@@ -209,7 +209,7 @@ Okay! By this, we’ve completed the **main** part of the application ✨. As yo
 
 Now just send this information along as data payload to the API and you’ll get a response which will include location details 🔥.
 
-***
+---
 
 Okay 😃. Now let’s run this app 🚀. You’ll see like this… 👇:
 
@@ -221,12 +221,12 @@ Yeah! 😍 Our app is working as expected 🚣. That’s all. I hope you liked t
 
 Thank you! 😃
 
-*Sharing is caring!*
+_Sharing is caring!_
 
-***
+---
 
 ## 📚 Resources
 
-*   [**GitHub Repository**](https://github.com/PatilShreyas/CellLocationFind-Android)
-*   [**Unwiredlabs OpenCellID**](https://opencellid.org/)
-*   [**Unwiredlabs API Documentation**](https://unwiredlabs.com/api#documentation)
+- [**GitHub Repository**](https://github.com/PatilShreyas/CellLocationFind-Android)
+- [**Unwiredlabs OpenCellID**](https://opencellid.org/)
+- [**Unwiredlabs API Documentation**](https://unwiredlabs.com/api#documentation)

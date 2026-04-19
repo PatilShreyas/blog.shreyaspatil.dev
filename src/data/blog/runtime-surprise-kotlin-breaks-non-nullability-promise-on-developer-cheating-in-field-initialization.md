@@ -3,17 +3,17 @@ title: "Runtime Surprise: Kotlin Breaks Non-Nullability Promise on Developer Che
 pubDatetime: 2023-09-20T04:33:24.831Z
 description: "A cautionary tale about Kotlin's non-nullability. Discover how incorrect field initialization can lead to unexpected NullPointerExceptions at runtime."
 tags:
-- jvm
-- java
-- android
-- kotlin
-- kotlin-nullsafety
+  - jvm
+  - java
+  - android
+  - kotlin
+  - kotlin-nullsafety
 coverImage: "../../assets/images/cover-runtime-surprise-kotlin-breaks-non-nullability-promise-on-developer-cheating-in-field-initialization.jpeg"
 ---
 
 Hey Kotliners 👋🏻, This is a mini-blog about an issue I faced while working on some JVM-ish stuff with Kotlin. The issue was very stupid to reproduce but it highlighted the importance of a specific concept.
 
-***
+---
 
 ## The issue 🐛
 
@@ -38,8 +38,8 @@ fun main() {
 
 Understanding the snippet:
 
-*   There is a class `Example` having two fields.
-*   Field `value1` gets initialized by `computeValue1()` which makes computation based on `value2`'s value.
+- There is a class `Example` having two fields.
+- Field `value1` gets initialized by `computeValue1()` which makes computation based on `value2`'s value.
 
 Whenever this snippet is run, you'll see a runtime exception like this 👇🏻:
 
@@ -49,7 +49,7 @@ Strange! 🤯 no?
 
 Even if fields are declared as **non-nullable** in Kotlin, if we are still getting `NullPointerException` then it's a serious issue if gets missed from a developer's eye or in the code review, isn't it?
 
-***
+---
 
 ## Reason 🤔
 
@@ -67,7 +67,7 @@ If we remove the `computeValue1()` and directly replace the logic in the place o
  }
 ```
 
-Here, in this case, we'll directly get a compile-time **error 🔴** in IDE saying "*Variable 'value2' must be initialized*" as below 👇🏻:
+Here, in this case, we'll directly get a compile-time **error 🔴** in IDE saying "_Variable 'value2' must be initialized_" as below 👇🏻:
 
 ![](../../assets/images/content/runtime-surprise-kotlin-breaks-non-nullability-promise-on-developer-cheating-in-field-initialization/img-c57cebdd.png)
 
@@ -83,21 +83,21 @@ Also, if `value2` is declared and initialized before the `value1` then there's n
 
 That's all!
 
-***
+---
 
 ## Conclusion 💡
 
 As observed, Kotlin will generate a compile-time error if you attempt direct initialization, but it may **not catch** the issue when there is an indirect dependency through a method call. This situation **compromises Kotlin's guarantee of non-nullability for fields on the JVM**, potentially leading to runtime crashes that can significantly disrupt the implementation.
 
-To fix such scenarios, always make sure to ***verify the order of declaration of fields to avoid indirect dependency on the uninitialized field***.
+To fix such scenarios, always make sure to **_verify the order of declaration of fields to avoid indirect dependency on the uninitialized field_**.
 
-***
+---
 
 Awesome 🤩. I trust you've picked up some valuable insights into addressing inadvertent problems that can arise when working with Kotlin. These solutions can not only streamline your workflow but also alleviate potential confusion, ultimately saving you significant effort.
 
 If you like this write-up, do share it 😉, because...
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄
 

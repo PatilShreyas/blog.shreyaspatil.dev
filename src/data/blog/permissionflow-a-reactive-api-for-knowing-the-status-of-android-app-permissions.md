@@ -3,11 +3,11 @@ title: "PermissionFlow: A Reactive API for knowing the status of Android app per
 pubDatetime: 2023-05-22T05:19:08.251Z
 description: "Introduction to PermissionFlow: A reactive API for Android that simplifies tracking permission status changes using Kotlin Coroutines and Flow."
 tags:
-- android-app-development
-- android-development
-- android
-- kotlin
-- coroutines
+  - android-app-development
+  - android-development
+  - android
+  - kotlin
+  - coroutines
 coverImage: "../../assets/images/cover-permissionflow-a-reactive-api-for-knowing-the-status-of-android-app-permissions.jpeg"
 ---
 
@@ -17,7 +17,7 @@ For example, let's say you have an app with a data module and a UI module. The d
 
 To simplify this issue, **PermissionFlow** is here!
 
-***
+---
 
 ## What is PermissionFlow?
 
@@ -25,14 +25,14 @@ To simplify this issue, **PermissionFlow** is here!
 
 Here are some additional benefits of using PermissionFlow:
 
-*   **Reactive API:** PermissionFlow provides a reactive API that makes it easy to track the state of permissions. This means that you can subscribe to the state of permission and be notified immediately when the permission state changes.
-*   **Easy to use:** PermissionFlow is an easy-to-use library that can be used in any Android project. It has a simple API that makes it easy to get started.
-*   **Tracks permission grants from app settings:** It also tracks the permission changes in the app granted by users from the app settings.
-*   **Safe:** PermissionFlow is a safe library that uses Kotlin Flow APIs to track the state of permissions. This means that you can be confident that your app will not leak memory or trouble the app's main thread when tracking permissions.
-*   **Testable API:** Due to the simplicity of its API, it can be tested easily with mocks/fakes.
-*   **Jetpack Compose support:** Yes, PermissionFlow also supports Jetpack Compose in which you can listen to the states of permission in compose UI.
+- **Reactive API:** PermissionFlow provides a reactive API that makes it easy to track the state of permissions. This means that you can subscribe to the state of permission and be notified immediately when the permission state changes.
+- **Easy to use:** PermissionFlow is an easy-to-use library that can be used in any Android project. It has a simple API that makes it easy to get started.
+- **Tracks permission grants from app settings:** It also tracks the permission changes in the app granted by users from the app settings.
+- **Safe:** PermissionFlow is a safe library that uses Kotlin Flow APIs to track the state of permissions. This means that you can be confident that your app will not leak memory or trouble the app's main thread when tracking permissions.
+- **Testable API:** Due to the simplicity of its API, it can be tested easily with mocks/fakes.
+- **Jetpack Compose support:** Yes, PermissionFlow also supports Jetpack Compose in which you can listen to the states of permission in compose UI.
 
-***
+---
 
 ## How to use it?
 
@@ -79,8 +79,8 @@ Use `rememberPermissionFlowRequestLauncher()` method to get `ManagedActivityResu
 fun Example() {
     val permissionLauncher = rememberPermissionFlowRequestLauncher()
 
-    Button(onClick = { 
-        permissionLauncher.launch(android.Manifest.permission.READ_CONTACTS) 
+    Button(onClick = {
+        permissionLauncher.launch(android.Manifest.permission.READ_CONTACTS)
     }) {
         Text("Request Contact Permissions")
     }
@@ -89,14 +89,14 @@ fun Example() {
 
 Cool, that's all about asking for permission and it's exactly similar to how we regularly request permission in the Android app. Now let's see how can we add hooks to it to get updates.
 
-***
+---
 
 ### Observing a Permission State
 
 A permission state can be subscribed by retrieving `StateFlow<PermissionState>` or `StateFlow<MultiplePermissionState>`.
 
-*   If you want to observe **a single permission state**, use a method `PermissionFlow#getPermissionState`
-*   If you want to observe multiple permissions' state, use a method `PermissionFlow#getMultiplePermissionState`
+- If you want to observe **a single permission state**, use a method `PermissionFlow#getPermissionState`
+- If you want to observe multiple permissions' state, use a method `PermissionFlow#getMultiplePermissionState`
 
 ```kotlin
 val permissionFlow = PermissionFlow.getInstance()
@@ -168,7 +168,7 @@ fun ExampleMultiplePermission() {
 }
 ```
 
-***
+---
 
 That's all about using PermissionFlow 😍 and it'll simplify things about handling permissions in the Android app. **PermissionFlow** is not rocket science. It internally just adds hooks with permission request launchers and accordingly updates the state of permission. As you can see, the advantage of this is that we no longer need to manually ask any layer in the app to "DO CERTAIN THINGS" when permission is granted from the UI layer. The message will be automatically propagated via PermissionFlow APIs. This also ultimately simplifies dependency within multi-module apps.
 
@@ -176,17 +176,17 @@ If you want to check it out, see some [examples in the repository](https://githu
 
 [![](../../assets/images/content/permissionflow-a-reactive-api-for-knowing-the-status-of-android-app-permissions/img-1c854126.gif)](https://github.com/PatilShreyas/permission-flow-android/tree/main/app)
 
-***
+---
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄
 
 Let's catch up on [**X (formerly Twitter)**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.
 
-***
+---
 
 ## 📚 References
 
-*   [**PermissionFlow - GitHub**](https://github.com/PatilShreyas/permission-flow-android)
-*   [**PermissionFlow API Documentation**](https://patilshreyas.github.io/permission-flow-android/docs/permission-flow/dev.shreyaspatil.permissionFlow/-permission-flow/index.html)
+- [**PermissionFlow - GitHub**](https://github.com/PatilShreyas/permission-flow-android)
+- [**PermissionFlow API Documentation**](https://patilshreyas.github.io/permission-flow-android/docs/permission-flow/dev.shreyaspatil.permissionFlow/-permission-flow/index.html)

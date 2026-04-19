@@ -3,29 +3,29 @@ title: "Hide internal members of Kotlin Module from JVM 🔐"
 pubDatetime: 2021-05-17T04:23:42.848Z
 description: "Learn how to properly hide internal Kotlin members from JVM to maintain a clean API for Java consumers when developing libraries."
 tags:
-- java
-- library
-- android
-- kotlin
-- kotlin-beginner
+  - java
+  - library
+  - android
+  - kotlin
+  - kotlin-beginner
 coverImage: "../../assets/images/cover-hide-internal-members-of-kotlin-module-from-jvm.png"
 ---
 
 Hello developers, in this article we’ll explore some things which need attention if you’re developing a library/SDK using Kotlin programming language which targets JVM or you want to make it interoperable with Java.
 
-***
+---
 
 ## Introduction
 
 If you are developing a library or SDK then it’s obvious that you don’t want to expose some classes or don’t want any member function or field of a class visible to the module which is going to implement your library.
 
-Kotlin has the following visibility modifiers: *public, protected, private and internal.* `internal` modifier means that the member is **visible within the same module** (For e.g. Gradle module, IntelliJ IDEA module, etc). This means other Kotlin modules can’t access classes/members marked with an **internal** modifier. This feature of Kotlin is helpful in a way such that you can easily access, modify and test the internal functionalities or properties of a module.
+Kotlin has the following visibility modifiers: _public, protected, private and internal._ `internal` modifier means that the member is **visible within the same module** (For e.g. Gradle module, IntelliJ IDEA module, etc). This means other Kotlin modules can’t access classes/members marked with an **internal** modifier. This feature of Kotlin is helpful in a way such that you can easily access, modify and test the internal functionalities or properties of a module.
 
 But this can lead to issues if not handled properly while developing library projects.
 
 How? Let’s see it 😃
 
-***
+---
 
 ## Understand 🤔
 
@@ -39,7 +39,7 @@ Let's assume that you're developing a library in Kotlin. Your library has a publ
 
 As you can see, this class has an internal member field `count` and member function `doSomethingInternally()` which can’t be directly accessed. The only function `doSomething()` is invoking a call to the internal member function.
 
-Now imagine that you’ve published this library. Now let’s say I’m using your library in some application (here it’s *SampleApp*). If I’m using Kotlin as a primary language for the development of my application and If I try to use `LibraryClass` in the application, it’ll look like this 👇:
+Now imagine that you’ve published this library. Now let’s say I’m using your library in some application (here it’s _SampleApp_). If I’m using Kotlin as a primary language for the development of my application and If I try to use `LibraryClass` in the application, it’ll look like this 👇:
 
 ![2.png](../../assets/images/content/hide-internal-members-of-kotlin-module-from-jvm/img-3ae8e01d.png)
 
@@ -47,7 +47,7 @@ As you can see, I’ve declared `libClass` as an instance of `LibraryClass`. Whe
 
 Why I’m writing an article on that? Let’s see the **real** problem.
 
-***
+---
 
 ## Problem 🥴
 
@@ -62,9 +62,9 @@ In the following image, you can see IntelliJ IDEA gives a warning but still I ca
 
 I modified the value of `count` and invoked the function. Both were marked as **internal** members still I was able to access them from the Java source.
 
-If this is the case, any developer (*whoever is using your library*) can misuse your library. How to avoid this? Let’s see…
+If this is the case, any developer (_whoever is using your library_) can misuse your library. How to avoid this? Let’s see…
 
-***
+---
 
 ## Why this is happening? 🤷‍♂️
 
@@ -76,7 +76,7 @@ As you can see, the members which were declared with an internal visibility modi
 
 OK. Let's see the solution to this problem.
 
-***
+---
 
 ## Solution 💡
 
@@ -101,7 +101,7 @@ If you see the decompiled Java source of the class, you’ll see that the functi
 -    this.#$();
 +    this.#$();
  }
- 
+
  @JvmName(
 -    name = "#$"
 +    name = "#$"
@@ -167,9 +167,9 @@ public final class LibraryClass {
 }
 ```
 
-That’s all. So the final conclusion is `@JvmSynthetic` is useful in such cases where want to hide the internal members of the *Kotlin module* from the *Java source*. Also, we should take care of such things while developing libraries, SDKs, etc. Otherwise, your library will be on 🔥.
+That’s all. So the final conclusion is `@JvmSynthetic` is useful in such cases where want to hide the internal members of the _Kotlin module_ from the _Java source_. Also, we should take care of such things while developing libraries, SDKs, etc. Otherwise, your library will be on 🔥.
 
-***
+---
 
 If you liked this article, share it with everyone! 😄
 
@@ -177,8 +177,8 @@ Sharing is caring!
 
 Thank you! 😃
 
-***
+---
 
 ## Resources
 
-*   [StackOverflow: How to hide visibility of Kotlin internal class in Java from different modules](https://stackoverflow.com/questions/62937511/how-to-hide-visibility-of-kotlin-internal-class-in-java-from-different-modules/62951988#62951988)
+- [StackOverflow: How to hide visibility of Kotlin internal class in Java from different modules](https://stackoverflow.com/questions/62937511/how-to-hide-visibility-of-kotlin-internal-class-in-java-from-different-modules/62951988#62951988)

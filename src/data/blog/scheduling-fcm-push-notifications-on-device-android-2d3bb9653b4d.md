@@ -3,46 +3,48 @@ title: "⏰Scheduling FCM Push Notifications🔔 On Device — Android📱"
 pubDatetime: 2019-12-19T02:44:55.478Z
 description: "Learn how to schedule FCM push notifications on-device in Android without expensive cloud cron jobs, using AlarmManager and WorkManager."
 tags:
-- others
+  - others
 coverImage: "../../assets/images/cover-scheduling-fcm-push-notifications-on-device-android-2d3bb9653b4d.png"
 ---
 
-In this article, We will schedule On Device FCM (Firebase Cloud Messaging) Push Notifications *without using Cloud Pub/Sub or Cron jobs*.
+In this article, We will schedule On Device FCM (Firebase Cloud Messaging) Push Notifications _without using Cloud Pub/Sub or Cron jobs_.
 
-Hello everyone, If you’re developing an app where you want to send scheduled Notifications to users then you can achieve in many ways. You can use **Google Cloud Pub/Sub** using Firebase Cloud Functions. Cloud Pub/Sub and Cron jobs are costly solutions. In this demo, we’ll schedule FCM Notifications by just sending normal *Push Notification* to subscribed channel and we’ll process/schedule it on the device.
+Hello everyone, If you’re developing an app where you want to send scheduled Notifications to users then you can achieve in many ways. You can use **Google Cloud Pub/Sub** using Firebase Cloud Functions. Cloud Pub/Sub and Cron jobs are costly solutions. In this demo, we’ll schedule FCM Notifications by just sending normal _Push Notification_ to subscribed channel and we’ll process/schedule it on the device.
 
-***
+---
 
 ## What will we do?
 
-*   We’ll subscribe to FCM Topic.
-*   We’ll send **Data** payload with scheduling information to the FCM topic.
-*   Process received notification in a device, Schedule it using `AlarmManager`.
-*   At the Scheduled time, create `WorkManager` for background processing and display notification on the system tray.
+- We’ll subscribe to FCM Topic.
+- We’ll send **Data** payload with scheduling information to the FCM topic.
+- Process received notification in a device, Schedule it using `AlarmManager`.
+- At the Scheduled time, create `WorkManager` for background processing and display notification on the system tray.
 
-***
+---
 
 ## What are the Advantages of using this technique? 😕
 
-Imagine you have developed **XYZ** app which is related to **Online Shopping** and you always provides *exciting discount/offers* to users. It has **5000** active user installs. Imagine Following 2 Scenarios with respect to the above data:
+Imagine you have developed **XYZ** app which is related to **Online Shopping** and you always provides _exciting discount/offers_ to users. It has **5000** active user installs. Imagine Following 2 Scenarios with respect to the above data:
 
 ### Scenario 1:
-You have scheduled a ***50% discount offer*** notification to send on 12:00 am using Google Cloud Pub/Sub. This offer is going to expire in **5 minutes**. Out of **5000 users**, only **3000 users** are online at that time. Remaining 2000 users will receive notification after they’ll turn on data and till that time, the offer will be expired! 😔 Thus, you’ll lose **2000** users 😐.
+
+You have scheduled a **_50% discount offer_** notification to send on 12:00 am using Google Cloud Pub/Sub. This offer is going to expire in **5 minutes**. Out of **5000 users**, only **3000 users** are online at that time. Remaining 2000 users will receive notification after they’ll turn on data and till that time, the offer will be expired! 😔 Thus, you’ll lose **2000** users 😐.
 
 ### Scenario 2:
-You have scheduled a ***50% discount offer*** notification to send on 12:00 am using the method we discussed earlier. Suppose we sent **Data** payload on 09:00 pm (i.e. Before 3 hours). In between that time period. All online users will receive payload on device and notification will be scheduled. Consider, out of **5000 users, 4500 users** were online between 9 pm to 12 am. Then all these 4500 users will receive a notification. Most exciting 🤩 will be… Though users are **offline on 12 am** still notification is displayed (because they already received notification earlier on device). Thus we’ll not lose many users. 😀
+
+You have scheduled a **_50% discount offer_** notification to send on 12:00 am using the method we discussed earlier. Suppose we sent **Data** payload on 09:00 pm (i.e. Before 3 hours). In between that time period. All online users will receive payload on device and notification will be scheduled. Consider, out of **5000 users, 4500 users** were online between 9 pm to 12 am. Then all these 4500 users will receive a notification. Most exciting 🤩 will be… Though users are **offline on 12 am** still notification is displayed (because they already received notification earlier on device). Thus we’ll not lose many users. 😀
 
 Thus from above both scenarios, the Second scenario seems efficient and useful for some use cases. Let’s implement it!
 
-***
+---
 
 ## 💻 Implementation
 
 I have created a repository on GitHub. You can take reference of it: [**PatilShreyas/FCM-OnDeviceNotificationScheduler**](https://github.com/PatilShreyas/FCM-OnDeviceNotificationScheduler)
 
-*   Set up Project on Firebase Console.
-*   Download a `google-services.json` configuration file and paste it in **/app** directory of the project.
-*   Add dependencies in `build.gradle` of *app* module:
+- Set up Project on Firebase Console.
+- Download a `google-services.json` configuration file and paste it in **/app** directory of the project.
+- Add dependencies in `build.gradle` of _app_ module:
 
 ```groovy
 dependencies {
@@ -72,7 +74,7 @@ dependencies {
 <receiver android:name=".fcm.NotificationBroadcastReceiver" />
 ```
 
-In **MainActivity.kt**, subscribe to FCM Notification Channel. Let’s say we’re subscribing to ***discount-offers*** FCM Channel:
+In **MainActivity.kt**, subscribe to FCM Notification Channel. Let’s say we’re subscribing to **_discount-offers_** FCM Channel:
 
 ```kotlin
 FirebaseMessaging.getInstance().subscribeToTopic("discount-offers")
@@ -84,7 +86,7 @@ FirebaseMessaging.getInstance().subscribeToTopic("discount-offers")
     }
 ```
 
-***
+---
 
 ## Let’s Understand Format of Data Payload
 
@@ -94,11 +96,11 @@ We’ll send FCM **Data** payload as below:
 {
   "to": "/topics/discount-offers",
   "priority": "high",
-  "data" : {
-    "title" : "TITLE_HERE",
-    "message" : "MESSAGE_HERE",
-    "isScheduled" : "true",
-    "scheduledTime" : "2019-12-13 09:41:00"
+  "data": {
+    "title": "TITLE_HERE",
+    "message": "MESSAGE_HERE",
+    "isScheduled": "true",
+    "scheduledTime": "2019-12-13 09:41:00"
   }
 }
 ```
@@ -143,7 +145,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 }
 ```
 
-We’ll first parse data like *title, message, etc.* We’ll check if `Automatic Date and Time` is turned ON in system settings (otherwise notification can be displayed at the wrong time). Then check if `isScheduled` is true then schedule notification otherwise display the notification.
+We’ll first parse data like _title, message, etc._ We’ll check if `Automatic Date and Time` is turned ON in system settings (otherwise notification can be displayed at the wrong time). Then check if `isScheduled` is true then schedule notification otherwise display the notification.
 
 Let’s come to `scheduleAlarm()`:
 
@@ -249,27 +251,27 @@ In that, we’ll get data (like title, message, etc) which we received from noti
 
 Hurrah! 😍 we have successfully implemented and scheduled FCM Push Notification on Android device.
 
-***
+---
 
 ## What If Device is Rebooted? 😕
 
 If a device is rebooted, Alarm will not work. For this, you’ll have to store all the information about FCM Notifications using **Room** database. After this, you’ll need to create a receiver (`ON_BOOT_COMPLETED`) which will be executed when Device is Rebooted. In that, all notifications in Room database should be scheduled again using `AlarmManager`.
 
-***
+---
 
 ## Let’s Test It 😃
 
-I have sent below payload with to the FCM Channel (***discount-offers***):
+I have sent below payload with to the FCM Channel (**_discount-offers_**):
 
 ```json
 {
   "to": "/topics/discount-offers",
   "priority": "high",
-  "data" : {
-    "title" : "🎅 Christmas Offer 🎄",
-    "message" : "Grab 90% Discount 😍 on Mobile Phones",
-    "isScheduled" : "true",
-    "scheduledTime" : "2019-12-13 14:12:00"
+  "data": {
+    "title": "🎅 Christmas Offer 🎄",
+    "message": "Grab 90% Discount 😍 on Mobile Phones",
+    "isScheduled": "true",
+    "scheduledTime": "2019-12-13 14:12:00"
   }
 }
 ```
@@ -278,13 +280,13 @@ I have sent below payload with to the FCM Channel (***discount-offers***):
 
 ![At exact 02:12, Notification is displayed though Data is OFF.](../../assets/images/content/scheduling-fcm-push-notifications-on-device-android-2d3bb9653b4d/img-5c2e816a.gif)
 
-*At exact 02:12, Notification is displayed though Data is OFF.*
+_At exact 02:12, Notification is displayed though Data is OFF._
 
 > **Yippie 😍!** It’s working as expected. Hope you liked that. If you find it helpful please share this article. Maybe it’ll help someone needy!
 
 > Sharing is Caring!
 
-***
+---
 
 ## Support this repository:
 

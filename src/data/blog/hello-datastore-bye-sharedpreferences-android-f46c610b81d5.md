@@ -3,50 +3,50 @@ title: "Hello DataStore, Bye SharedPreferences👋 — Android📱 — P
 pubDatetime: 2020-09-03T15:40:25.701Z
 description: "Introduction to Jetpack DataStore Part 1: Learn how to migrate from SharedPreferences to Preference DataStore for better data storage in Android."
 tags:
-- others
+  - others
 coverImage: "../../assets/images/cover-hello-datastore-bye-sharedpreferences-android-f46c610b81d5.png"
 ---
 
-Welcome Android developers 👋. This article is the first part of a series article based on the new Jetpack library 🚀 i.e. ***DataStore*** 🗄️. Currently, its alpha version is released. Let’s see ***what’s*** DataStore and ***why*** DataStore.
+Welcome Android developers 👋. This article is the first part of a series article based on the new Jetpack library 🚀 i.e. **_DataStore_** 🗄️. Currently, its alpha version is released. Let’s see **_what’s_** DataStore and **_why_** DataStore.
 
-***
+---
 
 ## What is DataStore 🤷‍♀️?
 
-*Jetpack DataStore is a data storage solution.* It allows us to store key-value pairs (like `SharedPreferences`) or typed objects with [protocol buffers](https://developers.google.com/protocol-buffers) *(We’ll see it in next article)*. DataStore uses Kotlin, Coroutines and Flow to store data asynchronously with consistency and transaction support 😍.
+_Jetpack DataStore is a data storage solution._ It allows us to store key-value pairs (like `SharedPreferences`) or typed objects with [protocol buffers](https://developers.google.com/protocol-buffers) _(We’ll see it in next article)_. DataStore uses Kotlin, Coroutines and Flow to store data asynchronously with consistency and transaction support 😍.
 
 In short, it’s the new data storage solution which is the replacement of `SharedPreferences`.
 
-***
+---
 
 ## Why DataStore 🤷‍♂️
 
-*   First and my favourite reason 😃 — Built with ❤️ Kotlin, Coroutines and Flow.
-*   If you have used `SharedPreferences` you might abuse or blamed it for something 😆 then `DataStore` is here to rescue!
-*   `SharedPreference` has some drawbacks like it provided synchronous APIs — but it’s not MAIN-thread-safe! Whereas DataStore is safe to use in UI thread because it uses `Dispatchers.IO` under the hood 👀.
-*   It’s safe from runtime exceptions! ❌⚠️. What would be more satisfying that? 😅 It also provides a way to migrate from `SharedPreferences` 😍.
-*   It provides **Type safety!** (Using Protocol buffers).
+- First and my favourite reason 😃 — Built with ❤️ Kotlin, Coroutines and Flow.
+- If you have used `SharedPreferences` you might abuse or blamed it for something 😆 then `DataStore` is here to rescue!
+- `SharedPreference` has some drawbacks like it provided synchronous APIs — but it’s not MAIN-thread-safe! Whereas DataStore is safe to use in UI thread because it uses `Dispatchers.IO` under the hood 👀.
+- It’s safe from runtime exceptions! ❌⚠️. What would be more satisfying that? 😅 It also provides a way to migrate from `SharedPreferences` 😍.
+- It provides **Type safety!** (Using Protocol buffers).
 
 These are some reasons which encourage us to use DataStore and finally say goodbye to beloved `SharedPreferences` 👋.
 
-***
+---
 
 ## That’s not only the reason
 
 `DataStore` provides two different types of implementations to store data:
 
-*   **Preference DataStore:** This uses key-value pairs to store data. But it doesn’t provide type-safety.
-*   **Proto DataStore:** It stores data as a custom type with specified schema using [Protocol Buffers](https://developers.google.com/protocol-buffers) *(We’ll see about it in the next article)*.
+- **Preference DataStore:** This uses key-value pairs to store data. But it doesn’t provide type-safety.
+- **Proto DataStore:** It stores data as a custom type with specified schema using [Protocol Buffers](https://developers.google.com/protocol-buffers) _(We’ll see about it in the next article)_.
 
 I think that’s enough introduction to `DataStore`. It’s time to write some code 👨‍💻😎.
 
-***
+---
 
 ## Let’s begin code 👨‍💻
 
 You can simply [clone or refer this repository](https://github.com/PatilShreyas/DataStoreExample) to get example code demonstrating `DataStore` 📁.
 
-We’ll develop a sample Android application which stores a UI mode preference from user i.e. 🌞 *Light Mode* or 🌑 *Dark Mode*.
+We’ll develop a sample Android application which stores a UI mode preference from user i.e. 🌞 _Light Mode_ or 🌑 _Dark Mode_.
 
 First of all, let’s add a Gradle dependency in `build.gradle` of your app module. Currently `1.0.0-alpha01` is the latest release. You can keep an eye [here](https://developer.android.com/topic/libraries/architecture/datastore) to get info about the latest version.
 
@@ -57,7 +57,7 @@ dependencies {
 }
 ```
 
-***
+---
 
 ## Start implementing DataStore 📁
 
@@ -78,7 +78,7 @@ class SettingsManager(context: Context) {
 }
 ```
 
-This will initialize the instance `dataStore` field by creating `DataStore` using the file name as *“settings_pref”*. `createDataStore()` is extension function created on `Context`.
+This will initialize the instance `dataStore` field by creating `DataStore` using the file name as _“settings_pref”_. `createDataStore()` is extension function created on `Context`.
 
 Now we’ll be storing UI mode preference using a key (as we managed in `SharedPreference`). Key in `DataStore` is created as below 👇:
 
@@ -88,7 +88,7 @@ companion object {
 }
 ```
 
-Here 👆 we’ve created a 🔑 KEY `IS_DARK_MODE` which will store a boolean value (`false` *for Light mode / *`true`* for Dark mode*). Because Preferences DataStore does not use a predefined schema, you must use `Preferences.preferencesKey()` to define a key for each value that you need to store in the `DataStore<Preferences>`.
+Here 👆 we’ve created a 🔑 KEY `IS_DARK_MODE` which will store a boolean value (`false` _for Light mode / _`true`_ for Dark mode_). Because Preferences DataStore does not use a predefined schema, you must use `Preferences.preferencesKey()` to define a key for each value that you need to store in the `DataStore<Preferences>`.
 
 Now we’ll create a method which will set UI mode from our UI/Activity i.e. `setUiMode()` 🔧.
 
@@ -133,7 +133,7 @@ val uiModeFlow: Flow<UiMode> = dataStore.data
 
 So that’s all about setting up `DataStore` 😃. Now let’s design UI.
 
-***
+---
 
 ## Setup Activity
 
@@ -185,9 +185,9 @@ private fun observeUiPreferences() {
 }
 ```
 
-👆 Here we’ve used `asLiveData()` flow extension function which gives emitted values from Flow in `LiveData`. *(Otherwise, we can also use `lifecycleScope.launch{}` here if you don’t like to use `LiveData`)*.
+👆 Here we’ve used `asLiveData()` flow extension function which gives emitted values from Flow in `LiveData`. _(Otherwise, we can also use `lifecycleScope.launch{}` here if you don’t like to use `LiveData`)_.
 
-We’re just updating **image resource** and **background color of root layout** when UI mode is changed. *(Actual mode can be changed using `AppCompatDelegate.setDefaultNightMode()`)*.
+We’re just updating **image resource** and **background color of root layout** when UI mode is changed. _(Actual mode can be changed using `AppCompatDelegate.setDefaultNightMode()`)_.
 
 ```kotlin
 private fun onLightMode() {
@@ -215,9 +215,9 @@ This is how we implemented Preferences `DataStore` instead of `SharedPreferences
 
 So, `DataStore` is cool 🆒, isn’t it? Give it a try 😃. Since it’s currently in alpha, maybe many more is on the way to come 🛣️.
 
-***
+---
 
-DataStore uses file management mechanism for storing data. But it’s different than managed in `SharedPreferences`. Now if you want to see how’s your data getting stored then using Android Studio’s *‘Device File Explorer’* you can go to `/data/app/YOUR_APP_PACKAGE_NAME/files/datastore` and you can see the file there like below 👇:
+DataStore uses file management mechanism for storing data. But it’s different than managed in `SharedPreferences`. Now if you want to see how’s your data getting stored then using Android Studio’s _‘Device File Explorer’_ you can go to `/data/app/YOUR_APP_PACKAGE_NAME/files/datastore` and you can see the file there like below 👇:
 
 ![Device File Explorer Snapshot](../../assets/images/content/hello-datastore-bye-sharedpreferences-android-f46c610b81d5/img-device-file-explorer.png)
 
@@ -225,7 +225,7 @@ But its content is not readable as you can see in below image 👇:
 
 ![](../../assets/images/content/hello-datastore-bye-sharedpreferences-android-f46c610b81d5/img-b4e61f64.png)
 
-***
+---
 
 Let me know your valuable feedback about this article. 🙏
 
@@ -233,9 +233,9 @@ In the next article, we’ll see how to use **Proto DataStore.**
 
 Thank you! 😃
 
-***
+---
 
 ## Resources
 
-*   [**PatilShreyas/DataStoreExample**](https://github.com/PatilShreyas/DataStoreExample)
-*   [**DataStore | Android Developer**](https://developer.android.com/topic/libraries/architecture/datastore)
+- [**PatilShreyas/DataStoreExample**](https://github.com/PatilShreyas/DataStoreExample)
+- [**DataStore | Android Developer**](https://developer.android.com/topic/libraries/architecture/datastore)

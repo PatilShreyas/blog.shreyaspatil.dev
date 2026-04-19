@@ -3,25 +3,25 @@
 @layer base {
   /* ===== Override default Tailwind Typography styles ===== */
   .app-prose {
-    @apply prose prose-base sm:prose-lg max-w-none;
+    @apply prose prose-base max-w-none sm:prose-lg;
 
     h1 {
-      @apply mb-8 mt-16 text-foreground font-heading font-black tracking-tighter leading-tight;
+      @apply mt-16 mb-8 font-heading leading-tight font-black tracking-tighter text-foreground;
     }
 
     h2,
     h3,
     h4,
     th {
-      @apply mb-4 mt-12 text-foreground font-heading font-bold tracking-tight;
+      @apply mt-12 mb-4 font-heading font-bold tracking-tight text-foreground;
     }
 
     h2 {
-      @apply pt-8 border-t border-border/40 text-3xl;
+      @apply border-t border-border/40 pt-8 text-3xl;
     }
 
     h3 {
-      @apply italic mt-10 text-xl;
+      @apply mt-10 text-xl italic;
     }
 
     p,
@@ -32,9 +32,11 @@
     table,
     code,
     mark {
-      @apply text-foreground/90 leading-[1.8];
+      @apply leading-[1.8] text-foreground/90;
       font-variant-ligatures: common-ligatures;
-      font-feature-settings: "kern" 1, "liga" 1;
+      font-feature-settings:
+        "kern" 1,
+        "liga" 1;
       text-rendering: optimizeLegibility;
       hanging-punctuation: first last;
     }
@@ -44,7 +46,7 @@
     }
 
     mark {
-      @apply bg-accent/25 rounded-sm px-1 text-inherit;
+      @apply rounded-sm bg-accent/25 px-1 text-inherit;
     }
 
     a {
@@ -60,15 +62,15 @@
     }
 
     hr {
-      @apply border-border/50 my-16;
+      @apply my-16 border-border/50;
     }
 
     img {
-      @apply mx-auto border border-border rounded-xl img-shimmer shadow-sm;
+      @apply mx-auto img-shimmer rounded-xl border border-border shadow-sm;
     }
 
     blockquote {
-      @apply border-s-4 border-s-accent/60 bg-accent/5 py-2 px-6 rounded-e-lg italic font-medium text-foreground/80;
+      @apply rounded-e-lg border-s-4 border-s-accent/60 bg-accent/5 px-6 py-2 font-medium text-foreground/80 italic;
     }
 
     figcaption {
@@ -93,15 +95,17 @@
     code:not(pre code) {
       @apply rounded-sm bg-foreground/5 px-[0.3em] py-[0.1em] font-mono text-[1.05em]! font-medium text-foreground before:content-none after:content-none;
       @apply break-words whitespace-normal;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-family:
+        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Liberation Mono", "Courier New", monospace;
     }
 
     :where(h1, h2, h3, h4, h5, h6) code:not(pre code) {
-      @apply text-[1em]! font-bold px-[0.4em];
+      @apply px-[0.4em] text-[1em]! font-bold;
     }
 
     html[data-theme="dark"] code:not(pre code) {
-      @apply bg-[#0d1117]! border! border-white/10! shadow-inner;
+      @apply border! border-white/10! bg-[#0d1117]! shadow-inner;
     }
 
     .astro-code code {

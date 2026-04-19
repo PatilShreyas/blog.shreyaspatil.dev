@@ -3,28 +3,28 @@ title: "DevOps-ify Android libraries with GitHub Actions and Package Registry�
 pubDatetime: 2020-10-02T10:29:52.365Z
 description: "Learn how to use GitHub Package Registry (GPR) and GitHub Actions to safely publish and consume private or public Android libraries with ease."
 tags:
-- others
+  - others
 coverImage: "../../assets/images/cover-devops-ify-android-libraries-with-github-actions-and-package-registry-5e7f69a83622.jpeg"
 ---
 
 Hello Android developers, in this article we’ll take a look at publishing Android library to the **[GitHub Package Registry](https://github.com/features/packages)** and automating it with **[GitHub Actions CI](https://github.com/features/actions)**. You might have developed a cool Android library and wanted to publish it somewhere. In some situations, the GitHub Package Registry is really a good choice. Let’s discuss more on it.
 
-***
+---
 
 ## What is GitHub Package Registry? 🤷‍♀️
 
 With GPR, you can safely publish and consume packages. It supports various types of packages for Maven, NPM, Docker, NuGet, RubyGems, etc.
 
-***
+---
 
 ## What’s different in GitHub Package Registry? 🤷‍♀️
 
-*   In the Android library context, comparing it with Bintray / JCenter / MavenCentral, GPR provides security for consuming package. Anybody directly can’t use the package without an access token.
-*   If you want to develop a private Android library only for some authenticated developers. For e.g. You have to develop an Android library only for a specific organisation. Only that organisation will be able to use this library. Comparing this with Bintray, then it’s **PAID 💰** for private packages. That’s how GPR is the right choice in some cases.
+- In the Android library context, comparing it with Bintray / JCenter / MavenCentral, GPR provides security for consuming package. Anybody directly can’t use the package without an access token.
+- If you want to develop a private Android library only for some authenticated developers. For e.g. You have to develop an Android library only for a specific organisation. Only that organisation will be able to use this library. Comparing this with Bintray, then it’s **PAID 💰** for private packages. That’s how GPR is the right choice in some cases.
 
 That’s a short introduction about GPR 😃.
 
-***
+---
 
 ## Getting started 🚀
 
@@ -38,8 +38,8 @@ So you just need to **code, push and chill 😍.** So let’s start.
 
 Considering you already have developed your library we’ll directly start with configuring setup for publishing it to GPR.
 
-*   Open `build.gradle` file of your library module.
-*   Apply `maven-publish` plugin at the top of the file:
+- Open `build.gradle` file of your library module.
+- Apply `maven-publish` plugin at the top of the file:
 
 ```groovy
 apply plugin: 'com.android.library'
@@ -48,7 +48,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'maven-publish'
 ```
 
-*   Declare Android library details such as *group, artifact, version, name, etc* as below 👇:
+- Declare Android library details such as _group, artifact, version, name, etc_ as below 👇:
 
 ```groovy
 ext {
@@ -62,7 +62,7 @@ ext {
 }
 ```
 
-*   Create a task for generating Android source (`.jar`):
+- Create a task for generating Android source (`.jar`):
 
 ```groovy
 task androidSourcesJar(type: Jar) {
@@ -71,7 +71,7 @@ task androidSourcesJar(type: Jar) {
 }
 ```
 
-*   Configure maven publication options as below 👇. This will be responsible for a group and an artifact ID of your Android library.
+- Configure maven publication options as below 👇. This will be responsible for a group and an artifact ID of your Android library.
 
 ```groovy
 afterEvaluate {
@@ -97,9 +97,9 @@ afterEvaluate {
 }
 ```
 
-*   In repositories, add details of your package. In this configuration, keep the name as `"GitHubPackages"` and URL should be in the format `"https://maven.pkg.github.com/USER/REPO"`.
-*   Here we’ll get credentials from environment variables.
-*   Here password will be a **[GitHub’s PERSONAL ACCESS TOKEN](https://github.com/settings/tokens)** which should have a permission `write:package`.
+- In repositories, add details of your package. In this configuration, keep the name as `"GitHubPackages"` and URL should be in the format `"https://maven.pkg.github.com/USER/REPO"`.
+- Here we’ll get credentials from environment variables.
+- Here password will be a **[GitHub’s PERSONAL ACCESS TOKEN](https://github.com/settings/tokens)** which should have a permission `write:package`.
 
 ```groovy
 repositories {
@@ -114,7 +114,7 @@ repositories {
 }
 ```
 
-*   Thus, Gradle task — `publish` will be generated. But package artifact should be generated before publishing package. So we’ll define it as below 👇.
+- Thus, Gradle task — `publish` will be generated. But package artifact should be generated before publishing package. So we’ll define it as below 👇.
 
 > **Note:** Whenever `gradlew publish` is executed then assembling will be performed first.
 
@@ -122,23 +122,23 @@ repositories {
 publish.dependsOn assemble
 ```
 
-***
+---
 
 ## Setup Workflow
 
 We’ll create a workflow which will be triggered whenever a git tag is pushed. So let’s create.
 
-*   Create a file `release.yml` in `/.github/workflows` directory. Initialize it as below:
+- Create a file `release.yml` in `/.github/workflows` directory. Initialize it as below:
 
 ```yaml
 name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 ```
 
-*   Add basic setup for job as below 👇. Here Gradle caching is optional.
+- Add basic setup for job as below 👇. Here Gradle caching is optional.
 
 ```yaml
 jobs:
@@ -168,57 +168,57 @@ jobs:
         run: chmod +x gradlew
 ```
 
-*   Now, let’s build `.aar` (Android Library artifact):
+- Now, let’s build `.aar` (Android Library artifact):
 
 ```yaml
-      - name: Build AAR ⚙️🛠
-        run: bash ./gradlew :simplelibrary:assemble
+- name: Build AAR ⚙️🛠
+  run: bash ./gradlew :simplelibrary:assemble
 ```
 
-*   Now if the above build is successful then we can proceed to publish the package to GPR. Use `secrets.GITHUB_TOKEN` which is exposed by GitHub Actions CI already.
+- Now if the above build is successful then we can proceed to publish the package to GPR. Use `secrets.GITHUB_TOKEN` which is exposed by GitHub Actions CI already.
 
 ```yaml
-      - name: Publish to GitHub Package Registry 🚀
-        run: bash ./gradlew :simplelibrary:publish
-        env:
-          GPR_USER: ${{ github.actor }}
-          GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
+- name: Publish to GitHub Package Registry 🚀
+  run: bash ./gradlew :simplelibrary:publish
+  env:
+    GPR_USER: ${{ github.actor }}
+    GPR_KEY: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 > **Note:** If you remember, we were reading username and password from System Environment variables in `build.gradle` configuration of the library. We’ll need to expose them from here.
 
-*   Now once the package is published to GPR we’re ready to create a GitHub release. (Here we are keeping `draft` as `true` so that we can release it later).
+- Now once the package is published to GPR we’re ready to create a GitHub release. (Here we are keeping `draft` as `true` so that we can release it later).
 
 ```yaml
-      - name: Create Release ✅
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          draft: true
-          prerelease: false
+- name: Create Release ✅
+  id: create_release
+  uses: actions/create-release@v1
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  with:
+    tag_name: ${{ github.ref }}
+    release_name: ${{ github.ref }}
+    draft: true
+    prerelease: false
 ```
 
-*   Once the GitHub release is created it will upload library artifact to the release:
+- Once the GitHub release is created it will upload library artifact to the release:
 
 ```yaml
-      - name: Upload Simple Library AAR 🗳
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: simplelibrary/build/outputs/aar/simplelibrary-release.aar
-          asset_name: simple-library.aar
-          asset_content_type: application/aar
+- name: Upload Simple Library AAR 🗳
+  uses: actions/upload-release-asset@v1
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  with:
+    upload_url: ${{ steps.create_release.outputs.upload_url }}
+    asset_path: simplelibrary/build/outputs/aar/simplelibrary-release.aar
+    asset_name: simple-library.aar
+    asset_content_type: application/aar
 ```
 
 Yeah, that’s it! 😃 Now let’s test it 🧪.
 
-***
+---
 
 ## Test Workflow
 
@@ -256,7 +256,7 @@ Once you see success status of CI as seen in the above image means everything wo
 
 Yeah! Now anybody can use this package if they have an access token. But how to use it? 🤔 Let’s see.
 
-***
+---
 
 ## Creating an Access token for reading package
 
@@ -275,7 +275,7 @@ This means only the reading package is possible using this token. So it’s safe
 
 Now it’s time to use Android library in app.
 
-***
+---
 
 ## Configuring Android app
 
@@ -314,9 +314,9 @@ I hope you liked this article and it’ll be helpful for everyone!
 
 Thank you! 😄
 
-***
+---
 
 ## 📚 References
 
-*   [**Example Repository - AndroidGPR**](https://github.com/PatilShreyas/AndroidGPR)
-*   [**About GitHub Packages - Documentation**](https://docs.github.com/en/free-pro-team@latest/packages/publishing-and-managing-packages/about-github-packages)
+- [**Example Repository - AndroidGPR**](https://github.com/PatilShreyas/AndroidGPR)
+- [**About GitHub Packages - Documentation**](https://docs.github.com/en/free-pro-team@latest/packages/publishing-and-managing-packages/about-github-packages)

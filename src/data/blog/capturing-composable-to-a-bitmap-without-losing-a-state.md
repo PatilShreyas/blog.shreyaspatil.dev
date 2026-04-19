@@ -3,28 +3,28 @@ title: "Capturing composable to a bitmap without losing a state"
 pubDatetime: 2024-03-20T13:58:20.221Z
 description: "Learn how to capture a Jetpack Compose Composable as a Bitmap without losing its current state. A deep dive into capturing high-quality UI screenshots programmatically."
 tags:
-- compose
-- android-app-development
-- mobile-apps
-- android-development
-- android
-- ui
-- mobile-development
-- kotlin
-- android-apps
-- screenshot
-- jetpack
-- jetpack-compose
-- capture
-- jetpack-compose-layouts-and-modifiers
+  - compose
+  - android-app-development
+  - mobile-apps
+  - android-development
+  - android
+  - ui
+  - mobile-development
+  - kotlin
+  - android-apps
+  - screenshot
+  - jetpack
+  - jetpack-compose
+  - capture
+  - jetpack-compose-layouts-and-modifiers
 coverImage: "../../assets/images/cover-capturing-composable-to-a-bitmap-without-losing-a-state.jpeg"
 ---
 
 Hey Composers 👋🏻,
 
-I'm the maintainer of a library - [Capturable](https://github.com/PatilShreyas/Capturable), *that helps you to convert composable content into a Bitmap image easily*. In the very first release of it, as there was no dedicated API from compose, I used to wrap composable content inside a `ComposeView` and then draw a View's Canvas into a Bitmap. Later in Compose 1.6.x, the API was added by which we can redirect rendering into `android.graphics.Picture`, which can then be used to create a Bitmap.
+I'm the maintainer of a library - [Capturable](https://github.com/PatilShreyas/Capturable), _that helps you to convert composable content into a Bitmap image easily_. In the very first release of it, as there was no dedicated API from compose, I used to wrap composable content inside a `ComposeView` and then draw a View's Canvas into a Bitmap. Later in Compose 1.6.x, the API was added by which we can redirect rendering into `android.graphics.Picture`, which can then be used to create a Bitmap.
 
-*The* [*official documentation*](https://developer.android.com/jetpack/compose/graphics/draw/modifiers#composable-to-bitmap) *has a guide for capturing the composable content into a Bitmap as follows* **OR** *see this* [*snippet*](https://github.com/android/snippets/blob/5ae1f7852164d98d055b3cc6b463705989cff231/compose/snippets/src/main/java/com/example/compose/snippets/graphics/AdvancedGraphicsSnippets.kt#L93) ⬇️
+_The_ [_official documentation_](https://developer.android.com/jetpack/compose/graphics/draw/modifiers#composable-to-bitmap) _has a guide for capturing the composable content into a Bitmap as follows_ **OR** _see this_ [_snippet_](https://github.com/android/snippets/blob/5ae1f7852164d98d055b3cc6b463705989cff231/compose/snippets/src/main/java/com/example/compose/snippets/graphics/AdvancedGraphicsSnippets.kt#L93) ⬇️
 
 [![https://developer.android.com/jetpack/compose/graphics/draw/modifiers#composable-to-bitmap](../../assets/images/content/capturing-composable-to-a-bitmap-without-losing-a-state/img-32a3fdaf.png)](https://developer.android.com/jetpack/compose/graphics/draw/modifiers#composable-to-bitmap)
 
@@ -34,7 +34,7 @@ Now it's an interesting part 😁 because I started seeing issues with this and 
 
 ## Issue 🧐
 
-Let's say we have a screen on which content can be changed at any time in the runtime i.e. ***stateful content*** then this issue was easily reproducible. *For example, you want to capture content having a network image (which will be loaded in future), or a simple count-down like continuously changing screen, etc.*
+Let's say we have a screen on which content can be changed at any time in the runtime i.e. **_stateful content_** then this issue was easily reproducible. _For example, you want to capture content having a network image (which will be loaded in future), or a simple count-down like continuously changing screen, etc._
 
 Let's build a simple continuous counter and try to add a capturing modifier to it. Here is what the code would look like.
 
@@ -131,7 +131,7 @@ But when we run this, we run into an issue 😏. See the issue below.
 
 ![](../../assets/images/content/capturing-composable-to-a-bitmap-without-losing-a-state/img-3e721226.gif)
 
-Whoa! 😮. It doesn't only break the capturing but also ***breaks the UI state*** of a component. Because the counter is not working properly with this.
+Whoa! 😮. It doesn't only break the capturing but also **_breaks the UI state_** of a component. Because the counter is not working properly with this.
 
 If we remove `drawWithCache {}` Modifier from the above code, then there's no issue as such and the counter will work without any issues.
 
@@ -145,7 +145,7 @@ Refer to this for step by step understanding of a flow ⬇️.
 
 ### Spotting the issue 🔬
 
-As we can understand from the logic above, it captures the content from Canvas into a `Picture` and later it draws the same picture on the canvas (*which is going to be displayed on the UI*). But this is unaware of recompositions (*UI updates*). So we need a solution in such a way that we should be able to capture the content with its current state without hampering the UI updates of the content.
+As we can understand from the logic above, it captures the content from Canvas into a `Picture` and later it draws the same picture on the canvas (_which is going to be displayed on the UI_). But this is unaware of recompositions (_UI updates_). So we need a solution in such a way that we should be able to capture the content with its current state without hampering the UI updates of the content.
 
 > Earlier, I faced the similar issue which was reported on [Google's issue-tracker](https://issuetracker.google.com/issues/305653364). In this issue was with image loading from a network and capturing content of it.
 
@@ -205,13 +205,13 @@ class CapturableModifierNode(...) : DelegatingNode(), DelegatableNode {
 }
 ```
 
-In this, `CapturableModifierNode` inherits from two interfaces: `DelegatingNode` and `DelegatableNode`, suggesting it can delegate drawing tasks to other nodes while also being delegatable itself (*as we want to re-use the* `CacheDrawModifierNode`).
+In this, `CapturableModifierNode` inherits from two interfaces: `DelegatingNode` and `DelegatableNode`, suggesting it can delegate drawing tasks to other nodes while also being delegatable itself (_as we want to re-use the_ `CacheDrawModifierNode`).
 
 You can see that we are using the same code as we saw earlier inside of `CacheDrawModifierNode`.
 
 But see the difference that this Modifier only gets attached when capturing of content is requested. `drawCanvasIntoPicture` is a suspend method which can be called when capturing is requested. At the time of a request (call of the method), the logic of capturing is called via `delegate()` method. Then we wait until the picture is drawn by observing `pictureDrawn` (CompletableDeferred<Unit>). The wait is completed after the picture is drawn on the UI from `drawIntoCanvas {}` lambda. After the picture is drawn, the same node is removed via `undelegate()` method that removes the delegated `CacheDrawModifierNode` to prevent unnecessary work.
 
-This can help us solve UI state issues while capturing the content. Also, ***it ensures that content is only captured when it's requested***. So our logic of drawing is only executed at the time of capturing the request and instantly undelegated after it.
+This can help us solve UI state issues while capturing the content. Also, **_it ensures that content is only captured when it's requested_**. So our logic of drawing is only executed at the time of capturing the request and instantly undelegated after it.
 
 After this, let's expose the Modifier element
 
@@ -272,17 +272,17 @@ You can see this [pull request](https://github.com/PatilShreyas/Capturable/pull/
 
 That's it!
 
-***
+---
 
 Awesome 🤩. I trust you've picked up some valuable insights from this. If you like this write-up, do share it 😉, because...
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄
 
 Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.
 
-***
+---
 
 ## See also
 

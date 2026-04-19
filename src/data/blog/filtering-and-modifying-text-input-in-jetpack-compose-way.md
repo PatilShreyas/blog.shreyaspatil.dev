@@ -3,23 +3,23 @@ title: "Filtering and modifying text input in Jetpack Compose way"
 pubDatetime: 2021-12-20T12:15:05.662Z
 description: "Learn how to filter and modify user text input in Jetpack Compose. A guide to implementing input constraints and formatting for TextField."
 tags:
-- android-app-development
-- ux
-- android
-- ui
-- kotlin
+  - android-app-development
+  - ux
+  - android
+  - ui
+  - kotlin
 coverImage: "../../assets/images/cover-filtering-and-modifying-text-input-in-jetpack-compose-way.png"
 ---
 
 Hey Composers 👋,
 
-Jetpack compose is getting good attention and many developers and organizations giving it a try for using in actual apps. Migrating from the existing view system to Jetpack compose is not that much hard (*in my personal opinion*). But there's still like a puzzle sometimes in some cases. Many developers get issues while trying some cases or building PoCs. In this article, I'm gonna talk about the case where I was confused and hopefully I was able to fix it with help from the community.
+Jetpack compose is getting good attention and many developers and organizations giving it a try for using in actual apps. Migrating from the existing view system to Jetpack compose is not that much hard (_in my personal opinion_). But there's still like a puzzle sometimes in some cases. Many developers get issues while trying some cases or building PoCs. In this article, I'm gonna talk about the case where I was confused and hopefully I was able to fix it with help from the community.
 
-***
+---
 
 ## The case 🧐
 
-We want to create a `TextField` in which users can type either *amount or message*. If an amount is entered, it should be formatted and replaced in the `TextField`.
+We want to create a `TextField` in which users can type either _amount or message_. If an amount is entered, it should be formatted and replaced in the `TextField`.
 
 For example: If an input is fully numeric like **250000**. Then in the TextField, we have to modify it like **2,50,000**. Otherwise, the text should be displayed as it is (i.e. treated as a message).
 
@@ -27,7 +27,7 @@ That's the simple case, isn't it? 😀
 
 Let's try to implement it and see where we go...
 
-***
+---
 
 ## The initial implementation and problems 🧑‍💻
 
@@ -64,31 +64,31 @@ fun formatAmountOrMessage(
 
 Let's run this and see. So it is behaving like this 👇:
 
-*When "1111" is entered, Keyboard's view is changed from numeric to alphabet which is bad UX* 🙅‍♂️. *Also, the cursor position was not proper.*
+_When "1111" is entered, Keyboard's view is changed from numeric to alphabet which is bad UX_ 🙅‍♂️. _Also, the cursor position was not proper._
 
 ![Jetpack Compose: Keyboard issue demo](../../assets/images/content/filtering-and-modifying-text-input-in-jetpack-compose-way/img-bebcd1d2.gif)
 
-***
+---
 
 After getting these issues, I tried to search about it on Google, StackOverflow, but no luck! So I asked a question on [StackOverflow](https://stackoverflow.com/questions/70401519/android-jetpack-compose-keyboard-changing-from-numeric-to-alphabets-after-modif) and hopefully, I got the answer to the question. Let's see how to resolve this issue.
 
-***
+---
 
 ## Solution 💡
 
-As per the [answer to my question](https://stackoverflow.com/a/70403143/11326621) *(It's referenced from [Google's Issue Tracker](https://issuetracker.google.com/issues/193187530#comment2))* there are some facts. After reading a Googler's comment, he recommends 👇:
+As per the [answer to my question](https://stackoverflow.com/a/70403143/11326621) _(It's referenced from [Google's Issue Tracker](https://issuetracker.google.com/issues/193187530#comment2))_ there are some facts. After reading a Googler's comment, he recommends 👇:
 
-*   The filtering text in `onValueChanged` callback is generally not recommended because the text state is shared with out process IME (software keyboard).
-*   The filtering text means the text content changes internally, then the new state is notified to IME. This is not a normal path to IME and different IMEs reacts differently to this unexpected state change. Some IME may try to reconstruct the composition, others may give up and start a new session, etc.
-*   There are alternatives for this:
-    *   Don't filter and show error message (*Not useful for our use case*)
-    *   Use `VisualTransformation`
+- The filtering text in `onValueChanged` callback is generally not recommended because the text state is shared with out process IME (software keyboard).
+- The filtering text means the text content changes internally, then the new state is notified to IME. This is not a normal path to IME and different IMEs reacts differently to this unexpected state change. Some IME may try to reconstruct the composition, others may give up and start a new session, etc.
+- There are alternatives for this:
+  - Don't filter and show error message (_Not useful for our use case_)
+  - Use `VisualTransformation`
 
 So we have to use `VisualTransformation`. Because that's the only option that seems fit from the above discussion.
 
 ### What is `VisualTransformation` ? 🤔
 
-`VisualTransformation` is a useful interface for **changing the visual output of the text field without modifying the edit buffer**. *For example: Showing masked characters for a password field*.
+`VisualTransformation` is a useful interface for **changing the visual output of the text field without modifying the edit buffer**. _For example: Showing masked characters for a password field_.
 
 It's a SAM interface (interface having a **Single abstract method**) that filters input text. Let's see how it can be useful in fixing our case.
 
@@ -123,7 +123,7 @@ fun TextFieldDemo() {
 }
 ```
 
-As you can see above, we set `visualTransformation` using our recently created implementation. *Also, notice that in `onValueChange` now we are not modifying value*.
+As you can see above, we set `visualTransformation` using our recently created implementation. _Also, notice that in `onValueChange` now we are not modifying value_.
 
 After executing this implementation, this is how it works 👇:
 
@@ -216,7 +216,7 @@ Yeah! 😍 Our issues are solved and finally it's working as expected with good 
 
 That's all!
 
-***
+---
 
 If you found it helpful, share it with everyone.
 
@@ -224,9 +224,9 @@ Sharing is caring!
 
 Thank you 😀
 
-***
+---
 
 ## References 📚
 
-*   [Text in Jetpack Compose](https://developer.android.com/jetpack/compose/text)
-*   [VisualTransformation API Docs](https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/VisualTransformation)
+- [Text in Jetpack Compose](https://developer.android.com/jetpack/compose/text)
+- [VisualTransformation API Docs](https://developer.android.com/reference/kotlin/androidx/compose/ui/text/input/VisualTransformation)

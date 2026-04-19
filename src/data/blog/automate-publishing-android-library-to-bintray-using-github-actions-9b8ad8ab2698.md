@@ -3,7 +3,7 @@ title: "🤖 Automate Publishing Android Library to Bintray using GitHub Actions
 pubDatetime: 2020-05-01T08:47:20.059Z
 description: "Learn how to automate the publishing of your open-source Android libraries to Bintray using GitHub Actions CI whenever you create a new release."
 tags:
-- others
+  - others
 coverImage: "../../assets/images/cover-automate-publishing-android-library-to-bintray-using-github-actions-9b8ad8ab2698.jpeg"
 ---
 
@@ -15,23 +15,23 @@ We will see how to publish your open-source cool android library to Bintray auto
 
 Before starting, you’ll need to do some tasks with Bintray profile. If you’ve already done, you can skip this part and directly go to the next part ⚡.
 
-***
+---
 
 ## 💻 Setup Bintray 🛠️
 
-*   Visit [Bintray](https://bintray.com) and set up your account there.
-*   Go to **Home** → **Repository** and create a **maven** repository and keep its name of your choice. I’ve named it 'maven'. (*Remember, it’ll be useful in upcoming steps.*)
-*   After this, it’ll look like below. Click **Edit**.
+- Visit [Bintray](https://bintray.com) and set up your account there.
+- Go to **Home** → **Repository** and create a **maven** repository and keep its name of your choice. I’ve named it 'maven'. (_Remember, it’ll be useful in upcoming steps._)
+- After this, it’ll look like below. Click **Edit**.
 
 ![](../../assets/images/content/automate-publishing-android-library-to-bintray-using-github-actions-9b8ad8ab2698/img-d0bbe64a.png)
 
-*   Select **API Key** from the left menu and **Copy or Keep** this API Key for future reference.
+- Select **API Key** from the left menu and **Copy or Keep** this API Key for future reference.
 
 ![](../../assets/images/content/automate-publishing-android-library-to-bintray-using-github-actions-9b8ad8ab2698/img-fd0a238f.png)
 
 Thus, you’re done with Bintray set up. Now let’s see the **Android** part.
 
-***
+---
 
 ## 💻 Android Library Set up
 
@@ -54,28 +54,28 @@ Now, we’ve to set up library configuration 🛠 for the Bintray in this file. 
 
 About these variables:
 
-*   `bintrayRepo` — Name of the repository you’ve created in previous steps.
-*   `bintrayName` — Name which will be visible on **Bintray**.
-*   Change the values of other fields of your choice.
+- `bintrayRepo` — Name of the repository you’ve created in previous steps.
+- `bintrayName` — Name which will be visible on **Bintray**.
+- Change the values of other fields of your choice.
 
 > **Note:** Notice that we’re reading **Bintray User** and **Bintray API Key** from the system environment variable using `System.getenv()` method. This will be significant in the GitHub Actions Workflow setup.
 
 Now, you’ve done this part and now push your code to the GitHub repo for next step.
 
-***
+---
 
 ## 💻 Setting up on GitHub
 
 Go to **Settings** → Click **Add new Secret**. You’ve to add two secret values for this repo: `BINTRAY_USER` and `BINTRAY_API_KEY`.
 
-*   `BINTRAY_USER` — Your Bintray Username
-*   `BINTRAY_API_KEY` — Your Bintray API Key (Which you’ve copied in the previous step).
+- `BINTRAY_USER` — Your Bintray Username
+- `BINTRAY_API_KEY` — Your Bintray API Key (Which you’ve copied in the previous step).
 
 After adding these secrets, it should look as below 👇:
 
 ![GitHub Repository Secrets](../../assets/images/content/automate-publishing-android-library-to-bintray-using-github-actions-9b8ad8ab2698/img-a37493cf.png)
 
-***
+---
 
 ## 💻 Setting up GitHub Actions Workflow
 
@@ -89,7 +89,7 @@ Just create a `.github` directory at the root of GitHub repository. Under it, cr
 
 Finally, it’s running a command `./gradlew bintrayUpload` which will publish your library to the Bintray!
 
-***
+---
 
 ## Test it! 😃
 
@@ -121,11 +121,11 @@ This is how we automated publishing your cool open-source android library to Bin
 
 > **Thank you 😄!**
 
-***
+---
 
 **Sharing is Caring!**
 
-***
+---
 
 ## 📚 Resources
 
@@ -137,7 +137,7 @@ If you want to contact me, feel free to reach me…
 
 [**shreyaspatil.dev**](https://shreyaspatil.dev)
 
-*   [**Facebook**](https://www.facebook.com/shreyaspatil99)
-*   [**X (Twitter)**](https://twitter.com/imShreyasPatil)
-*   [**LinkedIn**](https://www.linkedin.com/in/patil-shreyas)
-*   [**GitHub**](https://github.com/PatilShreyas)
+- [**Facebook**](https://www.facebook.com/shreyaspatil99)
+- [**X (Twitter)**](https://twitter.com/imShreyasPatil)
+- [**LinkedIn**](https://www.linkedin.com/in/patil-shreyas)
+- [**GitHub**](https://github.com/PatilShreyas)

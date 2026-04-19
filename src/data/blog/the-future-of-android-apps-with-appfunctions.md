@@ -3,13 +3,13 @@ title: "The Future of Android Apps with AppFunctions"
 pubDatetime: 2026-03-30T04:30:00.000Z
 description: "Explore the potential of Android AppFunctions for AI agents. Learn how apps can share functionality with intelligent assistants using self-describing functions."
 tags:
-- app-development
-- ai
-- android-app-development
-- android
-- kotlin
-- android-apps
-- agentic-ai
+  - app-development
+  - ai
+  - android-app-development
+  - android
+  - kotlin
+  - android-apps
+  - agentic-ai
 coverImage: "../../assets/images/cover-the-future-of-android-apps-with-appfunctions.png"
 ---
 
@@ -29,9 +29,9 @@ Last year, when I first encountered the API, [I shared my thoughts on it](https:
 
 According to the official blog, while not every interaction has a dedicated integration yet, Google is developing a UI automation framework for AI agents and assistants to intelligently execute generic tasks on users' installed apps, ensuring user transparency and control. Unless an app wants to provide a structured communication method with greater control, implementing AppFunctions is optional.
 
-> *Currently, as I write this, it's only available on the Samsung S26 Ultra and Google Pixel 10. Users with these devices can access app functions from installed apps through the Gemini app* .
+> _Currently, as I write this, it's only available on the Samsung S26 Ultra and Google Pixel 10. Users with these devices can access app functions from installed apps through the Gemini app_ .
 
-***
+---
 
 ## 💡How to integrate AppFunctions?
 
@@ -39,11 +39,11 @@ AppFunctions are part of the SDK from Android 16 and are also available through 
 
 ![Diagram showing the typical flow of AppFunctions from app exposure to agent execution.](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-46e040ac.svg)
 
-*Source:*[*Overview of AppFunctions (Android Developers)* ](https://developer.android.com/ai/appfunctions)
+_Source:_[_Overview of AppFunctions (Android Developers)_ ](https://developer.android.com/ai/appfunctions)
 
-The Jetpack library includes an annotation processor that simplifies creating type-safe schema models and functions. You just need to declare what the function does, what it requires, and what it returns. This annotation processor then generates a contract, allowing the agent app to understand how to call the app's function, including the necessary parameters and types. *This process is similar to how an LLM agent knows how to call a function when MCP is configured* .
+The Jetpack library includes an annotation processor that simplifies creating type-safe schema models and functions. You just need to declare what the function does, what it requires, and what it returns. This annotation processor then generates a contract, allowing the agent app to understand how to call the app's function, including the necessary parameters and types. _This process is similar to how an LLM agent knows how to call a function when MCP is configured_ .
 
-As of now, the latest version of AppFunctions is v1.0.0-alpha08, so if you're reading this much later, expect many changes. I already have my [ *note taking sample app on my GitHub* ](https://github.com/PatilShreyas/NotyKT/), so thought of integrating it there. So apps need to add the following dependencies in the project.
+As of now, the latest version of AppFunctions is v1.0.0-alpha08, so if you're reading this much later, expect many changes. I already have my [ _note taking sample app on my GitHub_ ](https://github.com/PatilShreyas/NotyKT/), so thought of integrating it there. So apps need to add the following dependencies in the project.
 
 ```kotlin
 dependencies {
@@ -129,7 +129,7 @@ class NotyAppFunctions @Inject constructor(
 }
 ```
 
-Notice how it's clearly defined. The annotation processor handles the heavy lifting. The `@AppFunction(isDescribedByKDoc = true)` annotation generates a structured schema, providing a description of the function, detailing each parameter, and outlining the return model from the *KDoc* .
+Notice how it's clearly defined. The annotation processor handles the heavy lifting. The `@AppFunction(isDescribedByKDoc = true)` annotation generates a structured schema, providing a description of the function, detailing each parameter, and outlining the return model from the _KDoc_ .
 
 Since this function requires a repository as a dependency, how can the app create an instance of it on demand? Ideally, if this function were declared without dependencies, its instance could be automatically created. However, with a dependency present, a factory must be provided. Most apps use DI frameworks, so here's how to handle it: In the app's Application implemented class, implement the new interface and override its method as shown, using Dagger Hilt in this example.
 
@@ -154,7 +154,7 @@ class NotyApp : Application(), AppFunctionConfiguration.Provider {
 
 That's it! This is how AppFunctions can be implemented in the app 😄.
 
-***
+---
 
 ## 🧪 How to test?
 
@@ -196,7 +196,7 @@ adb shell cmd app_function execute-app-function \
 --parameters {}
 ```
 
-*Currently when I tried, it was forcing me to pass the parameters, so I had to provide* `{}`.
+_Currently when I tried, it was forcing me to pass the parameters, so I had to provide_ `{}`.
 
 It provides JSON output as follows, aligning with the contract model defined in our app:
 
@@ -206,12 +206,16 @@ It provides JSON output as follows, aligning with the contract model defined in 
     {
       "id": ["TMP-053ffdbe-7997-4ba6-9187-3a4ef6be0833"],
       "title": ["💡Ideas"],
-      "content": ["- Android AppFunctions demo\n- Android Foldable device APIs\n- Generative AI"]
+      "content": [
+        "- Android AppFunctions demo\n- Android Foldable device APIs\n- Generative AI"
+      ]
     },
     {
       "id": ["TMP-58832e3e-da0f-4542-aa55-68fbc9edea19"],
       "title": ["👨🏻‍💻 Today's tasks"],
-      "content": ["Work on the open-source sample to demonstrate the use of Android AppFunctions"]
+      "content": [
+        "Work on the open-source sample to demonstrate the use of Android AppFunctions"
+      ]
     }
   ]
 }
@@ -232,11 +236,11 @@ This is what testing looks like!
 
 [This is a PR](https://github.com/PatilShreyas/NotyKT/pull/823) with all changes for reference.
 
-***
+---
 
 ## 💰Bonus - Agent App
 
-I attempted to mimic the agent app to get a sense of it ( *though it's not an actual agent, just hardcoded actions triggered by specific messages* ), and it appears as follows:
+I attempted to mimic the agent app to get a sense of it ( _though it's not an actual agent, just hardcoded actions triggered by specific messages_ ), and it appears as follows:
 
 <video controls width="100%" poster="/assets/videos/the-future-of-android-apps-with-appfunctions/poster.gif">
 <source src="/assets/videos/the-future-of-android-apps-with-appfunctions/demo.webm" type="video/webm">
@@ -245,26 +249,26 @@ Your browser does not support the video tag.
 
 You can find this [sample app here](https://github.com/PatilShreyas/appfunctions-notyagent-app/) and play around it if interested.
 
-However, this doesn't mean any random app can be installed as an agent app to invoke functions from any app that exposes them. If an app attempts this, a `SecurityException` will occur because this is a restricted API, accessible only to system apps. In the demo above, I installed the mock agent app as a system app in the emulator, which allowed me to experiment with it. The agent app must declare a permission in the manifest: `<uses-permission android:name="android.permission.EXECUTE_APP_FUNCTIONS" />`. Therefore, only official apps like those from Google/Gemini and OEMs are permitted to call these app functions. The agent apps can use [ *AppFunctionManager* ](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:appfunctions/appfunctions-stubs/src/main/java/com/android/extensions/appfunctions/AppFunctionManager.java;l=76;drc=622f19cc100e54fe063acd87c5cd468653abb795;bpv=0;bpt=0?q=AppFunctionManager&sq=&ss=androidx%2Fplatform%2Fframeworks%2Fsupport) to query all the apps and their exposed functions. It works as follows:
+However, this doesn't mean any random app can be installed as an agent app to invoke functions from any app that exposes them. If an app attempts this, a `SecurityException` will occur because this is a restricted API, accessible only to system apps. In the demo above, I installed the mock agent app as a system app in the emulator, which allowed me to experiment with it. The agent app must declare a permission in the manifest: `<uses-permission android:name="android.permission.EXECUTE_APP_FUNCTIONS" />`. Therefore, only official apps like those from Google/Gemini and OEMs are permitted to call these app functions. The agent apps can use [ _AppFunctionManager_ ](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:appfunctions/appfunctions-stubs/src/main/java/com/android/extensions/appfunctions/AppFunctionManager.java;l=76;drc=622f19cc100e54fe063acd87c5cd468653abb795;bpv=0;bpt=0?q=AppFunctionManager&sq=&ss=androidx%2Fplatform%2Fframeworks%2Fsupport) to query all the apps and their exposed functions. It works as follows:
 
 ![](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-8b8a458d.png)
 
 What are your thoughts on this new thing? I'm genuinely excited about its potential widespread use in apps. With the advancements in voice support and AI agents, this could become a standout feature in the future trends of Android development. Can imagine how it could be used:
 
-*   "Repeat the last ordered Indian dish for me on Zomato"
-*   "I need to make a chocolate cake for four people; please order all the necessary ingredients from Swiggy Instamart."
-*   "Schedule a cab for airport for tomorrow 05:45 AM via Uber"
-*   "Compose a lovely poem to wish my friend X a happy birthday and send it to him on WhatsApp."
-*   "Send 500 to X for cab share via UPI app" — then it finds X's details from phonebook and just prompts to enter the pin for payment, that's it!
+- "Repeat the last ordered Indian dish for me on Zomato"
+- "I need to make a chocolate cake for four people; please order all the necessary ingredients from Swiggy Instamart."
+- "Schedule a cab for airport for tomorrow 05:45 AM via Uber"
+- "Compose a lovely poem to wish my friend X a happy birthday and send it to him on WhatsApp."
+- "Send 500 to X for cab share via UPI app" — then it finds X's details from phonebook and just prompts to enter the pin for payment, that's it!
 
 and so on...
 
 If you found this useful, share it, it really helps 🙏. "Sharing is caring" 🤝🏻. Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.
 
-***
+---
 
 ## 📚 References
 
-*   [AppFunctions](https://developer.android.com/ai/appfunctions)
-*   [NotyKT](https://github.com/PatilShreyas/NotyKT/)
-*   [Agent demo app](https://github.com/PatilShreyas/appfunctions-notyagent-app)
+- [AppFunctions](https://developer.android.com/ai/appfunctions)
+- [NotyKT](https://github.com/PatilShreyas/NotyKT/)
+- [Agent demo app](https://github.com/PatilShreyas/appfunctions-notyagent-app)

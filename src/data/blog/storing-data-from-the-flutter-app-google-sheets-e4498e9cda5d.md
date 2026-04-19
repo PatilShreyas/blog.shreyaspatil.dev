@@ -3,13 +3,13 @@ title: "Storing data from the Flutter app → Google Sheets 📊 — Part 1"
 pubDatetime: 2020-01-10T07:00:44.300Z
 description: "Learn how to use Google Sheets as a database for your Flutter app. A simple and effective way to store and manage app data using Google AppScript."
 tags:
-- others
+  - others
 coverImage: "../../assets/images/cover-storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d.png"
 ---
 
 In this article, we’ll create a sample app which stores Feedback of user from the **Flutter** app into Google Sheets using AppScript.
 
-***
+---
 
 ## 💡 Introduction
 
@@ -23,7 +23,7 @@ Here’s the [link for Part 2](https://medium.com/scalereal/getting-data-from-go
 
 For implementation, we’ll perform the below steps.
 
-***
+---
 
 ## ⚡️ Setting up Google Sheets
 
@@ -33,7 +33,7 @@ For implementation, we’ll perform the below steps.
 
 ![Initialized Google Sheet. (Selected Part of URL is Sheet ID).](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-8310c772.png)
 
-*Initialized Google Sheet. (Selected Part of URL is **Sheet ID**).*
+_Initialized Google Sheet. (Selected Part of URL is **Sheet ID**)._
 
 As above, I’ve set up header columns of the sheet. You can see I’ve highlighted part of the URL. It is the **Sheet ID** of our current document. Just copy it, we’ll require it in the next step. Every document has a unique **Sheet ID**.
 
@@ -41,7 +41,7 @@ As above, I’ve set up header columns of the sheet. You can see I’ve highligh
 
 ![Launching AppScript Editor.](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-87a1e775.png)
 
-***
+---
 
 ## ⚡️ Setting up Google AppScript
 
@@ -49,7 +49,7 @@ After the above steps, you’ll see AppScript Editor will be launched in the New
 
 ![AppScript Editor](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-6456d5ae.png)
 
-*AppScript Editor*
+_AppScript Editor_
 
 Here in this editor, we have to write AppScript which will act as a Web API and that will communicate with Google sheets.
 
@@ -67,7 +67,7 @@ Here, we’ll retrieve parameters using `request.parameter`. Finally, by using a
 
 ![Deploying the Web app](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-83e2d5be.png)
 
-*Deploying the Web app*
+_Deploying the Web app_
 
 2.  You’ll see a window like this, Just ensure that select ‘Execute the app’ as **‘Me’** and ‘Who has access to the app’ as **‘Anyone, even anonymous’**.
 
@@ -81,13 +81,13 @@ Here, we’ll retrieve parameters using `request.parameter`. Finally, by using a
 
 ![Proceed this…](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-6f4d1440.png)
 
-*Proceed this…*
+_Proceed this…_
 
 5.  **Allow** these permissions and then you’re done!
 
 ![Review and allow permissions.](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-b56f1222.png)
 
-*Review and allow permissions.*
+_Review and allow permissions._
 
 6.  Finally, you’ll get a window like this with the Web app URL. Copy that Web URL for a reference. We’ll use this URL for making HTTP GET requests from our flutter app.
 
@@ -95,7 +95,7 @@ Here, we’ll retrieve parameters using `request.parameter`. Finally, by using a
 
 😃 We’ve done this part. Let’s see Flutter implementation.
 
-***
+---
 
 ## ⚡️ Setting up Flutter 💙 App
 
@@ -123,13 +123,13 @@ In `FormController` class, we have created a default constructor which takes `fu
 
 Use that web URL which we’ve obtained in previous steps.
 
-Finally, we’ve created an *async* method `submitForm(FeedbackForm)` which takes `FeedbackForm` object as a parameter and makes HTTP GET request on `URL`.
+Finally, we’ve created an _async_ method `submitForm(FeedbackForm)` which takes `FeedbackForm` object as a parameter and makes HTTP GET request on `URL`.
 
 5.  In **lib/main.dart**, we’ll write the below code:
 
 <script src="https://gist.github.com/PatilShreyas/905c2d390751be49a5b3642badb66963.js"></script>
 
-We have created a Form with four *TextFields* and a *‘Submit Feedback’* button.
+We have created a Form with four _TextFields_ and a _‘Submit Feedback’_ button.
 
 Whenever the button is pressed, a form is validated first. Then, we’re instantiating `FeedbackForm` object from TextField values. Finally, we’re passing that object to the `submitForm()` method of `FormController`.
 
@@ -139,13 +139,13 @@ Run command — `flutter run`
 
 ![Flutter App Response](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-880f5165.gif)
 
-*Flutter App Response*
+_Flutter App Response_
 
 Our app is running and we can see SnackBar output. Now let’s see our Google Sheet.
 
 ![Google Sheet](../../assets/images/content/storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d/img-365a1a5f.png)
 
-*Google Sheet*
+_Google Sheet_
 
 > **Yippie! 😍.** You can see above, Data from flutter app is appended into Google Sheet. It’s working as expected. Hope you liked that. If you find it helpful please share this. Maybe it’ll help someone needy!
 
@@ -153,7 +153,7 @@ Thus, we’ve successfully stored User response from the Flutter app into Google
 
 You can test a web version of this app from [this link](https://patilshreyas.github.io/Flutter2GoogleSheets-Demo/demo/).
 
-***
+---
 
 ## Part 2 — Getting data from Google Sheets into Flutter App
 
@@ -167,7 +167,7 @@ If you found this project useful, then please consider giving it a ⭐️ on Git
 
 Thank You! 😃
 
-***
+---
 
 ## 📚 Repository
 

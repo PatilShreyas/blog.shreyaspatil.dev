@@ -35,7 +35,9 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
       // Display warning in dev mode if index is missing
       if (import.meta.env.DEV) {
         try {
-          const response = await fetch("/pagefind/pagefind.js", { method: "HEAD" });
+          const response = await fetch("/pagefind/pagefind.js", {
+            method: "HEAD",
+          });
           if (!response.ok) {
             pageFindSearch.innerHTML = `
                 <div class="bg-muted/75 rounded p-4 space-y-4 mb-4 text-sm">
@@ -44,7 +46,7 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
                 </div>
               `;
           }
-        } catch (e) {
+        } catch {
           // Fallback if fetch fails
         }
       }

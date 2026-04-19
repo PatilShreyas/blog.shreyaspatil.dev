@@ -3,11 +3,11 @@ title: "🔥 Quickly distribute your app with Firebase App Distribution using Gi
 pubDatetime: 2020-10-21T05:33:17.000Z
 description: "Step-by-step guide to automating Android app distribution with Firebase App Distribution, GitHub Actions, and Fastlane for faster QA cycles."
 tags:
-- ci
-- github
-- firebase
-- android
-- testing
+  - ci
+  - github
+  - firebase
+  - android
+  - testing
 coverImage: "../../assets/images/cover-quickly-distribute-your-app-with-firebase-app-distribution-using-github-actions-fastlane.png"
 ---
 
@@ -17,7 +17,7 @@ Once you’ve set this up, you’ll just need to **write code, push to GitHub** 
 
 Before starting the implementation details, let’s understand a few things.
 
-***
+---
 
 ## What is Firebase App Distribution? 🤷‍♂️
 
@@ -25,7 +25,7 @@ Firebase App Distribution lets you distribute pre-release versions of your app t
 
 If you use Crashlytics in your apps, you’ll automatically get stability metrics for all your builds, so you know when you’re ready to ship. It’s a time saver for the whole application development lifecycle process.
 
-***
+---
 
 ## What is Fastlane? 🏃
 
@@ -35,7 +35,7 @@ It has a plugin system that makes it easy to extend its functionality. There are
 
 With this short introduction to the tools, we're going to use under our belt. let’s dive into the implementation.
 
-***
+---
 
 ## Setup Fastlane in app 🏃
 
@@ -43,22 +43,22 @@ You can refer to [this repository](https://github.com/PatilShreyas/AndroidFastla
 
 Setting up Fastlane is quite easy. [Ruby](https://www.ruby-lang.org/en/downloads/) should be preinstalled on your system. (Alternatively, you can follow the process as described [here](https://docs.fastlane.tools/getting-started/android/setup/)).
 
-*   Create a `Gemfile` in the root directory of your Android project as below:
+- Create a `Gemfile` in the root directory of your Android project as below:
 
 ```ruby
 source "https://rubygems.org"
 gem "fastlane"
 ```
 
-*   Then just run the following command: `sudo gem install fastlane -NV`
-*   Setup Fastlane using this command: `fastlane init` and follow the prompts to fill in the details about your app.
+- Then just run the following command: `sudo gem install fastlane -NV`
+- Setup Fastlane using this command: `fastlane init` and follow the prompts to fill in the details about your app.
 
 Now you can see the newly created `fastlane` directory in your project with the following files:
 
-*   `Appfile` — defines configuration information that is global to your app.
-*   `Fastfile` — defines the "lanes" that drive the behaviour of Fastlane.
+- `Appfile` — defines configuration information that is global to your app.
+- `Fastfile` — defines the "lanes" that drive the behaviour of Fastlane.
 
-***
+---
 
 ### Add the Firebase plugin 🔥
 
@@ -70,31 +70,31 @@ fastlane add_plugin firebase_app_distribution
 
 Your working directory will be updated with some files.
 
-***
+---
 
 ### Setting up Firebase Service Credentials 🔒
 
 Firebase Service Credentials is required for Fastlane for authentication purposes. Take a look at [this section](https://firebase.google.com/docs/app-distribution/android/distribute-fastlane#service-acc-fastlane) for more information.
 
-*   Go to the [Google Cloud Platform console](https://console.cloud.google.com/projectselector2/iam-admin/serviceaccounts) → Select your project → Create a new service account.
-*   Add the **"Firebase App Distribution Admin"** role, like so:
+- Go to the [Google Cloud Platform console](https://console.cloud.google.com/projectselector2/iam-admin/serviceaccounts) → Select your project → Create a new service account.
+- Add the **"Firebase App Distribution Admin"** role, like so:
 
 ![Firebase App Distribution Admin Role](../../assets/images/content/quickly-distribute-your-app-with-firebase-app-distribution-using-github-actions-fastlane/img-d8828b52.png)
 
-*   Create a private JSON key and move the key to a location accessible to your build environment. **Be sure to keep this file somewhere safe**, as it grants administrator access to App Distribution in your Firebase project.
-*   Keep this file in the root directory of your project. (In this example, I’m keeping the name of this file as `firebase_credentials.json`).
+- Create a private JSON key and move the key to a location accessible to your build environment. **Be sure to keep this file somewhere safe**, as it grants administrator access to App Distribution in your Firebase project.
+- Keep this file in the root directory of your project. (In this example, I’m keeping the name of this file as `firebase_credentials.json`).
 
-***
+---
 
 ### Getting the Firebase App ID 🆔
 
 Now your Firebase project’s `App ID` is required.
 
-*   Go to [Firebase Console](https://console.firebase.google.com/) → Open Your app project → Open Project Settings ⚙️ → Find your app there → Copy App ID from there.
+- Go to [Firebase Console](https://console.firebase.google.com/) → Open Your app project → Open Project Settings ⚙️ → Find your app there → Copy App ID from there.
 
 ![Firebase App ID](../../assets/images/content/quickly-distribute-your-app-with-firebase-app-distribution-using-github-actions-fastlane/img-5f6789dc.png)
 
-*   Now expose the App ID as an environment variable:
+- Now expose the App ID as an environment variable:
 
 ```shell
 export FIREBASE_APP_ID=YOUR_APP_ID
@@ -102,7 +102,7 @@ export FIREBASE_APP_ID=YOUR_APP_ID
 
 Okay 👍. Now let’s configure Firebase App Distribution for Fastlane.
 
-***
+---
 
 ### Configure Firebase App Distribution 🛠️
 
@@ -110,8 +110,8 @@ Firebase App Distribution supports testers or groups for distribution as well as
 
 In this project, we will set up groups and release notes configuration for Firebase App Distribution.
 
-*   Create a new directory `FirebaseAppDistributionConfig` under the root directory of your project.
-*   Create a new file `groups.txt` in the created directory.
+- Create a new directory `FirebaseAppDistributionConfig` under the root directory of your project.
+- Create a new file `groups.txt` in the created directory.
 
 In this file, we will mention groups whom we want to distribute our application for testing. So file would look like as below:
 
@@ -123,7 +123,7 @@ This means your application will be distributed to the `qa-team` and `trusted-te
 
 ![App Distribution Groups](../../assets/images/content/quickly-distribute-your-app-with-firebase-app-distribution-using-github-actions-fastlane/img-d0bf1b5c.png)
 
-*   Create a new file `release_notes.txt` in the same directory.
+- Create a new file `release_notes.txt` in the same directory.
 
 In this file, we will add **release notes** for the current version of the application. These release notes will be visible for testers of application. This file will be a simple plain text file as below:
 
@@ -133,7 +133,7 @@ In this version, we improved the user experience and fixed some bugs.
 
 Hang tight — we’re almost done. Let’s now set up the lane for app distribution.
 
-***
+---
 
 ### Let’s create a lane 🛣️
 
@@ -164,7 +164,7 @@ As you can see, we have provided file `firebase_credentials.json` as `service_cr
 
 Now we are ready to test it locally 😃.
 
-***
+---
 
 ## Testing it locally 👨‍💻
 
@@ -174,7 +174,7 @@ So if you want to distribute an app then run `fastlane distribute`. Make sure ev
 
 If everything is working fine then we are ready to go for automation ⚡.
 
-***
+---
 
 ## Setup GitHub Actions 🤖
 
@@ -200,7 +200,7 @@ Go ahead and also add as the secret for `FIREBASE_APP_ID`. Your secrets should n
 
 Once all required secrets are added, we are ready to create an automation workflow 🔥.
 
-***
+---
 
 ## Let’s create GitHub Action’s Workflow 👨‍💻
 
@@ -211,7 +211,7 @@ name: Distribute
 
 on:
   push:
-    branches: [ test ]
+    branches: [test]
 
 jobs:
   distribute:
@@ -222,38 +222,38 @@ jobs:
 
       - uses: actions/setup-ruby@v1
         with:
-          ruby-version: '2.6'
+          ruby-version: "2.6"
 ```
 
 Whenever you or someone else pushes to the **test** branch, the distribution workflow will be triggered. Don’t forget to set up Ruby for the workflow.
 
-*   Install the Ruby bundle:
+- Install the Ruby bundle:
 
 ```yaml
-      - name: Install bundle
-        run: |
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
+- name: Install bundle
+  run: |
+    bundle config path vendor/bundle
+    bundle install --jobs 4 --retry 3
 ```
 
 As you know, we need Firebase Service credentials for authentication and we had added **Base64** content in GitHub Secrets. So just decode it and create a file 👇:
 
 ```yaml
-      - name: Create Firebase Service Credentials file
-        run: |
-          echo "$FIREBASE_CREDENTIALS" > firebase_credentials.json.b64
-          base64 -d -i firebase_credentials.json.b64 > firebase_credentials.json
-        env:
-          FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+- name: Create Firebase Service Credentials file
+  run: |
+    echo "$FIREBASE_CREDENTIALS" > firebase_credentials.json.b64
+    base64 -d -i firebase_credentials.json.b64 > firebase_credentials.json
+  env:
+    FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
 ```
 
-*   Now just execute the lane for distribution 😃. Also, make sure you have exposed environment variables using secrets.
+- Now just execute the lane for distribution 😃. Also, make sure you have exposed environment variables using secrets.
 
 ```yaml
-      - name: Distribute app with 🔥 App Distribution 🚀
-        run: bundle exec fastlane distribute
-        env:
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+- name: Distribute app with 🔥 App Distribution 🚀
+  run: bundle exec fastlane distribute
+  env:
+    FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
 ```
 
 That’s it. You can do the same for the production deployment as per your choice.
@@ -276,9 +276,9 @@ I hope this article will be helpful to everyone.
 
 Thanks for reading! 😄
 
-***
+---
 
 ## 📚 References
 
-*   [**AndroidFastlaneCICD - GitHub Repository**](https://github.com/PatilShreyas/AndroidFastlaneCICD)
-*   [**Firebase App Distribution - Documentation**](https://firebase.google.com/docs/app-distribution)
+- [**AndroidFastlaneCICD - GitHub Repository**](https://github.com/PatilShreyas/AndroidFastlaneCICD)
+- [**Firebase App Distribution - Documentation**](https://firebase.google.com/docs/app-distribution)

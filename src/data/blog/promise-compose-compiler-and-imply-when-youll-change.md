@@ -3,11 +3,11 @@ title: "Promise compose compiler and imply when you'll change 🤞"
 pubDatetime: 2022-03-10T12:42:38.498Z
 description: "Understand the Compose compiler's stability promises. Learn how @Stable and @Immutable impact recomposition and how to help the compiler optimize your UI."
 tags:
-- android-app-development
-- android
-- ui
-- kotlin
-- kotlin-beginner
+  - android-app-development
+  - android
+  - ui
+  - kotlin
+  - kotlin-beginner
 coverImage: "../../assets/images/cover-promise-compose-compiler-and-imply-when-youll-change.png"
 ---
 
@@ -41,7 +41,7 @@ The function `PersonInfo` will be recomposed whenever the parameter `Person` is 
 
 You can simply tell compose a compiler about when you'll change and optimize the performance, do you know?
 
-***
+---
 
 ## 🤔 How?
 
@@ -49,10 +49,10 @@ The compose runtime library has provided two annotations by which we can imply c
 
 ### 1. `@Immutable` Annotation
 
-*   `Immutable` can be used to mark a class that produces immutable instances. In short, a class that has all public fields declared as `val`.
-*   This is a promise to the compose compiler that ***once the object is constructed, the properties inside it won't change at runtime***.
-*   Immutable is used by a composition that enables composition optimizations that can be performed based on the assumption that values read from the type will not change.
-*   `data class` that only contains `val` properties that do not have custom getters can safely be marked as `Immutable` if the types of properties are either primitive types or also `Immutable`.
+- `Immutable` can be used to mark a class that produces immutable instances. In short, a class that has all public fields declared as `val`.
+- This is a promise to the compose compiler that **_once the object is constructed, the properties inside it won't change at runtime_**.
+- Immutable is used by a composition that enables composition optimizations that can be performed based on the assumption that values read from the type will not change.
+- `data class` that only contains `val` properties that do not have custom getters can safely be marked as `Immutable` if the types of properties are either primitive types or also `Immutable`.
 
 Let's revise our UI model:
 
@@ -70,7 +70,7 @@ Let's revise our UI model:
 
 Here, after adding annotation `@Immutable` we also have to make sure that the field `organization` of type `Organization` should also be annotated with `@Immutable`.
 
-***
+---
 
 ### 2. `@Stable` Annotation
 
@@ -78,15 +78,15 @@ Here, after adding annotation `@Immutable` we also have to make sure that the fi
 
 When any class is annotated with `@Stable` it promises:
 
-*   The result of `equals()` will always return the same result for the same two instances.
-*   When a public property of the type changes, the composition will be notified.
-*   All public property types are stable.
+- The result of `equals()` will always return the same result for the same two instances.
+- When a public property of the type changes, the composition will be notified.
+- All public property types are stable.
 
 The invariants that this annotation implies are used for optimizations by the compose compiler and have undefined behavior if the above assumptions are not met. As a result, we should not use this annotation unless they are certain that these conditions are satisfied.
 
 This annotation has to be applied to a type that indicates a type that is **mutable** and may change during runtime after the instance is created, but the compose runtime will be notified about the change in public properties. It'll be only notified when the result of the previous invocation and change is different.
 
-Let's say in our `Person` model, we have a case where we want to support a change of organization at runtime. So want to make `organization` a mutable field with a kind of `State<Organization>` or `MutableState<Organization>` which can be changed at any time. Also, since we are using `data class`, we won't need to worry about overriding the `equals()` method. *But if you're not using a data class, make sure you override it.*
+Let's say in our `Person` model, we have a case where we want to support a change of organization at runtime. So want to make `organization` a mutable field with a kind of `State<Organization>` or `MutableState<Organization>` which can be changed at any time. Also, since we are using `data class`, we won't need to worry about overriding the `equals()` method. _But if you're not using a data class, make sure you override it._
 
 ```diff
 + @Stable
@@ -102,7 +102,7 @@ Let's say in our `Person` model, we have a case where we want to support a chang
 
 In short, whenever we are exposing reactive types in the UI model, they should be annotated with `@Stable` annotation.
 
-***
+---
 
 ## 🤔 Remember
 
@@ -110,18 +110,18 @@ Implementing such contract incorrectly for a type annotated as `@Stable` or `@Im
 
 That's all, now just do these changes and run your app and see if there are improvements 😃.
 
-***
+---
 
 That's all, I hope you found this helpful.
 
-*"Sharing is caring"*
+_"Sharing is caring"_
 
 Thank you! 😀
 
-***
+---
 
 ## 📚 References
 
-*   [Compose API Guidelines](https://github.com/androidx/androidx/blob/androidx-main/compose/docs/compose-api-guidelines.md)
-*   [Immutable - Compose Runtime Docs](https://developer.android.com/reference/kotlin/androidx/compose/runtime/Immutable)
-*   [Stable - Compose Runtime Docs](https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable)
+- [Compose API Guidelines](https://github.com/androidx/androidx/blob/androidx-main/compose/docs/compose-api-guidelines.md)
+- [Immutable - Compose Runtime Docs](https://developer.android.com/reference/kotlin/androidx/compose/runtime/Immutable)
+- [Stable - Compose Runtime Docs](https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable)

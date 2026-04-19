@@ -44,11 +44,13 @@ const paginatedRecentPosts = recentPosts.slice(0, SITE.postPerPage);
       </a>
 
       <p>
-        Senior Android Engineer at <strong>Deliveroo</strong>. Google Developer Expert for Android.
-        Passionate about Kotlin, Mobile Architecture, and Open Source.
+        Senior Android Engineer at <strong>Deliveroo</strong>. Google Developer
+        Expert for Android. Passionate about Kotlin, Mobile Architecture, and
+        Open Source.
       </p>
       <p class="mt-2">
-        Welcome to my personal blog where I share my thoughts, experiences, and technical tutorials. Check out my
+        Welcome to my personal blog where I share my thoughts, experiences, and
+        technical tutorials. Check out my
         <LinkButton
           class="underline decoration-dashed underline-offset-4 hover:text-accent"
           href="https://shreyaspatil.dev"
@@ -79,10 +81,10 @@ const paginatedRecentPosts = recentPosts.slice(0, SITE.postPerPage);
           <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
           <ul>
             {featuredPosts.map(data => (
-              <Card 
-                variant="h3" 
-                {...data} 
-                postNum={sortedPosts.length - sortedPosts.indexOf(data)} 
+              <Card
+                variant="h3"
+                {...data}
+                postNum={sortedPosts.length - sortedPosts.indexOf(data)}
               />
             ))}
           </ul>
@@ -95,22 +97,23 @@ const paginatedRecentPosts = recentPosts.slice(0, SITE.postPerPage);
         <section id="recent-posts" class="pt-12 pb-6">
           <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
           <ul>
-            {paginatedRecentPosts.map(
-              (data) => (
-                <Card 
-                  variant="h3" 
-                  {...data} 
-                  postNum={sortedPosts.length - sortedPosts.findIndex(p => p.id === data.id)} 
-                />
-              )
-            )}
+            {paginatedRecentPosts.map(data => (
+              <Card
+                variant="h3"
+                {...data}
+                postNum={
+                  sortedPosts.length -
+                  sortedPosts.findIndex(p => p.id === data.id)
+                }
+              />
+            ))}
           </ul>
-          
+
           {recentPosts.length > SITE.postPerPage && (
             <div class="mt-12 flex justify-center">
               <LinkButton
                 href="/posts/2"
-                class="flex items-center gap-2 group text-accent hover:opacity-80 transition-all font-semibold"
+                class="group flex items-center gap-2 font-semibold text-accent transition-all hover:opacity-80"
               >
                 Next Posts
                 <IconArrowRight class="inline-block transition-transform group-hover:translate-x-1 rtl:rotate-180" />
@@ -120,8 +123,6 @@ const paginatedRecentPosts = recentPosts.slice(0, SITE.postPerPage);
         </section>
       )
     }
-
-
   </main>
   <Footer />
 </Layout>

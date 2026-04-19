@@ -3,7 +3,7 @@ title: "Hello DataStore, Bye SharedPreferences👋 — Android📱 — P
 pubDatetime: 2020-09-12T13:56:18.914Z
 description: "Jetpack DataStore Part 2: Deep dive into Proto DataStore for type-safe data storage in Android using Protocol Buffers."
 tags:
-- others
+  - others
 coverImage: "../../assets/images/cover-hello-datastore-bye-sharedpreferences-android-part-2-proto-datastore-2716fbfd4783.png"
 ---
 
@@ -13,22 +13,22 @@ Welcome Android Developers 👋. In [the previous article](https://blog.shreyasp
 
 [Hello DataStore, Bye SharedPreferences - Android - Part 1 - Preference DataStore](https://medium.com/scalereal/hello-datastore-bye-sharedpreferences-android-f46c610b81d5)
 
-***
+---
 
 ## What is Proto DataStore? 🤷‍♂️
 
-*   **It stores instances as custom data.** Defines schema using [Protocol buffers](https://developers.google.com/protocol-buffers).
-*   They are faster, smaller, simpler, and less ambiguous than XML and other similar data formats.
+- **It stores instances as custom data.** Defines schema using [Protocol buffers](https://developers.google.com/protocol-buffers).
+- They are faster, smaller, simpler, and less ambiguous than XML and other similar data formats.
 
 That’s enough introduction for Proto DataStore to get started… It’s time to write some code 👨‍💻😎.
 
-***
+---
 
 ## Let’s begin code 👨‍💻
 
 You can simply [clone or refer this repository](https://github.com/PatilShreyas/DataStoreExample) to get example code demonstrating DataStore.
 
-What we’ll be implementing? So we’ll be developing a *Food* app 😋 where a list of food items will be displayed and we’ll provide a filter to the user for food preference options. Like Food type as 🟢 ***VEG*** or 🔴 ***NON-VEG*** and Food taste as ***SWEET*** or ***SPICY*** 😋. So that user can filter his favourite food according to his choice. You can see a demo here. This is how it’ll be look alike 👇:
+What we’ll be implementing? So we’ll be developing a _Food_ app 😋 where a list of food items will be displayed and we’ll provide a filter to the user for food preference options. Like Food type as 🟢 **_VEG_** or 🔴 **_NON-VEG_** and Food taste as **_SWEET_** or **_SPICY_** 😋. So that user can filter his favourite food according to his choice. You can see a demo here. This is how it’ll be look alike 👇:
 
 ![An example application using Proto DataStore](../../assets/images/content/hello-datastore-bye-sharedpreferences-android-part-2-proto-datastore-2716fbfd4783/img-60f249f7.gif)
 
@@ -36,7 +36,7 @@ Ok great! You might have got the idea of this app. First of all, we’ll need to
 
 ### Add plugin and dependencies
 
-Open `build.gradle` of your app module and add plugin at the top of the file and proto Datastore, Google Protobuf dependencies and then configure *protobuf*:
+Open `build.gradle` of your app module and add plugin at the top of the file and proto Datastore, Google Protobuf dependencies and then configure _protobuf_:
 
 ```groovy
 plugins {
@@ -88,7 +88,7 @@ enum class FoodType {
 }
 ```
 
-Here we’ll also create another class i.e. `UserFoodPreference` which will be stored in DataStore. This model will be provided *(or exposed)* whenever preference is changed.
+Here we’ll also create another class i.e. `UserFoodPreference` which will be stored in DataStore. This model will be provided _(or exposed)_ whenever preference is changed.
 
 ```kotlin
 data class UserFoodPreference(
@@ -101,7 +101,7 @@ data class UserFoodPreference(
 
 ### Define Protobuf
 
-Now we can’t directly store this model as it is using Proto DataStore. We’ll need to define a schema in a *proto* file. Create a new file called `food_preference.proto` in the path `app/src/main/proto` as following 👇 (*See [this](https://developers.google.com/protocol-buffers/docs/overview) for syntax guide*):
+Now we can’t directly store this model as it is using Proto DataStore. We’ll need to define a schema in a _proto_ file. Create a new file called `food_preference.proto` in the path `app/src/main/proto` as following 👇 (_See [this](https://developers.google.com/protocol-buffers/docs/overview) for syntax guide_):
 
 ```protobuf
 syntax = "proto3";
@@ -131,7 +131,7 @@ As you can see 👆, we have created a schema in proto.
 
 > Whenever a value is not specified then `XXX_UNSPECIFIED` will be the default value here.
 
-Once you’re done with the above step, ***Rebuild*** your Gradle project. You’ll see that `FoodPreference.java` will be automatically generated from the above proto schema.
+Once you’re done with the above step, **_Rebuild_** your Gradle project. You’ll see that `FoodPreference.java` will be automatically generated from the above proto schema.
 
 ### Make Serializer for Proto class
 
@@ -153,7 +153,7 @@ object FoodPreferenceSerializer : Serializer<FoodPreferences> {
 
 ### Create Food Preference Manager
 
-Great! Now we’ll set up our Food Preference Manager which will store user food preferences (where we’ll actually implement Proto DataStore). Create a new class — `FoodPreferenceManager`. Here you’ll need to provide a filename for DataStore as well as *serializer object for proto* which we created recently.
+Great! Now we’ll set up our Food Preference Manager which will store user food preferences (where we’ll actually implement Proto DataStore). Create a new class — `FoodPreferenceManager`. Here you’ll need to provide a filename for DataStore as well as _serializer object for proto_ which we created recently.
 
 ```kotlin
 class FoodPreferenceManager(context: Context) {
@@ -234,13 +234,13 @@ val userFoodPreference = dataStore.data.catch {
 
 That’s all about `FoodPreferenceManager` 😃. Now let’s implement it in our UI.
 
-***
+---
 
 ### Set up Activity
 
-Here I’ll assume that you’re implementing this app with `RecyclerView` in `Activity` and you’ve implemented `ViewModel` for getting data i.e. list of food items from **Repository**. *(For demo purposes, here I’ve created a sample DataSource which gives a dummy list of food items)*. So I’ll directly show you implementation related to **DataStore**. You can refer to [this class](https://github.com/PatilShreyas/DataStoreExample/blob/master/app/src/main/java/dev/shreyaspatil/datastore/example/proto/ProtoDatastoreActivity.kt) for more information.
+Here I’ll assume that you’re implementing this app with `RecyclerView` in `Activity` and you’ve implemented `ViewModel` for getting data i.e. list of food items from **Repository**. _(For demo purposes, here I’ve created a sample DataSource which gives a dummy list of food items)_. So I’ll directly show you implementation related to **DataStore**. You can refer to [this class](https://github.com/PatilShreyas/DataStoreExample/blob/master/app/src/main/java/dev/shreyaspatil/datastore/example/proto/ProtoDatastoreActivity.kt) for more information.
 
-So let’s make *Activity*:
+So let’s make _Activity_:
 
 ```kotlin
 class ProtoDatastoreActivity : AppCompatActivity() {
@@ -303,20 +303,20 @@ private fun filterFoodList(type: FoodType?, taste: FoodTaste?) {
 }
 ```
 
-***
+---
 
 Yeah! That’s it 😍. We have implemented Proto DataStore now. If you run the app, you’ll see the output as you have seen at the starting of this article 🚀.
 
-***
+---
 
 So that was about Proto DataStore. I hope you enjoyed this article or liked it! 😃.
 
 Thank you! 😃
 
-***
+---
 
 ## Resources
 
-*   [**PatilShreyas/DataStoreExample**](https://github.com/PatilShreyas/DataStoreExample)
-*   [**Hello DataStore, Bye SharedPreferences - Android - Part 1 - Preference DataStore**](https://blog.shreyaspatil.dev/hello-datastore-bye-sharedpreferences-android)
-*   [**DataStore | Android Developer**](https://developer.android.com/topic/libraries/architecture/datastore)
+- [**PatilShreyas/DataStoreExample**](https://github.com/PatilShreyas/DataStoreExample)
+- [**Hello DataStore, Bye SharedPreferences - Android - Part 1 - Preference DataStore**](https://blog.shreyaspatil.dev/hello-datastore-bye-sharedpreferences-android)
+- [**DataStore | Android Developer**](https://developer.android.com/topic/libraries/architecture/datastore)

@@ -3,10 +3,10 @@ title: "Automate publishing app to the Google Play Store with GitHub Actions⚡+
 pubDatetime: 2020-10-09T12:33:39.424Z
 description: "Automate your Android app deployment to Google Play Store using GitHub Actions and Fastlane. Implement a 'Code, Push, and Chill' workflow for your projects."
 tags:
-- android-app-development
-- deployment
-- android
-- kotlin
+  - android-app-development
+  - deployment
+  - android
+  - kotlin
 coverImage: "../../assets/images/cover-automate-publishing-app-to-the-google-play-store-with-github-actions-fastlane-ac9104712486.jpeg"
 ---
 
@@ -14,7 +14,7 @@ coverImage: "../../assets/images/cover-automate-publishing-app-to-the-google-pla
 
 Hello Android developers, In this article, we’ll learn to automate tasks for deploying your cool Android application to the Google Play Store using GitHub Actions and Fastlane. So you just need to Write Code, Push to GitHub and then relax! Action will work for you 😃.
 
-***
+---
 
 ## A quick introduction to Fastlane 🏃
 
@@ -22,7 +22,7 @@ Hello Android developers, In this article, we’ll learn to automate tasks for d
 
 As you know, we won’t need to visit Play Console to deploy our app. So we will need **Google Play Credential file (.json)** for the Fastlane to deploy our app. So let’s generate that file.
 
-***
+---
 
 ## Generating Google Play Credentials (.json) 🔒
 
@@ -49,7 +49,7 @@ As you know, we won’t need to visit Play Console to deploy our app. So we will
 
 Thus you’ve successfully set up Google play credentials. Keep that file with you and keep it safe.
 
-***
+---
 
 ## Setup Fastlane in app 🏃
 
@@ -57,7 +57,7 @@ You can refer to [this repository](https://github.com/PatilShreyas/AndroidFastla
 
 Setting up Fastlane is so easy. [Ruby](https://www.ruby-lang.org/en/downloads/) should be preinstalled on the system. (Alternatively, you can follow the process as described [here](https://docs.fastlane.tools/getting-started/android/setup/)).
 
-*   Create a `Gemfile` in the root directory of your Android project as below:
+- Create a `Gemfile` in the root directory of your Android project as below:
 
 ```ruby
 source "https://rubygems.org"
@@ -65,16 +65,16 @@ source "https://rubygems.org"
 gem "fastlane"
 ```
 
-*   Copy the Credentials JSON file which is downloaded in the previous step in the root directory of your project and give it a name (For e.g. `play_config.json`).
-*   Then just run a command — `sudo gem install fastlane -NV`.
-*   Setup Fastlane using command — `fastlane init` and provide information with respect to your app.
+- Copy the Credentials JSON file which is downloaded in the previous step in the root directory of your project and give it a name (For e.g. `play_config.json`).
+- Then just run a command — `sudo gem install fastlane -NV`.
+- Setup Fastlane using command — `fastlane init` and provide information with respect to your app.
 
 Now you can see the newly created `fastlane` directory in your project with the following files:
 
-*   `Appfile` — Defines configuration information that is global to your app.
-*   `Fastfile` — Defines the "lanes" that drive the behaviour of Fastlane.
+- `Appfile` — Defines configuration information that is global to your app.
+- `Fastfile` — Defines the "lanes" that drive the behaviour of Fastlane.
 
-***
+---
 
 ## Let’s create lanes 🛣️
 
@@ -92,7 +92,7 @@ If you remove all parameters from `upload_to_play_store` then it’ll release ap
 
 Yeah! Thus we have completed the core part of the deployment. Now let’s test it locally.
 
-***
+---
 
 ## Testing it locally 👨‍💻
 
@@ -104,7 +104,7 @@ So if you want to deploy an app to the beta track then run `fastlane beta` other
 
 If everything is working fine then we are ready to go for automation ⚡.
 
-***
+---
 
 ## Setup GitHub Actions 🤖
 
@@ -128,7 +128,7 @@ Do the same procedure for the Keystore file and add Keystore file’s **Base64**
 
 ![](../../assets/images/content/automate-publishing-app-to-the-google-play-store-with-github-actions-fastlane-ac9104712486/img-c392114c.png)
 
-***
+---
 
 ## Let’s create GitHub Action’s Workflow 👨‍💻
 
@@ -164,9 +164,9 @@ I hope you liked this article. If you find this article helpful then share it wi
 
 Thank you!
 
-***
+---
 
 ## 📚 Resources
 
-*   [**AndroidFastlaneCICD - GitHub**](https://github.com/PatilShreyas/AndroidFastlaneCICD)
-*   [**Fastlane Documentation**](https://docs.fastlane.tools/)
+- [**AndroidFastlaneCICD - GitHub**](https://github.com/PatilShreyas/AndroidFastlaneCICD)
+- [**Fastlane Documentation**](https://docs.fastlane.tools/)

@@ -3,18 +3,18 @@ title: "#51 - My developer blogging journey so far"
 pubDatetime: 2025-02-18T14:10:44.580Z
 description: "A personal account of my journey as a tech blogger, from my first post in 2019 to becoming a GDE. Insights on English barriers, criticism, and why sharing matters."
 tags:
-- writing
-- blog
-- blogging
-- development
-- flutter
-- developer
-- android
-- kotlin
-- technical-documentation
-- journey
-- technical-writing-1
-- content-creation
+  - writing
+  - blog
+  - blogging
+  - development
+  - flutter
+  - developer
+  - android
+  - kotlin
+  - technical-documentation
+  - journey
+  - technical-writing-1
+  - content-creation
 coverImage: "../../assets/images/cover-51-my-developer-blogging-journey-so-far.jpeg"
 ---
 
@@ -22,7 +22,7 @@ Hi everyone, I'm excited to share that this is the 51st blog post I'm writing. I
 
 I've noticed that many people want to start something new but hesitate to try it for the first time. Some even give up before they begin. I'm writing this to inspire you by showing how this journey can help you learn 2x as much and enrich your overall experiences. This blog will also guide you through that process.
 
-***
+---
 
 ## 🎬 Kickstart of journey
 
@@ -30,9 +30,9 @@ I've noticed that many people want to start something new but hesitate to try it
 
 In 2019, during my second year of engineering college, I was just a someone who was learning and building apps in Android at that time, working on my new Android app project. I used the Firebase UI SDK to display data from the Firebase Realtime Database. I needed to show data in pages, but at that time, the official Firebase UI library didn't support pagination.
 
-Until then, I wasn't even aware of GitHub and open source. Then I learned about open source and GitHub and discovered that the [FirebaseUI-Android SDK](https://github.com/firebase/FirebaseUI-Android) is open source, and we can contribute code to it. First, I cloned it, developed a pagination API, and open-sourced it [internally](https://github.com/PatilShreyas/FirebaseRecyclerPagination) on my own GitHub account (*later I contributed it to the official SDK* 😀). I used my version of the API in my Android app, continued using it, and saw that it was serving its purpose.
+Until then, I wasn't even aware of GitHub and open source. Then I learned about open source and GitHub and discovered that the [FirebaseUI-Android SDK](https://github.com/firebase/FirebaseUI-Android) is open source, and we can contribute code to it. First, I cloned it, developed a pagination API, and open-sourced it [internally](https://github.com/PatilShreyas/FirebaseRecyclerPagination) on my own GitHub account (_later I contributed it to the official SDK_ 😀). I used my version of the API in my Android app, continued using it, and saw that it was serving its purpose.
 
-I thought I should spread the word about it since it was useful for me and could help others too if they needed it. I already had accounts on Twitter and LinkedIn (*I just wasn't very active*), so I logged in again and noticed that many popular Android developers were writing posts on **medium.com**. At that time, **ProAndroidDev**, **MindOrks**, **AndroidPub**, and others were well-known publishers in the AndroidDev community.
+I thought I should spread the word about it since it was useful for me and could help others too if they needed it. I already had accounts on Twitter and LinkedIn (_I just wasn't very active_), so I logged in again and noticed that many popular Android developers were writing posts on **medium.com**. At that time, **ProAndroidDev**, **MindOrks**, **AndroidPub**, and others were well-known publishers in the AndroidDev community.
 
 So, I signed up on medium.com and wrote my first article. I decided to submit it to [ProAndroidDev](https://proandroiddev.com/), and after a few hours, I received a couple of suggestions for improvements from their editors. I addressed all the feedback, and they approved my post. Finally, on **April 8, 2019**, I published my first tech blog 🎉. I kept the title very simple: "**Firebase Database Pagination - Android 🔥**".
 
@@ -48,7 +48,7 @@ As time went on, I started creating my open-source libraries on GitHub and explo
 
 ![](../../assets/images/content/51-my-developer-blogging-journey-so-far/img-10373dd0.png)
 
-As I published open-source projects and content, I began gaining followers on Twitter and making good connections on LinkedIn. Then one day, the "**Google Developers Experts**" account started following me on Twitter, which boosted my confidence even more (*I never expected that to happen* 😅. This happened two years prior to being a GDE).
+As I published open-source projects and content, I began gaining followers on Twitter and making good connections on LinkedIn. Then one day, the "**Google Developers Experts**" account started following me on Twitter, which boosted my confidence even more (_I never expected that to happen_ 😅. This happened two years prior to being a GDE).
 
 ![](../../assets/images/content/51-my-developer-blogging-journey-so-far/img-407fe5c1.png)
 
@@ -58,7 +58,7 @@ I was also exploring **Flutter** for cross-platform app development during this 
 
 ![](../../assets/images/content/51-my-developer-blogging-journey-so-far/img-207b787e.png)
 
-***
+---
 
 ## 🏠 Lockdown - The golden opportunity
 
@@ -76,7 +76,7 @@ Lockdown was ongoing, and I was in the last semester of my third year. Due to my
 
 During the lockdown, I wanted to encourage blogging among my friends and college students, so I used what I learned from ScaleReal’s Medium publication. Around that time, I had already initiated a Developer's Club at my college (before COVID). Then I launched a Medium publication called [DevClub DYPCOE](https://medium.com/dsc-dypcoe). I encouraged others to write blogs for this publication. Later that DevClub got migrated into GDSC (Google Developers Student Club). It was really a helpful initiative as many students contributed and published good blogs to that publication. It was good to see that.
 
-***
+---
 
 ## 🤔 That one opinionated blog
 
@@ -86,7 +86,7 @@ I was feeling confident in development and began forming opinions about differen
 
 The response was incredible! The blog received around 2K+ reads in one night. Even people from Google reacted to it. It became so popular that some other bloggers copied the title and parts of the content 🤦🏻. My first opinionated blog was a success, `confidence++`. What could boost confidence more than that? 😄. So far in the Android-related blogs of mine, this one has the highest views on the medium.com.
 
-***
+---
 
 ## 📐 Diving deeper into the context
 
@@ -103,13 +103,13 @@ So, blogging has helped me a lot in my career!
 
 I continued writing blogs, and now you're reading my 51st blog here! Do you think it was always smooth? Now let me share the dilemmas and challenges that I faced as well.
 
-***
+---
 
 ## 📖 English
 
 ![](../../assets/images/content/51-my-developer-blogging-journey-so-far/img-81c539fc.webp)
 
-Until 2021, I wasn't very good at English (and maybe I'm still not). My general communication skills were poor. I only understood tech concepts and could write about them, but I made a lot of grammatical mistakes. If you read my early blogs, you'll notice this and easily find many English-related errors. This caused me a lot of anxiety when I was about to hit the "**Publish**" button for my first blog post. I used to think, "*What will people think if they see my writing?*" and "*How will they judge me?*".
+Until 2021, I wasn't very good at English (and maybe I'm still not). My general communication skills were poor. I only understood tech concepts and could write about them, but I made a lot of grammatical mistakes. If you read my early blogs, you'll notice this and easily find many English-related errors. This caused me a lot of anxiety when I was about to hit the "**Publish**" button for my first blog post. I used to think, "_What will people think if they see my writing?_" and "_How will they judge me?_".
 
 However, I pressed that button for the first time and continued to do so many more times. My writing was very simple; I never used complicated words in any of my blogs. I avoided fancy English words and complex language. It was straightforward enough for any beginner to understand. But still, I was not so confident about my writing style and one day, a developer from community sent me a message on Twitter (now X). He mentioned that he likes whatever I like, then he wrote this:
 
@@ -117,7 +117,7 @@ However, I pressed that button for the first time and continued to do so many mo
 
 I was surprised after reading this. That day, I learned that we often overthink before taking action. Stop overthinking and just go for it! In my case, it was "English"; for others, it might be something else. So my advice is to ignore the negative thoughts and focus on positive actions. This can not only boost your confidence but also help others. After my first few blogs, I started using Grammarly, which helped me identify common English mistakes in my writing. In today's world, LLMs can also help refine your sentences effectively.
 
-***
+---
 
 ## 😨 Criticism
 
@@ -129,7 +129,7 @@ Everything was going well while I was writing simple blog posts. It was all posi
 
 Today's world has many negative people who do nothing themselves but are always ready to criticize. We always encounter both types of people: positive and negative. So, don't just focus on the negativity. On Reddit, most comments were about my use of emojis. However, on a personal level, I once received feedback from one of my connections who actually liked how I use emojis in my blogs, saying it feels attractive. So, in my opinion, there's no perfect or wrong way here 🤷🏻‍♂️.
 
-Many times, I've also engaged in tech debates on Twitter, LinkedIn, and Reddit about various topics, but always in a healthy way (*regardless of the other person's tone* 😂). But criticism is not always harmful; it can be constructive too. If I ever made a mistake, I accepted it and corrected it in my blog before it could mislead any readers. It all depends on the author's attitude towards handling criticism. Once, I wrote an article and accidentally attached the wrong code snippet from a GitHub gist. I found out about it 30 minutes after posting, thanks to a comment on Reddit, and I quickly fixed it. I learned to take such feedback positively, which ultimately helped me become a better version of myself day by day.
+Many times, I've also engaged in tech debates on Twitter, LinkedIn, and Reddit about various topics, but always in a healthy way (_regardless of the other person's tone_ 😂). But criticism is not always harmful; it can be constructive too. If I ever made a mistake, I accepted it and corrected it in my blog before it could mislead any readers. It all depends on the author's attitude towards handling criticism. Once, I wrote an article and accidentally attached the wrong code snippet from a GitHub gist. I found out about it 30 minutes after posting, thanks to a comment on Reddit, and I quickly fixed it. I learned to take such feedback positively, which ultimately helped me become a better version of myself day by day.
 
 But I also learned to ignore some comments because not all of them are helpful. Some comments are just nonsense and won't benefit anyone, neither you nor the readers. So you should know what to take and what to ignore otherwise it can impact you a lot.
 
@@ -139,10 +139,10 @@ Later on, I started having my blog posts reviewed by my tech-savvy friends and c
 
 > [!TIP]
 > I would like to mention my friends who often reviewed my blogs and helped making it better. Many thanks to: [Himanshu Singh](https://himanshoe.com/), [Sagar Viradiya](https://sagarviradiya.dev/), [Siddhesh Patil](https://siddroid.com/), [Niharika Arora](https://thedroidlady.com/) 🙏🏻.
-> 
+>
 > **Fact:** We didn't know each other before, and we only connected through blogging. We met in person after two years of knowing each other online. Now, we're not just connected through tech, we also have a good personal relations. My point is that blogging has helped me build some great personal connections too.
 
-***
+---
 
 ## 📈 Self promotion is important!
 
@@ -150,15 +150,15 @@ Later on, I started having my blog posts reviewed by my tech-savvy friends and c
 
 Once you hit "Publish," your work isn't done! I always shared my posts on Twitter, LinkedIn, Facebook, Reddit, Hackernews, as well as on community Slack channels like Kotlinlang. Newsletters like [AndroidWeekly.net](https://androidweekly.net) and [KotlinWeekly.net](https://kotlinweekly.net) are fantastic for reaching the right readers. Every Sunday, when my blogs were featured in these newsletters, I noticed a spike in viewers on the analytics graph. It just works well ✈️.
 
-Many people hesitate to share what they've created (*I did too when I was a beginner, but I learned by watching others*). But you have to do it. **If you don’t, who else will?** When you share your work, there will come a time when *others start sharing your blog links on their feeds* if it’s really a good quality work. Over time, Google search became my top source of organic referrals for my blogs (*thanks to the SEO of Medium and Hashnode so far*).
+Many people hesitate to share what they've created (_I did too when I was a beginner, but I learned by watching others_). But you have to do it. **If you don’t, who else will?** When you share your work, there will come a time when _others start sharing your blog links on their feeds_ if it’s really a good quality work. Over time, Google search became my top source of organic referrals for my blogs (_thanks to the SEO of Medium and Hashnode so far_).
 
-***
+---
 
 ## 📚 Keep learning
 
 Technology is vast, and staying updated is crucial, especially if you want to continue blogging for the long term. Blogging itself is a learning experience. Even after about five years, I still feel like a beginner in writing blogs. I admit I'm still trying to improve and learn good blogging practices. I read other blogs to learn from them. I read official tech blogs, blogs by famous developers, company blogs, and my friends' blogs, which teach me a lot about technical writing. I believe there's no limit to learning, and it will always continue. So, keep learning!
 
-***
+---
 
 ## 🎉 Celebrating a small milestone
 
@@ -168,7 +168,7 @@ As a content creator, celebrating a small milestone not only releases dopamine f
 
 Through this post, I'm absolutely thrilled to share that I've reached a total of **~605K views** for my blogs since I started! It's such an amazing feeling to know that what I've written has reached half a million screens! 🎉. But of course, this is not done yet, and there is much more to come in the future. I’m really excited to see what comes next for me in this journey.
 
-***
+---
 
 ## 🎬 Wrapping up this post
 
@@ -178,7 +178,7 @@ I'm really excited to keep blogging about tech and to improve a little each day.
 
 If you notice, I end every blog with this line 😄👇🏻:
 
-***"Sharing is Caring"***
+**_"Sharing is Caring"_**
 
 Thank you! 😄
 

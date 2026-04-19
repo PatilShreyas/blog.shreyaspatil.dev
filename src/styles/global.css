@@ -5,18 +5,18 @@
 
 :root,
 html[data-theme="light"] {
-  --background: #F9F8F6;
-  --foreground: #1A1A1A; /* Darker for better contrast */
-  --accent: #8B7355;     /* More saturated accent for readability */
-  --muted: #EFE9E3;
-  --border: #D9CFC7;
+  --background: #f9f8f6;
+  --foreground: #1a1a1a; /* Darker for better contrast */
+  --accent: #8b7355; /* More saturated accent for readability */
+  --muted: #efe9e3;
+  --border: #d9cfc7;
 }
 
 html[data-theme="dark"] {
   --background: #222831;
-  --foreground: #F9F8F6; /* High contrast off-white */
-  --accent: #DFD0B8;
-  --muted: #393E46;
+  --foreground: #f9f8f6; /* High contrast off-white */
+  --accent: #dfd0b8;
+  --muted: #393e46;
   --border: #948979;
 }
 
@@ -37,7 +37,7 @@ html[data-theme="dark"] {
     scrollbar-color: var(--color-muted) transparent;
   }
   img {
-    @apply mx-auto border border-border rounded-lg img-shimmer;
+    @apply mx-auto img-shimmer rounded-lg border border-border;
   }
   html {
     @apply overflow-y-scroll scroll-smooth;
@@ -45,7 +45,12 @@ html[data-theme="dark"] {
   body {
     @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/30 selection:text-foreground;
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading;
   }
   a,
@@ -86,7 +91,7 @@ html[data-theme="light"] pre {
 }
 
 html[data-theme="dark"] pre {
-  @apply bg-[#0d1117] shadow-inner border border-white/5;
+  @apply border border-white/5 bg-[#0d1117] shadow-inner;
 }
 
 pre:hover {
@@ -98,7 +103,7 @@ code {
 }
 
 html[data-theme="dark"] code:not(pre code) {
-  @apply bg-[#0d1117]! border! border-white/10!;
+  @apply border! border-white/10! bg-[#0d1117]!;
 }
 
 pre code {
@@ -166,15 +171,19 @@ pre::-webkit-scrollbar-thumb {
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @utility img-shimmer {
   background-image: linear-gradient(
-    90deg, 
-    var(--muted) 0%, 
-    var(--border) 50%, 
+    90deg,
+    var(--muted) 0%,
+    var(--border) 50%,
     var(--muted) 100%
   );
   background-size: 200% 100%;

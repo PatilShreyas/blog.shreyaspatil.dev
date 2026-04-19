@@ -3,11 +3,11 @@ title: "Update Queries without changing RecyclerView Adapter using FirebaseUI 
 pubDatetime: 2020-03-13T14:56:59.620Z
 description: "Learn how to update Firebase queries dynamically without recreating your RecyclerView adapter using the FirebaseUI-Android library."
 tags:
-- android-app-development
-- firebase
-- database
-- android
-- android-studio
+  - android-app-development
+  - firebase
+  - database
+  - android
+  - android-studio
 coverImage: "../../assets/images/cover-update-queries-without-changing-recyclerview-adapter-using-firebaseui-android-32098b3082b2.png"
 ---
 
@@ -17,26 +17,26 @@ Let’s say you need to populate a list using *RecyclerView*to show data loaded 
 
 We’ll load data from Firebase Realtime Database/Cloud Firestore and populate a *RecyclerView (Simple + Paginated)*using the adapter*.* After that, we’ll change/filter the query based on some user interaction at runtime without changing whole adapter.
 
-In the end, you will see app like this 👇. After clicking on one of the buttons, data in *RecyclerView* will be replaced by new data.
+In the end, you will see app like this 👇. After clicking on one of the buttons, data in _RecyclerView_ will be replaced by new data.
 
-![Demo output after changing the query.](../../assets/images/content/update-queries-without-changing-recyclerview-adapter-using-firebaseui-android-32098b3082b2/img-1c350264.gif) *Demo output after changing the query.*
+![Demo output after changing the query.](../../assets/images/content/update-queries-without-changing-recyclerview-adapter-using-firebaseui-android-32098b3082b2/img-1c350264.gif) _Demo output after changing the query._
 
 ## 🔥 About FirebaseUI 😃
 
-*FirebaseUI is an open-source library for Android that allows you to quickly connect common UI elements to Firebase APIs. (*see [here](https://github.com/firebase/FirebaseUI-Android)*)*It makes it easy to bind data from Firebase Realtime Database** or Cloud Firestore to your app’s UI 🎨.
+*FirebaseUI is an open-source library for Android that allows you to quickly connect common UI elements to Firebase APIs. (*see [here](https://github.com/firebase/FirebaseUI-Android)*)*It makes it easy to bind data from Firebase Realtime Database\*\* or Cloud Firestore to your app’s UI 🎨.
 
 FirebaseUI-Android provides a number of adapters, such as:
 
-*   `FirebaseRecyclerAdapter` — for binding Firebase Realtime Database
-*   `FirebaseRecyclerPagingAdapter` — for binding Firebase Realtime Database with pagination support
-*   `FirestoreRecyclerAdapter` — for binding Cloud Firestore
-*   `FirestorePagingAdapter` — for binding Cloud Firestore with pagination support
+- `FirebaseRecyclerAdapter` — for binding Firebase Realtime Database
+- `FirebaseRecyclerPagingAdapter` — for binding Firebase Realtime Database with pagination support
+- `FirestoreRecyclerAdapter` — for binding Cloud Firestore
+- `FirestorePagingAdapter` — for binding Cloud Firestore with pagination support
 
 ## ⚡️ Getting Started
 
 Let’s write some code!
 
-Open *Android Studio* and create a new project. Alternatively, you can simply clone [this repository](https://github.com/PatilShreyas/FirebaseRecyclerUpdateQuery-Demo). This is a very simple app for showing a list of posts.
+Open _Android Studio_ and create a new project. Alternatively, you can simply clone [this repository](https://github.com/PatilShreyas/FirebaseRecyclerUpdateQuery-Demo). This is a very simple app for showing a list of posts.
 
 ## Gradle Setup
 
@@ -58,13 +58,14 @@ implementation 'com.firebaseui:firebase-ui-firestore:6.2.0'
 implementation 'android.arch.paging:runtime:1.0.1'
 }
 ```
-> If you’re unsure how to use *FirebaseUI* 🔥, check out the official source [here](https://github.com/firebase/FirebaseUI-Android/). Or, take a look at the official sample👇.
+
+> If you’re unsure how to use _FirebaseUI_ 🔥, check out the official source [here](https://github.com/firebase/FirebaseUI-Android/). Or, take a look at the official sample👇.
 
 [https://github.com/firebase/quickstart-android](https://github.com/firebase/quickstart-android)
 
 ## ⚡️ How to Change the Query 🤔
 
-In the adapter classes of *FirebaseUI* library, there's a method `updateOptions()` which initialises an adapter with new options. Whenever this is invoked, the respective *RecyclerView* is populated with new data.
+In the adapter classes of _FirebaseUI_ library, there's a method `updateOptions()` which initialises an adapter with new options. Whenever this is invoked, the respective _RecyclerView_ is populated with new data.
 
 ## 💻 Let’s Change the Queries 🔥
 
@@ -120,6 +121,7 @@ The source code for this article is available in [this GitHub repo](https://gith
 **Thank You!** 😃
 
 ## Resources
+
 [https://github.com/PatilShreyas/FirebaseRecyclerUpdateQuery-Demo](https://github.com/PatilShreyas/FirebaseRecyclerUpdateQuery-Demo)
 
 [https://github.com/firebase/FirebaseUI-Android/](https://github.com/firebase/FirebaseUI-Android/)

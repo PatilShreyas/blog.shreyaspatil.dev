@@ -1,4 +1,9 @@
-import { defineConfig, envField, fontProviders, sharpImageService } from "astro/config";
+import {
+  defineConfig,
+  envField,
+  fontProviders,
+  sharpImageService,
+} from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";

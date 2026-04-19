@@ -1,7 +1,10 @@
 ---
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
-import { PUBLIC_GOOGLE_SITE_VERIFICATION, PUBLIC_GA_ID } from "astro:env/client";
+import {
+  PUBLIC_GOOGLE_SITE_VERIFICATION,
+  PUBLIC_GA_ID,
+} from "astro:env/client";
 import { SITE } from "@/config";
 import "@/styles/global.css";
 
@@ -68,7 +71,7 @@ const structuredData = {
       preload={[
         { subset: "latin", weight: 400, style: "normal" },
         { subset: "latin", weight: 700, style: "normal" },
-        { subset: "latin", weight: 900, style: "normal" }
+        { subset: "latin", weight: 900, style: "normal" },
       ]}
     />
     <!-- Load Font: Merriweather (Serif) for Body -->
@@ -78,7 +81,7 @@ const structuredData = {
         { subset: "latin", weight: 400, style: "normal" },
         { subset: "latin", weight: 400, style: "italic" },
         { subset: "latin", weight: 700, style: "normal" },
-        { subset: "latin", weight: 700, style: "italic" }
+        { subset: "latin", weight: 700, style: "italic" },
       ]}
     />
 
@@ -90,12 +93,15 @@ const structuredData = {
             async
             src={`https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_ID || SITE.googleAnalyticsId}`}
           />
-          <script is:inline set:html={`
+          <script
+            is:inline
+            set:html={`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${PUBLIC_GA_ID || SITE.googleAnalyticsId}');
-          `} />
+          `}
+          />
         </>
       )
     }
@@ -209,21 +215,26 @@ const structuredData = {
     <!-- Re-execute GitHub Gist scripts on every page navigation (View Transitions compat) -->
     <script is:inline>
       function loadGists() {
-        document.querySelectorAll('script[src*="gist.github.com"]').forEach(function(originalScript) {
-          // Avoid double-loading on the same navigation
-          if (originalScript.dataset.loaded === '1') return;
-          originalScript.dataset.loaded = '1';
+        document
+          .querySelectorAll('script[src*="gist.github.com"]')
+          .forEach(function (originalScript) {
+            // Avoid double-loading on the same navigation
+            if (originalScript.dataset.loaded === "1") return;
+            originalScript.dataset.loaded = "1";
 
-          const newScript = document.createElement('script');
-          newScript.src = originalScript.src;
-          // Insert after the original to preserve position
-          originalScript.parentNode.insertBefore(newScript, originalScript.nextSibling);
-        });
+            const newScript = document.createElement("script");
+            newScript.src = originalScript.src;
+            // Insert after the original to preserve position
+            originalScript.parentNode.insertBefore(
+              newScript,
+              originalScript.nextSibling
+            );
+          });
       }
       // Runs on first page load
-      document.addEventListener('DOMContentLoaded', loadGists);
+      document.addEventListener("DOMContentLoaded", loadGists);
       // Runs on every subsequent Astro View Transition navigation
-      document.addEventListener('astro:page-load', loadGists);
+      document.addEventListener("astro:page-load", loadGists);
     </script>
   </body>
 </html>
