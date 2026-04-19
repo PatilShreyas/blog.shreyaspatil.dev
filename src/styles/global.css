@@ -40,7 +40,7 @@ html[data-theme="dark"] {
     @apply mx-auto img-shimmer rounded-lg border border-border;
   }
   html {
-    @apply overflow-y-scroll scroll-smooth;
+    @apply overflow-y-scroll;
   }
   body {
     @apply flex min-h-svh flex-col bg-background font-app text-foreground selection:bg-accent/30 selection:text-foreground;
