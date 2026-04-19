@@ -86,7 +86,7 @@ html[data-theme="light"] pre {
 }
 
 html[data-theme="dark"] pre {
-  @apply bg-muted/60 shadow-inner;
+  @apply bg-[#0d1117] shadow-inner border border-white/5;
 }
 
 pre:hover {
@@ -95,6 +95,10 @@ pre:hover {
 
 code {
   @apply rounded-md bg-muted/50 px-1.5 py-0.5 font-mono text-sm font-medium;
+}
+
+html[data-theme="dark"] code:not(pre code) {
+  @apply bg-[#0d1117]! border! border-white/10!;
 }
 
 pre code {

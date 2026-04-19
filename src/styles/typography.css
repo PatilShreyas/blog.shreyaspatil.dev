@@ -23,8 +23,13 @@
     ul,
     figcaption,
     table,
-    code {
+    code,
+    mark {
       @apply text-foreground/90 leading-[1.8];
+    }
+
+    mark {
+      @apply bg-accent/30 rounded-sm px-1;
     }
 
     a {
@@ -76,8 +81,8 @@
       @apply text-[1em]! font-bold px-[0.4em];
     }
 
-    html[data-theme="dark"] code {
-      @apply bg-foreground/15;
+    html[data-theme="dark"] code:not(pre code) {
+      @apply bg-[#0d1117]! border! border-white/10! shadow-inner;
     }
 
     .astro-code code {
