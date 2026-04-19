@@ -37,7 +37,7 @@ It was clear: I needed a platform where I controlled every pixel, every byte, an
 
 ## 🛠️ The Chosen Stack: Astro + Cloudflare
 
-I chose **Astro** because it is practically designed for content rich websites. It ships zero JavaScript by default, making it blazingly fast. It has native support for Markdown and MDX, which means my Git repository is my database.
+I chose **Astro** because it is practically designed for content-rich websites. It ships zero JavaScript by default, making it blazingly fast. (Wait, how did we build a JS lightbox then? Astro allows us to ship client-side JS exactly when we need it via 'Islands', keeping the rest of the site pure static HTML!) It has native support for Markdown and MDX, which means my Git repository is my database.
 
 For hosting, I chose **Cloudflare Pages**. Their global Edge network is incredibly fast, and their worker integrations mean I can handle dynamic routing without breaking a sweat.
 
@@ -58,7 +58,7 @@ To give you an idea of how I worked with Antigravity, here is the type of prompt
   "Iterate through all .md files in the blog directory. Find any image URLs hosted on cdn.hashnode.com. Download those images to src/assets/images/, giving them a slugified filename based on the post title. Finally, update the Markdown files to use the new local relative paths."
 </div>
 
-Using this prompt, the AI generated a temporary Node.js script, executed it, and handled all 60 files while I watched the terminal. It was a true pair-programming experience.
+Using this prompt, the AI generated a temporary Node.js script. I simply saved it as `rescue-assets.js` in my root folder and ran `node rescue-assets.js` — it handled all 60 files while I watched the terminal. It was a true pair-programming experience.
 
 ---
 
@@ -68,6 +68,8 @@ Using this prompt, the AI generated a temporary Node.js script, executed it, and
 
 We started with a clean Astro template. I downloaded my entire blog backup from Hashnode, which gave me raw Markdown files. We imported these directly into Astro's `src/content/blog` directory.
 
+### Phase 2: AI-Assisted Asset Rescue
+
 Hashnode hosted all my images on their own CDN. If I closed my account, those images would break. Our markdown files were filled with URLs looking like this: `https://cdn.hashnode.com/res/hashnode/image/upload/...`. What we wanted was clean, local paths like `../../assets/images/...`.
 
 We wrote a quick Node.js script using the `fs` and `path` modules combined with Regular Expressions to find, download, and replace these links. The logic looked something like this:
@@ -75,6 +77,7 @@ We wrote a quick Node.js script using the `fs` and `path` modules combined with 
 ```javascript
 // A simplified look at the rescue logic
 const content = fs.readFileSync(file, "utf8");
+// Finds the hashnode URL and stops capturing when it hits a closing parenthesis
 const matches = content.match(/https:\/\/cdn\.hashnode\.com\/[^\)]+/g);
 
 for (const url of matches) {
