@@ -4,18 +4,19 @@ export const SITE = {
   profile: "https://shreyaspatil.dev/",
   desc: "Senior Android Engineer @ Deliveroo. Google Developer Expert for Android. Writing about Android, Kotlin, and AI.",
   title: "Shreyas Patil's Blog",
-  ogImage: "astropaper-og.jpg",
+  ogImage: "og.png",
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 50,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
-  showArchives: true,
+  showArchives: false,
   showBackButton: true, // show back button in post detail
   editPost: {
     enabled: false,
     text: "Edit page",
     url: "https://github.com/shreyaspatil/blogsite/edit/main/",
   },
+  googleAnalyticsId: "G-QSX2WHSF35", // Add your GA Tracking ID here (e.g. G-XXXXXXXXXX)
   dynamicOgImage: true,
   dir: "ltr", // "rtl" | "auto"
   lang: "en", // html lang code. Set this empty and default will be "en"
