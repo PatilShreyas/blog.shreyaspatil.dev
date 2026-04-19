@@ -11,28 +11,28 @@ tags:
 coverImage: "../../assets/images/cover-sleepless-concurrency-delay-vs-threadsleep.jpeg"
 ---
 
-Hey Kotliners 👋🏻, there's no doubt that Kotlin coroutines have made developer's life easy for asynchronous programming. Coroutine comes with feature-packed powerful APIs by which developers don't need extra effort for achieving something. Just need to know which API to use where and that's all! When it comes to JVM, coroutines literally have improved the way of writing asynchronous code by reducing *callback hells.* But how exactly the coroutine achieves it under the hood is always an interesting thing. So here we are to know how delay API works inside the coroutines (inside JVM) 😁.
+Hey Kotliners 👋🏻, there's no doubt that Kotlin coroutines have made developer's life easy for asynchronous programming. Coroutine comes with feature-packed powerful APIs by which developers don't need extra effort for achieving something. Just need to know which API to use where and that's all! When it comes to JVM, coroutines literally have improved the way of writing asynchronous code by reducing *callback hells*. But how exactly the coroutine achieves it under the hood is always an interesting thing. So here we are to know how delay API works inside the coroutines (inside JVM) 😁.
 
 ## What is a `delay()` ?
 
 Everyone who has used coroutines might have used `delay()` method already. This is what official docs say about `delay()`:
 
-> *"Delays coroutine for a given time without blocking a thread and resumes it after a specified time."*Example:*Perform Task-2 two seconds after performing Task-1*
+> *"Delays coroutine for a given time without blocking a thread and resumes it after a specified time."*
+>
+> *Example:* Perform Task-2 two seconds after performing Task-1
 
 ```kotlin
 scope.launch {
-doTask1()
-delay(2000)
-doTask2()
+    doTask1()
+    delay(2000)
+    doTask2()
 }
 ```
 
 But here are things to note about `delay()`:
 
-*It does not block the thread that it's running on* Allows other coroutines to run (on the same thread)
-
-* When the delay has expired, the coroutine will be resumed and will continue executing
-
+*   It does not block the thread that it's running on. Allows other coroutines to run (on the same thread).
+*   When the delay has expired, the coroutine will be resumed and will continue executing.
 
 Interesting! 🧐
 
@@ -44,11 +44,11 @@ This is Java's standard multi-threading API that ***"causes the currently execut
 
 > "[This method is generally used for making processor time available to the other threads of an application or other applications that might be running on a computer system](https://docs.oracle.com/javase/tutorial/essential/concurrency/sleep.html)"
 
-If this is used in coroutines: **It's a Blocking function**means that the function**blocks the thread**that it is running on. This means that**other coroutines cannot run** until the blocking function has finished executing.
+If this is used in coroutines: **It's a Blocking function** means that the function **blocks the thread** that it is running on. This means that **other coroutines cannot run** until the blocking function has finished executing.
 
 Now, to understand it in detail, let's compare sleep() and delay()
 
----
+***
 
 ## Comparing sleep() and delay()
 
@@ -58,36 +58,47 @@ Take a look at the below snippets. *In this, two coroutines are launched and a d
 
 ![](../../assets/images/content/sleepless-concurrency-delay-vs-threadsleep/img-3a3377a9.png)
 
-**Comparison:***When both coroutines were**launched**:*With `delay()`, both coroutines were launched at**same-second**instant (05:48:58)*With `sleep()`, the Second coroutine was launched exactly after**one second.***When both coroutines**finished:***With `delay()`, it took a total execution time of***1045ms****with `sleep()`, it took a total execution time of**2044ms**This brings us to conclude the same as we described initially that `delay()` just***suspends the coroutine and allows the other coroutine to re-use the same thread***whereas `Thread.sleep()` directly**blocks the Thread** for a specified duration.
+**Comparison:**
+
+**When both coroutines were launched:**
+*   With `delay()`, both coroutines were launched at **same-second** instant (05:48:58).
+*   With `sleep()`, the Second coroutine was launched exactly after **one second.**
+
+**When both coroutines finished:**
+*   With `delay()`, it took a total execution time of ***1045ms***.
+*   With `sleep()`, it took a total execution time of **2044ms**.
+
+This brings us to conclude the same as we described initially that `delay()` just ***suspends the coroutine and allows the other coroutine to re-use the same thread*** whereas `Thread.sleep()` directly **blocks the Thread** for a specified duration.
 
 Want to see a different superpower of a coroutine? Then just look at the snippet and case below:
 
-**Case:***There is a Thread pool context of a**Maximum of 2 threads.**The first coroutine is launched, it does some work there, and then it adds a*`delay()`*of one second and after that delay, it does some work. Concurrent with the first coroutine, a second coroutine is launched which performs heavy tasks in such a way that a Thread will be spending most of its time executing that task.*
+**Case:**
+*There is a Thread pool context of a **Maximum of 2 threads.** The first coroutine is launched, it does some work there, and then it adds a* `delay()` *of one second and after that delay, it does some work. Concurrent with the first coroutine, a second coroutine is launched which performs heavy tasks in such a way that a Thread will be spending most of its time executing that task.*
 
 ![](../../assets/images/content/sleepless-concurrency-delay-vs-threadsleep/img-c8492974.png)
 
-Amazing! Before a delay, it was running on a Thread **Duet-1.**After a delay, it resumed on another thread,**Duet-2.** Why so? Since the other thread was busy performing heavy work in another launched coroutine, so it resumed on a different thread after a delay.
+Amazing! Before a delay, it was running on a Thread **Duet-1.** After a delay, it resumed on another thread, **Duet-2.** Why so? Since the other thread was busy performing heavy work in another launched coroutine, so it resumed on a different thread after a delay.
 
-Interesting 🧐 , isn't it? That's the thing when Coroutine's docs say...
+Interesting 🧐, isn't it? That's the thing when Coroutine's docs say...
 
 > "[Coroutines can suspend on one thread and resume on another thread."](https://kotlinlang.org/docs/coroutine-context-and-dispatchers.html#debugging-coroutines-and-threads)
 
 Since we now know the powers of delay(), now let's understand how it works under the hood.
 
----
+***
 
 ## Dissecting `delay()` under the hood 🕵🏻‍♀️
 
-Whenever we call a `delay()` method, it finds for a `Delay`'s an implementation in the current Coroutine context and returns that.
+Whenever we call a `delay()` method, it finds a `Delay` implementation in the current Coroutine context and returns that.
 
-```diff
+```kotlin
 public suspend fun delay(timeMillis: Long) {
-if (timeMillis <= 0) return // don't delay
-return suspendCancellableCoroutine sc@ { cont: CancellableContinuation<Unit> ->
-if (timeMillis < Long.MAX_VALUE) {
-! cont.context.delay.scheduleResumeAfterDelay(timeMillis, cont)
-}
-}
+    if (timeMillis <= 0) return // don't delay
+    return suspendCancellableCoroutine sc@ { cont: CancellableContinuation<Unit> ->
+        if (timeMillis < Long.MAX_VALUE) {
+            cont.context.delay.scheduleResumeAfterDelay(timeMillis, cont)
+        }
+    }
 }
 ```
 
@@ -95,13 +106,16 @@ if (timeMillis < Long.MAX_VALUE) {
 
 ```kotlin
 public interface Delay {
-/ ***Schedules resume of a specified [continuation] after a specified delay [timeMillis].* /
-public fun scheduleResumeAfterDelay(timeMillis: Long, continuation: CancellableContinuation<Unit>)
+    /** Schedules resume of a specified [continuation] after a specified delay [timeMillis]. */
+    public fun scheduleResumeAfterDelay(timeMillis: Long, continuation: CancellableContinuation<Unit>)
 
-/ ***Schedules invocation of a specified [block] after a specified delay [timeMillis].* The resulting [DisposableHandle] can be used to [dispose][DisposableHandle.dispose] of this invocation
-*request if it is not needed anymore.* /
-public fun invokeOnTimeout(timeMillis: Long, block: Runnable, context: CoroutineContext): DisposableHandle =
-DefaultDelay.invokeOnTimeout(timeMillis, block, context)
+    /**
+     * Schedules invocation of a specified [block] after a specified delay [timeMillis].
+     * The resulting [DisposableHandle] can be used to [dispose][DisposableHandle.dispose] of this invocation
+     * request if it is not needed anymore.
+     */
+    public fun invokeOnTimeout(timeMillis: Long, block: Runnable, context: CoroutineContext): DisposableHandle =
+        DefaultDelay.invokeOnTimeout(timeMillis, block, context)
 }
 ```
 
@@ -113,12 +127,12 @@ This is how [`ExecutorCoroutineDispatcherImpl`](https://github.com/Kotlin/kotlin
 
 ```kotlin
 override fun scheduleResumeAfterDelay(timeMillis: Long, continuation: CancellableContinuation<Unit>) {
-(executor as? ScheduledExecutorService)?.scheduleBlock(
-ResumeUndispatchedRunnable(this, continuation),
-continuation.context,
-timeMillis
-)
-// Other implementation
+    (executor as? ScheduledExecutorService)?.scheduleBlock(
+        ResumeUndispatchedRunnable(this, continuation),
+        continuation.context,
+        timeMillis
+    )
+    // Other implementation
 }
 ```
 
@@ -128,21 +142,23 @@ Let's also take a look at Android's implementation of a Dispatcher ([HandlerDisp
 
 ```kotlin
 override fun scheduleResumeAfterDelay(timeMillis: Long, continuation: CancellableContinuation<Unit>) {
-val block = Runnable {
-with(continuation) { resumeUndispatched(Unit) }
-}
-handler.postDelayed(block, timeMillis.coerceAtMost(MAX_DELAY))
-// Other implementation
+    val block = Runnable {
+        with(continuation) { resumeUndispatched(Unit) }
+    }
+    handler.postDelayed(block, timeMillis.coerceAtMost(MAX_DELAY))
+    // Other implementation
 }
 ```
 
-Straightforward 😄. It just posts continuation runnable on the `Handler` with `postDelayed()` with delay. ***That's the reason calling a***`delay()`***doesn't block the thread.***Example:*So when you're writing delayed business logic in a single thread context (Android's Main thread in this example), this is how it's treated under the hood (just for imagination).*
+Straightforward 😄. It just posts continuation runnable on the `Handler` with `postDelayed()` with delay. ***That's the reason calling a*** `delay()` ***doesn't block the thread.***
+
+*Example:* So when you're writing delayed business logic in a single thread context (Android's Main thread in this example), this is how it's treated under the hood (just for imagination).
 
 ![](../../assets/images/content/sleepless-concurrency-delay-vs-threadsleep/img-e30d0363.png)
 
-Interesting 🤨, isn't it? So whenever you call `delay()` in Android, it just creates a nested callback chain of `Handler#postDelayed()`. The same goes for JVM with `Executor` APIs. Whereas, if you write the same logic with `Thread.sleep()`, it blocks that thread till that duration. So, delay() and sleep() are two different things that are not similar.
+Interesting 🧐, isn't it? So whenever you call `delay()` in Android, it just creates a nested callback chain of `Handler#postDelayed()`. The same goes for JVM with `Executor` APIs. Whereas, if you write the same logic with `Thread.sleep()`, it blocks that thread till that duration. So, delay() and sleep() are two different things that are not similar.
 
----
+***
 
 Awesome 🤩. That's the beauty of coroutines. It just skips the writing of callback hell for developers and manages it well internally in such a way that we could synchronously write asynchronous code!
 
@@ -154,4 +170,4 @@ If you like this write-up, do share it 😉, because...
 
 Thank you! 😄
 
-Let's catch up on [ **Twitter**](https://twitter.com/imShreyasPatil) or [**visit my site** ](https://shreyaspatil.dev/) to know more about me 😎.
+Let's catch up on [**Twitter**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.

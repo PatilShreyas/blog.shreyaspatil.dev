@@ -1,4 +1,4 @@
----
+﻿---
 title: "Update Queries without changing RecyclerView Adapter using FirebaseUI — Android 🔥"
 pubDatetime: 2020-03-13T14:56:59.620Z
 description: "TODO: Add a description"
@@ -27,9 +27,10 @@ In the end, you will see app like this 👇. After clicking on one of the button
 
 FirebaseUI-Android provides a number of adapters, such as:
 
-*`FirebaseRecyclerAdapter` — or binding*Firebase Realtime Database**`FirebaseRecyclerPagingAdapter` — for binding*Firebase Realtime Database*with pagination support*`FirestoreRecyclerAdapter` — for binding *Cloud Firestore*
-
-*`FirestorePagingAdapter` — for binding*Cloud Firestore* with pagination support
+*   `FirebaseRecyclerAdapter` — for binding Firebase Realtime Database
+*   `FirebaseRecyclerPagingAdapter` — for binding Firebase Realtime Database with pagination support
+*   `FirestoreRecyclerAdapter` — for binding Cloud Firestore
+*   `FirestorePagingAdapter` — for binding Cloud Firestore with pagination support
 
 ## ⚡️ Getting Started
 
@@ -41,7 +42,7 @@ Open *Android Studio* and create a new project. Alternatively, you can simply cl
 
 In the app module of `build.gradle,` include following dependencies.
 
-```gradle
+```groovy
 dependencies {
 // Firebase SDKs
 implementation 'com.google.firebase:firebase-firestore:21.4.1'
@@ -61,7 +62,9 @@ implementation 'android.arch.paging:runtime:1.0.1'
 
 [https://github.com/firebase/quickstart-android](https://github.com/firebase/quickstart-android)
 
-## ⚡️ **How to Change the Query 🤔**In the adapter classes of*FirebaseUI*library, there’s a method `updateOptions()` which initialises an adapter with new options. Whenever this is invoked, the respective*RecyclerView* is populated with new data.
+## ⚡️ How to Change the Query 🤔
+
+In the adapter classes of *FirebaseUI* library, there's a method `updateOptions()` which initialises an adapter with new options. Whenever this is invoked, the respective *RecyclerView* is populated with new data.
 
 ## 💻 Let’s Change the Queries 🔥
 
@@ -114,7 +117,7 @@ We have successfully changed queries at runtime using the FirebaseUI library😃
 
 The source code for this article is available in [this GitHub repo](https://github.com/PatilShreyas/FirebaseRecyclerUpdateQuery-Demo).
 
-***Thank You!*😃**
+**Thank You!** 😃
 
 ## Resources
 [https://github.com/PatilShreyas/FirebaseRecyclerUpdateQuery-Demo](https://github.com/PatilShreyas/FirebaseRecyclerUpdateQuery-Demo)

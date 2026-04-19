@@ -1,4 +1,4 @@
----
+﻿---
 title: "The Future of Android Apps with AppFunctions"
 pubDatetime: 2026-03-30T04:30:00.000Z
 description: "TODO: Add a description"
@@ -138,17 +138,17 @@ Since this function requires a repository as a dependency, how can the app creat
 @HiltAndroidApp
 class NotyApp : Application(), AppFunctionConfiguration.Provider {
 
-@Inject lateinit var appFunctions: Provider<NotyAppFunctions>
+    @Inject lateinit var appFunctions: Provider<NotyAppFunctions>
 
-/ *other impl* /
+    // other impl
 
-override val appFunctionConfiguration: AppFunctionConfiguration
-get() = AppFunctionConfiguration
-.Builder()
-.addEnclosingClassFactory(NotyAppFunctions::class.java) {
-appFunctions.get()
-}
-.build()
+    override val appFunctionConfiguration: AppFunctionConfiguration
+        get() = AppFunctionConfiguration
+            .Builder()
+            .addEnclosingClassFactory(NotyAppFunctions::class.java) {
+                appFunctions.get()
+            }
+            .build()
 }
 ```
 
@@ -156,7 +156,7 @@ That's it! This is how AppFunctions can be implemented in the app 😄.
 
 ***
 
-## 🧪How to test?
+## 🧪 How to test?
 
 Currently Gemini app can't directly invoke them but the ADB command utility can help here in testing the integration. Make sure you've platform-tools installed in the SDK and following ADB commands can help.
 
@@ -202,22 +202,20 @@ It provides JSON output as follows, aligning with the contract model defined in 
 
 ```json
 {
-"androidAppfunctionsReturnValue": [
-{
-"id": ["TMP-053ffdbe-7997-4ba6-9187-3a4ef6be0833"],
-"title": ["💡Ideas"],
-"content": ["- Android AppFunctions demo\n- Android Foldable device APIs\n- Generative AI"]
-},
-{
-"id": ["TMP-58832e3e-da0f-4542-aa55-68fbc9edea19"],
-"title": ["👨🏻‍💻 Today's tasks"],
-"content": ["Work on the open-source sample to demonstrate the use of Android AppFunctions"]
-}
-]
+  "androidAppfunctionsReturnValue": [
+    {
+      "id": ["TMP-053ffdbe-7997-4ba6-9187-3a4ef6be0833"],
+      "title": ["💡Ideas"],
+      "content": ["- Android AppFunctions demo\n- Android Foldable device APIs\n- Generative AI"]
+    },
+    {
+      "id": ["TMP-58832e3e-da0f-4542-aa55-68fbc9edea19"],
+      "title": ["👨🏻‍💻 Today's tasks"],
+      "content": ["Work on the open-source sample to demonstrate the use of Android AppFunctions"]
+    }
+  ]
 }
 ```
-
-Let's say we want to create a note, the command for it could look as follows:
 
 ```plaintext
 adb shell "cmd app_function execute-app-function \
@@ -251,11 +249,22 @@ However, this doesn't mean any random app can be installed as an agent app to in
 
 ![](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-8b8a458d.png)
 
-***What are your thoughts on this new thing? I'm genuinely excited about its potential widespread use in apps. With the advancements in voice support and AI agents, this could become a standout feature in the future trends of Android development. Can imagine how it could be used:**"Repeat the last ordered Indian dish for me on Zomato"***"I need to make a chocolate cake for four people; please order all the necessary ingredients from Swiggy Instamart."***"Schedule a cab for airport for tomorrow 05:45 AM via Uber"***"Compose a lovely poem to wish my friend X a happy birthday and send it to him on WhatsApp."***"Send 500 to X for cab share via UPI app"* then it finds the X's details from phonebook and just prompts to enter the pin for payment, that's it!
+What are your thoughts on this new thing? I'm genuinely excited about its potential widespread use in apps. With the advancements in voice support and AI agents, this could become a standout feature in the future trends of Android development. Can imagine how it could be used:
 
+*   "Repeat the last ordered Indian dish for me on Zomato"
+*   "I need to make a chocolate cake for four people; please order all the necessary ingredients from Swiggy Instamart."
+*   "Schedule a cab for airport for tomorrow 05:45 AM via Uber"
+*   "Compose a lovely poem to wish my friend X a happy birthday and send it to him on WhatsApp."
+*   "Send 500 to X for cab share via UPI app" — then it finds X's details from phonebook and just prompts to enter the pin for payment, that's it!
 
 and so on...
 
-****If you found this useful, share it, it really helps*🙏**"Sharing is caring" 🤝🏻**Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.***## 📚References* [AppFunctions](https://developer.android.com/ai/appfunctions)
+If you found this useful, share it, it really helps 🙏. "Sharing is caring" 🤝🏻. Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.
 
-*[NotyKT](https://github.com/PatilShreyas/NotyKT/)* [Agent demo app](https://github.com/PatilShreyas/appfunctions-notyagent-app)
+***
+
+## 📚 References
+
+*   [AppFunctions](https://developer.android.com/ai/appfunctions)
+*   [NotyKT](https://github.com/PatilShreyas/NotyKT/)
+*   [Agent demo app](https://github.com/PatilShreyas/appfunctions-notyagent-app)

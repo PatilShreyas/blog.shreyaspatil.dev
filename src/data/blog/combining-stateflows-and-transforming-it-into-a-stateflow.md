@@ -12,11 +12,12 @@ coverImage: "../../assets/images/cover-combining-stateflows-and-transforming-it-
 ---
 
 Hey Kotliners👋,
+
 In this blog, we are gonna do the experiment with the very 🔥hot [`StateFlow`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/) as the title of this blog suggests, we have to build a utility which can help us combining multiple `StateFlow`s into another transformed StateFlow. Before diving into it, let's understand why we need it.
 
-# How it's used currently? 🤷
+## How it's used currently? 🤷
 
-Coroutine's `StateFlow` is really a useful API for handling stateful business in any application (_let's say in Android_) which is a pretty simple yet powerful stream. Let's discuss some common usage.
+Coroutine's `StateFlow` is really a useful API for handling stateful business in any application (*let's say in Android*) which is a pretty simple yet powerful stream. Let's discuss some common usage.
 
 ### Example 1 - UI State management
 
@@ -24,7 +25,7 @@ When the state of UI is represented as a single model class having immutable sta
 
 <script src="https://gist.github.com/PatilShreyas/4d6a402efd0c98c7509252debc3ed9cc.js"></script>
 
-Here, `LoginState` is a state model for the Login screen which has all immutable fields. In the ViewModel, three individual **mutable states**are created and they're combined to form an**immutable `LoginState`** . At the end, that stream is converted to `StateFlow<LoginState>` with using `stateIn()`. That's how we do it, right?
+Here, `LoginState` is a state model for the Login screen which has all immutable fields. In the ViewModel, three individual **mutable states** are created and they're combined to form an **immutable `LoginState`**. At the end, that stream is converted to `StateFlow<LoginState>` with using `stateIn()`. That's how we do it, right?
 
 ### Example 2 - Deriving Flow from multiple StateFlows
 
@@ -34,9 +35,9 @@ So assume we're building a library and exposing some API class that returns a `S
 
 Here, `getPreferenceState()` returns StateFlow of `PreferenceState` and just notice the second function `getMultiplePreferenceState()` which is just deriving a flow from multiple StateFlows, we'll discuss about it later.
 
----
+***
 
-# What's the problem? 🤔
+## What's the problem? 🤔
 
 Let's understand problems/flaws in the above two examples
 
@@ -50,16 +51,16 @@ In the Example 2, the method `getPreferenceState()` is fine which is returning `
 
 <script src="https://gist.github.com/PatilShreyas/62b42152d5d71b29a37ccdf4fb44c78d.js"></script>
 
-To convert combined flow into a StateFlow, `stateIn()` is used which needs a `CoroutineScope`. Thus, it ultimately restricts to ask for consumer's scope here (_which we don't want some time in some use cases. Example, we don't want to control when to start collecting flow, scope it to a specific scope, etc._). Also, the initial state needs to calculate separately. That's the problem.
+To convert combined flow into a StateFlow, `stateIn()` is used which needs a `CoroutineScope`. Thus, it ultimately restricts to ask for consumer's scope here (*which we don't want some time in some use cases. Example, we don't want to control when to start collecting flow, scope it to a specific scope, etc.*). Also, the initial state needs to calculate separately. That's the problem.
 
 In both examples, what we want is:
 > ***If all the flows which are being combined are StateFlows then derived/transformed Flow should also be StateFlow.***
 
 Now, let's find out the solution for this.
 
----
+***
 
-# Solution 💡
+## Solution 💡
 
 On GitHub, [issue](https://github.com/Kotlin/kotlinx.coroutines/issues/2631) is already open for this particular use case. Till an official solution is available, let's try to build our own solution. This solution is gonna be mixed learnings from the discussions that happened there.
 
@@ -77,7 +78,7 @@ Let's understand this:
 
 This is a core variant of `combineStates()` method and multiple variants of combineStates() can be added as per the need and number of parameters required.
 
-Let's say in the above Example 1, we need to combine three flows so _type safe function for combining three StateFlows would look like_👇.
+Let's say in the above Example 1, we need to combine three flows so *type safe function for combining three StateFlows would look like* 👇.
 
 <script src="https://gist.github.com/PatilShreyas/67c29058de6d016bf26f62f1d2eec552.js"></script>
 
@@ -102,11 +103,11 @@ So after all this, there are some problems with this solution due to which it ca
 
 If your use case is NOT affected by these mentioned issues, you can definitely use this approach for combining StateFlows and deriving another StateFlow from it.
 
----
+***
 
-_If you have any feedback on this approach, I've also suggested this approach in the [GitHub issue](https://github.com/Kotlin/kotlinx.coroutines/issues/2631#issuecomment-1162673773)_.
+*If you have any feedback on this approach, I've also suggested this approach in the [GitHub issue](https://github.com/Kotlin/kotlinx.coroutines/issues/2631#issuecomment-1162673773).*
 
----
+***
 
 That's all, I hope you found this helpful 😉.
 
@@ -114,9 +115,9 @@ That's all, I hope you found this helpful 😉.
 
 Thank you! 😀
 
----
+***
 
-# 📚 Resources
+## 📚 Resources
 
 - [Kotlinx.coroutines Issue - GitHub](https://github.com/Kotlin/kotlinx.coroutines/issues/2631)
 - [StateFlow - Kotlin Flow API](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/)

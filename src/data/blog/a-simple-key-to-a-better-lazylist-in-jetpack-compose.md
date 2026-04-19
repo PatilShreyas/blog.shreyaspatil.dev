@@ -29,12 +29,9 @@ A while back, I posted a poll on [X](https://x.com/imShreyasPatil/status/1974419
 
 The results were interesting and mostly similar across both platforms!
 
-*🟢*Always use* — 60%
-
-*🟡*Sometimes* — 32%
-
-*🔴*Never/Didn’t know* — 8%
-
+*   🟢 *Always use* — 60%
+*   🟡 *Sometimes* — 32%
+*   🔴 *Never/Didn’t know* — 8%
 
 This poll inspired me to write this post to shed some light on this important detail especially for 40% of Android developers.
 
@@ -46,22 +43,33 @@ When you provide a list of items to a LazyColumn or LazyRow, you can also provid
 
 ```kotlin
 LazyColumn {
-items(
-items = myItems,
-key = { item -> item.id } // Provide a unique ID for each item
-) { item ->
-MyItemRow(item)
-}
+    items(
+        items = myItems,
+        key = { item -> item.id } // Provide a unique ID for each item
+    ) { item ->
+        MyItemRow(item)
+    }
 }
 ```
 
 Think of it like a primary key in a database table. It gives Compose a way to track each item individually, even if the list changes.
 
-**Why is this important?*****Performance Boost 🚀:**When you add, remove, or reorder items in your list, Compose uses these keys to understand which items have changed. This allows it to be much smarter. For example, if you reorder items, Compose can just move the corresponding composables without completely redrawing them. This avoids unnecessary work and makes your app feel smoother.***Stable Identity:**The key tells Compose, "Hey, this item is the same one as before, it's just in a different position now." Remember that `DiffUtil.ItemCallback` in RecyclerView? 🤔**What happens if you don't specify a key?**If you skip the key, Compose falls back to using the item's**position (or index)** in the list as its identifier. For a list that never changes, this is perfectly fine. But for a dynamic list where items can be added or removed, this can lead to some unexpected problems. Because whenever the list changes, even if some items in the list might not have been changed, it’ll still cause recompositions for such items.
+**Why is this important?**
 
-The most important rule for keys is that they **must be unique** . If two items have the same key, your app will crash with an error.
+**Performance Boost 🚀:**
+When you add, remove, or reorder items in your list, Compose uses these keys to understand which items have changed. This allows it to be much smarter. For example, if you reorder items, Compose can just move the corresponding composables without completely redrawing them. This avoids unnecessary work and makes your app feel smoother.
+
+**Stable Identity:**
+The key tells Compose, "Hey, this item is the same one as before, it's just in a different position now." Remember that `DiffUtil.ItemCallback` in RecyclerView? 🤔
+
+**What happens if you don't specify a key?**
+If you skip the key, Compose falls back to using the item's **position (or index)** in the list as its identifier. For a list that never changes, this is perfectly fine. But for a dynamic list where items can be added or removed, this can lead to some unexpected problems. Because whenever the list changes, even if some items in the list might not have been changed, it’ll still cause recompositions for such items.
+
+The most important rule for keys is that they **must be unique**. If two items have the same key, your app will crash with an error.
 
 Now, let's get to the fun part and see what can go wrong.
+
+***
 
 ## What can go wrong if `key` is missing
 
@@ -76,34 +84,34 @@ And here is the code for our `Fruit` composable:
 ```kotlin
 @Composable
 fun Fruit(fruit: Fruit, modifier: Modifier = Modifier) {
-Row(/ *...* /) {
-var quantity by remember { mutableIntStateOf(0) }
-var hasChanged by remember { mutableStateOf(false) }
+    Row(/* ... */) {
+        var quantity by remember { mutableIntStateOf(0) }
+        var hasChanged by remember { mutableStateOf(false) }
 
-Text(fruit.emojifiedImage, / *Other parameters* /)
+        Text(fruit.emojifiedImage, /* Other parameters */)
 
-Column(/ *...* /) {
-Text(fruit.name)
-Row {
-Button(onClick = { quantity-- }) { Text("-") }
-Button(onClick = { quantity++ }) { Text("+") }
-}
-}
+        Column(/* ... */) {
+            Text(fruit.name)
+            Row {
+                Button(onClick = { quantity-- }) { Text("-") }
+                Button(onClick = { quantity++ }) { Text("+") }
+            }
+        }
 
-if (hasChanged) {
-Box(Modifier.background(MaterialTheme.colorScheme.tertiary)) {
-Text("$quantity", / *Other parameters* /)
-}
-}
+        if (hasChanged) {
+            Box(Modifier.background(MaterialTheme.colorScheme.tertiary)) {
+                Text("$quantity", /* Other parameters */)
+            }
+        }
 
-// 👀 Pay attention to this. This only notifies whether any changes have been made
-// to this fruit or not.
-LaunchedEffect(Unit) {
-snapshotFlow { quantity }.filter { it != 0 }.first()
-hasChanged = true
-println("${fruit.name} has changed")
-}
-}
+        // 👀 Pay attention to this. This only notifies whether any changes have been made
+        // to this fruit or not.
+        LaunchedEffect(Unit) {
+            snapshotFlow { quantity }.filter { it != 0 }.first()
+            hasChanged = true
+            println("${fruit.name} has changed")
+        }
+    }
 }
 ```
 
@@ -114,30 +122,27 @@ Finally, we display the list on a screen and add a button to remove the first it
 ```kotlin
 @Composable
 fun DemoScreen() {
-var fruits by remember { mutableStateOf(sampleFruits) }
+    var fruits by remember { mutableStateOf(sampleFruits) }
 
-Column(/ *...* /) {
-OutlinedButton(onClick = { fruits = fruits.removeAt(0) }) {
-Text("Remove first")
-}
-LazyColumn(/ *...* /) {
-items(fruits) {
-Fruit(it)
-}
-}
-}
+    Column(/* ... */) {
+        OutlinedButton(onClick = { fruits = fruits.removeAt(0) }) {
+            Text("Remove first")
+        }
+        LazyColumn(/* ... */) {
+            items(fruits) {
+                Fruit(it)
+            }
+        }
+    }
 }
 ```
 
 Now, let's perform a few actions on the UI:
 
-1. Click + on **Apple** -&gt; logs `Apple has changed`
-
-2. Click “ **Remove first**” on top -&gt; It removed the first item from list i.e.**Apple**-&gt; Now**Banana** is in 1st place. But it’s still keeping the state of old item along with highlighted background
-
-3. Click + on **Orange** -&gt; logs `Grape has changed`
-
-4. Click + on **Peach** -&gt; logs `Strawberry has changed`
+1.  Click + on **Apple** -> logs `Apple has changed`
+2.  Click "**Remove first**" on top -> It removed the first item from list i.e. **Apple**. -> Now **Banana** is in 1st place. But it’s still keeping the state of old item along with highlighted background.
+3.  Click + on **Orange** -> logs `Grape has changed`
+4.  Click + on **Peach** -> logs `Strawberry has changed`
 
 
 See it here:
@@ -148,7 +153,7 @@ Surprised? 🤯 This shouldn’t have happened right?
 
 This strange behavior happens because of how Compose reuses composables.
 
-When you don't provide a `key`, Compose identifies each item by its **position** . In our example, the "Apple" item was at position 0. It had its own internal state (`quantity` and `hasChanged`) that we modified.
+When you don't provide a `key`, Compose identifies each item by its **position**. In our example, the "Apple" item was at position 0. It had its own internal state (`quantity` and `hasChanged`) that we modified.
 
 When we removed "Apple" from our data list, "Banana" moved into position 0. From Compose's perspective, it sees that there is still a composable at position 0. To be efficient, it decides to **reuse** the existing composable and just give it the new data ("Banana" instead of "Apple").
 
@@ -161,11 +166,11 @@ In ideal situations, when the state comes from the ViewModel, UI state-related i
 This entire problem can be fixed with a single line of code. We just need to tell Compose how to uniquely identify each fruit.
 
 ```diff
-LazyColumn(/ *...* /) {
+LazyColumn(/* ... */) {
 - items(fruits) {
 + items(fruits, key = { it.id }) {
-Fruit(it)
-}
+    Fruit(it)
+  }
 }
 ```
 
@@ -175,7 +180,7 @@ With this change, when we remove "Apple" (which has its own unique ID), Compose 
 
 ![](../../assets/images/content/a-simple-key-to-a-better-lazylist-in-jetpack-compose/img-adf7a490.gif)
 
-And console also prints valid values meaning LaunchedEffect block is actually working as expected
+And console also prints valid values meaning LaunchedEffect block is actually working as expected:
 
 ```plaintext
 Apple has changed
@@ -194,8 +199,8 @@ You might be wondering if there are other solutions. For example, you could pass
 - var hasChanged by remember { mutableStateOf(false) }
 + var hasChanged by remember(fruit) { mutableStateOf(false) }
 //...
-- LaunchedEffect(Unit) {/ *...* /}
-+ LaunchedEffect(fruit) {/ *...* /}
+- LaunchedEffect(Unit) {/* ... */}
++ LaunchedEffect(fruit) {/* ... */}
 ```
 
 This tells Compose to reset the state whenever the `fruit` input changes, which does fix the issue.
@@ -212,7 +217,7 @@ Deep inside the Compose framework, there's a class called `LazyLayoutItemContent
 
 ```kotlin
 // From LazyLayoutItemContentFactory.kt
-/ **Contains the cached lambdas produced by the [itemProvider].* /
+/** Contains the cached lambdas produced by the [itemProvider]. */
 private val lambdasCache = mutableScatterMapOf<Any, CachedItemContent>()
 ```
 
@@ -221,21 +226,21 @@ When it's time to display an item, the factory's `getContent` method is called. 
 ```kotlin
 // Simplified from LazyLayoutItemContentFactory.kt
 fun getContent(index: Int, key: Any, contentType: Any?): @Composable () -> Unit {
-val cached = lambdasCache[key] // Tries to find a cached item using the key
-return if (cached != null && ...) {
-cached.content // Found it! Return the cached composable.
-} else {
-// Didn't find it. Create a new one and add it to the cache.
-val newContent = CachedItemContent(index, key, contentType)
-lambdasCache[key] = newContent
-newContent.content
-}
+    val cached = lambdasCache[key] // Tries to find a cached item using the key
+    return if (cached != null && ...) {
+        cached.content // Found it! Return the cached composable.
+    } else {
+        // Didn't find it. Create a new one and add it to the cache.
+        val newContent = CachedItemContent(index, key, contentType)
+        lambdasCache[key] = newContent
+        newContent.content
+    }
 }
 ```
 
 When you provide a `key`, that `key` is used to look up the item in `lambdasCache`. Since your key is stable and unique (like `fruit.id`), Compose can always find the correct composable along with its remembered state.
 
-But if you **don't**provide a key, Compose uses the item's**index** as the key. So when "Apple" at index 0 is removed, "Banana" moves to index 0. Compose looks in the cache for index 0 and finds the old composable that belonged to "Apple", and reuses it for "Banana".
+But if you **don't** provide a key, Compose uses the item's **index** as the key. So when "Apple" at index 0 is removed, "Banana" moves to index 0. Compose looks in the cache for index 0 and finds the old composable that belonged to "Apple", and reuses it for "Banana".
 
 This cached content is then passed to `subcompose`, which is the mechanism that actually creates and manages the UI tree for that item.
 
@@ -247,15 +252,17 @@ return subcomposeMeasureScope.subcompose(key, itemContent)
 
 By passing your stable `key` to `subcompose`, you ensure that the state is correctly associated with the data, not just the position.
 
+***
+
 ## Conclusion
 
 So, what's the main takeaway?
 
 If your list is completely static and will never change, you can get away with not using a key. However, for any list that is dynamic where items can be added, removed, or reordered then providing a key is essential. It not only improves performance but is also crucial for correct state management.
 
-I think we should **make it a habit to always add a key** . You might think a list is static today, but requirements can change in future and then it’s easy to miss it in PR review. Adding a key from the start makes your code more robust and saves you from debugging some very confusing issues down the road.
+I think we should **make it a habit to always add a key**. You might think a list is static today, but requirements can change in future and then it’s easy to miss it in PR review. Adding a key from the start makes your code more robust and saves you from debugging some very confusing issues down the road.
 
----
+***
 
 I hope you got the idea about how important it is to provide key to LazyList APIs.
 
@@ -265,4 +272,4 @@ Awesome. I hope you've gained some valuable insights from this. If you enjoyed t
 
 Thank you! 😄 Happy composing! 😎
 
-Let's catch up on [ **X**](https://twitter.com/imShreyasPatil) or [**visit my site** ](https://shreyaspatil.dev/) to know more about me 😎.
+Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.

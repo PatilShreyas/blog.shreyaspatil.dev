@@ -31,21 +31,21 @@ It explains that using `offset()` directly updates the value in the composition,
 
 Now this was about the modifier that changes the layout, but this knowledge can be applied to the composition as well.
 
----
+***
 
 ## Come to the point…
 
-When we design a screen in Compose, it consists of components and sub-components. According to best practices, the ***screen is a stateful composable***, and all components and sub-components within the screen should receive their state from the screen, making them***stateless composables*** . Therefore, it is the screen's responsibility (actually taken from the ViewModel) to supply the data needed for the components.
+When we design a screen in Compose, it consists of components and sub-components. According to best practices, the ***screen is a stateful composable***, and all components and sub-components within the screen should receive their state from the screen, making them ***stateless composables***. Therefore, it is the screen's responsibility (actually taken from the ViewModel) to supply the data needed for the components.
 
 ![](../../assets/images/content/skipping-the-invocation-of-intermediate-composables/img-1a7f0fbe.png)
 
-In the ***real applications*** , this is actually very big. Sometimes, it’s more than 15-20 state parameters for a single screen in the real app. When any of the sub-component’s state gets changed, it flows from screen to the components in the journey.
+In the ***real applications***, this is actually very big. Sometimes, it’s more than 15-20 state parameters for a single screen in the real app. When any of the sub-component’s state gets changed, it flows from screen to the components in the journey.
 
-Now let’s say **from the above figure**,***if Component 2.2’s (C 2.2) state gets updated, then how compositions will occur*** ? So, it’ll be as follows:
+Now let’s say **from the above figure**, ***if Component 2.2’s (C 2.2) state gets updated, then how compositions will occur***? So, it’ll be as follows:
 
 ![](../../assets/images/content/skipping-the-invocation-of-intermediate-composables/img-2cd18e81.png)
 
-In this case, **Screen**and**Component 2**won't be recomposed (unless they're unstable). Recomposition means their UI logic won't run, but some parts will still execute. Before recomposition, it checks if it can be skipped. To do this, part of the function runs. If it can be skipped, the UI logic won't run; otherwise, it will.*Understand this with this simple example:**See how the composable code looks like after the compilation (i.e. after reverse engineering)*
+In this case, **Screen** and **Component 2** won't be recomposed (unless they're unstable). Recomposition means their UI logic won't run, but some parts will still execute. Before recomposition, it checks if it can be skipped. To do this, part of the function runs. If it can be skipped, the UI logic won't run; otherwise, it will. *Understand this with this simple example: **See how the composable code looks like after the compilation (i.e. after reverse engineering)*
 
 ![](../../assets/images/content/skipping-the-invocation-of-intermediate-composables/img-822c4d9f.png)
 
@@ -95,7 +95,7 @@ Timer(RemainingSeconds(value=57))
 -----------------
 ```
 
-Now you can see that in our simple application, we are just updating `remainingSeconds` every 1000ms but still every time `Screen$Column`, `Content()` block is called ( *obviously we knew that* ) then equality of both `Name` and `RemainingSeconds` is checked and by compose compiler magic only `Timer` is recomposed and `Detail` is not recomposed (i.e. skipped).
+Now you can see that in our simple application, we are just updating `remainingSeconds` every 1000ms but still every time `Screen$Column`, `Content()` block is called (*obviously we knew that*) then equality of both `Name` and `RemainingSeconds` is checked and by compose compiler magic only `Timer` is recomposed and `Detail` is not recomposed (i.e. skipped).
 
 If we get this `remainingSeconds` value via lambda, can it change this behaviour? Let’s try. So quickly making changes in the code:
 
@@ -129,11 +129,15 @@ This time, we are just seeing the equality check for `RemainingSeconds` and reco
 
 I believe we are not making any major improvements here, but we are saving a small amount of code execution time. This optimization can be particularly useful for screens where a deeply nested component is updated frequently, such as for animation states or similar scenarios. In such cases, it can reduce the number of equality checks and the number of times composable functions are invoked.
 
-**Some examples could be:****Example 1:**When a component is updated often, like a timer or a frequently changing list of data, based on the state produced by the ViewModel.**Example 2:** When a component is performing animations on the UI, and its state comes from the screen or ViewModel.
+**Some examples could be:**
+
+**Example 1:** When a component is updated often, like a timer or a frequently changing list of data, based on the state produced by the ViewModel.
+
+**Example 2:** When a component is performing animations on the UI, and its state comes from the screen or ViewModel.
 
 Additionally, this approach can be beneficial when intermediate composables are not marked as stable by the Compose compiler, allowing them to be skipped. Ultimately, decisions like these should be made based on the specific needs of the use case, as the Compose compiler already does an excellent job of skipping unnecessary recompositions. By carefully considering when to apply these optimizations, developers can ensure their applications run efficiently without unnecessary overhead.
 
----
+***
 
 Awesome 🤩. I trust you've picked up some valuable insights from this. If you like this write-up, do share it 😉, because...
 
@@ -141,4 +145,4 @@ Awesome 🤩. I trust you've picked up some valuable insights from this. If you 
 
 Thank you! 😄
 
-Let's catch up on [ **X**](https://twitter.com/imShreyasPatil) or [**visit my site** ](https://shreyaspatil.dev/) to know more about me 😎.
+Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.

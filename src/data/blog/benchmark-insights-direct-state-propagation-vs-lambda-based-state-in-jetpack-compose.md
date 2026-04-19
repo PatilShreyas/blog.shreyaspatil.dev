@@ -23,7 +23,7 @@ Hey composers 👋🏻, welcome to this analysis blog! Here, we'll dive into som
 
 ## 💁🏻 Context
 
-Last week, I published a blog [ ***“Skipping the composition of intermediate composables“*** ](https://blog.shreyaspatil.dev/skipping-the-invocation-of-intermediate-composables) that sparked some controversial opinions and comments across Twitter and Reddit. This prompted me to write a post discussing the benchmarking analysis between the two approaches. So, if you’re reading this post directly, I recommend you read my previous blog post first and then continue from here.
+Last week, I published a blog [***“Skipping the composition of intermediate composables“***](https://blog.shreyaspatil.dev/skipping-the-invocation-of-intermediate-composables) that sparked some controversial opinions and comments across Twitter and Reddit. This prompted me to write a post discussing the benchmarking analysis between the two approaches. So, if you’re reading this post directly, I recommend you read my previous blog post first and then continue from here.
 
 [https://blog.shreyaspatil.dev/skipping-the-invocation-of-intermediate-composables](https://blog.shreyaspatil.dev/skipping-the-invocation-of-intermediate-composables)
 
@@ -54,11 +54,11 @@ As you already might know the implementation variants (if you’ve read the prev
 
 #### Before:
 
-Direct state model propagation through the composable functions. For implementation detail, refer to the branch: [ ***main***](https://github.com/PatilShreyas/compose-benchmark-lambda/tree/main)***.***
+Direct state model propagation through the composable functions. For implementation detail, refer to the branch: [***main***](https://github.com/PatilShreyas/compose-benchmark-lambda/tree/main) ***.***
 
 #### After:
 
-State model propagation through the Kotlin Lambda function references through the composable functions. For implementation detail, refer to the branch: [ ***lambda***](https://github.com/PatilShreyas/compose-benchmark-lambda/tree/lambda)***.*** Can also refer to [this PR](https://github.com/PatilShreyas/compose-benchmark-lambda/pull/1) to have a look on the changes.
+State model propagation through the Kotlin Lambda function references through the composable functions. For implementation detail, refer to the branch: [***lambda***](https://github.com/PatilShreyas/compose-benchmark-lambda/tree/lambda) ***.*** Can also refer to [this PR](https://github.com/PatilShreyas/compose-benchmark-lambda/pull/1) to have a look on the changes.
 
 This is how the change looks between both the variants:
 
@@ -70,9 +70,9 @@ Before running the benchmarks, I ensured that the composable functions of both b
 
 To benchmark this, let's use macrobenchmark. For our purpose, it's straightforward: we just need to run the benchmark for a certain period, and that's it. So, in our case, let's run this benchmark for 10 seconds. We’ll perform 10 iterations of this benchmark on the app to get the aggregated data and we want to track the following metrics:
 
-*`FrameTimingMetric`: This will be useful to know the amount of time the frame takes to be produced on the CPU on both the UI thread and the `RenderThread`.* `FrameTimingGfxInfoMetric`: It’s legacy than above metric but this gives the insights on the janks via `dumpsys gfxinfo`.
-
-* `MemoryUsageMetric`: We’ll use this to check memory consumption. Only for HeapSize and GPU size and keeping mode as `Mode.Max` which will give us the info about maximum memory usage observed during the benchmark.
+*   `FrameTimingMetric`: This will be useful to know the amount of time the frame takes to be produced on the CPU on both the UI thread and the `RenderThread`.
+*   `FrameTimingGfxInfoMetric`: It’s legacy than above metric but this gives the insights on the janks via `dumpsys gfxinfo`.
+*   `MemoryUsageMetric`: We’ll use this to check memory consumption. Only for HeapSize and GPU size and keeping mode as `Mode.Max` which will give us the info about maximum memory usage observed during the benchmark.
 
 
 So, benchmark test looks as follows:
@@ -80,46 +80,46 @@ So, benchmark test looks as follows:
 ```kotlin
 @RunWith(AndroidJUnit4::class)
 class StockScreenBenchmark {
-@get:Rule
-val benchmarkRule = MacrobenchmarkRule()
+    @get:Rule
+    val benchmarkRule = MacrobenchmarkRule()
 
-@Test
-fun startup() = benchmarkRule.measureRepeated(
-packageName = "com.example.stockexample",
-metrics = listOf(
-FrameTimingMetric(),
-FrameTimingGfxInfoMetric(),
-MemoryCountersMetric(),
-MemoryUsageMetric(
-mode = MemoryUsageMetric.Mode.Max,
-subMetrics = listOf(
-MemoryUsageMetric.SubMetric.HeapSize,
-MemoryUsageMetric.SubMetric.Gpu
-)
-)
-),
-iterations = 10,
-startupMode = StartupMode.COLD
-) {
-pressHome()
-startActivityAndWait()
+    @Test
+    fun startup() = benchmarkRule.measureRepeated(
+        packageName = "com.example.stockexample",
+        metrics = listOf(
+            FrameTimingMetric(),
+            FrameTimingGfxInfoMetric(),
+            MemoryCountersMetric(),
+            MemoryUsageMetric(
+                mode = MemoryUsageMetric.Mode.Max,
+                subMetrics = listOf(
+                    MemoryUsageMetric.SubMetric.HeapSize,
+                    MemoryUsageMetric.SubMetric.Gpu
+                )
+            )
+        ),
+        iterations = 10,
+        startupMode = StartupMode.COLD
+    ) {
+        pressHome()
+        startActivityAndWait()
 
-Thread.sleep(10000)
-}
+        Thread.sleep(10000)
+    }
 }
 ```
 
 That’s it!
 
-Also, as per the best practices, we are going to run these benchmark tests obviously on the ***release equivalent build***having***R8 enabled for optimization***but by disabling obfuscation (*as benchmarking needs it* )
+Also, as per the best practices, we are going to run these benchmark tests obviously on the ***release equivalent build*** having ***R8 enabled for optimization*** but by disabling obfuscation (*as benchmarking needs it*)
 
 Now just run these benchmarks on variety of the devices and analyse the results. I ran these benchmarks on 3 devices on total out of which 2 were physical devices and last one was an emulator.
 
-***Why 3 devices?**because* I was unable to believe the results, so I decided to run these on different devices.
+***Why 3 devices?** because* I was unable to believe the results, so I decided to run these on different devices.
 
 Cool, let’s see the analysis after performing the benchmarks on the “Before” and “After” variants.
 
----
+***
 
 ## 🧐 Analysis
 
@@ -131,11 +131,11 @@ I couldn't believe these results! So, I ran a second round of benchmark tests on
 
 ![](../../assets/images/content/benchmark-insights-direct-state-propagation-vs-lambda-based-state-in-jetpack-compose/img-3a33470a.png)
 
-Surprisingly, when comparing the lambda-based approach with the direct state approach, there was a huge reduction in the UI jank percentage by **30-33%**! And not only that, but there was a**reduction**in maximum heap memory consumption***by***800 KB to 2134 KB***🤯 (*this is 10 iterations’ data and that too with running benchmark tests twice*). Also, at the***99th percentile*** , negative results were observed.
+Surprisingly, when comparing the lambda-based approach with the direct state approach, there was a huge reduction in the UI jank percentage by **30-33%**! And not only that, but there was a **reduction** in maximum heap memory consumption ***by*** 800 KB to 2134 KB *** 🤯 (*this is 10 iterations’ data and that too with running benchmark tests twice*). Also, at the ***99th percentile***, negative results were observed.
 
 Then I decided to run these benchmarks on another device, but I didn't have one with me. That's when I remembered that Firebase Test Lab devices are now accessible through Android Studio. There are a variety of devices available there, just like real devices in the cloud. This opened up exciting possibilities for further testing!
 
-I found a device: Moto G20, which runs on **Android 11 and has 4 GB of RAM** . So, I ran these tests on that device, and here are the results:
+I found a device: Moto G20, which runs on **Android 11 and has 4 GB of RAM**. So, I ran these tests on that device, and here are the results:
 
 ![](../../assets/images/content/benchmark-insights-direct-state-propagation-vs-lambda-based-state-in-jetpack-compose/img-fc1fbdbb.png)
 
@@ -149,7 +149,7 @@ On the emulator, according to the frame metrics, there were no janks. However, m
 
 > **UPDATE:**
 >
-> *After this blog was published, on X*[*we had a discussion*](https://x.com/keyboardsurfer/status/1858894309732278501)*about Full R8 mode and till above section’s benchmark results, Full R8 mode wasn’t enabled for the app, so I performed benchmark tests again on the same low-end device twice to confirm the benchmark results on the Full R8 mode and here was the result:***Round 1 (Full R8 Mode enabled)** :
+> After this blog was published, on X [we had a discussion](https://x.com/keyboardsurfer/status/1858894309732278501) about Full R8 mode and till above section’s benchmark results, Full R8 mode wasn’t enabled for the app, so I performed benchmark tests again on the same low-end device twice to confirm the benchmark results on the Full R8 mode and here was the result: **Round 1 (Full R8 Mode enabled)**:
 
 ![](../../assets/images/content/benchmark-insights-direct-state-propagation-vs-lambda-based-state-in-jetpack-compose/img-8b1a9807.png)
 
@@ -161,12 +161,12 @@ After turning on Full R8 mode, the delta for frames actually shrinked but still 
 
 After running 6 rounds of benchmark tests on 3 different devices, I finally gained some confidence! 😃. Here are some key takeaways:
 
-| **Parameters**|**Observation** |
+| **Parameters** | **Observation** |
 | --- | --- |
 | **Frame count** | 🟨 No major change |
 | **Jank Percent** | 🟩 Major improvement in jank percentage in the low-end devices in lambda-based state variant without Full R8 mode enabled. Minimal improvements when full R8 mode is turned on. |
-| **Frame time**| 🟩 🟥 10ms (minimum) to 200ms (maximum - P99) reduction in frame time in the lambda-based state variant. Low-end devices benefited the most. Occasionally, at P99 on low-end devices, there was a slight decrease in performance when**R8 is disabled**. Very minimal gains when**Full R8 mode is enabled** . |
-| **Memory**| 🟩 Significant improvements were seen in the lambda-based state variant, with a reduction of about 2000 KB in heap size consumption**irrespective of R8 is enabled or not** . |
+| **Frame time** | 🟩 🟥 10ms (minimum) to 200ms (maximum - P99) reduction in frame time in the lambda-based state variant. Low-end devices benefited the most. Occasionally, at P99 on low-end devices, there was a slight decrease in performance when **R8 is disabled**. Very minimal gains when **Full R8 mode is enabled**. |
+| **Memory** | 🟩 Significant improvements were seen in the lambda-based state variant, with a reduction of about 2000 KB in heap size consumption **irrespective of R8 is enabled or not**. |
 
 <div data-node-type="callout">
 <div data-node-type="callout-emoji">📈</div>
@@ -175,7 +175,7 @@ After running 6 rounds of benchmark tests on 3 different devices, I finally gain
 
 If you want to explore this project or run benchmarks, take a look at [this repository](https://github.com/PatilShreyas/compose-benchmark-lambda/).
 
----
+***
 
 ## 🔍 Conclusion?
 
@@ -185,11 +185,11 @@ Using lambda-based state is actually improving the runtime performance across lo
 
 > When a function is called, memory is allocated for the function's local variables, parameters, and return value. Additionally, if the function creates new objects or data structures, these will also consume heap memory. The impact on heap memory depends on the complexity of the function and the amount of data it processes or generates.
 
-As you might have learnt from the previous blog that even if compose compiler skips the re-composition of the UI, it’s still invoking the functions and actually performs lot of operations and also checks the equality of the state models every time the state parameters are changed. So **maybe**that has some cost associated with it,**maybe**when data changes so fast, there are so many unnecessary invocations are happening causing unnecessary memory allocation in the heap,**maybe**that’s what this lambda-based state approach is avoiding and that’s why we are seeing the advantages after using lambdas over direct states.**Learning?**
+As you might have learnt from the previous blog that even if compose compiler skips the re-composition of the UI, it’s still invoking the functions and actually performs lot of operations and also checks the equality of the state models every time the state parameters are changed. So **maybe** that has some cost associated with it, **maybe** when data changes so fast, there are so many unnecessary invocations are happening causing unnecessary memory allocation in the heap, **maybe** that’s what this lambda-based state approach is avoiding and that’s why we are seeing the advantages after using lambdas over direct states. **Learning?**
 
 For me, the takeaway was that using stateful lambdas doesn't really have any major downsides. In fact, it's super helpful in situations where data updates quickly and leading it to update on the UI. Plus, less janks and memory benefits observed as this approach works great on low-end devices too.
 
----
+***
 
 Awesome 🤩. I hope you've gained some valuable insights from this. If you enjoyed this write-up, please share it 😉, because...
 
@@ -197,4 +197,4 @@ Awesome 🤩. I hope you've gained some valuable insights from this. If you enjo
 
 Thank you! 😄
 
-Let's catch up on [ **X**](https://twitter.com/imShreyasPatil) or [**visit my site** ](https://shreyaspatil.dev/) to know more about me 😎.
+Let's catch up on [**X**](https://twitter.com/imShreyasPatil) or [**visit my site**](https://shreyaspatil.dev/) to know more about me 😎.

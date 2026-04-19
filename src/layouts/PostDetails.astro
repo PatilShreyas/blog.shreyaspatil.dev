@@ -24,7 +24,6 @@ const { post, posts } = Astro.props;
 
 const {
   title,
-  subtitle,
   author,
   description,
   coverImage,
@@ -32,10 +31,11 @@ const {
   canonicalURL,
   pubDatetime,
   modDatetime,
-  timezone,
   tags,
-  hideEditPost,
+  editPost,
 } = post.data;
+
+const hideEditPost = editPost?.disabled;
 
 const { Content } = await render(post);
 
@@ -102,13 +102,9 @@ const nextPost =
     >
       {title}
     </h1>
-    {subtitle && (
-      <p class="mt-2 text-xl italic text-foreground opacity-80 font-app">
-        {subtitle}
-      </p>
-    )}
+
     <div class="my-2 flex items-center gap-2">
-      <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
+      <Datetime {pubDatetime} {modDatetime} size="lg" />
       <span
         aria-hidden="true"
         class:list={[
