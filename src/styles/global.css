@@ -87,7 +87,7 @@ pre {
 }
 
 html[data-theme="light"] pre {
-  @apply bg-white;
+  @apply border border-border/40 bg-white shadow-sm;
 }
 
 html[data-theme="dark"] pre {
