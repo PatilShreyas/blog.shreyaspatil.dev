@@ -220,3 +220,32 @@ mark {
 html[data-theme="dark"] mark {
   @apply bg-accent/40;
 }
+
+/* Image Lightbox */
+#lightbox {
+  @apply pointer-events-none fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/90 opacity-0 backdrop-blur-md transition-opacity duration-300;
+}
+
+#lightbox.active {
+  @apply pointer-events-auto opacity-100;
+}
+
+#lightbox-img {
+  @apply max-h-[85vh] max-w-[90vw] cursor-zoom-out object-contain transition-transform duration-300;
+}
+
+.lightbox-close {
+  @apply absolute top-6 right-6 p-2 text-foreground transition-colors hover:text-accent;
+}
+
+.lightbox-controls {
+  @apply absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-4 rounded-full border border-border bg-muted/80 px-6 py-3 shadow-2xl backdrop-blur-sm;
+}
+
+.lightbox-btn {
+  @apply p-2 text-foreground transition-colors hover:text-accent disabled:pointer-events-none disabled:opacity-30;
+}
+
+.lightbox-zoom-val {
+  @apply min-w-[3rem] text-center font-mono text-sm font-medium;
+}

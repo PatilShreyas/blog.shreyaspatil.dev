@@ -340,4 +340,141 @@ const nextPost =
   document.addEventListener("astro:after-swap", () =>
     window.scrollTo({ left: 0, top: 0, behavior: "instant" })
   );
+
+  /**
+   * Initializes the image lightbox for blog post images.
+   * Provides full-view with zoom controls and immersive backdrop.
+   */
+  function setupLightbox() {
+    // 1. Create Lightbox UI if it doesn't exist
+    let lightbox = document.getElementById("lightbox");
+    if (!lightbox) {
+      lightbox = document.createElement("div");
+      lightbox.id = "lightbox";
+      lightbox.innerHTML = `
+        <button class="lightbox-close" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <img id="lightbox-img" src="" alt="Full view" />
+        <div class="lightbox-controls">
+          <button class="lightbox-btn zoom-out" disabled aria-label="Zoom Out">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+          <span class="lightbox-zoom-val">100%</span>
+          <button class="lightbox-btn zoom-in" aria-label="Zoom In">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+        </div>
+      `;
+      document.body.appendChild(lightbox);
+    }
+
+    const lightboxImg = document.getElementById("lightbox-img");
+    const zoomInBtn = lightbox.querySelector(".zoom-in");
+    const zoomOutBtn = lightbox.querySelector(".zoom-out");
+    const zoomVal = lightbox.querySelector(".lightbox-zoom-val");
+    const closeBtn = lightbox.querySelector(".lightbox-close");
+
+    let currentScale = 1;
+    const ZOOM_STEP = 0.25;
+    const MAX_ZOOM = 3;
+    const MIN_ZOOM = 0.5;
+
+    function updateZoom() {
+      lightboxImg.style.transform = `scale(${currentScale})`;
+      zoomVal.innerText = `${Math.round(currentScale * 100)}%`;
+      zoomOutBtn.disabled = currentScale <= MIN_ZOOM;
+      zoomInBtn.disabled = currentScale >= MAX_ZOOM;
+    }
+
+    function openLightbox(src) {
+      lightboxImg.src = src;
+      currentScale = 1;
+      updateZoom();
+      lightbox.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("active");
+      document.body.style.overflow = "";
+      // Clear src after transition to avoid flicker on next open
+      setTimeout(() => {
+        if (!lightbox.classList.contains("active")) lightboxImg.src = "";
+      }, 300);
+    }
+
+    // Attach listeners to images in the article
+    const images = document.querySelectorAll("#article img:not(.no-lightbox)");
+    images.forEach(img => {
+      img.style.cursor = "zoom-in";
+      img.addEventListener("click", () => openLightbox(img.src));
+    });
+
+    // Control Listeners
+    zoomInBtn.onclick = e => {
+      e.stopPropagation();
+      currentScale = Math.min(MAX_ZOOM, currentScale + ZOOM_STEP);
+      updateZoom();
+    };
+    zoomOutBtn.onclick = e => {
+      e.stopPropagation();
+      currentScale = Math.max(MIN_ZOOM, currentScale - ZOOM_STEP);
+      updateZoom();
+    };
+    closeBtn.onclick = closeLightbox;
+    lightbox.onclick = closeLightbox;
+    lightboxImg.onclick = e => {
+      e.stopPropagation();
+      closeLightbox();
+    };
+
+    // Keyboard support
+    const handleKeydown = e => {
+      if (!lightbox.classList.contains("active")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "+" || e.key === "=") zoomInBtn.click();
+      if (e.key === "-") zoomOutBtn.click();
+    };
+    document.addEventListener("keydown", handleKeydown);
+
+    // Touch Support (Pinch-to-Zoom)
+    let initialDistance = 0;
+    let initialScale = 1;
+
+    lightbox.addEventListener(
+      "touchstart",
+      e => {
+        if (e.touches.length === 2) {
+          initialDistance = Math.hypot(
+            e.touches[0].pageX - e.touches[1].pageX,
+            e.touches[0].pageY - e.touches[1].pageY
+          );
+          initialScale = currentScale;
+        }
+      },
+      { passive: false }
+    );
+
+    lightbox.addEventListener(
+      "touchmove",
+      e => {
+        if (e.touches.length === 2) {
+          e.preventDefault(); // Prevent page zoom
+          const currentDistance = Math.hypot(
+            e.touches[0].pageX - e.touches[1].pageX,
+            e.touches[0].pageY - e.touches[1].pageY
+          );
+          const ratio = currentDistance / initialDistance;
+          currentScale = Math.min(
+            MAX_ZOOM,
+            Math.max(MIN_ZOOM, initialScale * ratio)
+          );
+          updateZoom();
+        }
+      },
+      { passive: false }
+    );
+  }
+  setupLightbox();
 </script>
