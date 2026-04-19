@@ -192,7 +192,7 @@ pre::-webkit-scrollbar-thumb {
 
 /* Native Post Callouts */
 .post-callout {
-  @apply my-8 flex items-start gap-4 rounded-2xl border border-accent/20 bg-accent/5 p-6 shadow-sm transition-all hover:shadow-md;
+  @apply my-8 flex items-start gap-4 rounded-2xl border border-accent/20 bg-accent/5 p-6 shadow-sm transition-all hover:shadow-md font-medium text-foreground/90;
 }
 
 .post-callout .emoji {
@@ -200,16 +200,12 @@ pre::-webkit-scrollbar-thumb {
 }
 
 .post-callout .content {
-  @apply flex-1 leading-relaxed font-medium text-foreground/90;
+  @apply flex-1 leading-relaxed;
 }
 
 /* Dark mode refinement */
 html[data-theme="dark"] .post-callout {
-  @apply border-white/10 bg-white/5;
-}
-
-html[data-theme="dark"] .post-callout .content {
-  @apply text-foreground;
+  @apply border-white/10 bg-white/5 text-foreground;
 }
 
 /* Native Highlight (mark) */

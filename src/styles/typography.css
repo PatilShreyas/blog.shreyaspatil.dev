@@ -149,22 +149,5 @@
     .highlighted-word {
       @apply rounded-sm border border-border px-0.5 py-px;
     }
-
-    /* ===== Mermaid diagram rendering ===== */
-    .mermaid {
-      display: flex;
-      justify-content: center;
-      margin-block: 1.5rem;
-
-      svg {
-        max-width: 100%;
-        height: auto;
-      }
-    }
-
-    /* Hide copy button if it somehow ends up inside a mermaid container */
-    .mermaid .copy-code {
-      display: none;
-    }
   }
 }
