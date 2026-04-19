@@ -249,6 +249,8 @@ const nextPost =
     const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (const codeBlock of codeBlocks) {
+      // Skip mermaid blocks — they get replaced and don't need a copy button
+      if (codeBlock.getAttribute("data-language") === "mermaid") continue;
       const wrapper = document.createElement("div");
       wrapper.style.position = "relative";
 
@@ -477,28 +479,35 @@ const nextPost =
     );
   }
   setupLightbox();
+</script>
 
+<script is:inline>
   /**
    * Initializes Mermaid diagrams if they exist on the page.
    */
   function setupMermaid() {
-    const mermaidBlocks = document.querySelectorAll(".mermaid");
-    if (mermaidBlocks.length > 0) {
-      if (!window.mermaid) {
-        const script = document.createElement("script");
-        script.src =
-          "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js";
-        script.onload = () => {
-          const isDark =
-            document.documentElement.getAttribute("data-theme") === "dark";
-          window.mermaid.initialize({
-            startOnLoad: false,
-            theme: isDark ? "dark" : "default",
-          });
-          window.mermaid.run();
-        };
-        document.head.appendChild(script);
-      } else {
+    // Shiki renders mermaid blocks as <pre data-language="mermaid">
+    const mermaidBlocks = document.querySelectorAll(
+      "pre[data-language='mermaid']"
+    );
+    if (mermaidBlocks.length === 0) return;
+
+    // Hide copy buttons that the attachCopyButtons function may have already added
+    mermaidBlocks.forEach(block => {
+      const copyBtn = block.parentNode?.querySelector(".copy-code");
+      if (copyBtn) copyBtn.remove();
+      const text = block.textContent || "";
+      const div = document.createElement("div");
+      div.className = "mermaid";
+      div.textContent = text;
+      block.parentNode.replaceChild(div, block);
+    });
+
+    if (!window.mermaid) {
+      const script = document.createElement("script");
+      script.src =
+        "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js";
+      script.onload = () => {
         const isDark =
           document.documentElement.getAttribute("data-theme") === "dark";
         window.mermaid.initialize({
@@ -506,8 +515,19 @@ const nextPost =
           theme: isDark ? "dark" : "default",
         });
         window.mermaid.run();
-      }
+      };
+      document.head.appendChild(script);
+    } else {
+      const isDark =
+        document.documentElement.getAttribute("data-theme") === "dark";
+      window.mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? "dark" : "default",
+      });
+      window.mermaid.run();
     }
   }
+  document.addEventListener("astro:page-load", setupMermaid);
+  // Also run on initial load in case page-load already fired
   setupMermaid();
 </script>
