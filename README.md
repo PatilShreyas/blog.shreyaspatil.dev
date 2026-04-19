@@ -58,7 +58,7 @@ The build process automatically:
 
 ### Deployment (Cloudflare)
 
-This blog is configured to deploy as a Cloudflare Workers Assets project. 
+This blog is configured to deploy as a Cloudflare Workers Assets project.
 
 - **Environment Variable**: Set `NODE_VERSION` to `20` in the Cloudflare Dashboard.
 - **Build Command**: `npm run build` (or `pnpm run build`)
