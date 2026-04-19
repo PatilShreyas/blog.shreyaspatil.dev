@@ -1,7 +1,7 @@
 ---
 title: "Deep dive into annotations in Jetpack Compose"
 pubDatetime: 2025-05-19T05:16:29.339Z
-description: "TODO: Add a description"
+description: "An extensive deep dive into annotations in Jetpack Compose. Understand how @Composable, @Stable, @ReadOnlyComposable, and others work under the hood."
 tags:
 - compose
 - app-development

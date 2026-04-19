@@ -1,7 +1,7 @@
 ---
 title: "Don't let Kotlin's single-expression function ruin your business😲"
 pubDatetime: 2021-05-24T14:42:29.559Z
-description: "TODO: Add a description"
+description: "Understand why relying on Kotlin's automatic type inference in single-expression functions can lead to subtle bugs and business logic failures."
 tags:
 - android
 - kotlin

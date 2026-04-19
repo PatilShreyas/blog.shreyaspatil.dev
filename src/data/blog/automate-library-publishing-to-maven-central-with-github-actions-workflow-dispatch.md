@@ -1,7 +1,7 @@
 ---
 title: "Automate library publishing to Maven Central with GitHub Actions Workflow Dispatch 🤖"
 pubDatetime: 2022-01-21T12:49:26.857Z
-description: "TODO: Add a description"
+description: "Step-by-step guide to automating JVM library publishing to Maven Central using GitHub Actions and Workflow Dispatch for one-click releases."
 tags:
 - github
 - java

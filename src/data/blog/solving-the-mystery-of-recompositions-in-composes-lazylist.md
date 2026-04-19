@@ -1,7 +1,7 @@
 ---
 title: "Solving the mystery of recompositions in Compose's LazyList"
 pubDatetime: 2023-08-21T13:03:59.424Z
-description: "TODO: Add a description"
+description: "Debugging recompositions in Jetpack Compose LazyLists. Learn why your list items might be recomposing unnecessarily and how to fix it."
 tags:
 - performance
 - android

@@ -1,7 +1,7 @@
 ---
 title: "session-bridge: I Made Two Claude Code Sessions Talk to Each Other"
 pubDatetime: 2026-03-20T13:09:22.916Z
-description: "TODO: Add a description"
+description: "Building 'session-bridge': A Claude Code plugin that allows separate AI sessions to communicate and share context across different repositories."
 tags:
 - plugins
 - claudeai

@@ -1,7 +1,7 @@
 ---
 title: "Capturing composable to a bitmap without losing a state"
 pubDatetime: 2024-03-20T13:58:20.221Z
-description: "TODO: Add a description"
+description: "Learn how to capture a Jetpack Compose Composable as a Bitmap without losing its current state. A deep dive into capturing high-quality UI screenshots programmatically."
 tags:
 - compose
 - android-app-development

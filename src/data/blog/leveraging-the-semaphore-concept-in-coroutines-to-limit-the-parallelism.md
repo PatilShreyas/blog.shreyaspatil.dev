@@ -1,7 +1,7 @@
 ---
 title: "Leveraging the Semaphore concept in Coroutines to limit the parallelism 🔀"
 pubDatetime: 2022-04-01T12:57:35.603Z
-description: "TODO: Add a description"
+description: "Explore the concept of Semaphores in Kotlin Coroutines. Learn how to limit parallelism and manage resource access in concurrent programming."
 tags:
 - java
 - multithreading

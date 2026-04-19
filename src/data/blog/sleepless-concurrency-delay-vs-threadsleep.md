@@ -1,7 +1,7 @@
 ---
 title: "Sleepless Concurrency: delay() vs. Thread.sleep()"
 pubDatetime: 2023-07-31T04:39:30.301Z
-description: "TODO: Add a description"
+description: "Explore the difference between delay() and Thread.sleep() in Kotlin. Understand how non-blocking concurrency works from a platform perspective."
 tags:
 - java
 - multithreading

@@ -1,7 +1,7 @@
 ---
 title: "Automate publishing app to the Google Play Store with GitHub Actions⚡+ Fastlane🏃"
 pubDatetime: 2020-10-09T12:33:39.424Z
-description: "TODO: Add a description"
+description: "Automate your Android app deployment to Google Play Store using GitHub Actions and Fastlane. Implement a 'Code, Push, and Chill' workflow for your projects."
 tags:
 - android-app-development
 - deployment

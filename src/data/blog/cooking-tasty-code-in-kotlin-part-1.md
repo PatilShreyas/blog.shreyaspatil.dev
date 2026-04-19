@@ -1,7 +1,7 @@
 ---
 title: "👨‍🍳 Cooking Tasty code in Kotlin 🍴 — Part 1"
 pubDatetime: 2020-12-24T14:37:40.027Z
-description: "TODO: Add a description"
+description: "Part 1 of the 'Cooking Tasty Code' series. Explore Kotlin's syntactic sugar and features that help write cleaner, more readable, and idiomatic code."
 tags:
 - programming
 - android

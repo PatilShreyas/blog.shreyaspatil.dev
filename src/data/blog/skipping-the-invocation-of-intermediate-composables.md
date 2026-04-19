@@ -1,7 +1,7 @@
 ---
 title: "Skipping the invocation of intermediate composables"
 pubDatetime: 2024-11-11T13:33:20.450Z
-description: "TODO: Add a description"
+description: "Learn how Jetpack Compose optimizes UI rendering by skipping intermediate composables. Understand how to design your UI for maximum performance."
 tags:
 - compose
 - android-app-development

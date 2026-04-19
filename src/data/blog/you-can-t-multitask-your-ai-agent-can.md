@@ -1,7 +1,7 @@
 ---
 title: "You Can't Multitask. Your AI Agent Can."
 pubDatetime: 2026-03-02T04:00:00.000Z
-description: "TODO: Add a description"
+description: "Boost your productivity with AI agents. Learn how to delegate complex tasks to AI tools like Claude Code and Gemini to overcome human multitasking limitations."
 tags:
 - ai
 - productivity

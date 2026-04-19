@@ -1,7 +1,7 @@
 ---
 title: "Effortless Compose Compiler report analysis"
 pubDatetime: 2024-05-20T12:30:51.434Z
-description: "TODO: Add a description"
+description: "A guide to analyzing Jetpack Compose compiler reports easily. Learn how to diagnose stability and skippability of your composables for better performance."
 tags:
 - compose
 - android-app-development

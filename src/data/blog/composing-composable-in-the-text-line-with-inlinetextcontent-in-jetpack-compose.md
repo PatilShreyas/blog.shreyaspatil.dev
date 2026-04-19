@@ -1,7 +1,7 @@
 ---
 title: "Composing composable in the Text line with InlineTextContent in Jetpack Compose"
 pubDatetime: 2021-07-30T14:08:38.907Z
-description: "TODO: Add a description"
+description: "Learn how to use InlineTextContent in Jetpack Compose to embed Composables directly within text lines for rich, interactive text experiences."
 tags:
 - android-app-development
 - android

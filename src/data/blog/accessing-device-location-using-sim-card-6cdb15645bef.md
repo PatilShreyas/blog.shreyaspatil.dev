@@ -1,7 +1,7 @@
 ---
 title: "🕵️ Accessing device location using SIM Card 🗺️📍"
 pubDatetime: 2020-07-28T15:07:45.153Z
-description: "TODO: Add a description"
+description: "Discover a clever trick to access device location using SIM card info in Android. Learn how to handle mock location scenarios for better location accuracy."
 tags:
 - android-app-development
 - tricks

@@ -1,7 +1,7 @@
 ---
 title: "🙅‍♂️ Don't let ViewModel know about framework level dependencies"
 pubDatetime: 2021-09-17T12:18:27.265Z
-description: "TODO: Add a description"
+description: "Explore best practices for Android ViewModels. Learn why keeping framework references out of ViewModels is crucial for testing and preventing memory leaks."
 tags:
 - android-app-development
 - framework

@@ -1,7 +1,7 @@
 ---
 title: "Observing Live connectivity status in Jetpack Compose way!"
 pubDatetime: 2021-08-17T13:22:10.230Z
-description: "TODO: Add a description"
+description: "Learn how to observe live network connectivity status in Jetpack Compose. A reactive approach to handling internet availability in your Android app's UI."
 tags:
 - android-app-development
 - android

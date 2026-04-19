@@ -1,7 +1,7 @@
 ---
 title: "Getting data from Google Sheets📊 → Flutter App📱 — Part 2"
 pubDatetime: 2020-07-04T08:33:27.244Z
-description: "TODO: Add a description"
+description: "Part 2 of the series: Learn how to fetch and display data from Google Sheets in your Flutter application using Google AppScript as an API."
 tags:
 - others
 coverImage: "../../assets/images/cover-getting-data-from-google-sheets-flutter-app-part-2-d6e689fdbbed.png"

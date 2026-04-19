@@ -1,7 +1,7 @@
 ---
 title: "Hello DataStore, Bye SharedPreferences👋 — Android📱 — Part 1: Preference DataStore"
 pubDatetime: 2020-09-03T15:40:25.701Z
-description: "TODO: Add a description"
+description: "Introduction to Jetpack DataStore Part 1: Learn how to migrate from SharedPreferences to Preference DataStore for better data storage in Android."
 tags:
 - others
 coverImage: "../../assets/images/cover-hello-datastore-bye-sharedpreferences-android-f46c610b81d5.png"

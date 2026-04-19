@@ -1,7 +1,7 @@
 ---
 title: "Leveraging the Snapshot Mutation Policies of Jetpack Compose"
 pubDatetime: 2023-01-30T13:30:39.144Z
-description: "TODO: Add a description"
+description: "Understand Snapshot Mutation Policies in Jetpack Compose. Learn how to control when and how your UI recomposes based on state changes."
 tags:
 - android-app-development
 - android

@@ -1,7 +1,7 @@
 ---
 title: "Promise compose compiler and imply when you'll change 🤞"
 pubDatetime: 2022-03-10T12:42:38.498Z
-description: "TODO: Add a description"
+description: "Understand the Compose compiler's stability promises. Learn how @Stable and @Immutable impact recomposition and how to help the compiler optimize your UI."
 tags:
 - android-app-development
 - android

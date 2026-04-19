@@ -1,7 +1,7 @@
 ---
 title: "Combining StateFlows and transforming it into a StateFlow"
 pubDatetime: 2022-06-24T12:30:00.989Z
-description: "TODO: Add a description"
+description: "Master the art of combining multiple StateFlows into a single transformed StateFlow. Explore utilities and best practices for managing complex states in Kotlin."
 tags:
 - multithreading
 - android

@@ -1,7 +1,7 @@
 ---
 title: "Hello DataStore, Bye SharedPreferences👋 — Android📱 — Part 2: Proto DataStore"
 pubDatetime: 2020-09-12T13:56:18.914Z
-description: "TODO: Add a description"
+description: "Jetpack DataStore Part 2: Deep dive into Proto DataStore for type-safe data storage in Android using Protocol Buffers."
 tags:
 - others
 coverImage: "../../assets/images/cover-hello-datastore-bye-sharedpreferences-android-part-2-proto-datastore-2716fbfd4783.png"

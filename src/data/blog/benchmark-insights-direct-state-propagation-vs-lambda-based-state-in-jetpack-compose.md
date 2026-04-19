@@ -1,7 +1,7 @@
 ---
 title: "Benchmark Insights: Direct State Propagation vs. Lambda-based State in Jetpack Compose"
 pubDatetime: 2024-11-19T14:19:27.223Z
-description: "TODO: Add a description"
+description: "Performance benchmarks of direct state propagation vs. lambda-based state in Jetpack Compose. Learn which approach minimizes recompositions for better UI performance."
 tags:
 - android-app-development
 - performance

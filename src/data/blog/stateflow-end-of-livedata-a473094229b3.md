@@ -1,7 +1,7 @@
 ---
 title: "🌊 StateFlow, End of LiveData?"
 pubDatetime: 2020-05-22T15:49:15.659Z
-description: "TODO: Add a description"
+description: "Is StateFlow the end of LiveData? An opinionated look at how Kotlin's StateFlow is replacing LiveData for state management in Android."
 tags:
 - others
 coverImage: "../../assets/images/cover-stateflow-end-of-livedata-a473094229b3.jpeg"

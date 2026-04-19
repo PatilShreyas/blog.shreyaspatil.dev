@@ -1,7 +1,7 @@
 ---
 title: "Navigating Screens in Jetpack Compose (DevFest India 2021 - Mobile Track)"
 pubDatetime: 2021-10-26T16:03:04.587Z
-description: "TODO: Add a description"
+description: "Recap and resources from my DevFest India 2021 talk on Navigating Screens in Jetpack Compose. Learn the best practices for Compose navigation."
 tags:
 - developer
 - android

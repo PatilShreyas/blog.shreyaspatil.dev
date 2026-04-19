@@ -1,7 +1,7 @@
 ---
 title: "Understanding Dispatchers: Main and Main.immediate"
 pubDatetime: 2025-04-02T12:22:06.752Z
-description: "TODO: Add a description"
+description: "A deep dive into Kotlin Coroutine Dispatchers. Understand the subtle but important difference between Dispatchers.Main and Dispatchers.Main.immediate in Android."
 tags:
 - android-app-development
 - multithreading

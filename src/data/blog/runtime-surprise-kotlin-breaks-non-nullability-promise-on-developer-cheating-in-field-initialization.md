@@ -1,7 +1,7 @@
 ---
 title: "Runtime Surprise: Kotlin Breaks Non-Nullability Promise on Developer Cheating in Field Initialization"
 pubDatetime: 2023-09-20T04:33:24.831Z
-description: "TODO: Add a description"
+description: "A cautionary tale about Kotlin's non-nullability. Discover how incorrect field initialization can lead to unexpected NullPointerExceptions at runtime."
 tags:
 - jvm
 - java

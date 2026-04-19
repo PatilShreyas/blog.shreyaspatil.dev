@@ -1,7 +1,7 @@
 ---
 title: "A Simple key to a Better LazyList in Jetpack Compose"
 pubDatetime: 2025-10-08T12:00:28.507Z
-description: "TODO: Add a description"
+description: "Learn how to optimize Jetpack Compose LazyList performance using keys. Understand how keys help reduce recompositions and improve scrolling efficiency."
 tags:
 - compose
 - android-app-development

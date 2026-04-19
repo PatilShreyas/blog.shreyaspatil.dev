@@ -1,7 +1,7 @@
 ---
 title: "Storing data from the Flutter app → Google Sheets 📊 — Part 1"
 pubDatetime: 2020-01-10T07:00:44.300Z
-description: "TODO: Add a description"
+description: "Learn how to use Google Sheets as a database for your Flutter app. A simple and effective way to store and manage app data using Google AppScript."
 tags:
 - others
 coverImage: "../../assets/images/cover-storing-data-from-the-flutter-app-google-sheets-e4498e9cda5d.png"

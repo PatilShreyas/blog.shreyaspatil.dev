@@ -1,7 +1,7 @@
 ---
 title: "Firestore Pagination in Android — Using FirebaseUI Library 🔥"
 pubDatetime: 2019-07-21T13:00:49.456Z
-description: "TODO: Add a description"
+description: "Efficiently implement Cloud Firestore pagination in Android using the FirestorePagingAdapter from the FirebaseUI library."
 tags:
 - others
 coverImage: "../../assets/images/cover-firestore-pagination-in-android-using-firebaseui-library-1d7fe1a75704.png"

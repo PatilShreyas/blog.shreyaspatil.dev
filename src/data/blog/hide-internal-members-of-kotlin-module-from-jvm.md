@@ -1,7 +1,7 @@
 ---
 title: "Hide internal members of Kotlin Module from JVM 🔐"
 pubDatetime: 2021-05-17T04:23:42.848Z
-description: "TODO: Add a description"
+description: "Learn how to properly hide internal Kotlin members from JVM to maintain a clean API for Java consumers when developing libraries."
 tags:
 - java
 - library

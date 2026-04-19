@@ -1,7 +1,7 @@
 ---
 title: "Rich media input from the keyboard in Compose"
 pubDatetime: 2024-03-01T12:49:32.834Z
-description: "TODO: Add a description"
+description: "Learn how to handle rich media input (like GIFs and images) from the keyboard in Jetpack Compose, essential for modern chat applications."
 tags:
 - compose
 - android-app-development

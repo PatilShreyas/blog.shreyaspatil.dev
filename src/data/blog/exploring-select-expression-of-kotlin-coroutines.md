@@ -1,7 +1,7 @@
 ---
 title: "Exploring \"select\" expression of Kotlin coroutines"
 pubDatetime: 2022-09-27T14:29:44.314Z
-description: "TODO: Add a description"
+description: "Learn how to use the 'select' expression in Kotlin Coroutines to await multiple suspending functions and select the first one that completes."
 tags:
 - asynchronous
 - multithreading

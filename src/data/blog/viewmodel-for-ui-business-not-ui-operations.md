@@ -1,7 +1,7 @@
 ---
 title: "ViewModel: for UI business, not UI operations 😮"
 pubDatetime: 2022-12-19T12:30:42.713Z
-description: "TODO: Add a description"
+description: "Stop misusing ViewModels! Learn why ViewModels should handle UI business logic, not UI operations like showing toasts or navigation."
 tags:
 - android-app-development
 - ux

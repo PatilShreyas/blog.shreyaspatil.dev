@@ -1,7 +1,7 @@
 ---
 title: "Collecting items from the Flow in chunks💦"
 pubDatetime: 2023-10-23T04:46:23.734Z
-description: "TODO: Add a description"
+description: "Learn how to collect Kotlin Flow items in chunks or intervals without losing data. A practical guide to handling high-frequency data streams efficiently."
 tags:
 - reactive-programming
 - multithreading

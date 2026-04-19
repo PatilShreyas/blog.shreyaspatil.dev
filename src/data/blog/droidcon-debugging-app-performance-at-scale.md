@@ -1,7 +1,7 @@
 ---
 title: "DroidCon: Debugging App Performance at Scale"
 pubDatetime: 2026-01-19T04:58:14.900Z
-description: "TODO: Add a description"
+description: "Recap of my DroidCon India 2025 talk on debugging Android app performance at scale. Watch the session and learn about performance profiling tools."
 tags:
 - app-development
 - android-app-development

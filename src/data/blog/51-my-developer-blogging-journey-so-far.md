@@ -1,7 +1,7 @@
 ---
 title: "#51 - My developer blogging journey so far"
 pubDatetime: 2025-02-18T14:10:44.580Z
-description: "TODO: Add a description"
+description: "A personal account of my journey as a tech blogger, from my first post in 2019 to becoming a GDE. Insights on English barriers, criticism, and why sharing matters."
 tags:
 - writing
 - blog

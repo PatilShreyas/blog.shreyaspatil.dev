@@ -1,7 +1,7 @@
 ---
 title: "👨‍🍳 Cooking Tasty code in Kotlin 🍴 — Part 2"
 pubDatetime: 2021-01-01T09:23:42.000Z
-description: "TODO: Add a description"
+description: "Part 2 of 'Cooking Tasty Code'. Dive deeper into Kotlin features like delegation, operator overloading, and more to enhance your coding style."
 tags:
 - coding
 - kotlin

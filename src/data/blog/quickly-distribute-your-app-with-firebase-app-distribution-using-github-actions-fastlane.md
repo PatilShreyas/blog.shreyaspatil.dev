@@ -1,7 +1,7 @@
 ---
 title: "🔥 Quickly distribute your app with Firebase App Distribution using GitHub Actions + Fastlane 🚀"
 pubDatetime: 2020-10-21T05:33:17.000Z
-description: "TODO: Add a description"
+description: "Step-by-step guide to automating Android app distribution with Firebase App Distribution, GitHub Actions, and Fastlane for faster QA cycles."
 tags:
 - ci
 - github

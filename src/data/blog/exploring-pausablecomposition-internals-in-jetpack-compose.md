@@ -1,7 +1,7 @@
 ---
 title: "Exploring PausableComposition internals in Jetpack Compose"
 pubDatetime: 2025-07-14T05:34:31.094Z
-description: "TODO: Add a description"
+description: "Explore the internals of PausableComposition in Jetpack Compose. Learn how Compose manages state and effects when a composition is paused or resumed."
 tags:
 - compose
 - android-app-development

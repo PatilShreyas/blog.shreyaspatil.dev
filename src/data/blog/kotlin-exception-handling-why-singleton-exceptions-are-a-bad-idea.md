@@ -1,7 +1,7 @@
 ---
 title: "Kotlin Exception Handling: Why Singleton Exceptions are a bad idea"
 pubDatetime: 2024-09-18T12:56:49.894Z
-description: "TODO: Add a description"
+description: "Understand why using singleton exceptions in Kotlin can be a bad practice and how it affects stack traces and debugging in your applications."
 tags:
 - jvm
 - programming-blogs

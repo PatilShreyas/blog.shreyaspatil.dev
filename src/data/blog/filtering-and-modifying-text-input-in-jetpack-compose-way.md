@@ -1,7 +1,7 @@
 ---
 title: "Filtering and modifying text input in Jetpack Compose way"
 pubDatetime: 2021-12-20T12:15:05.662Z
-description: "TODO: Add a description"
+description: "Learn how to filter and modify user text input in Jetpack Compose. A guide to implementing input constraints and formatting for TextField."
 tags:
 - android-app-development
 - ux

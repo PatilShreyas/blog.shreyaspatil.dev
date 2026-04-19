@@ -1,7 +1,7 @@
 ---
 title: "Providing AssistedInject supported ViewModel for Composable using Hilt"
 pubDatetime: 2021-06-29T14:52:48.200Z
-description: "TODO: Add a description"
+description: "Learn how to provide Hilt ViewModels with AssistedInject to Jetpack Compose Composables for dynamic dependency injection with runtime parameters."
 tags:
 - java
 - android

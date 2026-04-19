@@ -1,7 +1,7 @@
 ---
 title: "🔥Firebase-ing with Kotlin Coroutines + Flow 🌊"
 pubDatetime: 2020-04-30T07:35:30.250Z
-description: "TODO: Add a description"
+description: "Learn how to integrate Firebase with Kotlin Coroutines and Flow for reactive data streams in your Android applications."
 tags:
 - others
 coverImage: "../../assets/images/cover-firebase-ing-with-kotlin-coroutines-flow-dab1bc364816.jpeg"

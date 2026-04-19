@@ -1,7 +1,7 @@
 ---
 title: "Exploring CompositionLocal API internals in Jetpack Compose"
 pubDatetime: 2026-03-09T05:19:42.618Z
-description: "TODO: Add a description"
+description: "Deep dive into the internals of Jetpack Compose's CompositionLocal API. Trace how data flows implicitly through the composition tree under the hood."
 tags:
 - android-development
 - android
