@@ -7,7 +7,7 @@ tags:
   - android
   - kotlin
   - jetpack-compose
-coverImage: "../../assets/images/cover-exploring-compositionlocal-api-internals-in-jetpack-compose.png"
+coverImage: "../../assets/images/cover-exploring-compositionlocal-api-internals-in-jetpack-compose.jpg"
 ---
 
 Hello Composers 👋,
