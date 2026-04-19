@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions } from "astro";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import Pagination from "@/components/Pagination.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+import { SITE } from "@/config";
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const posts = await getCollection("blog");
+  const sortedPosts = getSortedPosts(posts);
+  const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+
+  return paginate(recentPosts, {
+    pageSize: SITE.postPerPage,
+  });
+}
+
+const { page } = Astro.props;
+const { sortedPosts } = { sortedPosts: getSortedPosts(await getCollection("blog")) };
+---
+
+<Layout title={`Posts Page ${page.currentPage} | ${SITE.title}`}>
+  <Header />
+  <main id="main-content" class="app-layout pt-12">
+    <section id="posts" class="pb-6">
+      <h1 class="text-3xl font-bold tracking-wide mb-8">All Posts</h1>
+      <ul>
+        {
+          page.data.map((data) => (
+            <Card 
+              variant="h3" 
+              {...data} 
+              postNum={sortedPosts.length - sortedPosts.indexOf(data)} 
+            />
+          ))
+        }
+      </ul>
+    </section>
+
+    <Pagination {page} />
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const mainContent = document.querySelector("#main-content");
+    if (mainContent) {
+      sessionStorage.setItem("backUrl", window.location.pathname);
+    }
+  });
+</script>

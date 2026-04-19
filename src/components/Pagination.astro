@@ -10,6 +10,9 @@ type Props = {
 };
 
 const { page } = Astro.props;
+
+// If we are on page 2, the "prev" link should point to "/" instead of "/posts/1"
+const prevUrl = page.url.prev === "/posts/1" ? "/" : page.url.prev;
 ---
 
 {
@@ -20,9 +23,9 @@ const { page } = Astro.props;
       aria-label="Pagination Navigation"
     >
       <LinkButton
-        disabled={!page.url.prev}
-        href={page.url.prev as string}
-        class:list={["me-4 select-none", { "opacity-50": !page.url.prev }]}
+        disabled={!prevUrl}
+        href={prevUrl as string}
+        class:list={["me-4 select-none", { "opacity-50": !prevUrl }]}
         aria-label="Goto Previous Page"
       >
         <IconArrowLeft class="inline-block rtl:rotate-180" />
