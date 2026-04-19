@@ -50,6 +50,7 @@ npm run build
 ```
 
 The build process automatically:
+
 1.  Runs `astro check` (Type validation)
 2.  Runs `astro build` (Static site generation)
 3.  Runs `pagefind` (Search indexing)
