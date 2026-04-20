@@ -7,7 +7,7 @@
 html[data-theme="light"] {
   --background: #f9f8f6;
   --foreground: #1a1a1a; /* Darker for better contrast */
-  --accent: #8b7355; /* More saturated accent for readability */
+  --accent: #674e37; /* Darkened for AAA contrast (7.3:1) against light background */
   --muted: #efe9e3;
   --border: #d9cfc7;
 }
@@ -251,4 +251,97 @@ html[data-theme="dark"] mark {
 
 .lightbox-zoom-val {
   @apply min-w-[3rem] text-center font-mono text-sm font-medium;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  /* Hide site chrome and interactive UI */
+  header,
+  footer,
+  #btt-btn-container,
+  #lightbox,
+  [data-pagefind-ignore],
+  .no-print {
+    display: none !important;
+  }
+
+  /* White page, black text */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+
+  /* Expand external links to show full URL */
+  a[href^="http"]::after,
+  a[href^="https"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    word-break: break-all;
+    opacity: 0.65;
+  }
+
+  /* Code blocks: wrap lines and use neutral colors */
+  pre {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    border: 1px solid #ccc !important;
+    background: #f8f8f8 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+
+  code {
+    background: #f0f0f0 !important;
+    color: #333 !important;
+  }
+
+  /* Keep headings with the content that follows */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Prevent breaks inside key content blocks */
+  img,
+  pre,
+  blockquote,
+  figure,
+  table {
+    page-break-inside: avoid;
+  }
+
+  /* Avoid orphaned/widowed lines */
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Images: full width, no decorative shimmer */
+  img {
+    max-width: 100% !important;
+  }
+
+  .img-shimmer {
+    animation: none !important;
+    background-image: none !important;
+    background: #f0f0f0 !important;
+  }
 }

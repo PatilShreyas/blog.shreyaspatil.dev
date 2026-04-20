@@ -1,13 +1,22 @@
-# Caching headers for Cloudflare Pages
-# Hashed assets from Astro (JS, CSS, Optimized Images)
+# Security headers — applied to all paths first, specific rules below override Cache-Control
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://gist.github.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com; frame-src https://gist.github.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'self'
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# Hashed assets from Astro (JS, CSS, optimized images) — content-addressed, cache forever
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Static assets
+# Static assets folder
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Root images (favicons, og-images)
+# Root-level images (favicons, OG images)
 /*.png
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400
 /*.svg
@@ -17,6 +26,6 @@
 /*.ico
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400
 
-# Search index
+# Pagefind search index — short cache (rebuilt on every deploy)
 /pagefind/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=600

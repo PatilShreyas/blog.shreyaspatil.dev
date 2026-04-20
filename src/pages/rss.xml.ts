@@ -11,11 +11,16 @@ export async function GET() {
     title: SITE.title,
     description: SITE.desc,
     site: SITE.website,
+    customData: `<language>${SITE.lang || "en"}</language>`,
     items: sortedPosts.map(({ data, id, filePath }) => ({
       link: getPath(id, filePath),
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),
+      customData: [
+        `<author>${SITE.author}</author>`,
+        ...data.tags.map(tag => `<category>${tag}</category>`),
+      ].join(""),
     })),
   });
 }

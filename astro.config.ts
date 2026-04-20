@@ -22,6 +22,22 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
+      serialize(item) {
+        if (item.url === SITE.website) {
+          return { ...item, changefreq: "daily", priority: 1.0 };
+        }
+        if (item.url.includes("/tags/")) {
+          return { ...item, changefreq: "weekly", priority: 0.6 };
+        }
+        if (item.url.includes("/posts/")) {
+          return { ...item, changefreq: "weekly", priority: 0.5 };
+        }
+        if (item.url.endsWith("/search/")) {
+          return { ...item, changefreq: "monthly", priority: 0.3 };
+        }
+        // Individual blog posts
+        return { ...item, changefreq: "weekly", priority: 0.8 };
+      },
     }),
   ],
   prefetch: true,
@@ -82,6 +98,7 @@ export default defineConfig({
         cssVariable: "--font-inter",
         provider: fontProviders.google(),
         fallbacks: ["sans-serif"],
+        display: "swap",
         weights: [300, 400, 500, 600, 700],
         styles: ["normal", "italic"],
       },
@@ -90,6 +107,7 @@ export default defineConfig({
         cssVariable: "--font-merriweather",
         provider: fontProviders.google(),
         fallbacks: ["serif"],
+        display: "swap",
         weights: [300, 400, 700],
         styles: ["normal", "italic"],
       },

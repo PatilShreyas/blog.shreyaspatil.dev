@@ -38,7 +38,7 @@ function reflectPreference(): void {
 
   // Set the background color in <meta theme-color ... />
   // We use values from SITE config to avoid expensive getComputedStyle calls
-  const bgColor = (SITE.themeColors as any)[themeValue];
+  const bgColor = SITE.themeColors[themeValue as keyof typeof SITE.themeColors];
   if (bgColor) {
     document
       .querySelector("meta[name='theme-color']")

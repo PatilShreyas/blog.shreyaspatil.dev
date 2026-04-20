@@ -78,6 +78,11 @@
     }
 
     table {
+      display: block;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+
       th,
       td {
         @apply border border-border p-2;
