@@ -14,6 +14,7 @@ import {
   transformerNotationWordHighlight,
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
+import { remarkGifToVideo } from "./src/utils/transformers/gifToVideo.js";
 import { SITE } from "./src/config";
 
 // https://astro.build/config
@@ -45,7 +46,11 @@ export default defineConfig({
   ],
   prefetch: true,
   markdown: {
-    remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
+    remarkPlugins: [
+      remarkToc,
+      [remarkCollapse, { test: "Table of contents" }],
+      remarkGifToVideo,
+    ],
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
       themes: { light: "github-light", dark: "dracula" },
@@ -73,9 +78,7 @@ export default defineConfig({
     },
   },
   image: {
-    service: sharpImageService({
-      limitInputPixels: false,
-    }),
+    service: sharpImageService(),
     responsiveStyles: true,
     layout: "constrained",
   },

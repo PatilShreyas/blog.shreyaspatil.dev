@@ -150,6 +150,11 @@ pre::-webkit-scrollbar-thumb {
   font-size: 0.875rem !important;
 }
 
+/* Auto-generated video (GIF replacements) render like inline images */
+.gif-video {
+  @apply mx-auto my-4 block max-w-full rounded-lg border border-border shadow-sm;
+}
+
 /* Responsive Video Embeds */
 .video-container {
   position: relative;
