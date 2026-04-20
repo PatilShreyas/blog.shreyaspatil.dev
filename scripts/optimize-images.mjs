@@ -14,10 +14,19 @@ import { fileURLToPath } from "url";
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const IMAGES_DIR = join(ROOT, "src/assets/images");
 
-const MAX_WIDTH = 1400; // Never upscale; covers displayed at max 1200px
-const JPEG_QUALITY = 82; // mozjpeg sweet-spot (visually lossless at this range)
-const PNG_COMPRESSION = 9; // 0–9; higher = smaller, slower encode
+// Covers render at 1200×630 and Astro generates 2× DPR variants for retina
+// (2400 px wide). Anything smaller here forces Astro to upscale for retina,
+// which softens the image. 2400 preserves sharpness without keeping 4k sources.
+const MAX_WIDTH = 2400;
+const JPEG_QUALITY = 86; // mozjpeg; 85+ is visually lossless for photos & UI
+const PNG_COMPRESSION = 9; // lossless zlib level — higher = smaller, slower
 const MIN_SIZE = 100 * 1024; // Skip files already under 100 KB
+
+// Only overwrite if we saved a meaningful amount. Without this, a file that
+// drops from 120 KB to 119 KB still gets rewritten, which re-encodes the
+// binary and dirties git for no real gain.
+const MIN_BYTES_SAVED = 20 * 1024; // 20 KB
+const MIN_RATIO_SAVED = 0.1; // 10%
 
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -52,13 +61,16 @@ async function compress(filePath) {
 
     const { size: after } = await stat(tmp);
 
-    if (after < before) {
+    const saved = before - after;
+    const meaningful =
+      saved >= MIN_BYTES_SAVED || saved / before >= MIN_RATIO_SAVED;
+
+    if (meaningful) {
       await rename(tmp, filePath);
       return { before, after };
-    } else {
-      await unlink(tmp);
-      return null;
     }
+    await unlink(tmp);
+    return null;
   } catch (err) {
     try {
       await unlink(tmp);
