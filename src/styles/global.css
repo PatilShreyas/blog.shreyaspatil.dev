@@ -13,11 +13,11 @@ html[data-theme="light"] {
 }
 
 html[data-theme="dark"] {
-  --background: #222831;
-  --foreground: #f9f8f6; /* High contrast off-white */
-  --accent: #dfd0b8;
-  --muted: #393e46;
-  --border: #948979;
+  --background: #1c1917; /* Stone-900: near-black with subtle warm undertone */
+  --foreground: #e7e5e4; /* Stone-200: easy long-form reading */
+  --accent: #d4b28a; /* Warm honey, AAA contrast (~7.5:1) */
+  --muted: #292524; /* Stone-800: same family, one step up for surfaces */
+  --border: #44403c; /* Stone-700: visible on stone-900 without glowing */
 }
 
 @theme inline {
@@ -91,7 +91,7 @@ html[data-theme="light"] pre {
 }
 
 html[data-theme="dark"] pre {
-  @apply border border-white/5 bg-[#0d1117] shadow-inner;
+  @apply border border-white/5 bg-[#0c0a09] shadow-inner;
 }
 
 pre:hover {
@@ -103,7 +103,7 @@ code {
 }
 
 html[data-theme="dark"] code:not(pre code) {
-  @apply border! border-white/10! bg-[#0d1117]!;
+  @apply border! border-white/10! bg-accent/15!;
 }
 
 pre code {
@@ -153,6 +153,20 @@ pre::-webkit-scrollbar-thumb {
 /* Auto-generated video (GIF replacements) render like inline images */
 .gif-video {
   @apply mx-auto my-4 block max-w-full rounded-lg border border-border shadow-sm;
+}
+
+/* Mermaid diagrams: center in the column and scale the SVG to a readable,
+   bounded size. Without this, narrow columns render the SVG too small and
+   wide diagrams overflow horizontally. */
+.mermaid {
+  @apply my-8 flex justify-center;
+}
+
+.mermaid svg {
+  max-width: min(100%, 520px);
+  height: auto;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 /* Responsive Video Embeds */

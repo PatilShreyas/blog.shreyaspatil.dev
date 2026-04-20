@@ -98,7 +98,7 @@
     }
 
     code:not(pre code) {
-      @apply rounded-sm bg-foreground/5 px-[0.3em] py-[0.1em] font-mono text-[1.05em]! font-medium text-foreground before:content-none after:content-none;
+      @apply rounded-sm bg-foreground/5 px-[0.3em] py-[0.1em] font-mono text-[1em]! font-medium text-foreground before:content-none after:content-none;
       @apply break-words whitespace-normal;
       font-family:
         ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
@@ -110,7 +110,7 @@
     }
 
     html[data-theme="dark"] code:not(pre code) {
-      @apply border! border-white/10! bg-[#0d1117]! shadow-inner;
+      @apply border! border-white/10! bg-accent/15! shadow-inner;
     }
 
     .astro-code code {
