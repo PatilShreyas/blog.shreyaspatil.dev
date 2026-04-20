@@ -72,8 +72,9 @@ export function remarkGifToVideo() {
       parent.children[index] = {
         type: "html",
         value:
-          `<video autoplay loop muted playsinline class="gif-video" ` +
-          `src="${webmUrl}" aria-label="${alt}"></video>`,
+          `<video autoplay loop muted playsinline controls ` +
+          `preload="metadata" class="gif-video" src="${webmUrl}" ` +
+          `aria-label="${alt}"></video>`,
       };
     });
   };
