@@ -23,6 +23,6 @@ export const SITE = {
   timezone: "Asia/Kolkata", // Default global timezone (IANA format) https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
   themeColors: {
     light: "#f9f8f6",
-    dark: "#222831",
+    dark: "#1c1917",
   },
 } as const;
