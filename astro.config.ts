@@ -5,7 +5,7 @@ import {
   sharpImageService,
 } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
-import sitemap from "@astrojs/sitemap";
+import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import {
@@ -24,19 +24,22 @@ export default defineConfig({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
       serialize(item) {
         if (item.url === SITE.website) {
-          return { ...item, changefreq: "daily", priority: 1.0 };
+          return { ...item, changefreq: ChangeFreqEnum.DAILY, priority: 1.0 };
         }
         if (item.url.includes("/tags/")) {
-          return { ...item, changefreq: "weekly", priority: 0.6 };
+          return { ...item, changefreq: ChangeFreqEnum.WEEKLY, priority: 0.6 };
         }
         if (item.url.includes("/posts/")) {
-          return { ...item, changefreq: "weekly", priority: 0.5 };
+          return { ...item, changefreq: ChangeFreqEnum.WEEKLY, priority: 0.5 };
         }
         if (item.url.endsWith("/search/")) {
-          return { ...item, changefreq: "monthly", priority: 0.3 };
+          return {
+            ...item,
+            changefreq: ChangeFreqEnum.MONTHLY,
+            priority: 0.3,
+          };
         }
-        // Individual blog posts
-        return { ...item, changefreq: "weekly", priority: 0.8 };
+        return { ...item, changefreq: ChangeFreqEnum.WEEKLY, priority: 0.8 };
       },
     }),
   ],
