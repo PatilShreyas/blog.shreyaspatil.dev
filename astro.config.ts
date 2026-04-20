@@ -73,9 +73,7 @@ export default defineConfig({
     },
   },
   image: {
-    service: sharpImageService({
-      limitInputPixels: false,
-    }),
+    service: sharpImageService(),
     responsiveStyles: true,
     layout: "constrained",
   },

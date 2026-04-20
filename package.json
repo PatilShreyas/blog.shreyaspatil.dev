@@ -10,7 +10,8 @@
     "astro": "astro",
     "format:check": "prettier --check .",
     "format": "prettier --write .",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "optimize-images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.13",
