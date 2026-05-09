@@ -16,7 +16,7 @@ export const SITE = {
     text: "Edit page",
     url: "https://github.com/shreyaspatil/blogsite/edit/main/",
   },
-  googleAnalyticsId: "G-QSX2WHSF35", // Add your GA Tracking ID here (e.g. G-XXXXXXXXXX)
+  googleAnalyticsId: "G-FNY48L5LDH", // Add your GA Tracking ID here (e.g. G-XXXXXXXXXX)
   dynamicOgImage: true,
   dir: "ltr", // "rtl" | "auto"
   lang: "en", // html lang code. Set this empty and default will be "en"
