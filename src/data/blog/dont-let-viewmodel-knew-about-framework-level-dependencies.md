@@ -59,7 +59,58 @@ Okay, so we have to develop a simple android app that stores a user session and 
 
 I'm skipping UI code and will be only showing the `ViewModel` code. So let's create `UserViewModel`. Need to inherit `AndroidViewModel` and create `SharedPreferences` for storing a user session. Also, let's implement business for setting a user session.
 
-<script src="https://gist.github.com/PatilShreyas/30739efee270549096a2782ca8ac713d.js"></script>
+```kotlin
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    application: Application,
+    private val userRepository: UserRepository
+) : AndroidViewModel(application) {
+
+    /**
+     * A [SharedPreferences] for storing user preferences.
+     */
+    private val userPreferences = application.getSharedPreferences(
+        UserPreferences.NAME,
+        Context.MODE_PRIVATE
+    )
+
+    // ...
+    // OTHER CODE HERE
+    // ...
+
+    /**
+     * Creates a new user with [name] and [email] and sets active session of that created user.
+     */
+    fun setUserSession(name: String, email: String) {
+        viewModelScope.launch {
+            val user = userRepository.add(name, email)
+
+            withContext(Dispatchers.IO) {
+                userPreferences.edit {
+                    putInt(UserPreferences.Keys.ID, user.id)
+                    putString(UserPreferences.Keys.NAME, user.name)
+                    putString(UserPreferences.Keys.EMAIL, user.email)
+                }
+            }
+
+            // Update LiveData/StateFlow/Rx or any other stream
+        }
+    }
+
+    /**
+     * Object holding user preference key details
+     */
+    private object UserPreferences {
+        const val NAME = "user_pref"
+
+        object Keys {
+            const val ID = "user_id"
+            const val NAME = "user_name"
+            const val EMAIL = "user_email"
+        }
+    }
+}
+```
 
 Have you seen this code 😕? Let's discuss **key issues** with this.
 
@@ -80,11 +131,73 @@ So after coming from the previous approach, we need a solution that will be modu
 
 Let's create a `SessionManager`. Create and implement operations/business logic of session management.
 
-<script src="https://gist.github.com/PatilShreyas/33f75be206812a32115a1adb67213da5.js"></script>
+```kotlin
+@Singleton
+interface SessionManager {
+    suspend fun getCurrentUser(): User?
+    suspend fun setUserSession(user: User)
+    suspend fun clear()
+}
+
+@Singleton
+class DefaultSessionManager @Inject constructor(
+    // Provided by Dagger-Hilt injection module
+    @UserPreferences private val userPreferences: SharedPreferences
+) : SessionManager {
+
+    override suspend fun setUserSession(user: User) = withContext(Dispatchers.IO) {
+        userPreferences.edit {
+            putInt(Keys.ID, user.id)
+            putString(Keys.NAME, user.name)
+            putString(Keys.EMAIL, user.email)
+        }
+    }
+
+    // ...
+    // OTHER FUNCTION IMPLEMENTATIONS
+    // ...
+
+    /**
+     * Object holding user preference key details
+     */
+    object UserPreferencesDetails {
+        const val NAME = "user_pref"
+
+        object Keys {
+            const val ID = "user_id"
+            const val NAME = "user_name"
+            const val EMAIL = "user_email"
+        }
+    }
+}
+```
 
 Now, it's time to refactor and clean up `UserViewModel` 🧹.
 
-<script src="https://gist.github.com/PatilShreyas/9934edf1cd121b478869b0030777bec4.js"></script>
+```kotlin
+@HiltViewModel
+class UserViewModel @Inject constructor(
+    private val sessionManager: SessionManager,
+    private val userRepository: UserRepository,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher // Injected by Hilt module. Used in testing
+) : ViewModel() {
+
+    // ...
+    // OTHER CODE HERE
+    // ...
+
+    /**
+     * Creates a new user with [name] and [email] and sets active session of that created user.
+     */
+    fun setUserSession(name: String, email: String) {
+        viewModelScope.launch(defaultDispatcher) {
+            val user = userRepository.add(name, email)
+            sessionManager.setUserSession(user)
+            // Update LiveData/StateFlow/Rx or any other stream
+        }
+    }
+}
+```
 
 😃 Can you see the difference? Now it has inherited _core_ `ViewModel`. Too much code is now removed.
 

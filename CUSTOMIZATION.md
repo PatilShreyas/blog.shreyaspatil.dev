@@ -43,16 +43,6 @@ For high-performance demos (e.g., AppFunctions). To stay under Cloudflare's 25Mi
 
 ---
 
-## ⌨️ GitHub Gists
-Standard way to embed interactive, syntax-highlighted code.
-
-**Snippet:**
-```html
-<script src="https://gist.github.com/PatilShreyas/your-gist-id.js"></script>
-```
-
----
-
 ## 📝 Frontmatter Reference
 Every post should have these fields at the top of the `.md` file.
 

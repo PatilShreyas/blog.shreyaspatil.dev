@@ -55,7 +55,33 @@ Here in this editor, we have to write AppScript which will act as a Web API and 
 
 > We’ll write code in `doPost()` which will be invoked when HTTP request using method POST is sent.
 
-<script src="https://gist.github.com/PatilShreyas/812ec4855499ec7726e3444d6b677b59.js"></script>
+```gs
+function doPost(request) {
+  // Open Google Sheet using ID
+  var sheet = SpreadsheetApp.openById(
+    "1OOArrqjOqmD4GiJOWlluZ4woTMH_qaV6RKv4JXnT3Hk"
+  );
+  var result = { status: "SUCCESS" };
+  try {
+    // Get all Parameters
+    var name = request.parameter.name;
+    var email = request.parameter.email;
+    var mobileNo = request.parameter.mobileNo;
+    var feedback = request.parameter.feedback;
+
+    // Append data on Google Sheet
+    var rowData = sheet.appendRow([name, email, mobileNo, feedback]);
+  } catch (exc) {
+    // If error occurs, throw exception
+    result = { status: "FAILED", message: exc };
+  }
+
+  // Return result
+  return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(
+    ContentService.MimeType.JSON
+  );
+}
+```
 
 First of all, we’ll have to Open our spreadsheet, we can open that using `SpreadsheetApp.openById(sheetId)`.
 
@@ -111,13 +137,71 @@ dependencies:
 
 3.  In **lib/model**, we’ll create a `form.dart` file as below:
 
-<script src="https://gist.github.com/PatilShreyas/55fe1d9fe409e38e8677171bbe0a4ff7.js"></script>
+```dart
+/// FeedbackForm is a data class which stores data fields of Feedback.
+class FeedbackForm {
+  String name;
+  String email;
+  String mobileNo;
+  String feedback;
+
+  FeedbackForm(this.name, this.email, this.mobileNo, this.feedback);
+
+  factory FeedbackForm.fromJson(dynamic json) {
+    return FeedbackForm("${json['name']}", "${json['email']}",
+        "${json['mobileNo']}", "${json['feedback']}");
+  }
+
+  // Method to make GET parameters.
+  Map toJson() => {
+        'name': name,
+        'email': email,
+        'mobileNo': mobileNo,
+        'feedback': feedback
+      };
+}
+```
 
 Here, we have added a method `toParams()` which will make the body parameters of POST request from fields that we can use later while making HTTP requests.
 
 4.  In **lib/controller**, we’ll create a `form_controller.dart` file as below:
 
-<script src="https://gist.github.com/PatilShreyas/3b19df2e464fec7de4c70f20fc567ad3.js"></script>
+```dart
+import 'dart:convert' as convert;
+import 'package:http/http.dart' as http;
+import '../model/form.dart';
+
+/// FormController is a class which does work of saving FeedbackForm in Google Sheets using
+/// HTTP GET request on Google App Script Web URL and parses response and sends result callback.
+class FormController {
+
+  // Google App Script Web URL.
+  static const String URL = "https://script.google.com/macros/s/AKfycbyAaNh-1JK5pSrUnJ34Scp3889mTMuFI86DkDp42EkWiSOOycE/exec";
+
+  // Success Status Message
+  static const STATUS_SUCCESS = "SUCCESS";
+
+  /// Async function which saves feedback, parses [feedbackForm] parameters
+  /// and sends HTTP GET request on [URL]. On successful response, [callback] is called.
+   void submitForm(
+      FeedbackForm feedbackForm, void Function(String) callback) async {
+    try {
+      await http.post(URL, body: feedbackForm.toJson()).then((response) async {
+        if (response.statusCode == 302) {
+          var url = response.headers['location'];
+          await http.get(url).then((response) {
+            callback(convert.jsonDecode(response.body)['status']);
+          });
+        } else {
+          callback(convert.jsonDecode(response.body)['status']);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+```
 
 In `FormController` class, we have created a default constructor which takes `function` callback as a parameter which will be invoked when the HTTP response is received.
 
@@ -127,7 +211,174 @@ Finally, we’ve created an _async_ method `submitForm(FeedbackForm)` which take
 
 5.  In **lib/main.dart**, we’ll write the below code:
 
-<script src="https://gist.github.com/PatilShreyas/905c2d390751be49a5b3642badb66963.js"></script>
+```dart
+import 'package:flutter/material.dart';
+import 'controller/form_controller.dart';
+import 'model/form.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Google Sheet Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyHomePage(title: 'Flutter Google Sheet Demo'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  // Create a global key that uniquely identifies the Form widget
+  // and allows validation of the form.
+  //
+  // Note: This is a `GlobalKey<FormState>`,
+  // not a GlobalKey<MyCustomFormState>.
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // TextField Controllers
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileNoController = TextEditingController();
+  TextEditingController feedbackController = TextEditingController();
+
+  // Method to Submit Feedback and save it in Google Sheets
+  void _submitForm() {
+    // Validate returns true if the form is valid, or false
+    // otherwise.
+    if (_formKey.currentState.validate()) {
+      // If the form is valid, proceed.
+      FeedbackForm feedbackForm = FeedbackForm(
+          nameController.text,
+          emailController.text,
+          mobileNoController.text,
+          feedbackController.text);
+
+      FormController formController = FormController();
+
+      _showSnackbar("Submitting Feedback");
+
+      // Submit 'feedbackForm' and save it in Google Sheets.
+      formController.submitForm(feedbackForm, (String response) {
+        print("Response: $response");
+        if (response == FormController.STATUS_SUCCESS) {
+          // Feedback is saved succesfully in Google Sheets.
+          _showSnackbar("Feedback Submitted");
+        } else {
+          // Error Occurred while saving data in Google Sheets.
+          _showSnackbar("Error Occurred!");
+        }
+      });
+    }
+  }
+
+  // Method to show snackbar with 'message'.
+  _showSnackbar(String message) {
+      final snackBar = SnackBar(content: Text(message));
+      _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Form(
+                key: _formKey,
+                child:
+                  Padding(padding: EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      TextFormField(
+                        controller: nameController,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Enter Valid Name';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Name'
+                        ),
+                      ),
+                      TextFormField(
+                        controller: emailController,
+                        validator: (value) {
+                          if (!value.contains("@")) {
+                            return 'Enter Valid Email';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: 'Email'
+                        ),
+                      ),
+                      TextFormField(
+                        controller: mobileNoController,
+                        validator: (value) {
+                          if (value.trim().length != 10) {
+                            return 'Enter 10 Digit Mobile Number';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Mobile Number',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: feedbackController,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Enter Valid Feedback';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          labelText: 'Feedback'
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ),
+              RaisedButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                onPressed:_submitForm,
+                child: Text('Submit Feedback'),
+              ),
+            ],
+          ),
+        ),
+    );
+  }
+}
+```
 
 We have created a Form with four _TextFields_ and a _‘Submit Feedback’_ button.
 

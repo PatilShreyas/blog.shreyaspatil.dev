@@ -110,7 +110,28 @@ As there are two types of dialogs in the library. Material Dialogs are instantia
 
 `MaterialDialog` class is used to create Material Dialog. Its static `Builder` class is used to instantiate it. After building, to show the dialog, `show()` method of `MaterialDialog` is used.
 
-<script src="https://gist.github.com/PatilShreyas/33a0ecf470ac84a7c70ce901c3a5950c.js"></script>
+```java
+MaterialDialog mDialog = new MaterialDialog.Builder(this)
+                .setTitle("Delete?")
+                .setMessage("Are you sure want to delete this file?")
+                .setCancelable(false)
+                .setPositiveButton("Delete", R.drawable.ic_delete, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        // Delete Operation
+                    }
+                })
+                .setNegativeButton("Cancel", R.drawable.ic_close, new MaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .build();
+
+        // Show Dialog
+        mDialog.show();
+```
 
 After running this code, its **_output_** will be as:
 
@@ -120,7 +141,30 @@ After running this code, its **_output_** will be as:
 
 `BottomSheetMaterialDialog` class is used to create Bottom Sheet Material Dialog. Its static `Builder` class is used to instantiate it. After building, to show the dialog, `show()` method of `BottomSheetMaterialDialog` is used.
 
-<script src="https://gist.github.com/PatilShreyas/ed547d917b1c5b28af2864168666ebbc.js"></script>
+```java
+BottomSheetMaterialDialog mBottomSheetDialog = new BottomSheetMaterialDialog.Builder(this)
+                .setTitle("Delete?")
+                .setMessage("Are you sure want to delete this file?")
+                .setCancelable(false)
+                .setPositiveButton("Delete", R.drawable.ic_delete, new BottomSheetMaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        Toast.makeText(getApplicationContext(), "Deleted!", Toast.LENGTH_SHORT).show();
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", R.drawable.ic_close, new BottomSheetMaterialDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        Toast.makeText(getApplicationContext(), "Cancelled!", Toast.LENGTH_SHORT).show();
+                        dialogInterface.dismiss();
+                    }
+                })
+                .build();
+
+        // Show Dialog
+        mBottomSheetDialog.show();
+```
 
 After running this code, its **_output_** will be as:
 
@@ -148,7 +192,13 @@ In code, `setAnimation()` method of `Builder` is used to set Animation to the di
 
 Resource file should be passed to the method. e.g. `R.raw.delete_anim`.
 
-<script src="https://gist.github.com/PatilShreyas/5d4c853c4aa9c93544fdf027012495a6.js"></script>
+```java
+MaterialButton mDialog = new MaterialDialog.Builder(this)
+                // Other Methods to create Dialog........
+                .setAnimation(R.raw.delete_anim)
+                .build()
+                //...
+```
 
 ### ii. Using `Asset` File
 
@@ -158,7 +208,13 @@ Downloaded `*.json` file should be placed in `asset` directory.
 
 In code, `setAnimation()` method of `Builder` is used to set Animation to the dialog. Its prototype is as follows: `setAnimation(String fileName)`.
 
-<script src="https://gist.github.com/PatilShreyas/45242fc3b02391ab511ea8c0ce7ecdda.js"></script>
+```java
+MaterialButton mDialog = new MaterialDialog.Builder(this)
+                // Other Methods to create Dialog........
+                .setAnimation("delete_anim.json")
+                .build()
+                //...
+```
 
 ### iii. Getting `LottieAnimationView`
 

@@ -20,7 +20,40 @@ In the previous article, we set up Google AppScript to insert/append fields into
 
 Now, Just open your Google AppScript code again and just add a new method `doGet()` as below:
 
-<script src="https://gist.github.com/PatilShreyas/27c2c784ab8e984f406f02837a25869e.js"></script>
+```gs
+function doGet(request) {
+  // Open Google Sheet using ID
+  var sheet = SpreadsheetApp.openById(
+    "1OOArrqjOqmD4GiJOWlluZ4woTMH_qaV6RKv4JXnT3Hk"
+  );
+
+  // Get all values in active sheet
+  var values = sheet.getActiveSheet().getDataRange().getValues();
+  var data = [];
+
+  // Iterate values in descending order
+  for (var i = values.length - 1; i >= 0; i--) {
+    // Get each row
+    var row = values[i];
+
+    // Create object
+    var feedback = {};
+
+    feedback["name"] = row[0];
+    feedback["email"] = row[1];
+    feedback["mobile_no"] = row[2];
+    feedback["feedback"] = row[3];
+
+    // Push each row object in data
+    data.push(feedback);
+  }
+
+  // Return result
+  return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(
+    ContentService.MimeType.JSON
+  );
+}
+```
 
 Here’s a quick ⚡️ explanation for the above script:
 
@@ -59,13 +92,71 @@ factory FeedbackForm.fromJson(dynamic json) {
 
 Now just go to **form_controller.dart** and we’ll create a new method called `getFeedbackList()` which will return List of Feedback from AppScript URL via `GET` request which we recently created in the previous step.
 
-<script src="https://gist.github.com/PatilShreyas/c57fb9b83c6bfed4437d719163930456.js"></script>
+```dart
+/// Async function which loads feedback from endpoint URL and returns List.
+  Future<List<FeedbackForm>> getFeedbackList() async {
+    return await http.get(URL).then((response) {
+      var jsonFeedback = convert.jsonDecode(response.body) as List;
+      return jsonFeedback.map((json) => FeedbackForm.fromJson(json)).toList();
+    });
+  }
+```
 
 Okay! We’re now done with data controlling part. Now let’s develop UI for it. Create another dart file for UI let’s say **feedback_list.dart** as below.
 
 > You can refer full code from GitHub repository [here](https://github.com/PatilShreyas/Flutter2GoogleSheets-Demo). Here I’m just showing an important part of code.
 
-<script src="https://gist.github.com/PatilShreyas/14db1630730670a56f2b858f0e745f36.js"></script>
+```dart
+class _FeedbackListPageState extends State<FeedbackListPage> {
+  List<FeedbackForm> feedbackItems = List<FeedbackForm>();
+
+  // Method to Submit Feedback and save it in Google Sheets
+
+  @override
+  void initState() {
+    super.initState();
+
+    FormController().getFeedbackList().then((feedbackItems) {
+      setState(() {
+        this.feedbackItems = feedbackItems;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: ListView.builder(
+        itemCount: feedbackItems.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Row(
+              children: <Widget>[
+                Icon(Icons.person),
+                Expanded(
+                  child: Text(
+                      "${feedbackItems[index].name} (${feedbackItems[index].email})"),
+                )
+              ],
+            ),
+            subtitle: Row(
+              children: <Widget>[
+                Icon(Icons.message),
+                Expanded(
+                  child: Text(feedbackItems[index].feedback),
+                )
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+```
 
 So this is `ListView` which is being populated from `initState()` method once the list is loaded from the network. Once this screen is loaded, `initState()` will be invoked and after some seconds, you’ll see a list of responses.
 

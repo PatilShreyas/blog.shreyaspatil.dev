@@ -61,7 +61,17 @@ In the Android app, make any activity where you want to implement payment integr
 
 You can see below code, these are minimum and mandatory calls to enable payment processing. If any of it is missed then an error will be generated. For example, consider parameters as follows:
 
-<script src="https://gist.github.com/PatilShreyas/9d2eaaa21ab98828c100015bb83cd0b7.js"></script>
+```java
+final EasyUpiPayment easyUpiPayment = new EasyUpiPayment.Builder()
+                .with(this)
+                .setPayeeVpa("shreyaspatil@upi")
+                .setPayeeName("Shreyas Patil")
+                .setTransactionId("20190603022401")
+                .setTransactionRefId("0120192019060302240")
+                .setDescription("For Today's Food")
+                .setAmount("90.00")
+                .build();
+```
 
 **Calls and Descriptions:**
 
@@ -127,7 +137,37 @@ easyUpiPayment.setPaymentStatusListener(this);
 - `onTransactionCancelled()` - Invoked when Payment cancelled (User pressed back button or any reason).
 - `onAppNotFound()` - Invoked when app specified with `setDefaultPaymentApp()` is not exists on device.
 
-<script src="https://gist.github.com/PatilShreyas/94f1080939ba1d801d9d24bab1b14c43.js"></script>
+```java
+@Override
+    public void onTransactionCompleted(TransactionDetails transactionDetails) {
+        // Transaction Completed
+        Log.d("TransactionDetails", transactionDetails.toString());
+    }
+
+    @Override
+    public void onTransactionSuccess() {
+        // Payment Success
+        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTransactionSubmitted() {
+        // Payment Pending
+        Toast.makeText(this, "Pending | Submitted", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTransactionFailed() {
+        // Payment Failed
+        Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTransactionCancelled() {
+        // Payment Cancelled by User
+        Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
+    }
+```
 
 ---
 

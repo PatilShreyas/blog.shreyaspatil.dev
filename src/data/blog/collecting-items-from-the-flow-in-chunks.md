@@ -57,13 +57,43 @@ So after `chunked(Duration)`, Flow type should be changed to `Flow<List<T>>`. Le
 
 Let's create a class first for extending the behaviour of a Flow. We call it `TimeChunkedFlow` which extends the type `Flow<List<T>>`
 
-<script src="https://gist.github.com/PatilShreyas/2580aed71790ae776788e54a0cc10ed1.js"></script>
+```kotlin
+private class TimeChunkedFlow<T>(
+    private val upstream: Flow<T>,
+    private val duration: Duration
+) : Flow<List<T>> {
+    override suspend fun collect(collector: FlowCollector<List<T>>) {
+        // TODO: implement
+    }
+}
+```
 
 Now our requirement is: that we have to collect the items from `upstream` flow and have to emit all the items in chunks that are collected from it after the specified `duration`.
 
 So, this is what basic logic looks like:
 
-<script src="https://gist.github.com/PatilShreyas/b8c2326e84702cc5f08d22fa6c4cbe4d.js"></script>
+```kotlin
+suspend fun collect(collector: FlowCollector<List<T>>) = coroutineScope<Unit> {
+    // For storing un-emitted values
+    val values = mutableListOf<T>()
+
+    // Continue looping after intervals `duration` and emit the items in the collector
+    // and clear the existing items from the `values`.
+    launch {
+        while (true) {
+            delay(duration)
+
+            collector.emit(values.toList())
+            values.clear()
+        }
+    }
+
+    // Collect the upstream flow and add the items to the above `values` list
+    upstream.collect {
+        values.add(it)
+    }
+}
+```
 
 But there is a problem 🤔. Whenever the upstream Flow is ended, this `TimeChunkedFlow` will continue emitting `[]` (empty list) and will start behaving like a hot♨️ flow even if a cold🧊flow is used. It's because we have launched a child coroutine and collected its job in `emitterJob` and it's never canceled so `collect()` is never unblocked.
 
@@ -71,15 +101,86 @@ But wait! If we cancel it directly at the end, it will never emit the last chunk
 
 For this, we'll introduce a flag `isFlowCompleted` that will be helpful for us to break the loop whenever the flow completes ⬇️.
 
-<script src="https://gist.github.com/PatilShreyas/36c55d694dbd0fee559e0b85c677578f.js"></script>
+```diff
+suspend fun collect(collector: FlowCollector<List<T>>) = coroutineScope<Unit> {
+    // For storing un-emitted values
+    val values = mutableListOf<T>()
++   var isFlowCompleted = false
+
+    // Continue looping after intervals `duration` and emit the items in the collector
+    // and clear the existing items from the `values`.
+    launch {
+        while (true) {
+            delay(duration)
+
++           // If the upstream flow has been completed and there are no values
++           // pending to emit in the collector, just break this loop.
++           if (isFlowCompleted && values.isEmpty()) {
++               break
++           }
+
+            collector.emit(values.toList())
+            values.clear()
+        }
+    }
+
+    // Collect the upstream flow and add the items to the above `values` list
+    upstream.collect { ... }
+
+    // If we reach here it means the upstream flow has been completed and won't
+    // produce any values anymore. So set the flag as flow is completed so that
+    // child coroutine will break its loop
++   isFlowCompleted = true
+}
+```
 
 Again, there is an issue of race condition 🏃🏻‍♂️. If due to its async nature, if list gets accessed among various threads and read/modified without safety then there is a risk of data loss or data duplication. To solve this, **we can use** `Mutex` **as a lock to safely perform the operations on the** `values` **list so that it won't get accidental reads/writes**. We can quickly update our logic with Mutex's implementation:
 
-<script src="https://gist.github.com/PatilShreyas/5678e6ab24715b1ff1dc6544af5dc008.js"></script>
+```diff
+suspend fun collect(collector: FlowCollector<List<T>>) = coroutineScope<Unit> {
++   val mutex = Mutex()
+    // For storing un-emitted values
+    val values = mutableListOf<T>()
+
+    // Continue looping after intervals `duration` and emit the items in the collector
+    // and clear the existing items from the `values`.
+    launch {
+        while (true) {
+            delay(duration)
++           mutex.withLock {
+                // If the upstream flow has been completed and there are no values
+                // pending to emit in the collector, just break this loop.
++               if (isFlowCompleted && values.isEmpty()) {
++                   return@launch
++               }
++               collector.emit(values.toList())
++               values.clear()
++           }
+        }
+    }
+
+    // Collect the upstream flow and add the items to the above `values` list
+    upstream.collect {
++       mutex.withLock {
++           values.add(it)
++       }
+    }
+
+    isFlowCompleted = true
+}
+```
 
 Nice! It's ready to use 🚀. Just create an **operator function for easy chaining for the Flow type.**
 
-<script src="https://gist.github.com/PatilShreyas/b3ad20f0fbc2a404c26762daea026c53.js"></script>
+```kotlin
+/**
+  * Transforms this flow into producing the subsequent items in the chunks (List<T>) after every
+  * specified duration.
+  */
+fun <T> Flow<T>.chunked(duration: Duration): Flow<List<T>> {
+  return TimeChunkedFlow(this, duration)
+}
+```
 
 Let's try this! Creating a sample flow and let's try collecting the items in chunks👇🏻.
 
@@ -97,7 +198,27 @@ Just remember that if the upstream flow doesn't produce any item within the spec
 
 If the Flow **_gets cancelled within the emission of the next chunk_**, then data will be lost for that specific intermediate chunk which was going to be emitted. It means the collector will never receive data of the last chunk if it's cancelled before collecting that. So use it wisely by knowing your use cases suitably. **So there'll be always a problem with cancellable** `CoroutineScope` **s.** If you want a workaround for it just for a certain use case, you can wait for cancellation and emit the remaining chunk in the collector as follows:
 
-<script src="https://gist.github.com/PatilShreyas/b7be1ab0ebb524980bde3f4c47012950.js"></script>
+```diff
+launch {
+    while (true) {
++       try {
+            delay(duration)
+            mutex.withLock {
+                // If the upstream flow has been completed and there are no values
+                // pending to emit in the collector, just break this loop.
+                if (isFlowCompleted && values.isEmpty()) {
+                    return@launch
+                }
+                collector.emit(values.toList())
+                values.clear()
+            }
++       } catch (e: CancellationException) {
++           collector.emit(values.toList())
++           return@launch
++       }
+    }
+}
+```
 
 But this kind of implementation won't be safe to be used within UI use cases. Because, this way, the collector will get the last emission even if the flow is cancelled. **<mark>So this is a kind of hack and not a recommended solution ❌</mark>.**
 

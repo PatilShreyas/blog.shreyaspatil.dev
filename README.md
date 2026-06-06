@@ -11,7 +11,6 @@ This blog is built using **Astro v5**, **Tailwind CSS**, and **Pagefind** for hi
 - **Global Search**: Instant client-side search powered by Pagefind.
 - **SEO Ready**: Automatic sitemaps, RSS feed, Open Graph images, and technical SEO meta tags.
 - **Dark Mode**: Seamless light/dark mode transitions with system preference detection.
-- **Gist Support**: Specialized loader for GitHub Gist embeds that works with View Transitions.
 - **CI/CD**: Automatic push verification with GitHub Actions.
 
 ## 🚀 Getting Started

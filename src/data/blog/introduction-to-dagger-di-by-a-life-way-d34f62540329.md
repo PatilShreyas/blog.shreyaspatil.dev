@@ -33,7 +33,27 @@ You’ve your **Life**. It has Basic **Needs**. Needs include **Food, Clothes,**
 
 As above, **Life** is dependent on many factors. If anyone of dependency is missing, the whole _life will become shit!_ 😢 Else _it’ll be enjoyable_ 😃. Right? Now, how it’s related to DI? Let’s convert your imagination into the code. See code below 👇:
 
-<script src="https://gist.github.com/PatilShreyas/42a4281f433103ef2d2803b270fc6edd.js"></script>
+```java
+public class WithoutDI {
+    public static void main(String[] args) {
+        Education education = new Education();
+
+        Job job = new Job(education);
+
+        Money money = new Money(job);
+
+        Food food = new Food(money);
+        Clothes clothes = new Clothes(money);
+        Shelter shelter = new Shelter(money);
+
+        Needs needs = new Needs(food, clothes, shelter);
+
+        Life life = new Life(needs);
+
+        life.enjoy();
+    }
+}
+```
 
 We required to manually create each and every object and passed it to the constructor.
 
@@ -56,31 +76,132 @@ In your code, use `@Inject` to annotate the constructor that Dagger should use t
 
 - The base of our **Life** is **Education**:
 
-<script src="https://gist.github.com/PatilShreyas/91b985f4d95af5d95cccfb076d87e81f.js"></script>
+```java
+package life;
+
+import javax.inject.Inject;
+
+public class Education {
+
+    @Inject
+    public Education() {
+        System.out.println("I'm Well Educated!");
+    }
+}
+```
 
 Here we’ve injected constructor. It means we are telling dagger that to create its instance.
 
 - Now **Job** is dependent on **Education**:
 
-<script src="https://gist.github.com/PatilShreyas/4a280b4ffd0e4c5574fd4ab1de70df33.js"></script>
+```java
+public class Job {
+
+    public Education mEducation;
+
+    @Inject
+    public Job(Education education) {
+        this.mEducation = education;
+
+        if (mEducation != null) {
+            System.out.println("I've Job!");
+        } else {
+            System.out.println("I'm not well educated!");
+        }
+    }
+}
+```
 
 - **Money** is dependent on **Job**:
 
-<script src="https://gist.github.com/PatilShreyas/f12879f021a8175229b0ea380ef4fb84.js"></script>
+```java
+@Singleton
+public class Money {
+
+    public Job mJob;
+
+    @Inject
+    public Money(Job job) {
+        this.mJob = job;
+
+        if (mJob != null) {
+            System.out.println("I've Money!");
+        } else {
+            System.out.println("I'm not working yet!");
+        }
+    }
+}
+```
 
 Remember, we’ve annotated this class as `@Singleton` to ensure the single instance of **Money** throughout Life program.
 
 - Now **Food, Clothes,** and **Shelter** are dependent on Money:
 
-<script src="https://gist.github.com/PatilShreyas/8c3e8375c9483ac2363b3acc4b1ecfba.js"></script>
+```java
+public class Clothes {
+
+    public Money mMoney;
+
+    @Inject
+    public Clothes(Money money) {
+        this.mMoney = money;
+
+        if (mMoney != null) {
+            System.out.println("I've Clothes to wear!");
+        } else {
+            System.out.println("I don't have enough clothes to wear!");
+        }
+    }
+}
+```
 
 - Then **Needs** are **Food, Clothes** & **Shelter**:
 
-<script src="https://gist.github.com/PatilShreyas/084fae8381aa146f223480ca5feea51c.js"></script>
+```java
+public class Needs {
+
+    public Food mFood;
+    public Clothes mClothes;
+    public Shelter mShelter;
+
+    @Inject
+    public Needs(Food food, Clothes clothes, Shelter shelter) {
+        this.mFood = food;
+        this.mClothes = clothes;
+        this.mShelter = shelter;
+    }
+
+    public boolean fulfilled() {
+        return mFood != null && mClothes != null && mShelter != null && mFood.mMoney != null;
+    }
+}
+```
 
 - Finally, **Life** has **Needs**:
 
-<script src="https://gist.github.com/PatilShreyas/355c9117bed0c6e4005513dae7dae0c1.js"></script>
+```java
+package life;
+
+import javax.inject.Inject;
+
+public class Life {
+
+    public Needs mNeeds;
+
+    @Inject
+    public Life(Needs needs) {
+        this.mNeeds = needs;
+    }
+
+    public void enjoy() {
+        if (mNeeds.fulfilled()) {
+            System.out.println("I'm enjoying my life! :)");
+        } else {
+            System.out.println("I can't enjoy my life :(");
+        }
+    }
+}
+```
 
 You can see, we have annotated constructor by `@Inject`. Dagger will take care to create an instance of these dependencies.
 
@@ -90,7 +211,13 @@ You can see, we have annotated constructor by `@Inject`. Dagger will take care t
 
 Create an interface with a method `getLife()` which will return `Life` instance.
 
-<script src="https://gist.github.com/PatilShreyas/ed90c36ae4c9722341b042698815055b.js"></script>
+```java
+@Singleton
+@Component
+public interface LifeComponent {
+    Life getLife();
+}
+```
 
 Now Dagger will take care of making **Life** and its _dependencies_. 😃
 
@@ -98,7 +225,14 @@ Just Build ⚙️ your project so that the dagger will generate classes.
 
 Now you’ll surprise after seeing the simplified code after using _Dependency Injection_. Here’s code after using Dagger DI framework 👉:
 
-<script src="https://gist.github.com/PatilShreyas/dc30ec931d09b0836d3f6172f4721bad.js"></script>
+```java
+public class Main {
+    public static void main(String[] args) {
+        Life life = DaggerLifeComponent.create().getLife();
+        life.enjoy();
+    }
+}
+```
 
 Dagger internally created **Life** along with all dependencies. Finally, if you run this code, you’ll see output:
 

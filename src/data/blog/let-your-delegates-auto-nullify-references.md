@@ -23,7 +23,21 @@ Let me give you examples. Imagine if you have a **Fragment** and it has referenc
 
 You may have seen this snippet of code on [official Android's docs for ViewBinding](https://developer.android.com/topic/libraries/view-binding#fragments) 👇:
 
-<script src="https://gist.github.com/PatilShreyas/3513835e881095b98f7e8d2b057b9252.js"></script>
+```kotlin
+private var _binding: ProfileBinding? = null
+private val binding get() = _binding!!
+
+override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    _binding = ProfileBinding.inflate(inflater, container, false)
+    val view = binding.root
+    return view
+}
+
+override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+}
+```
 
 Here, you can see that we need to create two fields `_binding` which is a _nullable_ backing field for _non-null_ field `binding`. What’s the reason for this? Read this 👇:
 
@@ -37,7 +51,25 @@ In this example, we need to declare these things twice. If we forgot to clear re
 
 When you have worked with _RecyclerView,_ sometime you might have experienced a memory leak issue due to _RecyclerView.Adapter_ even in configuration changes like a rotating screen. So for such cases, again we need to clean adapter reference in `onDestroyView()` lifecycle method as following 👇:
 
-<script src="https://gist.github.com/PatilShreyas/700491abfef1e6877800dc4917cb2c45.js"></script>
+```kotlin
+private val mAdapter = MyListAdapter() // 1️⃣
+// OR private var mAdapter: MyListAdapter? = null 2️⃣
+
+override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    // OR Initialize MyListAdapter everytime when View is created 2️⃣
+    // mAdapter = MyListAdapter(...)
+
+    binding.recyclerView.adapter = mAdapter
+}
+
+override fun onDestroyView() {
+    super.onDestroyView()
+    binding.recyclerView.adapter = null  // 1️⃣
+    // OR mAdapter = null 2️⃣
+}
+```
 
 Here you can see that we finally setting _RecyclerView’s_ _Adapter_ as `null`. Alternatively, as mentioned in **OR** (2️⃣) comments, we can also declare `mAdapter` as nullable. But if we do so then we'll need to use `?` with adapter instance every time we try to access it 😫.
 
@@ -62,7 +94,55 @@ implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0'
 
 Create a class `AutoCleanedValue.kt` where we’ll wrap our logic for auto-nullifying references 👇:
 
-<script src="https://gist.github.com/PatilShreyas/066edc8bf96804dcdd1cb7d930fb0410.js"></script>
+```kotlin
+class AutoCleanedValue<T : Any>(
+    fragment: Fragment,
+    private val initializer: (() -> T)?
+) : ReadWriteProperty<Fragment, T> {
+
+    private var _value: T? = null
+
+    init {
+        fragment.lifecycle.addObserver(object : DefaultLifecycleObserver {
+            val viewLifecycleOwnerObserver = Observer<LifecycleOwner?> { viewLifecycleOwner ->
+
+                viewLifecycleOwner?.lifecycle?.addObserver(object : DefaultLifecycleObserver {
+                    override fun onDestroy(owner: LifecycleOwner) {
+                        _value = null
+                    }
+                })
+            }
+
+            override fun onCreate(owner: LifecycleOwner) {
+                fragment.viewLifecycleOwnerLiveData.observeForever(viewLifecycleOwnerObserver)
+            }
+
+            override fun onDestroy(owner: LifecycleOwner) {
+                fragment.viewLifecycleOwnerLiveData.removeObserver(viewLifecycleOwnerObserver)
+            }
+        })
+    }
+
+    override fun getValue(thisRef: Fragment, property: KProperty<*>): T {
+        val value = _value
+
+        if (value != null) {
+            return value
+        }
+
+        if (thisRef.viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED)) {
+            return initializer?.invoke().also { _value = it }
+                ?: throw IllegalStateException("The value has not yet been set or no default initializer provided")
+        } else {
+            throw IllegalStateException("Fragment might have been destroyed or not initialized yet")
+        }
+    }
+
+    override fun setValue(thisRef: Fragment, property: KProperty<*>, value: T) {
+        _value = value
+    }
+}
+```
 
 Let’s understand it:
 
@@ -75,11 +155,36 @@ Let’s understand it:
 
 Okay! This is good. Now to make it easy to access from **Fragments**, let’s make an extension function:
 
-<script src="https://gist.github.com/PatilShreyas/624a4217d40b0e4552e3a3ee222eda73.js"></script>
+```kotlin
+fun <T : Any> Fragment.autoCleaned(initializer: (() -> T)? = null): AutoCleanedValue<T> {
+    return AutoCleanedValue(this, initializer)
+}
+```
 
 Cool! How we are going to use it? Looks like everything is settled. Let’s see in action how our Fragment will look like after using this delegate? Let’s summarize both the examples we saw in this article in a single snippet 👇:
 
-<script src="https://gist.github.com/PatilShreyas/059ac5610cb4559ca884b5b54c091967.js"></script>
+```kotlin
+class LeakFragment : Fragment() {
+
+    private val mAdapter: MyListAdapter by autoCleaned { MyListAdapter() }
+    private var binding: ProfileBinding by autoCleaned()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = ProfileBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerView.adapter = mAdapter
+    }
+}
+```
 
 That’s it. Looking cool 😍, isn’t it?
 

@@ -37,7 +37,22 @@ Open _Android Studio_ and create a new project. Alternatively, you can simply cl
 
 We’ll be using `MainViewModel` to manage our data of `MainActivity`.
 
-<script src="https://gist.github.com/PatilShreyas/8ba283653a32596b73abcaf11fb5db1c.js"></script>
+```kotlin
+@ExperimentalCoroutinesApi
+class MainViewModel : ViewModel() {
+    private val _countState = MutableStateFlow(0)
+
+    val countState: StateFlow<Int> = _countState
+
+    fun incrementCount() {
+        _countState.value++
+    }
+
+    fun decrementCount() {
+        _countState.value--
+    }
+}
+```
 
 Now you can compare its implementation using _LiveData_.
 
@@ -45,15 +60,51 @@ _`MutableStateFlow` has a setter property for **value**._ We’ve declared an in
 
 Now let’s implement our `MainActivity` —
 
-<script src="https://gist.github.com/PatilShreyas/311937d492591a8e0c0177ea610818d2.js"></script>
+```kotlin
+class MainActivity : AppCompatActivity() {
+
+    private val viewModel by lazy {
+        ViewModelProvider(this)[MainViewModel::class.java]
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        initCountObserver()
+        initView()
+    }
+}
+```
 
 Here, we’ve initialized ViewModel for activity. Now let’s implement the `initView()` method which will initialize our Counter App UI.
 
-<script src="https://gist.github.com/PatilShreyas/e7cd74dd256a6ad0bc16d94a60d7fb80.js"></script>
+```kotlin
+private fun initView() {
+        button_plus.setOnClickListener(::incrementCounter)
+        button_minus.setOnClickListener(::decrementCounter)
+    }
+
+    private fun incrementCounter(view: View) {
+        viewModel.incrementCount()
+    }
+
+    private fun decrementCounter(view: View) {
+        viewModel.decrementCount()
+    }
+```
 
 Everything looks cool now! 😃. Let’s observe for count value now to keep track of counting and show it on UI accordingly.
 
-<script src="https://gist.github.com/PatilShreyas/5d8347a579a142531a9f52ea12e6b160.js"></script>
+```kotlin
+private fun initCountObserver() {
+        lifecycleScope.launch {
+            viewModel.countState.collect { value ->
+                textview_count.text = "$value"
+            }
+        }
+    }
+```
 
 Here’s we have collector which will be executed whenever the value of a _countState_ is updated. We also made it **lifecycle-aware** as we’ve used it under `lifecycleScope`. It looks simple, right? That’s it! 😎
 
