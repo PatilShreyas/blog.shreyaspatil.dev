@@ -15,6 +15,7 @@ import {
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
 import { remarkGifToVideo } from "./src/utils/transformers/gifToVideo.js";
+import { remarkGist } from "./src/utils/transformers/remarkGist.js";
 import { SITE } from "./src/config";
 
 // https://astro.build/config
@@ -50,6 +51,7 @@ export default defineConfig({
       remarkToc,
       [remarkCollapse, { test: "Table of contents" }],
       remarkGifToVideo,
+      remarkGist,
     ],
     shikiConfig: {
       // For more themes, visit https://shiki.style/themes
