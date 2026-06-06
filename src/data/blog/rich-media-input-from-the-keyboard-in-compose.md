@@ -57,7 +57,19 @@ You might have used `BasicTextField` or `TextField`. A new foundation API has be
 
 So instead of `Text` or `BasicTextField`, use `BasicTextField2` and use the modifier `receiveContent` along with it to get the rich content from keyboard input:
 
-<script src="https://gist.github.com/PatilShreyas/9472956bcb8fb737e96d3fe42755150b.js"></script>
+```diff
+- BasicTextField(
++ BasicTextField2(
+    value = value,
+    onValueChange = { value = it },
+    modifier = Modifier
+        .fillMaxWidth()
++       .receiveContent(setOf(MediaType.Image)) { content ->
++           val selectedMediaUri = content.platformTransferableContent?.linkUri
++           null
++       }
+  )
+```
 
 In modifier `receiveContent`, first, you need to specify what type of content you want to get. `MediaType` holds the MIME type. As needed, you can specify your MIME type. Second is lambda which gets invoked when content is selected (_in this case, content will be selected from the keyboard_). Lambda has a parameter `TransferableContent` that contain data, metadata, etc.
 

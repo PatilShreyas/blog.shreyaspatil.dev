@@ -27,17 +27,51 @@ To be honest, you can find some concepts here which might be not easy to underst
 - Using it, we can simplify our code and make it even more readable and easy to trace.
 - For example, see this 👇:
 
-<script src="https://gist.github.com/PatilShreyas/e150760f2b97d08c4ff7364adc106c54.js"></script>
+```diff
+fun main() {
+     doGreet("John Doe")
+ }
+
+ fun doGreet(name: String) {
+-   val greetMessage = "Good Morning " + name + " 🌅"
++   val greetMessage = "Good Morning $name 🌅"
+
+    println(greetMessage) // prints "Good Morning John Doe 🌅"
+ }
+```
 
 Here you can see we didn’t need `+` to concatenate to strings. Instead, we can directly include types using `$` which replace the value of that variable. See this now 👇:
 
-<script src="https://gist.github.com/PatilShreyas/91243b84da641f4d37f66352b0c31089.js"></script>
+```diff
+fun main() {
+-    val json = "{\"name\": \"John Doe\", \"age\": 200}"
++    val json = """{"name": "John Doe", "age": 200}"""
+     println(json) // prints: {"name": "John Doe", "age": 200}
+}
+```
 
 We had to include double-quotes in a string. For example, `"name": "John Doe"`. If you see removed code (🔴) here, we need to use `\"` to include double quotes in a string and then it becomes hard to read or trace to someone else.
 
 Remember how we concatenated multiple or multiline strings in Java? That’s really not easy to trace the code then. Take a look on this snippet 👇:
 
-<script src="https://gist.github.com/PatilShreyas/e07be4a2ff5ce3b384d1fe22a122f14f.js"></script>
+```diff
+fun main() {
+     displayInfo("John Doe", 10)
+ }
+
+ fun displayInfo(name: String, age: Int) {
+-    val info = "Hi there!👋 My name is \"" + name + "\".\nI'm " + age + " years old."
++    val info = """
++        |Hi there!👋 My name is "$name".
++        |I'm $age years old.
++    """.trimMargin()
+
+     println(info)
+     // prints
+     // "Hi there!👋 My name is John Doe.
+     // I'm 10 years old."
+ }
+```
 
 Did you notice simplicity 😃? In Kotlin, we easily handled a multi-line string using `"""`. We don’t even need to append `\n`.
 
@@ -51,7 +85,18 @@ There’s more a lot we can do with strings in Kotlin.
 
 Kotlin allows us to destructure an object into a number of variables. For example, see this 👇:
 
-<script src="https://gist.github.com/PatilShreyas/251c8fe85a61e23875e0d408d8206c75.js"></script>
+```diff
+data class User(val id: Int, val name: String)
+
+ fun main() {
+-   val user = getUser()
+-   val userId = user.id
+-   val userName = user.name
++   val (userId, userName) = getUser()
+ }
+
+ fun getUser() = User(1, "John Doe")
+```
 
 It’s useful when we just want to access members of an instance directly. But wait, it’ll be dangerous ⚠️ if you change the order of members. Let’s say if you write code as 👇:
 
@@ -63,7 +108,16 @@ Then you can see, a user ID will be assigned to `userName` and name will be assi
 
 For example, Kotlin provides a class called [`Pair<A,B>`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/) which is a part of the standard library function. `Pair` has only two members i.e. `first` and `second`. So here we are sure that its structure won’t change then we can surely use destructing declarations there 👇:
 
-<script src="https://gist.github.com/PatilShreyas/e9c5c47ab21477bd46157a5cd4ee0cff.js"></script>
+```kotlin
+fun main() {
+    val (user, interests) = getUserInterest()
+}
+
+fun getUserInterest(): Pair<User, List<Interest>> {
+    // Get user and interests
+    return Pair(user, interests)
+}
+```
 
 If you don't need any variable, you can achieve it like this 👇:
 
@@ -80,7 +134,22 @@ val (_, interests) = getUserInterest()
 - A sealed class can have subclasses, but all of them must be declared in the same file as the sealed class itself.
 - For example, see this 👇:
 
-<script src="https://gist.github.com/PatilShreyas/14471ba306c20f2a9a40bb950d27da9c.js"></script>
+```kotlin
+class Success(val result: Any)
+class Failure(val message: String)
+
+fun main() {
+    val result = getResult()
+
+    val something = when (result) {
+        is Success -> {}
+        is Failure -> {}
+        else -> { /* Unnecessary part */ }
+    }
+}
+
+fun getResult() = listOf(Success(""), Failure("Failed")).random()
+```
 
 Okay, In the first snippet we have two classes for `Result` i.e. `Success` and `Failure`. We are sure that `getResult()` will only return an instance of these two classes. Still, if you see `when {}` expression, we need to add `else {}` block unnecessarily because code is not sure about instance type of `val result`.
 
@@ -88,7 +157,25 @@ Now look at the second snippet, we declared these classes under `sealed class Re
 
 We can also read members of instances, see this 👇:
 
-<script src="https://gist.github.com/PatilShreyas/5b0977b3d49821ce49d64f1dabbf7890.js"></script>
+```kotlin
+sealed class ViewState {
+    object Loading: ViewState()
+    class Success(val someData: String): ViewState()
+    class Failure(val message: String): ViewState()
+}
+
+fun main() {
+    val message = when (getViewState()) {
+        is ViewState.Loading -> "Data is loading"
+        is ViewState.Success -> "Got data: ${state.someData}"
+        is ViewState.Failure -> "It failed! ${state.message}"
+    }
+
+    println(message)
+}
+
+fun getViewState(): ViewState = listOf(ViewState.Loading, ViewState.Success("MyData"), ViewState.Failure("Error")).random()
+```
 
 As you can see above, we can actually access `someData` of `Success` and `message` of `Failure`. So this is how it works 😃. It’s a really perfect thing to replace with enums.
 
@@ -100,7 +187,24 @@ How to access the value of outer class in nested classes? Let's say you want to 
 
 - See this first 👇:
 
-<script src="https://gist.github.com/PatilShreyas/de474d4a9a29cb3eaac600eed9f9ca12.js"></script>
+```kotlin
+class Outer {
+    val value = 10
+
+    class Inner1 {
+        fun accessOuter() = println("Outer value = $value") // ❌ Can't access value of Outer class.
+    }
+
+    inner class Inner2 {
+        fun accessOuter() = println("Outer value = $value") // ✅ Can access value of Outer class.
+    }
+}
+
+fun main() {
+    Outer.Inner1().accessOuter()    // #1
+    Outer().Inner2().accessOuter()  // #2
+}
+```
 
 There’s an **Outer** class and it has two nested classes under it i.e. `Inner1` and `Inner2`. As you can see, `Inner1` can’t access ❌ the `value` of an outer class and `Inner2` which is declared using keyword `inner` can access it ✅.
 
@@ -117,7 +221,19 @@ There’s an **Outer** class and it has two nested classes under it i.e. `Inner1
 - A functional interface can have **more than one non-abstract members** but they must have **exactly one abstract method**.
 - Using functional interfaces, we can leverage SAM conversions that help make our code more concise and readable by using _lambda expressions_. See the example below, it’s self-explanatory 👇:
 
-<script src="https://gist.github.com/PatilShreyas/f9ca8adabc3b702427d0898749b3180e.js"></script>
+```kotlin
+interface Predicate {
+    fun isTrue(): Boolean
+}
+
+fun main() {
+    val predicate = object: Predicate {
+        override fun isTrue() = 10 == (5*2)
+    }
+
+    println(predicate.isTrue()) // prints "true"
+}
+```
 
 As you can see, If we don’t use a SAM conversion, we need to write code using `object` expressions. By just adding `fun` keyword for the interface, we literally made code even more readable 😃. Isn’t it _sweet_? 🍫
 
@@ -129,7 +245,14 @@ As you can see, If we don’t use a SAM conversion, we need to write code using 
 - These are like anonymous functions and we can treat them as values.
 - You can use lambda expressions if you want to create a function which doesn’t need to be an Interface (as we saw SAM conversions). For example, see this 👇. Here you don’t actually need to declare a `fun interface`.
 
-<script src="https://gist.github.com/PatilShreyas/a21e072fa843a33e5cb21d07cf17da37.js"></script>
+```kotlin
+fun main() {
+    val add: (Int, Int) -> Int = {a, b -> a + b}
+
+    val result = add(10, 20)
+    println(result) // prints "30"
+}
+```
 
 So here you can see, by using lambda we indirectly created functionality for addition. Now let’s take a look at HOFs in Kotlin which is another ♨️ hot topic.
 
@@ -140,7 +263,17 @@ So here you can see, by using lambda we indirectly created functionality for add
 - A lambda is an anonymous function. It becomes a Higher-order function when that takes functions as parameters or returns a function.
 - For instance, see this example 👇:
 
-<script src="https://gist.github.com/PatilShreyas/6ff3bfcc19e2a7aac50b9752c17a5fde.js"></script>
+```kotlin
+fun Button.onClick(action: () -> Unit) {
+    action()
+}
+
+fun initUI() {
+    button.onClick {
+        // Do something
+    }
+}
+```
 
 Here, `onClick()` takes a function as a parameter which is executed when the button is clicked.
 
@@ -148,7 +281,19 @@ Do you remember scope functions from the previous part? Yep! `let {}`, `apply {}
 
 Now see this example 👇:
 
-<script src="https://gist.github.com/PatilShreyas/cf39d3be9918a2bce125500850f7e2bf.js"></script>
+```kotlin
+fun TextBuilder(builder: StringBuilder.() -> Unit): String {
+    return StringBuilder().apply(builder).toString()
+}
+
+fun main() {
+    val string = TextBuilder {
+        append("Welcome To Kotlin World")
+        append("\nEnjoy")
+    }
+    println(string)
+}
+```
 
 Here we have created a HOF `TextBuilder` which has a parameter _builder_ which gives the reference of a `StringBuilder` in the lambda. That’s why we can call the properties of `StringBuilder` by using **this** scope.
 
@@ -162,7 +307,19 @@ The more you explore Lambas and HOFs, the more you’ll fall in Love ❤️ with
 - Kotlin provides it natively requiring zero boilerplate.
 - Take a look at this example:
 
-<script src="https://gist.github.com/PatilShreyas/bb2002cb21b8fef20e995b2fd032973e.js"></script>
+```kotlin
+interface Vehicle {
+    fun drive()
+}
+
+class Bike(val speed: Double): Vehicle {
+    override fun drive() = println("Driving Bike at $speed KMPH")
+}
+
+class Car(val speed: Double): Vehicle {
+    override fun drive() = println("Driving Car at $speed KMPH")
+}
+```
 
 Here the **by** clause in the supertype list for `SportsBike` and `SportsCar` indicates that `bike` and `car` will be stored internally in objects of these classes and the compiler will generate all the methods of `Vehicle` that forward to the delegated objects.
 
@@ -176,13 +333,43 @@ You can explore more about it [here](https://kotlinlang.org/docs/reference/deleg
 - We don’t need to implement the same thing, again and again, using this.
 - For example, Kotlin standard library has some property delegates like `lazy`, `observables`, etc. See this 👇:
 
-<script src="https://gist.github.com/PatilShreyas/db2c4eff234024d52826e974b4c54fbd.js"></script>
+```kotlin
+val value by lazy {
+    println("Assigning a value")
+    10
+}
+
+fun main() {
+    println(value) // prints "Assigning a value 10"
+    println(value) // prints "10"
+}
+```
 
 Here we have used `lazy` delegate where the value gets computed only upon first access. As you can see, when we accessed `value` in `println()` for the first time the message is displayed and next time it’s not.
 
 Let’s see how to create our own delegations. See this example first 👇:
 
-<script src="https://gist.github.com/PatilShreyas/d08470155d44aabd8180d28024128585.js"></script>
+```diff
+class OrderDetails {
+-    var fullName: String = ""
+-        set(value) {
+-            field = value.split(" ").joinToString(" ") { it.capitalize() }
+-        }
++    var fullName by CapitalizeDelegate()
+
+-    var city: String = ""
+-        set(value) {
+-            field = value.split(" ").joinToString(" ") { it.capitalize() }
+-        }
++    var city by CapitalizeDelegate()
+
+-    var coupon: String = "NO COUPON"
+-        set(value) {
+-            field = value.toUpperCase()
+-        }
++    var coupon by UppercaseDelegate()
+}
+```
 
 In the first snippet, as you can see, we wrote a repetitive code for formatting fields but it simplified a lot after adding delegates. We override `setValue()` and `getValue()` operator functions of `ReadWriteProperty`. To learn more about delegates in Kotlin, refer [this](https://kotlinlang.org/docs/reference/delegated-properties.html).
 
@@ -193,7 +380,23 @@ In the first snippet, as you can see, we wrote a repetitive code for formatting 
 - In Kotlin, we can easily compute range related tasks with much more readability.
 - The operator `..` is used in the form of range. See examples below 👇:
 
-<script src="https://gist.github.com/PatilShreyas/eea6e6fb8b7bd456636087ea8aec55ad.js"></script>
+```kotlin
+fun main() {
+    for (i in 0..10) { print(i) } // 012345678910
+
+    for (i in 1 until 10) { print(i) } // 123456789 (10 is excluded)
+
+    for (i in 9 downTo 0) { print(i) } // 9876543210
+
+    for (i in 2..20 step 2) { print("$i ") } // 2 4 6 8 10 12 14 16 18 20
+
+    if (50 in 0..100) println(true) else println(false) // true
+
+    val list = listOf(1, 2, 3, 4, 5)
+    if (3 in list) println("3 PRESENT") else println("3 ABSENT") // 3 PRESENT
+    if (10 !in list) println("10 NOT PRESENT") else println("10 PRESENT") // 10 NOT PRESENT
+}
+```
 
 As you can see, code is self-explanatory and it doesn’t need an explicit explanation. We can also add support for ranges for custom class types by overriding `rangeTo()` function.
 
@@ -217,19 +420,71 @@ There’s many more we can do with these extensions. The more you explore it, yo
 - The most and most **HOT** 🔥 topic in Kotlin is Coroutine 😍.
 - It allows us to write asynchronous and non-blocking logic in a clean manner. It provides structured concurrency 🔀.
 
-<script src="https://gist.github.com/PatilShreyas/02d2de862afa3b2587a0060ea9753200.js"></script>
+```kotlin
+fun main() = runBlocking {
+    launch {
+        delay(100)
+        println("Hello with delay 100")
+    }
+    launch {
+        delay(10)
+        println("Hello with delay 10")
+    }
+    launch {
+        delay(1)
+        println("Hello with delay 1")
+    }
+
+    println("Hello World!")
+}
+/* OUTPUT:
+Hello World!
+Hello with delay 1
+Hello with delay 10
+Hello with delay 100
+*/
+```
 
 See this 👆, we launched three different jobs using `launch` with different delay and you can see its output.
 
 We can also avoid traditional callbacks using Coroutines. Kotlin provides `suspend fun` for writing blocking calls.
 
-<script src="https://gist.github.com/PatilShreyas/e3b2d314cb31a6901b0e3a9e68734083.js"></script>
+```kotlin
+fun main() {
+    userRepository.findById(1, object: UserCallback {
+        override fun onUserFound(user: User) {
+            // Do something with `user`.
+        }
+    })
+}
+
+interface UserRepository {
+    fun findById(id: Int, callback: UserCallback)
+}
+```
 
 In the above example, you can see how code is simplified with the use of Coroutines.
 
 Want to see again beauty of Coroutines? Let’s say you have to do two things concurrently, how to do that? Here `async` comes to help. See this 👇:
 
-<script src="https://gist.github.com/PatilShreyas/1fe82c179f3f5e46dccdb0f97d80fa4f.js"></script>
+```kotlin
+fun main() = runBlocking {
+    val one = async { taskOne() }
+    val two = async { taskTwo() }
+
+    val result = one.await() + two.await() // 10 + 20
+}
+
+suspend fun taskOne(): Int {
+    delay(100L)
+    return 10
+}
+
+suspend fun taskTwo(): Int {
+    delay(400L)
+    return 20
+}
+```
 
 Here you can see that two coroutines execute concurrently. `async` returns a `Deferred` i.e. a light-weight non-blocking future that represents a promise to provide a result later.
 

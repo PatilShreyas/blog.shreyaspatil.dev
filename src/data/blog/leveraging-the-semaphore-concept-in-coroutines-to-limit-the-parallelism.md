@@ -52,7 +52,18 @@ That's all the basic things to know about the Semaphores.
 
 As the title says, let's come to the main topic. Let's say we are creating a function that concurrently iterates items from a list and transform each item into another just like a `map{}` function of Kotlin collections but with the ability to execute in parallel (_Just like Java's `parallelStream()`_). Let's say, initially we create the function like 👇🏻:
 
-<script src="https://gist.github.com/PatilShreyas/865de489ca1007afaa44b7f6c87e1096.js"></script>
+```kotlin
+fun <T, R> Iterable<T>.map(
+    dispatcher: CoroutineDispatcher,
+    transform: (T) -> R
+): List<R> = runBlocking {
+    map { item -> async(dispatcher) { transform(item) } }.awaitAll()
+}
+
+fun doSomething(users: List<User>) {
+    users.map(Dispatchers.Default) { user -> user.toSomething() /* `toSomething()` is heavy method */ }
+}
+```
 
 In this function, we require `dispatcher` which is then used inside `async` coroutine builder. It means it will use all threads from a thread pool by which the dispatcher will be created. As we are aware that computational operations should be performed on `Dispatchers.Default` so we used it.
 
@@ -60,7 +71,14 @@ So what's wrong here 🤔? It'll use all threads from the default coroutine disp
 
 What if we provide our own dispatcher for this function? We know that we can create a customized dispatcher with a fixed thread pool just like this:
 
-<script src="https://gist.github.com/PatilShreyas/20c397209d79d734119bb015a6959ce9.js"></script>
+```diff
++ val dispatcher = Executors.newFixedThreadPool(12).asCoroutineDispatcher()
+
+fun <T, R> Iterable<T>.map(
+-   dispatcher: CoroutineDispatcher,
+    transform: (T) -> R
+): List<R>
+```
 
 Here, the fixed thread pool of 12 threads will be created and all these 12 threads will be active forever. Thus threads can be wasted. Also, there is no freedom for us to specify parallelism or concurrency if we want to control it for mapping some lists based on the use case.
 
@@ -72,11 +90,54 @@ This is the situation where semaphore is the solution 😀.
 
 Kotlin coroutine library has provided API for [Semaphore](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.sync/-semaphore/index.html) where we can easily control access to the resources with semaphore. We can create a semaphore with permits and perform operations with it as below 👇:
 
-<script src="https://gist.github.com/PatilShreyas/5f9b8d0c9a1890bc52f82bd190e62b8f.js"></script>
+```kotlin
+// This is example to explain the API for semaphore
+
+fun main() {
+  // Creates semaphore with 10 permits
+  val semaphore = Semaphore(permits = 10)
+
+  // Acquires a permit from this semaphore, suspending until one is available.
+  // All suspending acquirers are processed in first-in-first-out (FIFO) order
+  semaphore.acquire()
+
+  // Releases a permit, returning it into this semaphore.
+  // Resumes the first suspending acquirer if there is one at the point of invocation
+  semaphore.release()
+}
+```
 
 Cool, let's rework our recently discussed use case of mapping list concurrently. Now, what we'll do is we'll introduce the parameter `concurrency` of type integer in that function and we'll create the semaphore with a permit that is specified as `concurrency`. Let's see the updated code 🧑‍💻:
 
-<script src="https://gist.github.com/PatilShreyas/4a4a455dd241183ba5c6b11908f03029.js"></script>
+```kotlin
+fun <T, R> Iterable<T>.map(
+    concurrency: Int,
+    transform: (T) -> R
+): List<R> = runBlocking {
+    // Create semaphore with permit specified as `concurrency`
+    val semaphore = Semaphore(concurrency)
+
+    map { item ->
+        // Before processing each item, acquire the semaphore permit
+        // This will be suspended until permit is available.
+        semaphore.acquire()
+
+        async(Dispatchers.Default) {
+            try {
+                transform(item)
+            } finally {
+                // After processing (or failure), release a semaphore permit
+                semaphore.release()
+            }
+        }
+    }.awaitAll()
+}
+
+fun doSomething(users: List<User>) {
+    // Concurrently 5 users will be processed
+    users.map(concurrency = 5) { user -> user.toSomething() /* `toSomething()` is heavy method */ }
+}
+```
 
 Now as you can see, before mapping each item, we are acquiring a semaphore permit and releasing it after processing it. Thus, it's also taken care that the maximum parallelism of this function would be the value specified for the parameter `concurrency` thus we won't run out of threads 🧵.
 

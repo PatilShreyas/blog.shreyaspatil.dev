@@ -41,13 +41,41 @@ Jetpack Compose comes with [foundation](https://developer.android.com/jetpack/an
 
 Let’s first create a Composable function with basic setup of showing text:
 
-<script src="https://gist.github.com/PatilShreyas/7fd0d97e3a90906bd89dcd773ed3fb38.js"></script>
+```kotlin
+@Composable
+fun Social() {
+    val text = buildAnnotatedString {
+        append(AnnotatedString("LinkedIn ", spanStyle = SpanStyle(Color.Blue)))
+        // TODO: Add Divider here
+        append(AnnotatedString(" Twitter ", spanStyle = SpanStyle(Color.Blue)))
+        // TODO: Add Divider here
+        append(AnnotatedString(" Portfolio", spanStyle = SpanStyle(Color.Blue)))
+    }
+    BasicText(text = text, style = TextStyle(fontSize = 17.sp))
+}
+```
 
 Basically we use `AnnotatedString` to set different styles within the same `Text` composable and for this we use `buildAnnotatedString {}` lambda function which provides a `Builder` so that we can append or add styles to text.
 
 `appendInlineContent()` of a _Builder_ is used to insert composables into the text layout and by using this, we are going to add divider (Composable Shape) in between the text items. Let’s see usage 👇:
 
-<script src="https://gist.github.com/PatilShreyas/2a0bcbed73a7e2c8176b7751184097c7.js"></script>
+```kotlin
+@Composable
+fun Social() {
+    val dividerId = "inlineDividerId"
+    val text = buildAnnotatedString {
+        append(AnnotatedString("LinkedIn ", spanStyle = SpanStyle(Color.Blue)))
+
+        appendInlineContent(dividerId, "[divider]")
+
+        append(AnnotatedString(" Twitter ", spanStyle = SpanStyle(Color.Blue)))
+
+        appendInlineContent(dividerId, "[divider]")
+
+        append(AnnotatedString(" Portfolio", spanStyle = SpanStyle(Color.Blue)))
+    }
+}
+```
 
 `appendInlineContent()` requires `id` as a first parameter which is referred by [`BasicText`](<https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/package-summary#BasicText(androidx.compose.ui.text.AnnotatedString,androidx.compose.ui.Modifier,androidx.compose.ui.text.TextStyle,kotlin.Function1,androidx.compose.ui.text.style.TextOverflow,kotlin.Boolean,kotlin.Int,kotlin.collections.Map)>) to replace the corresponding composable at runtime (we’ll see this). The second parameter `alternateText` is actually appended to the `AnnotatedString` and marks the range of text to be replaced by inline content and is also used to describe the inline content by accessibility feature.
 
@@ -55,7 +83,38 @@ We can have multiple types of inline composables inside AnnotatedString and ever
 
 Now let’s proceed 👉:
 
-<script src="https://gist.github.com/PatilShreyas/a0780bcb1f949201d2398001c5cb8513.js"></script>
+```kotlin
+@Composable
+fun Social() {
+    // ... Previous part
+    val inlineDividerContent = mapOf(
+        Pair(
+            // This tells the [CoreText] to replace the placeholder string "[divider]" by
+            // the composable given in the [InlineTextContent] object.
+            dividerId,
+            InlineTextContent(
+                // Placeholder tells text layout the expected size and vertical alignment of
+                // children composable.
+                Placeholder(
+                    width = 0.15.em,
+                    height = 0.90.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .rotate(15f)
+                        .fillMaxSize()
+                        .clip(RectangleShape)
+                        .background(Color.DarkGray)
+                )
+            }
+        )
+    )
+
+    BasicText(text = text, inlineContent = inlineDividerContent, style = TextStyle(fontSize = 17.sp))
+}
+```
 
 Here we’ve created Map of `String` i.e. _id_ and `InlineTextContent`. As discussed earlier, we can have multiple pairs of id and inline content. `Placeholder` is required for `InlineTextContent` which takes _width, height_ and _vertical alignment_ for inline content. The value specified to width and height defines the size of the composable in the text line and is always proportional to the size of a _Text_. Now inside the content, we have specified `Box` layout with _Rectangular_ shape having _color_ and some _rotation_.
 
@@ -79,4 +138,56 @@ I hope you liked the article and found it helpful. Thank you! 😃
 
 - [Jetpack Compose Text - Documentation](https://developer.android.com/jetpack/compose/text)
 - [InlineTextContent - API Reference](https://developer.android.com/reference/kotlin/androidx/compose/foundation/text/InlineTextContent)
-- <script src="https://gist.github.com/PatilShreyas/eb81fa1e47c66cf4fb7596d289e68ba9.js"></script>
+-
+
+```kotlin
+@Composable
+fun Social() {
+    val dividerId = "inlineDividerId"
+
+    val text = buildAnnotatedString {
+        // LinkedIn
+        append(AnnotatedString("LinkedIn ", spanStyle = SpanStyle(Color.Blue)))
+
+        // Divider
+        appendInlineContent(dividerId, "[divider]")
+
+        // Twitter
+        append(AnnotatedString(" Twitter ", spanStyle = SpanStyle(Color.Blue)))
+
+        // Divider
+        appendInlineContent(dividerId, "[divider]")
+
+        // Portfolio
+        append(AnnotatedString(" Portfolio", spanStyle = SpanStyle(Color.Blue)))
+    }
+
+    val inlineDividerContent = mapOf(
+        Pair(
+            // This tells the [CoreText] to replace the placeholder string "[divider]" by
+            // the composable given in the [InlineTextContent] object.
+            dividerId,
+            InlineTextContent(
+                // Placeholder tells text layout the expected size and vertical alignment of
+                // children composable.
+                Placeholder(
+                    width = 0.15.em,
+                    height = 0.90.em,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .rotate(15f)
+                        .fillMaxSize()
+                        .clip(RectangleShape)
+                        .background(Color.DarkGray)
+
+                )
+            }
+        )
+    )
+
+    BasicText(text = text, inlineContent = inlineDividerContent, style = TextStyle(fontSize = 17.sp))
+}
+```

@@ -29,7 +29,17 @@ Kotlin allows us to do Object Oriented Programming as well as Functional program
 
 - See below code and notice difference 👇:
 
-<script src="https://gist.github.com/PatilShreyas/6c52527a196b992940346fefd474285d.js"></script>
+```kotlin
+object MathUtils {
+  fun add(a: Int, b: Int): Int { /* Function body */ }
+  fun sub(a: Int, b: Int): Int { /* Function body */ }
+}
+
+fun main() {
+  val sumResult = MathUtils.add(10, 20)
+  val subResult = MathUtils.sub(30, 10)
+}
+```
 
 - Here you can see we extracted methods out of `object MathUtils`. This is just a small example and this is how we can refactor code. Such functions (declared out of class) in Kotlin are resolved as static members in JVM.
 
@@ -41,7 +51,11 @@ As we already discussed that Kotlin provides us with a way to write expressive c
 
 - See the difference in both of the below code snippet 👇:
 
-<script src="https://gist.github.com/PatilShreyas/eb3eb08ca7fccedf765de5da2c37906b.js"></script>
+```kotlin
+fun getUserById(uid: String): User {
+  return userRepository.findById(uid)
+}
+```
 
 > **Note:** It’s not necessary to mention return type of a function when we use such expression but IMO it makes code more readable for a person who’s seeing your code for the first time 😃.
 
@@ -51,7 +65,20 @@ As we already discussed that Kotlin provides us with a way to write expressive c
 
 In Java, we generally overload functions if we want to allow configurations with different combinations. It’s not necessary in Kotlin because here Default argument comes for help.
 
-<script src="https://gist.github.com/PatilShreyas/14355549b89955c50116b745ace33ece.js"></script>
+```kotlin
+fun startSomething(something: Something, config: SomeConfig = DefaultSomeConfig()) {
+  // Do something
+}
+
+fun main() {
+  // Start something with default Config
+  startSomething(something)
+
+  // Start something with customized Config
+  someConfig = getSomeConfig()
+  startSomething(something, someConfig)
+}
+```
 
 - If you see above snippet, you’ll notice function `startSomething()` has parameter `config` as default argument which will be considered if parameter not provided by caller function.
 - It’s a very helpful feature where we can allow a developer to configure things. We can even replace **Builder** pattern using default arguments in Kotlin. We can achieve it using default arguments + named arguments.
@@ -64,7 +91,35 @@ Ideally, functions should not have more than 3–4 parameters. But if your funct
 
 As we discussed in the previous section, we can use functions over the **Builder pattern** in Kotlin. Even we can safely change the order of parameters without any conflicts.
 
-<script src="https://gist.github.com/PatilShreyas/f150d4169971ff0da3a4e3e8c373d97b.js"></script>
+```kotlin
+fun showDialog(
+  title: String = "",
+  subTitle: String = "",
+  message: String = "",
+  isCancellable: Boolean = true,
+  positiveButton: Button? = null,
+  negativeButton: Button? = null,
+) {
+  // Your code
+}
+
+fun main() {
+  // Show simple info dialog
+  showDialog(
+    title = "Info",
+    message = "Here's Info"
+  )
+
+  // Show dialog with button
+  showDialog(
+    title = "Exit",
+    message = "Want to exit application?",
+    positiveButton = Button("Yes"),
+    negativeButton = Button("No"),
+    isCancellable = false
+  )
+}
+```
 
 - As you can see, using named arguments, our code now looks even more readable. We don’t need to see function definition now. We can directly get to know what’s happening by just looking at the caller function. This really makes it easy to configure things and this is how we can use it instead of Builder pattern.
 - Default Arguments + Named Arguments = Sweet Code 🍠 😍
@@ -79,23 +134,67 @@ In this scope, you can access the object without its name. Such functions are ca
 
 - Also, we can take advantage of using scope functions for handling nullability. For example, see this code:
 
-<script src="https://gist.github.com/PatilShreyas/0cd4d2ed895afa28b1df233ecf04353d.js"></script>
+```kotlin
+fun doSomething(person: Person?) {
+  if (person != null) {
+    // Do something with `person`
+  }
+}
+```
 
 In this code, we used `?` operator on a `person` and used function `let {}` which provides a lambda parameter `p` (it remains `it` if not provided explicitly). Then we can safely use that property.
 
 `let {}` can be also used to obtain some value after processing. For e.g. here we are getting age from the evaluation performed in the body of a lambda:
 
-<script src="https://gist.github.com/PatilShreyas/07a03f27c0778ec426a43c8274692e0d.js"></script>
+```diff
+fun doSomething(user: User) {
+-   val birthDate = user.birthDate()
+-   val age = calculateAgeByBirthDate(birthDate)
++   val age = user.let { calculateAgeByBirthDate(it.birthDate()) }
+  }
+```
 
 - When we want to perform repetitive operations on any specific field which might modify properties of that instance then `apply {}` is best for such scenarios. See below example 👇:
 
-<script src="https://gist.github.com/PatilShreyas/92eb2bc1b79f36701794862368254538.js"></script>
+```diff
+fun getUser(): User {
+    val user = User()
+-   user.isAdmin = true
+-   user.firstName = "John"
+-   user.lastName = "Doe"
+-   user.roles = listOf("Role1", "Role2")
+-   return user
++   return user.apply {
++     isAdmin = true
++     firstName = "John"
++     lastName = "Doe"
++     roles = listOf("Role1", "Role2")
++   }
+  }
+```
 
 The body of lambda of function `apply {}` provides `this` scope of instance on which we’re calling it and returns the same instance which we can use for chaining later.
 
 - Thus, here are examples of other scope functions:
 
-<script src="https://gist.github.com/PatilShreyas/b6b33bfcf6542a1344ad86baa78c7c17.js"></script>
+```kotlin
+fun doSomething() {
+  // also {}
+  val users = userRepository.getAllUsers().also { println("All users: $it") }
+
+  // run {}
+  users.run {
+    val adminUsers = filter { it.isAdmin }
+    val totalCount = count()
+  }
+
+  // with()
+  with(users) {
+    val firstUser = first()
+    val lastUser = last()
+  }
+}
+```
 
 There’s a lot more we can do with scope functions. Know more about Scope functions [here](https://kotlinlang.org/docs/reference/scope-functions.html).
 
@@ -107,7 +206,20 @@ This is one of the best features of Kotlin which allows us to extend the functio
 
 - By using this, we can get rid of traditional utility classes. For example, see code 👇:
 
-<script src="https://gist.github.com/PatilShreyas/60581a72f7866da214bb90decc4bc11b.js"></script>
+```kotlin
+// MainApp.kt
+fun main() {
+  val date = Date()
+  val formattedDate = DateUtils.formatDate(date, "yyyy-MM-dd")
+}
+
+// DateUtils.kt
+object DateUtils {
+  fun formatDate(date: Date, pattern: String): String {
+    return SimpleDateFormat(pattern).format(date)
+  }
+}
+```
 
 As you can see, we directly called `date.format("pattern")`.
 
@@ -121,7 +233,19 @@ As we discussed the extension function, extension property does the same. It doe
 
 - See the example below:
 
-<script src="https://gist.github.com/PatilShreyas/a5f384b62a5d3b433c3bcf80226ca7a1.js"></script>
+```kotlin
+fun main() {
+    println(120.binary) // 1111000
+    println(120.octal) // 170
+    println(120.hexadecimal) // 78
+}
+
+val Int.binary get() = toString(2)
+
+val Int.octal get() = toString(8)
+
+val Int.hexadecimal get() = toString(16)
+```
 
 Here we created extension properties on `Int` which returns binary, octal and hexadecimal.
 
@@ -135,7 +259,19 @@ Yes, we can overload operators in Kotlin for custom types i.e. classes 😍. By 
 
 - See the code 👇:
 
-<script src="https://gist.github.com/PatilShreyas/009c36df4eb7e6d45580500cb453c211.js"></script>
+```kotlin
+data class Sprint(val todoTasks: Int, val doneTasks: Int)
+
+fun main() {
+    val sprint1 = Sprint(51, 20)
+    val sprint2 = Sprint(30, 40)
+
+    val totalTodoTasks = sprint1.todoTasks + sprint2.todoTasks	// 51 + 30
+    val totalDoneTasks = sprint1.doneTasks + sprint2.doneTasks	// 20 + 40
+
+    val newSprint = Sprint(totalTodoTasks, totalDoneTasks)
+}
+```
 
 If you look, the first snippet looks bit confusing but the second snippet looks good and we get a clear idea of what’s happening. Know more about operator overloading [here](https://kotlinlang.org/docs/reference/operator-overloading.html).
 
@@ -145,7 +281,26 @@ If you look, the first snippet looks bit confusing but the second snippet looks 
 
 Infix function improves the beauty of our code. It allows us to create our own DSLs. It can make our code even more readable in the form of simple language. For example, see this 👇:
 
-<script src="https://gist.github.com/PatilShreyas/58a6c34af78e19c3f103f30fd8a3e871.js"></script>
+```kotlin
+data class User(val id: Int, val name: String)
+
+class Task(val id: Int, val title: String, var assignedUser: User? = null) {
+
+    infix fun assignTo(user: User) {
+        // Other validation checks
+        assignedUser = user
+    }
+}
+
+fun main() {
+    val user = User(10, "John Doe")
+    val task = Task(567, "Fix bug in the production")
+
+    task assignTo user
+
+    println("'${task.title}' assigned to ${task.assignedUser?.name}") // 'Fix bug in the production' assigned to John Doe
+}
+```
 
 Did you saw that line? `task assignTo user`. It’s sweet, isn’t it? 😃
 
@@ -159,7 +314,16 @@ As we saw, Higher-order functions in Kotlin are resolved statically and as they�
 
 When a function is marked as `inline` it actually generates the code from where it’s called. For example, see this 👇:
 
-<script src="https://gist.github.com/PatilShreyas/1f0abf6e018b60fd1f3328c36de2e6c1.js"></script>
+```kotlin
+inline fun <T> processList(list: List<T>) {
+    // do tasks
+    println(list)
+}
+
+fun main() {
+    processList(listOf("a", "b"))
+}
+```
 
 Now as you can see, we have marked `processList()` as `inline`. Now see generated bytecode here 👇 and you’ll see that whatever we’ve written in inline function is exactly present in `main()` function.
 
@@ -171,7 +335,22 @@ Now as you can see, we have marked `processList()` as `inline`. Now see generate
 
 How to access the type of parameter in Inline function 🤔. **reified** keyword comes to rescue here. See code first 👇:
 
-<script src="https://gist.github.com/PatilShreyas/75d95253585d5f23ce573f606c5ed100.js"></script>
+```kotlin
+data class User(val id: Int, val name: String)
+
+inline fun <reified T> fromJson(json: String): T {
+    println(T::class.java)
+    return deserializer.fromJson<T>(json)
+}
+
+fun main() {
+    val json = """{"id":1,"name":"John Doe"}"""
+    val user = fromJson<User>(json)
+}
+
+// OUTPUT:
+// class User
+```
 
 As you can see, now the type of class is accessible inside the function, almost as if it were a normal class. Since the function is inlined, no reflection is needed. Otherwise, without reified we might need to use **reflections** to deserialize that JSON.
 
@@ -182,7 +361,14 @@ As you can see, now the type of class is accessible inside the function, almost 
 - It allows you to specify an alternative name for existing types.
 - If the type name is too long you can introduce a different shorter name and use the new one instead. For example, see this 👇, here we used type alias `Features` to shorten the long generic type:
 
-<script src="https://gist.github.com/PatilShreyas/674466cfa912f05a0571d068c9686fd9.js"></script>
+```diff
++ typealias Features = Map<String, List<String>>
+
+  fun main() {
+-     val langFeatures: Map<String, List<String>> = mapOf("kotlin" to listOf("extension fun", "inline fun"))
++     val langFeatures: Features = mapOf("kotlin" to listOf("extension fun", "inline fun"))
+  }
+```
 
 ---
 
@@ -190,7 +376,14 @@ As you can see, now the type of class is accessible inside the function, almost 
 
 If you have created a class with the same name as of another class. If we try to use both classes in a single file it would be a clash ⚠️. We can use `as` to import specific class with another name. For example, see this 👇:
 
-<script src="https://gist.github.com/PatilShreyas/d18b6487252592bcd8c92dd63ec1877a.js"></script>
+```kotlin
+import java.util.Date as JDate
+
+fun main() {
+    val date = JDate()
+    println(date) // Thu MMM 24 HH:mm:ss UTC YYYY
+}
+```
 
 Here, we have imported `java.util.Date` class as `JDate` and we can use it by using that name only in this file.
 

@@ -37,7 +37,16 @@ Thus, you’re done with Bintray set up. Now let’s see the **Android** part.
 
 In `build.gradle` of your project module, ensure that you’ve below plugins added:
 
-<script src="https://gist.github.com/PatilShreyas/fc9997c4fe63c15c3ef2af99cbd69dda.js"></script>
+```gradle
+dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // Required plugins added to classpath to facilitate pushing to Jcenter/Bintray
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    }
+```
 
 Add these plugins in the `build.gradle` file of the library module:
 
@@ -50,7 +59,117 @@ apply plugin: 'com.jfrog.bintray'
 
 Now, we’ve to set up library configuration 🛠 for the Bintray in this file. Just append `build.gradle` file of library module with the code as below:
 
-<script src="https://gist.github.com/PatilShreyas/402d03bbe004df7f75154a160db4ebc2.js"></script>
+```gradle
+ext {
+    // This should be same as you've created in bintray
+    bintrayRepo = 'maven'
+
+    // Name which will be visible on bintray
+    bintrayName = 'CoolLibrary'
+
+    // Library Details
+    publishedGroupId = 'dev.shreyaspatil'
+    libraryName = 'CoolLibrary'
+    artifact = 'CoolLibrary'
+    libraryDescription = 'Cool Library'
+    libraryVersion = version
+
+    // Repository Link (For e.g. GitHub repo)
+    siteUrl = 'https://github.com/patilshreyas/AndroidLibDemo'
+    gitUrl = 'https://github.com/patilshreyas/AndroidLibDemo.git'
+    githubRepository= 'patilshreyas/AndroidLibDemo'
+
+    // Developer Details
+    developerId = 'patilshreyas'
+    developerName = 'Shreyas Patil'
+    developerEmail = 'shreyaspatilg@gmail.com'
+
+    // License Details
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+// This is mandatory
+group = publishedGroupId
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+
+                groupId publishedGroupId
+                artifactId = artifact
+                name libraryName
+                description = libraryDescription
+                url siteUrl
+
+                licenses {
+                    license {
+                        name licenseName
+                        url licenseUrl
+                    }
+                }
+                developers {
+                    developer {
+                        id developerId
+                        name developerName
+                        email developerEmail
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+// Avoid Kotlin docs error
+tasks.withType(Javadoc) {
+    enabled = false
+}
+
+// Remove javadoc related tasks
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// https://github.com/bintray/gradle-bintray-plugin
+bintray {
+    user = System.getenv("bintrayUser")
+    key = System.getenv("bintrayApiKey")
+
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        publish = true
+    }
+}
+```
 
 About these variables:
 
@@ -83,7 +202,30 @@ Now just create a workflow file named `publish.yml` which will be responsible to
 
 Just create a `.github` directory at the root of GitHub repository. Under it, create `workflows` directory and put the below file in this. So the path would be `.github/workflows/publish.yml`. Or simply, you can directly create the workflow by clicking the **Actions** tab and then create Workflow from available templates.
 
-<script src="https://gist.github.com/PatilShreyas/94e69e999f565e726945b5238a354a81.js"></script>
+```yaml
+name: Publish Bintray
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Grant Permission to Execute
+        run: chmod +x gradlew
+      - name: Publish Library
+        env:
+          bintrayUser: ${{ secrets.BINTRAY_USER }}
+          bintrayApiKey: ${{ secrets.BINTRAY_API_KEY }}
+        run: ./gradlew bintrayUpload
+```
 
 > **Note:** Notice that we’ve exposed system environment variable `bintrayUser` and `bintrayApiKey` which values we’re getting from GitHub **secrets**. Remember that we’re reading these values in `build.gradle` using `System.getenv()` method.
 

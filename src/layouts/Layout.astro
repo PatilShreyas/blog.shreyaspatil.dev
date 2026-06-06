@@ -230,33 +230,7 @@ const structuredData = isArticle
   </head>
   <body>
     <slot />
-
     <!-- Load full theme logic -->
     <script src="../scripts/theme.ts"></script>
-
-    <!-- Re-execute GitHub Gist scripts on every page navigation (View Transitions compat) -->
-    <script is:inline>
-      function loadGists() {
-        document
-          .querySelectorAll('script[src*="gist.github.com"]')
-          .forEach(function (originalScript) {
-            // Avoid double-loading on the same navigation
-            if (originalScript.dataset.loaded === "1") return;
-            originalScript.dataset.loaded = "1";
-
-            const newScript = document.createElement("script");
-            newScript.src = originalScript.src;
-            // Insert after the original to preserve position
-            originalScript.parentNode.insertBefore(
-              newScript,
-              originalScript.nextSibling
-            );
-          });
-      }
-      // Runs on first page load
-      document.addEventListener("DOMContentLoaded", loadGists);
-      // Runs on every subsequent Astro View Transition navigation
-      document.addEventListener("astro:page-load", loadGists);
-    </script>
   </body>
 </html>

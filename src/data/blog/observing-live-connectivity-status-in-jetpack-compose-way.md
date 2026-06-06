@@ -25,11 +25,38 @@ So let’s start the implementation. Considering you have created a boilerplate 
 
 First of all, let’s create core utilities for observing the network connectivity. Add a sealed model for holding connectivity status details as follows:
 
-<script src="https://gist.github.com/PatilShreyas/8d751a4c397967526900b5c146d47958.js"></script>
+```kotlin
+sealed class ConnectionState {
+    object Available : ConnectionState()
+    object Unavailable : ConnectionState()
+}
+```
 
 Sometimes, we don’t need to observe connectivity but we need to know the status of connectivity in a single shot. So let’s create a utility for **getting the current connectivity status**.
 
-<script src="https://gist.github.com/PatilShreyas/147f44e8e92322c9aa183a03f1e57ccd.js"></script>
+```kotlin
+/**
+ * Network utility to get current state of internet connection
+ */
+val Context.currentConnectivityState: ConnectionState
+    get() {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return getCurrentConnectivityState(connectivityManager)
+    }
+
+private fun getCurrentConnectivityState(
+    connectivityManager: ConnectivityManager
+): ConnectionState {
+    val connected = connectivityManager.allNetworks.any { network ->
+        connectivityManager.getNetworkCapabilities(network)
+            ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            ?: false
+    }
+
+    return if (connected) ConnectionState.Available else ConnectionState.Unavailable
+}
+```
 
 This way, we can check if the current network having internet capability or not. Here, we created a separate function `getCurrentConnectivityState()` for re-usability purposes (_we’ll see its usage_).
 
@@ -37,7 +64,45 @@ Now, on `Context` instance, we can directly access the current connectivity stat
 
 Now, let’s create a utility for observing _LIVE_ 🔴 network connectivity changes!
 
-<script src="https://gist.github.com/PatilShreyas/605d2f69419f72c97cb89a2a819c51bb.js"></script>
+```kotlin
+/**
+ * Network Utility to observe availability or unavailability of Internet connection
+ */
+@ExperimentalCoroutinesApi
+fun Context.observeConnectivityAsFlow() = callbackFlow {
+    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    val callback = NetworkCallback { connectionState -> trySend(connectionState) }
+
+    val networkRequest = NetworkRequest.Builder()
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .build()
+
+    connectivityManager.registerNetworkCallback(networkRequest, callback)
+
+    // Set current state
+    val currentState = getCurrentConnectivityState(connectivityManager)
+    trySend(currentState)
+
+    // Remove callback when not used
+    awaitClose {
+        // Remove listeners
+        connectivityManager.unregisterNetworkCallback(callback)
+    }
+}
+
+fun NetworkCallback(callback: (ConnectionState) -> Unit): ConnectivityManager.NetworkCallback {
+    return object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            callback(ConnectionState.Available)
+        }
+
+        override fun onLost(network: Network) {
+            callback(ConnectionState.Unavailable)
+        }
+    }
+}
+```
 
 Here, we are using [`callbackFlow{}`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/callback-flow.html), which is a cold 🌊 stream by which we can _remove observer on cancellation_ with `awaitClose()` as you can see. Once we start collecting flow, live updates of the connectivity state will be sent over this flow and updates will be unregistered once the flow collector _cancels the subscription_.
 
@@ -51,7 +116,19 @@ Now let’s start developing Compose utilities for observing connectivity change
 
 For this, we’ll utilize [`produceState()`](<https://developer.android.com/reference/kotlin/androidx/compose/runtime/package-summary#produceState(kotlin.Any,kotlin.coroutines.SuspendFunction1)>), which launches coroutine scoped to the Composition which holds the [State](https://developer.android.com/reference/kotlin/androidx/compose/runtime/State). It’ll be automatically get cancelled once it leaves the composition.
 
-<script src="https://gist.github.com/PatilShreyas/1c996240c3bbf492d848ffa55b351b7c.js"></script>
+```kotlin
+@ExperimentalCoroutinesApi
+@Composable
+fun connectivityState(): State<ConnectionState> {
+    val context = LocalContext.current
+
+    // Creates a State<ConnectionState> with current connectivity state as initial value
+    return produceState(initialValue = context.currentConnectivityState) {
+        // In a coroutine, can make suspend calls
+        context.observeConnectivityAsFlow().collect { value = it }
+    }
+}
+```
 
 As you can see, we created a Composable function that returns the Connectivity state. In the `produceState()`, we are subscribing to the previously created core utility `Flow` and setting **State**’s value on collecting every connectivity state.
 
@@ -65,7 +142,22 @@ We are done with the development of composable utility.
 
 Thus, the utility is now ready to be used in the Compose functions. Just plug it and see magic 👽. On UI, you can use it like 👇:
 
-<script src="https://gist.github.com/PatilShreyas/2f9fb4cc66c3bd945dd1c1cb28644a2a.js"></script>
+```kotlin
+@ExperimentalCoroutinesApi
+@Composable
+fun ConnectivityStatus() {
+    // This will cause re-composition on every network state change
+    val connection by connectivityState()
+
+    val isConnected = connection === ConnectionState.Available
+
+    if (isConnected) {
+        // Show UI when connectivity is available
+    } else {
+        // Show UI for No Internet Connectivity
+    }
+}
+```
 
 Yep, that’s it 😍. You can see its actual usage in one of my projects i.e. [NotyKT](https://github.com/PatilShreyas/NotyKT/pull/210). Here’s the sample outcome of this from the above-mentioned project:
 

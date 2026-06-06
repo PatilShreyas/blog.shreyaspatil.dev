@@ -82,13 +82,31 @@ You can declare various lanes in `Fastfile` which can have different behaviours 
 
 Let’s say you have to deploy an application for the **BETA** track. Then your lane would look like 👇:
 
-<script src="https://gist.github.com/PatilShreyas/9678debdfb08983622451ef75c8c9f6d.js"></script>
+```fastfile
+default_platform(:android)
+
+platform :android do
+
+  desc "Deploy a beta version to the Google Play"
+  lane :beta do
+    gradle(task: "clean bundleRelease")
+    upload_to_play_store(track: 'beta')
+  end
+
+end
+```
 
 > **Note:** You can use many other [available parameters for configuring](https://docs.fastlane.tools/actions/upload_to_play_store/#parameters) `upload_to_play_store()` as per your requirement.
 
 If you remove all parameters from `upload_to_play_store` then it’ll release application in **production**. So deploy lane would look like 👇:
 
-<script src="https://gist.github.com/PatilShreyas/4632d27e7a76ff470ab3abccd4adc5ab.js"></script>
+```fastfile
+desc "Deploy a new version to the Google Play"
+    lane :production do
+      gradle(task: "clean bundleRelease")
+      upload_to_play_store
+    end
+```
 
 Yeah! Thus we have completed the core part of the deployment. Now let’s test it locally.
 
@@ -134,21 +152,67 @@ Do the same procedure for the Keystore file and add Keystore file’s **Base64**
 
 1.  Create a workflow file `release.yml` in `.github/workflows` directory. Add initial contents to the file as 👇:
 
-<script src="https://gist.github.com/PatilShreyas/bdb908a5938fb3612ed8d0a9cafc2df6.js"></script>
+```yaml
+name: Deploy
+
+on:
+  push:
+    branches: [beta]
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: "2.6"
+```
 
 This means, whenever commits are pushed on to the **beta** branch, the deployment will be triggered. Also, setup Ruby for workflow.
 
 2.  Install Ruby bundle:
 
-<script src="https://gist.github.com/PatilShreyas/3e66d01a0145123e03da96b171d5324b.js"></script>
+```yaml
+- name: Install bundle
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+```
 
 3.  Now let’s create Keystore (`.jks`) file and Google play configuration (`.json`) file from content which we created using GitHub Actions Secret:
 
-<script src="https://gist.github.com/PatilShreyas/e3826a6689dd4e16bacb6efaaa0b203b.js"></script>
+```yaml
+- name: Configure Keystore
+        run: |
+          echo "$ANDROID_KEYSTORE_FILE" > keystore.jks.b64
+          base64 -d -i keystore.jks.b64 > app/keystore.jks
+          echo "storeFile=keystore.jks" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> keystore.properties
+        env:
+          ANDROID_KEYSTORE_FILE: ${{ secrets.ANDROID_KEYSTORE_FILE }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+
+      - name: Create Google Play Config file
+        run : |
+          echo "$PLAY_CONFIG_JSON" > play_config.json.b64
+          base64 -d -i play_config.json.b64 > play_config.json
+        env:
+          PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG_JSON }}
+```
 
 4.  Finally, let’s execute the **BETA** lane:
 
-<script src="https://gist.github.com/PatilShreyas/334156083e44c97473affc599731ed9c.js"></script>
+```yaml
+- name: Distribute app to Beta track 🚀
+        run: bundle exec fastlane beta
+```
 
 Yeah! 😍 That’s it. You can do the same for the production deployment as per your choice.
 

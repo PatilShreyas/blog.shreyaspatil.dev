@@ -35,19 +35,66 @@ Open _Android Studio_ and create a new project. Alternatively, you can simply cl
 
 In the app module of `build.gradle`, include following dependencies:
 
-<script src="https://gist.github.com/PatilShreyas/bca85234aee7c67c19ab92fe2b3cab1e.js"></script>
+```gradle
+dependencies {
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Kotlin Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.5'
+
+    // Android
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    // ViewModel
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+
+    // Firebase Cloud Firestore (Kotlin)
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.2'
+}
+```
 
 Next, let’s create our model class. Create a new file and name it `Post.kt`.
 
-<script src="https://gist.github.com/PatilShreyas/1e5479b62fd73e43253bd5802ad077c1.js"></script>
+```kotlin
+data class Post(
+    val postContent: String? = null,
+    val postAuthor: String? = null
+)
+```
 
 In this application, we’ll need to manage the state of operations in our UI. For example handling the _Loading, Success_ or _Failure_ states. For that, we’ll create a `State.kt` class.
 
-<script src="https://gist.github.com/PatilShreyas/e058a01b400e38fd874eb1dbb61d2c6f.js"></script>
+```kotlin
+sealed class State<T> {
+    class Loading<T> : State<T>()
+    data class Success<T>(val data: T) : State<T>()
+    data class Failed<T>(val message: String) : State<T>()
+
+    companion object {
+        fun <T> loading() = Loading<T>()
+        fun <T> success(data: T) = Success(data)
+        fun <T> failed(message: String) = Failed<T>(message)
+    }
+}
+```
 
 Now let’s design a **Repository** for this application. _It’ll be a single source of the data throughout the application_. 🚀
 
-<script src="https://gist.github.com/PatilShreyas/73e889f9cf60697f9a083717c714a3fa.js"></script>
+```kotlin
+class PostsRepository {
+  private val mPostsCollection = FirebaseFirestore.getInstance().collection(Constants.COLLECTION_POST)
+
+  fun getAllPosts() { // TODO Implement }
+  fun addPost(post: Post) { // TODO Implement }
+  ...
+}
+```
 
 This is how our repository will look like. We’ll declare these two functions here:
 
@@ -56,7 +103,23 @@ This is how our repository will look like. We’ll declare these two functions h
 
 Let’s implement `getAllPosts()`:
 
-<script src="https://gist.github.com/PatilShreyas/ab2f55d46b123e10e048daf07e15e431.js"></script>
+```kotlin
+fun getAllPosts() = flow<State<List<Post>>> {
+
+    // Emit loading state
+    emit(State.loading())
+
+    val snapshot = mPostsCollection.get().await()
+    val posts = snapshot.toObjects(Post::class.java)
+
+    // Emit success state with data
+    emit(State.success(posts))
+
+}.catch {
+    // If exception is thrown, emit failed state along with message.
+    emit(State.failed(it.message.toString()))
+}.flowOn(Dispatchers.IO)
+```
 
 As you can see, we are returning a flow with the `flow {}` builder.
 
@@ -69,7 +132,22 @@ As you can see, we are returning a flow with the `flow {}` builder.
 
 Now we’ll implement the same for `addPost()`:
 
-<script src="https://gist.github.com/PatilShreyas/cface010611ce7711bc62350e27b85db.js"></script>
+```kotlin
+fun addPost(post: Post) = flow<State<DocumentReference>> {
+
+    // Emit loading state
+    emit(State.loading())
+
+    val postRef = mPostsCollection.add(post).await()
+
+    // Emit success state with post reference
+    emit(State.success(postRef))
+
+}.catch {
+    // If exception is thrown, emit failed state along with message.
+    emit(State.failed(it.message.toString()))
+}.flowOn(Dispatchers.IO)
+```
 
 This should look familiar to you by now :-)
 
@@ -79,17 +157,66 @@ This should look familiar to you by now :-)
 
 After having implemented our repository (which will handle all data reads/writes to/from Cloud Firestore), we can create a `ViewModel` which will be useful to interact with Android `Activities`. The `ViewModel` will be the bridge between `PostsRepository` and `MainActivity`.
 
-<script src="https://gist.github.com/PatilShreyas/a218ce3c5a77fb6acbdd1219225562d9.js"></script>
+```kotlin
+class MainViewModel(private val repository: PostsRepository) : ViewModel() {
+
+    fun getAllPosts() = repository.getAllPosts()
+
+    fun addPost(post: Post) = repository.addPost(post)
+}
+```
 
 Finally, it’s time to retrieve posts on the UI (`MainActivity`).
 
 We’ll need to perform _flow_ operations on the **coroutine context** because the _flow_ is asynchronous and for this, we’ll need to create a `suspend` function to handle repository operations from _ViewModel_. The `suspend` function can be paused and resumed at a later point in time.
 
-<script src="https://gist.github.com/PatilShreyas/7b299785b63c53c7ee939f2fc4fcc255.js"></script>
+```kotlin
+private suspend fun loadPosts() {
+    viewModel.getAllPosts().collect { state ->
+        when (state) {
+            is State.Loading -> {
+                showToast("Loading")
+            }
+
+            is State.Success -> {
+                val postText = state.data.joinToString("\n") {
+                    "${it.postContent} ~ ${it.postAuthor}"
+                }
+
+                binding.textPostContent.text = postText
+            }
+
+            is State.Failed -> showToast("Failed! ${state.message}")
+        } // END when
+    } // END collect
+}
+```
 
 And the same for adding posts:
 
-<script src="https://gist.github.com/PatilShreyas/28848bbb3c681022583c3a47a4d7a872.js"></script>
+```kotlin
+private suspend fun addPost(post: Post) {
+    viewModel.addPost(post).collect { state ->
+        when (state) {
+            is State.Loading -> {
+                showToast("Loading")
+                binding.buttonAdd.isEnabled = false
+            }
+
+            is State.Success -> {
+                showToast("Posted")
+                binding.fieldPostContent.setText("")
+                binding.buttonAdd.isEnabled = true
+            }
+
+            is State.Failed -> {
+                showToast("Failed! ${state.message}")
+                binding.buttonAdd.isEnabled = true
+            }
+        }
+    }
+}
+```
 
 Now let’s discuss what’s happening:
 

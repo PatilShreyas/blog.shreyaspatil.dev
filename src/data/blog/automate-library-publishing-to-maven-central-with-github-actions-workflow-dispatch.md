@@ -165,17 +165,59 @@ Create an Action workflow in `.github/workflows/` directory by the name `publish
 
 As we want to use `workflow_dispatch` set it up like below. Make sure to define an input parameter `versionName`:
 
-<script src="https://gist.github.com/PatilShreyas/d1afc400493d215425d2379d8ebc9ef0.js"></script>
+```yaml
+name: Publish
+on:
+  workflow_dispatch:
+    inputs:
+      versionName:
+        description: "Version Name"
+        required: true
+```
 
 **_Setup JDK, Gradle & run build first_**
 
-<script src="https://gist.github.com/PatilShreyas/77ef814346f91a7036ea372d714bebbf.js"></script>
+```yaml
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+
+      - name: Grant Permission to Execute Gradle
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+```
 
 This will set up the repository, Java JDK, Gradle in the workflow and will execute `./gradlew build` first.
 
 **_Trigger publishing and releasing_**
 
-<script src="https://gist.github.com/PatilShreyas/85e450a7890813f2981fe9a4476866d4.js"></script>
+```yaml
+- name: Publish Library
+        run: |
+          ./gradlew publish --no-daemon --no-parallel
+          ./gradlew closeAndReleaseRepository
+        env:
+          ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.inputs.versionName }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSWORD }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+```
 
 As you can see in the [Gradle plugin's docs](https://github.com/vanniktech/gradle-maven-publish-plugin#releasing), Gradle task `publish` and then `closeAndReleaseRepository` should be executed in order to release a library.
 
@@ -185,7 +227,27 @@ As you can see, we've exposed credentials and secret keys as an environment vari
 
 **_Create a tag and release on GitHub_**
 
-<script src="https://gist.github.com/PatilShreyas/b70fd9142845e3287a9a49964ca0b6db.js"></script>
+```yaml
+- name: Create and push tag
+        run: |
+          git config --global user.email "shreyaspatilg@gmail.com"
+          git config --global user.name "$GITHUB_ACTOR"
+          git tag -a $TAG -m "Release v$TAG"
+          git push origin $TAG
+        env:
+          TAG: ${{ github.event.inputs.versionName }}
+
+      - name: Create Release on GitHub
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.versionName }}
+          release_name: MyLib ${{ github.event.inputs.versionName }}
+          draft: true
+          prerelease: false
+```
 
 This will create a tag with specified `versionName` and will push it. Later, it'll create a draft release with the reference of the tag pushed previously.
 
