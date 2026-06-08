@@ -285,8 +285,12 @@ const nextPost =
         : "-top-3";
 
       const copyButton = document.createElement("button");
-      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium`;
+      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium transition-all hover:text-accent active:scale-95`;
       copyButton.innerHTML = copyButtonLabel;
+      copyButton.setAttribute("aria-label", "Copy code snippet");
+      copyButton.setAttribute("title", "Copy code snippet");
+      copyButton.setAttribute("aria-live", "polite");
+
       codeBlock.setAttribute("tabindex", "0");
       codeBlock.appendChild(copyButton);
 
@@ -306,11 +310,15 @@ const nextPost =
       await navigator.clipboard.writeText(text ?? "");
 
       // visual feedback that task is completed
-      button.innerText = "Copied";
+      button.innerText = "Copied!";
+      button.setAttribute("aria-label", "Copied to clipboard");
+      button.setAttribute("title", "Copied!");
 
       setTimeout(() => {
         button.innerText = copyButtonLabel;
-      }, 700);
+        button.setAttribute("aria-label", "Copy code snippet");
+        button.setAttribute("title", "Copy code snippet");
+      }, 1500);
     }
   }
   attachCopyButtons();

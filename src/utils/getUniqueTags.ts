@@ -8,16 +8,23 @@ interface Tag {
 }
 
 const getUniqueTags = (posts: CollectionEntry<"blog">[]) => {
-  const tags: Tag[] = posts
-    .filter(postFilter)
-    .flatMap(post => post.data.tags)
-    .map(tag => ({ tag: slugifyStr(tag), tagName: tag }))
-    .filter(
-      (value, index, self) =>
-        self.findIndex(tag => tag.tag === value.tag) === index
-    )
-    .sort((tagA, tagB) => tagA.tag.localeCompare(tagB.tag));
-  return tags;
+  const filteredPosts = posts.filter(postFilter);
+
+  // Use a Map for O(N) deduplication instead of O(N^2) array filtering
+  const tagsMap = new Map<string, Tag>();
+
+  for (const post of filteredPosts) {
+    for (const tag of post.data.tags) {
+      const slugifiedTag = slugifyStr(tag);
+      if (!tagsMap.has(slugifiedTag)) {
+        tagsMap.set(slugifiedTag, { tag: slugifiedTag, tagName: tag });
+      }
+    }
+  }
+
+  return Array.from(tagsMap.values()).sort((tagA, tagB) =>
+    tagA.tag.localeCompare(tagB.tag)
+  );
 };
 
 export default getUniqueTags;
