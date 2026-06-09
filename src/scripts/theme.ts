@@ -34,7 +34,13 @@ function setPreference(): void {
 function reflectPreference(): void {
   document.firstElementChild?.setAttribute("data-theme", themeValue);
 
-  document.querySelector("#theme-btn")?.setAttribute("aria-label", themeValue);
+  const toggleBtn = document.querySelector("#theme-btn");
+  if (toggleBtn) {
+    const nextTheme = themeValue === "light" ? "dark" : "light";
+    const label = `Switch to ${nextTheme} theme`;
+    toggleBtn.setAttribute("aria-label", label);
+    toggleBtn.setAttribute("title", label);
+  }
 
   // Set the background color in <meta theme-color ... />
   // We use values from SITE config to avoid expensive getComputedStyle calls
