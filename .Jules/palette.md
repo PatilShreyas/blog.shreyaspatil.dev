@@ -5,3 +5,6 @@
 ## 2026-06-09 - Descriptive Action Tooltips on Toggles
 **Learning:** For toggle buttons (like theme switchers), providing an `aria-label` or `title` that purely states the current state (e.g. "dark" or "auto") isn't fully informative to users hovering or using screen readers.
 **Action:** Use action-oriented labels like "Switch to dark theme" so the user knows exactly what will happen when they click it. Keep these attributes dynamic so they always reflect the next intended state.
+## 2026-06-10 - Active Page Navigation Accessibility
+**Learning:** Adding active visual styles to navigation links without an underlying semantic indicator leaves screen reader users unaware of the current page context within the navigation.
+**Action:** When a navigation item is highlighted to denote the current active page, conditionally add `aria-current="page"` to the link element to explicitly communicate this state to assistive technologies.
