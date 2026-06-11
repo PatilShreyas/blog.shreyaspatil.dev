@@ -43,6 +43,7 @@ const isActive = (path: string) => {
     <a
       href="/"
       class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
+      aria-current={currentPath === "/" ? "page" : undefined}
     >
       {SITE.title}
     </a>
@@ -70,12 +71,12 @@ const isActive = (path: string) => {
         ]}
       >
         <li class="col-span-2">
-          <a href="/tags" class:list={{ "active-nav": isActive("/tags") }}>
+          <a href="/tags" class:list={{ "active-nav": isActive("/tags") }} aria-current={isActive("/tags") ? "page" : undefined}>
             Tags
           </a>
         </li>
         <li class="col-span-2">
-          <a href="https://shreyaspatil.dev"> About </a>
+          <a href="https://shreyaspatil.dev" aria-current={isActive("https://shreyaspatil.dev") ? "page" : undefined}> About </a>
         </li>
         {
           SITE.showArchives && (
@@ -90,8 +91,9 @@ const isActive = (path: string) => {
                 ]}
                 title="Archives"
                 aria-label="archives"
+                aria-current={isActive("/archives") ? "page" : undefined}
               >
-                <IconArchive class="hidden sm:inline-block" />
+                <IconArchive class="hidden sm:inline-block" aria-hidden="true" />
                 <span class="sm:sr-only">Archives</span>
               </LinkButton>
             </li>
@@ -106,8 +108,9 @@ const isActive = (path: string) => {
             ]}
             title="Search"
             aria-label="search"
+            aria-current={isActive("/search") ? "page" : undefined}
           >
-            <IconSearch />
+            <IconSearch aria-hidden="true" />
             <span class="sr-only">Search</span>
           </LinkButton>
         </li>
@@ -121,8 +124,8 @@ const isActive = (path: string) => {
                 aria-label="Switch theme"
                 aria-live="polite"
               >
-                <IconMoon class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-                <IconSunHigh class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                <IconMoon aria-hidden="true" class="absolute top-[50%] left-[50%] -translate-[50%] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                <IconSunHigh aria-hidden="true" class="absolute top-[50%] left-[50%] -translate-[50%] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
               </button>
             </li>
           )
