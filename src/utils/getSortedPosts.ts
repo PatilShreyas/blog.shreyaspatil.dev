@@ -7,10 +7,10 @@ const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
     .sort(
       (a, b) =>
         Math.floor(
-          new Date(b.data.modDatetime ?? b.data.pubDatetime).getTime() / 1000
+          (b.data.modDatetime ?? b.data.pubDatetime).getTime() / 1000
         ) -
         Math.floor(
-          new Date(a.data.modDatetime ?? a.data.pubDatetime).getTime() / 1000
+          (a.data.modDatetime ?? a.data.pubDatetime).getTime() / 1000
         )
     );
 };
