@@ -334,16 +334,16 @@ const nextPost =
       lightbox = document.createElement("div");
       lightbox.id = "lightbox";
       lightbox.innerHTML = `
-        <button class="lightbox-close" aria-label="Close" title="Close">
+        <button class="lightbox-close" aria-label="Close" title="Close (Esc)" aria-keyshortcuts="Escape">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
         <img id="lightbox-img" src="" alt="Full view" />
         <div class="lightbox-controls">
-          <button class="lightbox-btn zoom-out" disabled aria-label="Zoom Out" title="Zoom Out">
+          <button class="lightbox-btn zoom-out" disabled aria-label="Zoom Out" title="Zoom Out (-)" aria-keyshortcuts="-">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
           </button>
           <span class="lightbox-zoom-val">100%</span>
-          <button class="lightbox-btn zoom-in" aria-label="Zoom In" title="Zoom In">
+          <button class="lightbox-btn zoom-in" aria-label="Zoom In" title="Zoom In (+)" aria-keyshortcuts="+">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
           </button>
         </div>
