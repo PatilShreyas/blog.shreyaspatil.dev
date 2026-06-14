@@ -1,3 +1,6 @@
 ## 2024-05-24 - Tag Deduplication Bottleneck
 **Learning:** The Astro static site generation can be slowed down by O(N^2) algorithms in data processing scripts, such as array deduplication using `filter` and `findIndex`, especially when the number of posts grows.
 **Action:** Use a `Map` or `Set` for O(N) deduplication when aggregating large collections of data during the build process to minimize build time.
+## 2025-02-18 - Astro Zod Collections parse native Date Objects
+**Learning:** In this Astro project, the content collection schema (`src/content.config.ts`) uses Zod (`z.date()`) to parse fields like `pubDatetime` and `modDatetime`. This means these fields are already native `Date` objects. Wrapping them in `new Date(date)` and doing operations like `Math.floor(date.getTime() / 1000)` during sorting operations is completely redundant and causes unnecessary object allocation and math operations.
+**Action:** When filtering or sorting dates from Astro content collections, check the Zod schema first. If they are already parsed as dates, use `date.getTime()` for arithmetic directly, e.g., `(b.data.modDatetime ?? b.data.pubDatetime).getTime() - (a.data.modDatetime ?? a.data.pubDatetime).getTime()`. This saves multiple milliseconds during static site generation over hundreds of posts.
