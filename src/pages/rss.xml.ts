@@ -16,7 +16,8 @@ export async function GET() {
       link: getPath(id, filePath),
       title: data.title,
       description: data.description,
-      pubDate: new Date(data.modDatetime ?? data.pubDatetime),
+      // Optimization: Astro content schema parses dates natively; no need to wrap in new Date()
+      pubDate: data.modDatetime ?? data.pubDatetime,
       customData: [
         `<author>${SITE.author}</author>`,
         ...data.tags.map(tag => `<category>${tag}</category>`),
