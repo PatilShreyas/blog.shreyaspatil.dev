@@ -228,7 +228,7 @@ html[data-theme="dark"] mark {
 }
 
 .lightbox-close {
-  @apply absolute top-6 right-6 p-2 text-foreground transition-colors hover:text-accent;
+  @apply absolute top-6 right-6 p-2 text-foreground transition-all hover:text-accent active:scale-95;
 }
 
 .lightbox-controls {
@@ -236,7 +236,7 @@ html[data-theme="dark"] mark {
 }
 
 .lightbox-btn {
-  @apply p-2 text-foreground transition-colors hover:text-accent disabled:pointer-events-none disabled:opacity-30;
+  @apply p-2 text-foreground transition-all hover:text-accent active:scale-95 disabled:pointer-events-none disabled:opacity-30;
 }
 
 .lightbox-zoom-val {
