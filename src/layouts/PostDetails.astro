@@ -253,6 +253,10 @@ const nextPost =
         "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
       link.href = "#" + heading.id;
 
+      const headingText = heading.textContent || "";
+      link.setAttribute("aria-label", `Link to section: ${headingText}`);
+      link.setAttribute("title", `Link to section: ${headingText}`);
+
       const span = document.createElement("span");
       span.ariaHidden = "true";
       span.innerText = "#";
