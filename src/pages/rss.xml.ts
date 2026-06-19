@@ -16,7 +16,7 @@ export async function GET() {
       link: getPath(id, filePath),
       title: data.title,
       description: data.description,
-      pubDate: new Date(data.modDatetime ?? data.pubDatetime),
+      pubDate: data.modDatetime ?? data.pubDatetime,
       customData: [
         `<author>${SITE.author}</author>`,
         ...data.tags.map(tag => `<category>${tag}</category>`),
