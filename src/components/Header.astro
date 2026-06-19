@@ -42,7 +42,10 @@ const isActive = (path: string) => {
   >
     <a
       href="/"
-      class="absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none"
+      class:list={[
+        "absolute py-1 text-xl leading-8 font-semibold whitespace-nowrap sm:static sm:my-auto sm:text-2xl sm:leading-none",
+      ]}
+      aria-current={currentPath === "/" ? "page" : undefined}
     >
       {SITE.title}
     </a>
@@ -70,7 +73,11 @@ const isActive = (path: string) => {
         ]}
       >
         <li class="col-span-2">
-          <a href="/tags" class:list={{ "active-nav": isActive("/tags") }}>
+          <a
+            href="/tags"
+            class:list={{ "active-nav": isActive("/tags") }}
+            aria-current={isActive("/tags") ? "page" : undefined}
+          >
             Tags
           </a>
         </li>
@@ -90,6 +97,7 @@ const isActive = (path: string) => {
                 ]}
                 title="Archives"
                 aria-label="archives"
+                aria-current={isActive("/archives") ? "page" : undefined}
               >
                 <IconArchive class="hidden sm:inline-block" />
                 <span class="sm:sr-only">Archives</span>
@@ -106,6 +114,7 @@ const isActive = (path: string) => {
             ]}
             title="Search"
             aria-label="search"
+            aria-current={isActive("/search") ? "page" : undefined}
           >
             <IconSearch />
             <span class="sr-only">Search</span>
