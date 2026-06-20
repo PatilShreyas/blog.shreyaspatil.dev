@@ -5,3 +5,6 @@
 ## 2026-06-09 - Descriptive Action Tooltips on Toggles
 **Learning:** For toggle buttons (like theme switchers), providing an `aria-label` or `title` that purely states the current state (e.g. "dark" or "auto") isn't fully informative to users hovering or using screen readers.
 **Action:** Use action-oriented labels like "Switch to dark theme" so the user knows exactly what will happen when they click it. Keep these attributes dynamic so they always reflect the next intended state.
+## 2026-06-20 - Conditional Attributes in Astro
+**Learning:** In Astro components, you can conditionally add an attribute by setting its value to undefined when it should be omitted, e.g. `aria-current={isActive("/tags") ? "page" : undefined}`.
+**Action:** Use this pattern to clean up conditionally applied ARIA and other attributes in Astro files without needing to wrap elements in complex conditional logic.
