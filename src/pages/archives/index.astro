@@ -62,12 +62,8 @@ const months = [
                     {monthGroup
                       .sort(
                         (a, b) =>
-                          Math.floor(
-                            new Date(b.data.pubDatetime).getTime() / 1000
-                          ) -
-                          Math.floor(
-                            new Date(a.data.pubDatetime).getTime() / 1000
-                          )
+                          b.data.pubDatetime.getTime() -
+                          a.data.pubDatetime.getTime()
                       )
                       .map(data => (
                         <Card {...data} />
