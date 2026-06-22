@@ -5,3 +5,7 @@
 ## 2026-06-09 - Descriptive Action Tooltips on Toggles
 **Learning:** For toggle buttons (like theme switchers), providing an `aria-label` or `title` that purely states the current state (e.g. "dark" or "auto") isn't fully informative to users hovering or using screen readers.
 **Action:** Use action-oriented labels like "Switch to dark theme" so the user knows exactly what will happen when they click it. Keep these attributes dynamic so they always reflect the next intended state.
+
+## 2026-06-10 - Active State Accessibility in Astro
+**Learning:** For accessible navigation, providing visual active states (e.g., active navigation link styling) is not enough. Screen readers need `aria-current="page"` to understand the spatial context. In Astro, setting an attribute to `undefined` completely removes it from the rendered HTML, making it a perfect pattern for conditional attributes.
+**Action:** Always pair visual active states with `aria-current={isActive ? 'page' : undefined}` in navigation menus to provide correct context to screen reader users.
