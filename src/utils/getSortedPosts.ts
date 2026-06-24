@@ -6,12 +6,10 @@ const getSortedPosts = (posts: CollectionEntry<"blog">[]) => {
     .filter(postFilter)
     .sort(
       (a, b) =>
-        Math.floor(
-          new Date(b.data.modDatetime ?? b.data.pubDatetime).getTime() / 1000
-        ) -
-        Math.floor(
-          new Date(a.data.modDatetime ?? a.data.pubDatetime).getTime() / 1000
-        )
+        // ⚡ Bolt: Removed redundant new Date() and Math.floor() since pubDatetime/modDatetime are native Date objects.
+        // Direct subtraction of getTime() milliseconds avoids unnecessary overhead during array sorting.
+        (b.data.modDatetime ?? b.data.pubDatetime).getTime() -
+        (a.data.modDatetime ?? a.data.pubDatetime).getTime()
     );
 };
 
