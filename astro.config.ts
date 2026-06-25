@@ -4,6 +4,7 @@ import {
   fontProviders,
   sharpImageService,
 } from "astro/config";
+
 import tailwindcss from "@tailwindcss/vite";
 import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
@@ -18,7 +19,7 @@ import { remarkGifToVideo } from "./src/utils/transformers/gifToVideo.js";
 import { SITE } from "./src/config";
 
 // https://astro.build/config
-export default defineConfig({
+const config = {
   site: SITE.website,
   integrations: [
     sitemap({
@@ -96,27 +97,27 @@ export default defineConfig({
       }),
     },
   },
-  experimental: {
-    preserveScriptOrder: true,
-    fonts: [
-      {
-        name: "Inter",
-        cssVariable: "--font-inter",
-        provider: fontProviders.google(),
-        fallbacks: ["sans-serif"],
-        display: "swap",
-        weights: [300, 400, 500, 600, 700],
-        styles: ["normal", "italic"],
-      },
-      {
-        name: "Merriweather",
-        cssVariable: "--font-merriweather",
-        provider: fontProviders.google(),
-        fallbacks: ["serif"],
-        display: "swap",
-        weights: [300, 400, 700],
-        styles: ["normal", "italic"],
-      },
-    ],
-  },
-});
+  fonts: [
+    {
+      name: "Inter",
+      cssVariable: "--font-inter",
+      provider: fontProviders.google(),
+      fallbacks: ["sans-serif"],
+      display: "swap",
+      weights: [300, 400, 500, 600, 700],
+      styles: ["normal", "italic"],
+    },
+    {
+      name: "Merriweather",
+      cssVariable: "--font-merriweather",
+      provider: fontProviders.google(),
+      fallbacks: ["serif"],
+      display: "swap",
+      weights: [300, 400, 700],
+      styles: ["normal", "italic"],
+    },
+  ],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} as any;
+
+export default defineConfig(config);
