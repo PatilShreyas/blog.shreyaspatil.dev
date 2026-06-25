@@ -30,8 +30,8 @@ const prevUrl = page.url.prev === "/posts/1" ? "/" : page.url.prev;
       >
         <IconArrowLeft class="inline-block rtl:rotate-180" />
         Prev
-      </LinkButton>
-      {page.currentPage} / {page.lastPage}
+      </LinkButton>{" "}
+      {page.currentPage} / {page.lastPage}{" "}
       <LinkButton
         disabled={!page.url.next}
         href={page.url.next as string}
