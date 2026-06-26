@@ -6,7 +6,6 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Tag from "@/components/Tag.astro";
 import Datetime from "@/components/Datetime.astro";
-import EditPost from "@/components/EditPost.astro";
 import ShareLinks from "@/components/ShareLinks.astro";
 import BackToTopButton from "@/components/BackToTopButton.astro";
 import { getPath } from "@/utils/getPath";
@@ -32,10 +31,7 @@ const {
   pubDatetime,
   modDatetime,
   tags,
-  editPost,
 } = post.data;
-
-const hideEditPost = editPost?.disabled;
 
 const { Content } = await render(post);
 
@@ -121,22 +117,6 @@ const nextPost =
 
     <div class="my-2 flex flex-wrap items-center gap-2">
       <Datetime {pubDatetime} {modDatetime} size="lg" />
-      {
-        SITE.editPost.enabled && !hideEditPost && (
-          <>
-            <span
-              aria-hidden="true"
-              class:list={[
-                "max-sm:hidden",
-                { hidden: !SITE.editPost.enabled || hideEditPost },
-              ]}
-            >
-              |
-            </span>
-            <EditPost {hideEditPost} {post} class="max-sm:hidden" />
-          </>
-        )
-      }
     </div>
     {
       coverImage && (
@@ -156,8 +136,6 @@ const nextPost =
     </article>
 
     <hr class="my-8 border-dashed" />
-
-    <EditPost class="sm:hidden" {hideEditPost} {post} />
 
     <ul class="mt-4 mb-8 flex flex-wrap gap-4 sm:my-8">
       {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} size="sm" />)}
