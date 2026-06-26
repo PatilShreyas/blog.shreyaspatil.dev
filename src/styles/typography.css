@@ -26,7 +26,7 @@
   }
 
   .app-prose h4 {
-    @apply mt-8 mb-2 text-base sm:text-lg opacity-90 italic;
+    @apply mt-8 mb-2 text-base italic opacity-90 sm:text-lg;
   }
 
   .app-prose p,
@@ -37,7 +37,7 @@
   .app-prose table,
   .app-prose code,
   .app-prose mark {
-    @apply text-[1rem] sm:text-[1.125rem] leading-[1.7] text-foreground/90 font-normal;
+    @apply text-[1rem] leading-[1.7] font-normal text-foreground/90 sm:text-[1.125rem];
     font-variant-ligatures: common-ligatures;
     font-feature-settings:
       "kern" 1,
@@ -47,7 +47,7 @@
   }
 
   .app-prose p.lead {
-    @apply text-lg sm:text-xl font-normal text-foreground/95 leading-relaxed;
+    @apply text-lg leading-relaxed font-normal text-foreground/95 sm:text-xl;
   }
 
   .app-prose strong {
@@ -55,7 +55,7 @@
   }
 
   .app-prose mark {
-    @apply rounded bg-accent/12 px-1.5 py-0.5 text-accent font-medium;
+    @apply rounded bg-accent/12 px-1.5 py-0.5 font-medium text-accent;
   }
 
   .app-prose a {
@@ -67,7 +67,7 @@
   }
 
   .app-prose li {
-    @apply marker:text-accent/80 my-1.5;
+    @apply my-1.5 marker:text-accent/80;
   }
 
   .app-prose hr {
@@ -79,11 +79,11 @@
   }
 
   .app-prose blockquote {
-    @apply my-8 rounded-r-xl border-s-4 border-s-accent bg-accent/5 px-6 py-4 font-app text-lg sm:text-xl italic text-foreground/95 leading-relaxed;
+    @apply my-8 rounded-r-xl border-s-4 border-s-accent bg-accent/5 px-6 py-4 font-app text-lg leading-relaxed text-foreground/95 italic sm:text-xl;
   }
 
   .app-prose figcaption {
-    @apply text-sm sm:text-base text-foreground/75 italic mt-2 text-center;
+    @apply mt-2 text-center text-sm text-foreground/75 italic sm:text-base;
   }
 
   .app-prose table {
@@ -96,7 +96,7 @@
   }
 
   .app-prose table th {
-    @apply font-semibold bg-accent/5 text-foreground py-3;
+    @apply bg-accent/5 py-3 font-semibold text-foreground;
   }
 
   .app-prose table tr:hover {
@@ -111,8 +111,8 @@
     @apply rounded bg-foreground/5 px-[0.35em] py-[0.12em] font-mono text-[0.875em]! font-medium text-foreground before:content-none after:content-none;
     @apply break-words whitespace-normal;
     font-family:
-      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-      "Liberation Mono", "Courier New", monospace;
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
   }
 
   .app-prose :where(h1, h2, h3, h4, h5, h6) code:not(pre code) {
@@ -120,7 +120,7 @@
   }
 
   html[data-theme="dark"] .app-prose code:not(pre code) {
-    @apply border! border-white/10! bg-accent/15! shadow-inner text-foreground!;
+    @apply border! border-white/10! bg-accent/15! text-foreground! shadow-inner;
   }
 
   .app-prose .astro-code code {

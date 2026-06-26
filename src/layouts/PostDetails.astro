@@ -121,18 +121,22 @@ const nextPost =
 
     <div class="my-2 flex flex-wrap items-center gap-2">
       <Datetime {pubDatetime} {modDatetime} size="lg" />
-      {SITE.editPost.enabled && !hideEditPost && (
-        <>
-          <span
-            aria-hidden="true"
-            class:list={[
-              "max-sm:hidden",
-              { hidden: !SITE.editPost.enabled || hideEditPost },
-            ]}>|</span
-          >
-          <EditPost {hideEditPost} {post} class="max-sm:hidden" />
-        </>
-      )}
+      {
+        SITE.editPost.enabled && !hideEditPost && (
+          <>
+            <span
+              aria-hidden="true"
+              class:list={[
+                "max-sm:hidden",
+                { hidden: !SITE.editPost.enabled || hideEditPost },
+              ]}
+            >
+              |
+            </span>
+            <EditPost {hideEditPost} {post} class="max-sm:hidden" />
+          </>
+        )
+      }
     </div>
     {
       coverImage && (
