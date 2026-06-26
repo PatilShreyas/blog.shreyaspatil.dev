@@ -4,130 +4,139 @@
   /* ===== Override default Tailwind Typography styles ===== */
   .app-prose {
     @apply prose prose-base max-w-none sm:prose-lg;
+  }
 
-    h1 {
-      @apply mb-8 font-heading leading-tight font-black tracking-tighter text-foreground;
-    }
+  .app-prose h1 {
+    @apply mb-8 font-heading leading-tight font-black tracking-tighter text-foreground;
+  }
 
-    h2,
-    h3,
-    h4,
-    th {
-      @apply mt-4 mb-4 font-heading font-bold tracking-tight text-foreground;
-    }
+  .app-prose h2,
+  .app-prose h3,
+  .app-prose h4,
+  .app-prose th {
+    @apply font-heading font-semibold tracking-tight text-foreground;
+  }
 
-    h2 {
-      @apply text-3xl;
-    }
+  .app-prose h2 {
+    @apply mt-14 mb-4 text-xl sm:text-2xl md:leading-snug;
+  }
 
-    h3 {
-      @apply text-xl italic;
-    }
+  .app-prose h3 {
+    @apply mt-10 mb-3 text-lg sm:text-xl;
+  }
 
-    p,
-    strong,
-    ol,
-    ul,
-    figcaption,
-    table,
-    code,
-    mark {
-      @apply leading-[1.8] text-foreground/90;
-      font-variant-ligatures: common-ligatures;
-      font-feature-settings:
-        "kern" 1,
-        "liga" 1;
-      text-rendering: optimizeLegibility;
-      hanging-punctuation: first last;
-    }
+  .app-prose h4 {
+    @apply mt-8 mb-2 text-base sm:text-lg opacity-90 italic;
+  }
 
-    strong {
-      @apply font-bold text-foreground;
-    }
+  .app-prose p,
+  .app-prose strong,
+  .app-prose ol,
+  .app-prose ul,
+  .app-prose li,
+  .app-prose table,
+  .app-prose code,
+  .app-prose mark {
+    @apply text-[1rem] sm:text-[1.125rem] leading-[1.7] text-foreground/90 font-normal;
+    font-variant-ligatures: common-ligatures;
+    font-feature-settings:
+      "kern" 1,
+      "liga" 1;
+    text-rendering: optimizeLegibility;
+    hanging-punctuation: first last;
+  }
 
-    mark {
-      @apply rounded-sm bg-accent/25 px-1 text-inherit;
-    }
+  .app-prose p.lead {
+    @apply text-lg sm:text-xl font-normal text-foreground/95 leading-relaxed;
+  }
 
-    a {
-      @apply wrap-break-word text-foreground decoration-accent/40 underline-offset-4 hover:text-accent hover:decoration-accent focus-visible:no-underline;
-    }
+  .app-prose strong {
+    @apply font-bold text-foreground;
+  }
 
-    ul {
-      @apply overflow-x-clip;
-    }
+  .app-prose mark {
+    @apply rounded bg-accent/12 px-1.5 py-0.5 text-accent font-medium;
+  }
 
-    li {
-      @apply marker:text-accent/80;
-    }
+  .app-prose a {
+    @apply wrap-break-word text-foreground decoration-accent/40 underline-offset-4 hover:text-accent hover:decoration-accent focus-visible:no-underline;
+  }
 
-    hr {
-      @apply my-16 border-border/50;
-    }
+  .app-prose ul {
+    @apply overflow-x-clip;
+  }
 
-    img {
-      @apply mx-auto img-shimmer rounded-xl border border-border shadow-sm;
-    }
+  .app-prose li {
+    @apply marker:text-accent/80 my-1.5;
+  }
 
-    blockquote {
-      @apply rounded-e-lg border-s-4 border-s-accent/60 bg-accent/5 px-6 py-2 font-medium text-foreground/80 italic;
-    }
+  .app-prose hr {
+    @apply my-16 border-border/50;
+  }
 
-    figcaption {
-      @apply opacity-75;
-    }
+  .app-prose img {
+    @apply mx-auto img-shimmer rounded-xl border border-border shadow-sm;
+  }
 
-    table {
-      display: block;
-      max-width: 100%;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+  .app-prose blockquote {
+    @apply my-8 rounded-r-xl border-s-4 border-s-accent bg-accent/5 px-6 py-4 font-app text-lg sm:text-xl italic text-foreground/95 leading-relaxed;
+  }
 
-      th,
-      td {
-        @apply border border-border p-2;
-      }
+  .app-prose figcaption {
+    @apply text-sm sm:text-base text-foreground/75 italic mt-2 text-center;
+  }
 
-      th {
-        @apply py-1.5;
-      }
+  .app-prose table {
+    @apply my-8 w-full border-collapse text-left;
+  }
 
-      code {
-        @apply break-all sm:break-normal;
-      }
-    }
+  .app-prose table th,
+  .app-prose table td {
+    @apply border-b border-border/60 p-3 text-[0.95em] leading-normal;
+  }
 
-    code:not(pre code) {
-      @apply rounded-sm bg-foreground/5 px-[0.3em] py-[0.1em] font-mono text-[1em]! font-medium text-foreground before:content-none after:content-none;
-      @apply break-words whitespace-normal;
-      font-family:
-        ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-        "Liberation Mono", "Courier New", monospace;
-    }
+  .app-prose table th {
+    @apply font-semibold bg-accent/5 text-foreground py-3;
+  }
 
-    :where(h1, h2, h3, h4, h5, h6) code:not(pre code) {
-      @apply px-[0.4em] text-[1em]! font-bold;
-    }
+  .app-prose table tr:hover {
+    @apply bg-accent/5;
+  }
 
-    html[data-theme="dark"] code:not(pre code) {
-      @apply border! border-white/10! bg-accent/15! shadow-inner;
-    }
+  .app-prose table code {
+    @apply break-all sm:break-normal;
+  }
 
-    .astro-code code {
-      @apply flex-[1_0_100%] bg-inherit p-0;
-    }
+  .app-prose code:not(pre code) {
+    @apply rounded bg-foreground/5 px-[0.35em] py-[0.12em] font-mono text-[0.875em]! font-medium text-foreground before:content-none after:content-none;
+    @apply break-words whitespace-normal;
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+  }
 
-    details {
-      @apply inline-block cursor-pointer text-foreground select-none [&_p]:hidden [&_ul]:my-0!;
-    }
+  .app-prose :where(h1, h2, h3, h4, h5, h6) code:not(pre code) {
+    @apply px-[0.4em] text-[0.9em]! font-bold;
+  }
 
-    summary {
-      @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:outline-dashed;
-    }
+  html[data-theme="dark"] .app-prose code:not(pre code) {
+    @apply border! border-white/10! bg-accent/15! shadow-inner text-foreground!;
+  }
 
-    pre {
-      @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dashed;
-    }
+  .app-prose .astro-code code {
+    @apply flex-[1_0_100%] bg-inherit p-0;
+  }
+
+  .app-prose details {
+    @apply inline-block cursor-pointer text-foreground select-none [&_p]:hidden [&_ul]:my-0!;
+  }
+
+  .app-prose summary {
+    @apply focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent focus-visible:outline-dashed;
+  }
+
+  .app-prose pre {
+    @apply focus-visible:border-transparent focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-dashed;
   }
 
   /* ===== Code Blocks & Syntax Highlighting ===== */
