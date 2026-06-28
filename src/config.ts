@@ -14,7 +14,7 @@ export const SITE = {
   editPost: {
     enabled: false,
     text: "Edit page",
-    url: "https://github.com/shreyaspatil/blogsite/edit/main/",
+    url: "https://github.com/PatilShreyas/blog.shreyaspatil.dev/edit/main/",
   },
   googleAnalyticsId: "G-FNY48L5LDH", // Add your GA Tracking ID here (e.g. G-XXXXXXXXXX)
   dynamicOgImage: true,
