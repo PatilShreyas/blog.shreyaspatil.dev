@@ -17,7 +17,6 @@ Every post must begin with "frontmatter" (YAML metadata at the top of the file b
 ```yaml
 ---
 title: "Your Awesome Blog Post Title"
-subtitle: "An optional catchy subtitle to provide more context"
 pubDatetime: 2024-10-21T05:33:17.000Z
 description: "A short 1-2 sentence description used for SEO and previews."
 coverImage: "../../assets/images/your-cover-image.png" # Optional
@@ -36,7 +35,6 @@ Your markdown content starts here!
 - `description`: A brief summary of your post for social media previews and search engines.
 
 **Optional Fields:**
-- `subtitle`: Appears beautifully italicized right below the main title.
 - `coverImage`: Must be a relative path (e.g., `../../assets/images/image.png`). This will automatically be optimized by Astro and used as the rich preview image when you share the post on social media!
 - `tags`: An array of tags for categorizing your post.
 - `draft`: Set to `true` if you are still working on the post and don't want it published yet.

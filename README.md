@@ -2,11 +2,11 @@
 
 The official codebase for [blog.shreyaspatil.dev](https://blog.shreyaspatil.dev). 🚀
 
-This blog is built using **Astro v5**, **Tailwind CSS**, and **Pagefind** for high-performance static content and lightning-fast client-side search.
+This blog is built using **Astro v7**, **Tailwind CSS v4**, and **Pagefind** for high-performance static content and lightning-fast client-side search.
 
 ## ✨ Features
 
-- **Blazing Fast**: Built with Astro v5 for optimal performance and near-zero JavaScript by default.
+- **Blazing Fast**: Built with Astro v7 for optimal performance and near-zero JavaScript by default.
 - **Magazine Layout**: Premium feed with horizontal thumbnails and clean typography.
 - **Global Search**: Instant client-side search powered by Pagefind.
 - **SEO Ready**: Automatic sitemaps, RSS feed, Open Graph images, and technical SEO meta tags.
@@ -70,11 +70,11 @@ Add new Markdown files to `src/data/blog/`. Ensure they follow the frontmatter s
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Astro v5](https://astro.build/)
+- **Framework**: [Astro v7](https://astro.build/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **Search Engine**: [Pagefind](https://pagefind.app/)
-- **Typography**: [Google Fonts](https://fonts.google.com/) (Merriweather & Inter)
-- **Deployment**: [Cloudflare Pages](https://pages.cloudflare.com/)
+- **Typography**: [Google Fonts](https://fonts.google.com/) (Lora & Inter)
+- **Deployment**: [Cloudflare Workers Assets](https://developers.cloudflare.com/workers/runtime-apis/assets/)
 - **Icons**: SVG based icons
 
 ---
