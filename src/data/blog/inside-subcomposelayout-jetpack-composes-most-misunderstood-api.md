@@ -14,7 +14,7 @@ tags:
   - uiux
   - jetpack-compose
   - declarative
-coverImage: "../../assets/images/cover-subcomposelayout-internals-the-real-cost-of-subcomposition.png"
+coverImage: "../../assets/images/cover-inside-subcomposelayout-jetpack-composes-most-misunderstood-api.png"
 ---
 
 Hey Composers 👋, if you've built a complex UI in Jetpack Compose, you've probably reached for `BoxWithConstraints`. And by doing so, you've probably paid a performance tax you didn't fully understand.
