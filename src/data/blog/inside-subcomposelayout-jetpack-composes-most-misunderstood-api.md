@@ -19,7 +19,7 @@ coverImage: "../../assets/images/cover-inside-subcomposelayout-jetpack-composes-
 
 Hey Composers 👋, if you've built a complex UI in Jetpack Compose, you've probably reached for `BoxWithConstraints`. And by doing so, you've probably paid a performance tax you didn't fully understand.
 
-`SubcomposeLayout` (the engine powering `BoxWithConstraints`, `LazyColumn`, and complex custom layouts) is a blunt instrument that breaks the fundamental rules of the Compose pipeline, and it does so unapologetically. 
+`SubcomposeLayout` (the engine powering `BoxWithConstraints`, `LazyColumn`, and complex custom layouts) is a blunt instrument that breaks the fundamental rules of the Compose pipeline, and it does so unapologetically.
 
 There's a popular piece of advice floating around: _"`SubcomposeLayout` is expensive, avoid it."_ But _why_ is it expensive? What exactly happens under the hood when you subcompose? In this post, we'll look directly at the AOSP source code to understand what subcomposition really does, why it stalls the layout pipeline, and where the real cost comes from.
 
@@ -56,7 +56,7 @@ But what if you genuinely need to? What if a child's _content_ depends on the co
 
 ## The "What": composing during the layout pass
 
-`SubcomposeLayout` does something that sounds almost contradictory: it lets you **run composition _inside_ the measure pass**. 
+`SubcomposeLayout` does something that sounds almost contradictory: it lets you **run composition _inside_ the measure pass**.
 
 Think of a standard `Layout` as a restaurant kitchen with a prix fixe menu. You order everything upfront (Composition), and then the chef plates it all at once (Layout). `SubcomposeLayout` is like stopping the entire kitchen mid-plating, walking back to the stove, and cooking a brand new side dish because you realized the plate had extra room. It stalls the pipeline.
 
@@ -92,8 +92,8 @@ fun MySubcomposeLayout() {
             // 🚨 CRITICAL: Check for infinite constraints before passing them down!
             // If this is inside a LazyColumn, constraints.maxWidth will be Infinity,
             // and using it to size a child will crash with an IllegalArgumentException.
-            // Note: Defaulting to 0.dp here is just a safety net. In a real app, you should 
-            // probably wrap the content or throw a descriptive error warning your team 
+            // Note: Defaulting to 0.dp here is just a safety net. In a real app, you should
+            // probably wrap the content or throw a descriptive error warning your team
             // not to use this component inside a Lazy list.
             val width = if (constraints.hasBoundedWidth) constraints.maxWidth else 0.dp
             MyContent(availableWidth = width)
@@ -109,7 +109,7 @@ fun MySubcomposeLayout() {
             var y = 0
             placeables.forEach { placeable ->
                 // Always use placeRelative to respect RTL!
-                placeable.placeRelative(0, y) 
+                placeable.placeRelative(0, y)
                 y += placeable.height
             }
         }
@@ -211,9 +211,9 @@ If your subcomposed content is heavy (lots of composables, expensive `remember` 
 
 ### 2. The "Infinite Re-Composition Loop of Death"
 
-The real devil of subcomposition isn't just the one-time layout overhead: it's **node thrashing**. 
+The real devil of subcomposition isn't just the one-time layout overhead: it's **node thrashing**.
 
-What happens if you animate a parent's size and read those changing constraints inside your `subcompose` block? It forces subcomposition _every single frame_. You aren't just running math calculations; you are allocating, composing, and destroying entire `LayoutNode`s and `Composition` contexts 60 times a second. 
+What happens if you animate a parent's size and read those changing constraints inside your `subcompose` block? It forces subcomposition _every single frame_. You aren't just running math calculations; you are allocating, composing, and destroying entire `LayoutNode`s and `Composition` contexts 60 times a second.
 
 **A quick war story:** I once saw a production app drop to 24fps on scroll because a developer animated a parent's padding, which triggered a `SubcomposeLayout` child to re-evaluate its `BoxWithConstraints` every single frame. The fix was ripping out `BoxWithConstraints` and using a 2-line `Modifier.layout { measurable, constraints -> ... }` to mathematically calculate the padding offset during the placement phase, completely bypassing the need to subcompose. This is the #1 way developers shoot themselves in the foot with subcomposition, causing massive UI jank.
 
@@ -282,7 +282,7 @@ After all this digging, the advice "avoid `SubcomposeLayout`" becomes more nuanc
 - **Keep subcomposed content lean.** Whatever runs inside `subcompose` is composed during the measure pass; heavy work there is felt directly in your frame budget.
 - **Lean on reuse for repeated slots.** If you're building list-like UIs, a sensible `SubcomposeSlotReusePolicy` is what keeps the cost amortized.
 - **Avoid invalidations that re-trigger subcomposition every frame.**
-- **Need sibling sizing? DO NOT use `SubcomposeLayout`.** If you just want a child to be as tall as its sibling (like a divider next to text), use `Modifier.height(IntrinsicSize.Min)`. In fact, if you ask for intrinsic measurements of a `SubcomposeLayout`, the framework will literally throw an `IllegalStateException`: *"Asking for intrinsic measurements of SubcomposeLayout layouts is not supported"*. It crashes because the layout doesn't know what it contains until it measures!
+- **Need sibling sizing? DO NOT use `SubcomposeLayout`.** If you just want a child to be as tall as its sibling (like a divider next to text), use `Modifier.height(IntrinsicSize.Min)`. In fact, if you ask for intrinsic measurements of a `SubcomposeLayout`, the framework will literally throw an `IllegalStateException`: _"Asking for intrinsic measurements of SubcomposeLayout layouts is not supported"_. It crashes because the layout doesn't know what it contains until it measures!
 - **Prefer higher-level APIs when they exist.** Often you don't need to hand-write a `SubcomposeLayout` at all. Components like `BoxWithConstraints` and `LazyColumn`/`LazyRow` already wrap subcomposition for you. Even for complex flow layouts with dynamic overflow indicators (like a "+3 more" chip), the newer `ContextualFlowRow` (introduced in Compose 1.7) handles the subcomposition under the hood. Reach for these built-in tools first and only drop down to a custom `SubcomposeLayout` when none of them fit.
 - **Keep an eye on newer layout tools (and how they interact!).** `LookaheadScope` lets Compose pre-measure a target layout so children can animate toward it. In Compose 1.7+, `SubcomposeLayout` hooks deeply into this via `ApproachMeasureScopeImpl`. The subcomposition lambda evaluates the "lookahead" target state, and then dynamically manages slots during the "approach pass" to animate smoothly toward that target. It's highly optimized, but complex to author correctly.
 
@@ -292,7 +292,7 @@ After all this digging, the advice "avoid `SubcomposeLayout`" becomes more nuanc
 
 Stop prematurely optimizing. If you are building a static screen, the subcomposition cost of a `BoxWithConstraints` is mostly irrelevant; a single frame-1 subcomposition cost is virtually unnoticeable. Don't avoid it just because "Twitter said it's slow."
 
-But when you move into scrolling lists or animating states, you must respect the pipeline. 
+But when you move into scrolling lists or animating states, you must respect the pipeline.
 
 The next time you build a custom layout, make a deliberate choice: do I _truly_ need to emit nodes based on measurement, or am I about to pay for subcomposition when a plain `Layout` would do?
 
