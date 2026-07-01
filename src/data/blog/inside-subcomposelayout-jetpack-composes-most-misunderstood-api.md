@@ -184,7 +184,7 @@ private fun subcompose(node: LayoutNode, content: @Composable () -> Unit) {
 This is the crucial insight: **subcomposition is real composition.** It runs the composer, allocates slot tables, processes `remember`s, registers `RememberObserver`s and `SideEffect`s, the full machinery. It's not a cheap "layout-only" shortcut. The cost is the cost of composing those composables, just shifted into the measure pass.
 
 ```mermaid
-flowchart TD
+flowchart LR
     A([SubcomposeLayout measure pass]) --> B{For each slotId}
     B --> C{Already composed & valid?}
     C -->|Yes| D[Reuse existing composition, return its measurables]
@@ -258,7 +258,7 @@ Under the hood, this leans on `ReusableComposition`:
 - When a new slot of a compatible content type appears, the runtime grabs a deactivated composition and re-runs content into it. Reusing the existing node structure is dramatically cheaper than creating it fresh.
 
 ```mermaid
-flowchart TD
+flowchart LR
     A(["Measure Pass: subcompose(slotId)"]) --> B{"Is slotId in precomposeMap?"}
     B -->|Yes| C["Take from precomposed, return measurables"]
     B -->|No| D{"Reuse Pool: takeNodeFromReusables()?"}
