@@ -19,7 +19,7 @@ coverImage: "../../assets/images/cover-inside-subcomposelayout-jetpack-composes-
 
 Hey Composers 👋, if you've built a complex UI in Jetpack Compose, you've probably reached for `BoxWithConstraints`. And by doing so, you've probably paid a performance tax you didn't fully understand.
 
-`SubcomposeLayout` (the engine powering `BoxWithConstraints`, `LazyColumn`, and complex custom layouts) is a blunt instrument that breaks the fundamental rules of the Compose pipeline, and it does so unapologetically.
+`SubcomposeLayout` (the engine powering `BoxWithConstraints`, `LazyColumn`, and complex custom layouts) is a blunt instrument that breaks the fundamental rules of the Compose pipeline.
 
 There's a popular piece of advice floating around: _"`SubcomposeLayout` is expensive, avoid it."_ But _why_ is it expensive? What exactly happens under the hood when you subcompose? In this post, we'll look directly at the AOSP source code to understand what subcomposition really does, why it stalls the layout pipeline, and where the real cost comes from.
 
@@ -195,7 +195,7 @@ private fun subcompose(node: LayoutNode, content: @Composable () -> Unit) {
 }
 ```
 
-This is the crucial insight: **subcomposition is real composition.** It runs the composer, allocates slot tables, processes `remember`s, registers `RememberObserver`s and `SideEffect`s, the full machinery. It's not a cheap "layout-only" shortcut. The cost is the cost of composing those composables, just shifted into the measure pass.
+**Subcomposition is real composition.** It runs the composer, allocates slot tables, processes `remember`s, registers `RememberObserver`s and `SideEffect`s, the full machinery. It's not a cheap "layout-only" shortcut. The cost is the cost of composing those composables, just shifted into the measure pass.
 
 If you're wondering how parent recomposition propagates into child subcompositions, `SubcomposeLayout` achieves this by executing a `SideEffect { state.forceRecomposeChildren() }` in its public composable.
 
@@ -310,7 +310,7 @@ After all this digging, the advice "avoid `SubcomposeLayout`" becomes more nuanc
 
 ### "Key was already used" in LazyColumn
 
-- **Free real-world insight:** Have you ever seen the crash `"Key $slotId was already used. If you are using LazyColumn/Row please make sure you provide a unique key for each item"`? Under the hood, this happens because `slotIdToNode.getOrPut` tries to register the same key twice in the `SubcomposeLayout`'s active slots during the measure pass.
+- **Free real-world insight:** Have you ever seen the crash `"Key $slotId was already used. If you are using LazyColumn/Row please make sure you provide a unique key for each item"`? Under the hood, when you subcompose the same `slotId` twice in one measure pass, the second lookup returns a node already placed at an earlier index (`itemIndex < currentIndex`), and the internal `requirePrecondition` fails.
 
 - **Prefer higher-level APIs when they exist.** Often you don't need to hand-write a `SubcomposeLayout` at all. Components like `BoxWithConstraints` and `LazyColumn`/`LazyRow` already wrap subcomposition for you. Even for complex flow layouts with dynamic overflow indicators (like a "+3 more" chip), use `FlowRow` or `FlowColumn` with the `overflow` and `maxLines` overloads. Reach for these built-in tools first and only drop down to a custom `SubcomposeLayout` when none of them fit.
 - **Keep an eye on newer layout tools (and how they interact!).** `LookaheadScope` lets Compose pre-measure a target layout so children can animate toward it. In Compose 1.7+, `SubcomposeLayout` hooks deeply into this via `ApproachMeasureScopeImpl`. The subcomposition lambda evaluates the "lookahead" target state, and then dynamically manages slots during the "approach pass" to animate smoothly toward that target. It's highly optimized, but complex to author correctly.
