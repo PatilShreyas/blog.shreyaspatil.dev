@@ -67,6 +67,8 @@ But what if you genuinely need to? What if a child's _content_ depends on the co
 
 Think of a standard `Layout` as a restaurant kitchen with a prix fixe menu. You order everything upfront (Composition), and then the chef plates it all at once (Layout). `SubcomposeLayout` is like stopping the entire kitchen mid-plating, walking back to the stove, and cooking a brand new side dish because you realized the plate had extra room. It stalls the pipeline.
 
+<video autoplay loop muted playsinline class="gif-video" src="/videos/Chef_fills_plate_with_salad_202607101329.webm" aria-label="Chef filling plate with salad"></video>
+
 Instead of composing all children up front, you get a `subcompose` function that you call during measurement, once you already know the incoming constraints.
 
 Here's the canonical example everyone meets first, `BoxWithConstraints`, which is itself built on `SubcomposeLayout`:
