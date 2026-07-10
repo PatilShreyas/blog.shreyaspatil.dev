@@ -1,6 +1,6 @@
 ---
 title: "Inside SubcomposeLayout: Jetpack Compose’s Most Misunderstood API"
-pubDatetime: 2026-07-10T17:35:00.000Z
+pubDatetime: 2026-07-10T17:35:00+05:30
 description: "A deep dive into the internals of SubcomposeLayout in Jetpack Compose. Learn how subcomposition actually works, why it breaks the phase rules, and the real node-thrashing cost it carries."
 tags:
   - compose
