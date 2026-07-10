@@ -133,6 +133,89 @@ fun MySubcomposeLayout() {
 
 ---
 
+## The "Right" Way: A Real-World Use Case
+
+If `SubcomposeLayout` is so dangerous, when should you actually use it? 
+
+The golden rule is: **Use it when the emission of nodes depends on the measurement of previous nodes.**
+
+Let’s look at a real-world example. Imagine you are building a `DynamicChipRow`. You have a list of 20 tags. You want to display as many as will fit horizontally on one line. If they don't all fit, you want to show a custom `+X more` chip at the very end.
+
+If you try to build this with a standard `Layout`, you hit a wall. In a standard `Layout`, you have to compose all 20 chips upfront just to measure them. Worse, you *haven't* composed the `+X more` chip because you didn't know you needed it yet! 
+
+Here is where `SubcomposeLayout` shines. You can measure chips one by one, and dynamically subcompose the overflow chip *only* when you run out of space:
+
+```kotlin file="DynamicChipRow.kt"
+@Composable
+fun DynamicChipRow(
+    items: List<String>,
+    itemContent: @Composable (String) -> Unit,
+    overflowContent: @Composable (Int) -> Unit
+) {
+    SubcomposeLayout { constraints ->
+        var xPosition = 0
+        val placeables = mutableListOf<Placeable>()
+        var itemsPlaced = 0
+
+        // 1. We subcompose and measure items one by one in a loop
+        for (i in items.indices) {
+            val measurables = subcompose("item_$i") { itemContent(items[i]) }
+            val placeable = measurables.first().measure(constraints)
+
+            if (xPosition + placeable.width > constraints.maxWidth) {
+                // 2. OUT OF SPACE! We stop composing regular items.
+                break 
+            }
+
+            placeables.add(placeable)
+            xPosition += placeable.width
+            itemsPlaced++
+        }
+
+        // 3. Do we have leftover items? Subcompose the overflow indicator!
+        val remaining = items.size - itemsPlaced
+        if (remaining > 0) {
+            // We ONLY compose the overflow chip if we actually need it
+            val overflowMeasurables = subcompose("overflow") { overflowContent(remaining) }
+            val overflowPlaceable = overflowMeasurables.first().measure(constraints)
+            
+            // (In a production app, you'd calculate if the overflow chip itself fits here)
+            placeables.add(overflowPlaceable)
+        }
+
+        // 4. Place everything
+        layout(constraints.maxWidth, placeables.maxOfOrNull { it.height } ?: 0) {
+            var x = 0
+            placeables.forEach { placeable ->
+                placeable.placeRelative(x, 0)
+                x += placeable.width
+            }
+        }
+    }
+}
+```
+
+Notice the power here? If only 3 chips fit on the screen, we never paid the composition cost for the remaining 17 chips. We stopped the kitchen mid-plating, realized we needed an overflow chip, went back to the stove to compose it, and then finished the layout.
+This is what the API was built for.
+
+Here is how you would use this component in your code:
+
+```kotlin
+DynamicChipRow(
+    items = listOf("Cheese", "Paneer", "Milk", "Curd", "Ice cream", "Kulfi", "Rose Milk", "Butter Milk", "Milkshake"),
+    itemContent = { Button({}) { Text(it) } },
+    overflowContent = { TextButton({}) { Text("+$it") } }
+)
+```
+
+And here is how it renders on the device:
+
+![Dynamic Chip Row Preview](../../assets/images/preview-dynamic-row-subcompose-layout.png)
+
+Looking at this example, we pass in 9 items. But as you can see, maybe only "Cheese", "Paneer", "Milk", and "Curd" actually fit horizontally on the screen. Because of `SubcomposeLayout`, Compose **never even executes** the `Button` composition or measurement for "Ice cream", "Kulfi", and the rest of the list. By entirely skipping the composition and measurement of those unseen items, we avoid wasting CPU and memory resources, directly improving frame rendering performance.
+
+---
+
 ## How it works: the core machinery
 
 By looking at the [`SubcomposeLayout` source](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:compose/ui/ui/src/commonMain/kotlin/androidx/compose/ui/layout/SubcomposeLayout.kt), we can see that the real workhorse isn't the public composable at all, it's an internal state holder called `LayoutNodeSubcompositionsState`.
