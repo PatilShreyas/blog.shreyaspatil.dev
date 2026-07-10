@@ -299,6 +299,19 @@ const structuredData = isArticle
       // Register router lifecycle listeners
       document.addEventListener("astro:before-preparation", startProgress);
       document.addEventListener("astro:page-load", finishProgress);
+
+      // Fix for autoplay videos not playing on ViewTransition navigation
+      document.addEventListener("astro:page-load", () => {
+        document
+          .querySelectorAll<HTMLVideoElement>("video[autoplay]")
+          .forEach(video => {
+            video.load();
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(() => {});
+            }
+          });
+      });
     </script>
 
     <!-- Load full theme logic -->
