@@ -135,15 +135,15 @@ fun MySubcomposeLayout() {
 
 ## The "Right" Way: A Real-World Use Case
 
-If `SubcomposeLayout` is so dangerous, when should you actually use it? 
+If `SubcomposeLayout` is so dangerous, when should you actually use it?
 
 The golden rule is: **Use it when the emission of nodes depends on the measurement of previous nodes.**
 
 Let’s look at a real-world example. Imagine you are building a `DynamicChipRow`. You have a list of 20 tags. You want to display as many as will fit horizontally on one line. If they don't all fit, you want to show a custom `+X more` chip at the very end.
 
-If you try to build this with a standard `Layout`, you hit a wall. In a standard `Layout`, you have to compose all 20 chips upfront just to measure them. Worse, you *haven't* composed the `+X more` chip because you didn't know you needed it yet! 
+If you try to build this with a standard `Layout`, you hit a wall. In a standard `Layout`, you have to compose all 20 chips upfront just to measure them. Worse, you _haven't_ composed the `+X more` chip because you didn't know you needed it yet!
 
-Here is where `SubcomposeLayout` shines. You can measure chips one by one, and dynamically subcompose the overflow chip *only* when you run out of space:
+Here is where `SubcomposeLayout` shines. You can measure chips one by one, and dynamically subcompose the overflow chip _only_ when you run out of space:
 
 ```kotlin file="DynamicChipRow.kt"
 @Composable
@@ -164,7 +164,7 @@ fun DynamicChipRow(
 
             if (xPosition + placeable.width > constraints.maxWidth) {
                 // 2. OUT OF SPACE! We stop composing regular items.
-                break 
+                break
             }
 
             placeables.add(placeable)
@@ -178,7 +178,7 @@ fun DynamicChipRow(
             // We ONLY compose the overflow chip if we actually need it
             val overflowMeasurables = subcompose("overflow") { overflowContent(remaining) }
             val overflowPlaceable = overflowMeasurables.first().measure(constraints)
-            
+
             // (In a production app, you'd calculate if the overflow chip itself fits here)
             placeables.add(overflowPlaceable)
         }
