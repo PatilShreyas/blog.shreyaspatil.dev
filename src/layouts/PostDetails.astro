@@ -49,8 +49,9 @@ if (typeof initOgImage === "string") {
 }
 
 // Use dynamic OG image if enabled and no remote|local ogImage
+// Path must match the route emitted by src/pages/[...slug].png.ts
 if (!ogImageUrl && SITE.dynamicOgImage) {
-  ogImageUrl = `/${getPath(post.id, post.filePath, true)}/index.png`;
+  ogImageUrl = `/${getPath(post.id, post.filePath, false)}.png`;
 }
 
 // Resolve OG image URL (or fallback to SITE.ogImage / default `og.png`)
@@ -185,141 +186,163 @@ const nextPost =
 </Layout>
 
 <script is:inline data-astro-rerun>
-  /** Create a progress indicator
-   *  at the top */
-  function createProgressBar() {
-    // Create the main container div
-    const progressContainer = document.createElement("div");
-    progressContainer.className =
-      "progress-container fixed top-0 z-10 h-1 w-full bg-background";
-
-    // Create the progress bar div
-    const progressBar = document.createElement("div");
-    progressBar.className = "progress-bar h-1 w-0 bg-accent";
-    progressBar.id = "myBar";
-
-    // Append the progress bar to the progress container
-    progressContainer.appendChild(progressBar);
-
-    // Append the progress container to the document body or any other desired parent element
-    document.body.appendChild(progressContainer);
-  }
-  createProgressBar();
-
-  /** Update the progress bar
-   *  when user scrolls */
-  function updateScrollProgress() {
-    document.addEventListener("scroll", () => {
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      if (document) {
-        const myBar = document.getElementById("myBar");
-        if (myBar) {
-          myBar.style.width = scrolled + "%";
-        }
-      }
+  // IIFE prevents top-level const/let from polluting the global lexical
+  // environment — otherwise re-running this data-astro-rerun script on the
+  // next view transition throws SyntaxError: Identifier already declared.
+  (function () {
+    // AbortController: all listeners created below are tied to this signal.
+    // astro:before-swap fires on the *outgoing* document just before the
+    // DOM is replaced, so aborting there cleans up every listener without
+    // manual removeEventListener calls — no stacking across navigations.
+    const ac = new AbortController();
+    document.addEventListener("astro:before-swap", () => ac.abort(), {
+      once: true,
     });
-  }
-  updateScrollProgress();
 
-  /** Attaches links to headings in the document,
-   *  allowing sharing of sections easily */
-  function addHeadingLinks() {
-    const headings = Array.from(
-      document.querySelectorAll("h2, h3, h4, h5, h6")
+    /** Create a progress indicator
+     *  at the top */
+    function createProgressBar() {
+      // Create the main container div
+      const progressContainer = document.createElement("div");
+      progressContainer.className =
+        "progress-container fixed top-0 z-10 h-1 w-full bg-background";
+
+      // Create the progress bar div
+      const progressBar = document.createElement("div");
+      progressBar.className = "progress-bar h-1 w-0 bg-accent";
+      progressBar.id = "myBar";
+
+      // Append the progress bar to the progress container
+      progressContainer.appendChild(progressBar);
+
+      // Append the progress container to the document body or any other desired parent element
+      document.body.appendChild(progressContainer);
+    }
+    createProgressBar();
+
+    /** Update the progress bar when user scrolls.
+     *  rAF-throttled + passive to avoid forced synchronous layout reflow
+     *  (reads layout dims once per frame, batched before the style write). */
+    let scrollTicking = false;
+    document.addEventListener(
+      "scroll",
+      () => {
+        if (scrollTicking) return;
+        scrollTicking = true;
+        requestAnimationFrame(() => {
+          const winScroll =
+            document.body.scrollTop || document.documentElement.scrollTop;
+          const height =
+            document.documentElement.scrollHeight -
+            document.documentElement.clientHeight;
+          const myBar = document.getElementById("myBar");
+          if (myBar) {
+            myBar.style.width = `${(winScroll / height) * 100}%`;
+          }
+          scrollTicking = false;
+        });
+      },
+      { passive: true, signal: ac.signal }
     );
-    for (const heading of headings) {
-      heading.classList.add("group");
-      const link = document.createElement("a");
-      link.className =
-        "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
-      link.href = "#" + heading.id;
 
-      const span = document.createElement("span");
-      span.ariaHidden = "true";
-      span.innerText = "#";
-      link.appendChild(span);
-      heading.appendChild(link);
+    /** Attaches links to headings in the document,
+     *  allowing sharing of sections easily */
+    function addHeadingLinks() {
+      const headings = Array.from(
+        document.querySelectorAll("h2, h3, h4, h5, h6")
+      );
+      for (const heading of headings) {
+        heading.classList.add("group");
+        const link = document.createElement("a");
+        link.className =
+          "heading-link ms-2 no-underline opacity-75 md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100";
+        link.href = "#" + heading.id;
+
+        const span = document.createElement("span");
+        span.ariaHidden = "true";
+        span.innerText = "#";
+        link.appendChild(span);
+        heading.appendChild(link);
+      }
     }
-  }
-  addHeadingLinks();
+    addHeadingLinks();
 
-  /** Attaches copy buttons to code blocks in the document,
-   * allowing users to copy code easily. */
-  function attachCopyButtons() {
-    const copyButtonLabel = "Copy";
-    const codeBlocks = Array.from(document.querySelectorAll("pre"));
+    /** Attaches copy buttons to code blocks in the document,
+     * allowing users to copy code easily. */
+    function attachCopyButtons() {
+      const copyButtonLabel = "Copy";
+      const codeBlocks = Array.from(document.querySelectorAll("pre"));
 
-    for (const codeBlock of codeBlocks) {
-      // Skip mermaid blocks — they get replaced and don't need a copy button
-      if (codeBlock.getAttribute("data-language") === "mermaid") continue;
-      const wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
+      for (const codeBlock of codeBlocks) {
+        // Skip mermaid blocks — they get replaced and don't need a copy button
+        if (codeBlock.getAttribute("data-language") === "mermaid") continue;
+        const wrapper = document.createElement("div");
+        wrapper.style.position = "relative";
 
-      // Check if --file-name-offset custom property exists
-      const computedStyle = getComputedStyle(codeBlock);
-      const hasFileNameOffset =
-        computedStyle.getPropertyValue("--file-name-offset").trim() !== "";
+        // Check if --file-name-offset custom property exists
+        const computedStyle = getComputedStyle(codeBlock);
+        const hasFileNameOffset =
+          computedStyle.getPropertyValue("--file-name-offset").trim() !== "";
 
-      // Determine the top positioning class
-      const topClass = hasFileNameOffset
-        ? "top-(--file-name-offset)"
-        : "-top-3";
+        // Determine the top positioning class
+        const topClass = hasFileNameOffset
+          ? "top-(--file-name-offset)"
+          : "-top-3";
 
-      const copyButton = document.createElement("button");
-      copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium transition-all hover:text-accent active:scale-95`;
-      copyButton.innerHTML = copyButtonLabel;
-      copyButton.setAttribute("aria-label", "Copy code snippet");
-      copyButton.setAttribute("title", "Copy code snippet");
-      copyButton.setAttribute("aria-live", "polite");
+        const copyButton = document.createElement("button");
+        copyButton.className = `copy-code absolute end-3 ${topClass} rounded bg-muted border border-muted px-2 py-1 text-xs leading-4 text-foreground font-medium transition-all hover:text-accent active:scale-95`;
+        copyButton.innerHTML = copyButtonLabel;
+        copyButton.setAttribute("aria-label", "Copy code snippet");
+        copyButton.setAttribute("title", "Copy code snippet");
+        copyButton.setAttribute("aria-live", "polite");
 
-      codeBlock.setAttribute("tabindex", "0");
-      codeBlock.appendChild(copyButton);
+        codeBlock.setAttribute("tabindex", "0");
+        codeBlock.appendChild(copyButton);
 
-      // wrap codebock with relative parent element
-      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
-      wrapper.appendChild(codeBlock);
+        // wrap codebock with relative parent element
+        codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+        wrapper.appendChild(codeBlock);
 
-      copyButton.addEventListener("click", async () => {
-        await copyCode(codeBlock, copyButton);
-      });
+        copyButton.addEventListener(
+          "click",
+          async () => {
+            await copyCode(codeBlock, copyButton);
+          },
+          { signal: ac.signal }
+        );
+      }
+
+      async function copyCode(block, button) {
+        const code = block.querySelector("code");
+        const text = code?.innerText;
+
+        await navigator.clipboard.writeText(text ?? "");
+
+        // visual feedback that task is completed
+        button.innerText = "Copied!";
+        button.setAttribute("aria-label", "Copied to clipboard");
+        button.setAttribute("title", "Copied!");
+
+        setTimeout(() => {
+          button.innerText = copyButtonLabel;
+          button.setAttribute("aria-label", "Copy code snippet");
+          button.setAttribute("title", "Copy code snippet");
+        }, 1500);
+      }
     }
+    attachCopyButtons();
 
-    async function copyCode(block, button) {
-      const code = block.querySelector("code");
-      const text = code?.innerText;
-
-      await navigator.clipboard.writeText(text ?? "");
-
-      // visual feedback that task is completed
-      button.innerText = "Copied!";
-      button.setAttribute("aria-label", "Copied to clipboard");
-      button.setAttribute("title", "Copied!");
-
-      setTimeout(() => {
-        button.innerText = copyButtonLabel;
-        button.setAttribute("aria-label", "Copy code snippet");
-        button.setAttribute("title", "Copy code snippet");
-      }, 1500);
-    }
-  }
-  attachCopyButtons();
-
-  /**
-   * Initializes the image lightbox for blog post images.
-   * Provides full-view with zoom controls and immersive backdrop.
-   */
-  function setupLightbox() {
-    // 1. Create Lightbox UI if it doesn't exist
-    let lightbox = document.getElementById("lightbox");
-    if (!lightbox) {
-      lightbox = document.createElement("div");
-      lightbox.id = "lightbox";
-      lightbox.innerHTML = `
+    /**
+     * Initializes the image lightbox for blog post images.
+     * Provides full-view with zoom controls and immersive backdrop.
+     */
+    function setupLightbox() {
+      // 1. Create Lightbox UI if it doesn't exist
+      let lightbox = document.getElementById("lightbox");
+      if (!lightbox) {
+        lightbox = document.createElement("div");
+        lightbox.id = "lightbox";
+        lightbox.innerHTML = `
         <button class="lightbox-close" aria-label="Close" title="Close">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
@@ -334,181 +357,200 @@ const nextPost =
           </button>
         </div>
       `;
-      document.body.appendChild(lightbox);
-    }
-
-    const lightboxImg = document.getElementById("lightbox-img");
-    const zoomInBtn = lightbox.querySelector(".zoom-in");
-    const zoomOutBtn = lightbox.querySelector(".zoom-out");
-    const zoomVal = lightbox.querySelector(".lightbox-zoom-val");
-    const closeBtn = lightbox.querySelector(".lightbox-close");
-
-    // Touch, Pan & Zoom State
-    let currentScale = 1;
-    let translateX = 0;
-    let translateY = 0;
-    let lastTranslateX = 0;
-    let lastTranslateY = 0;
-    let initialDistance = 0;
-    let initialScale = 1;
-    let isDragging = false;
-    let startX = 0;
-    let startY = 0;
-
-    const ZOOM_STEP = 0.25;
-    const MAX_ZOOM = 4;
-    const MIN_ZOOM = 0.5;
-
-    function updateTransform() {
-      lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale})`;
-      zoomVal.innerText = `${Math.round(currentScale * 100)}%`;
-      zoomOutBtn.disabled = currentScale <= MIN_ZOOM;
-      zoomInBtn.disabled = currentScale >= MAX_ZOOM;
-    }
-
-    function openLightbox(src) {
-      lightboxImg.src = src;
-      currentScale = 1;
-      translateX = 0;
-      translateY = 0;
-      lastTranslateX = 0;
-      lastTranslateY = 0;
-      updateTransform();
-      lightboxImg.style.willChange = "transform";
-      lightbox.classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeLightbox() {
-      lightbox.classList.remove("active");
-      document.body.style.overflow = "";
-      setTimeout(() => {
-        if (!lightbox.classList.contains("active")) {
-          lightboxImg.src = "";
-          translateX = 0;
-          translateY = 0;
-          lastTranslateX = 0;
-          lastTranslateY = 0;
-          currentScale = 1;
-        }
-      }, 300);
-    }
-
-    // Attach listeners to images in the article
-    const images = document.querySelectorAll("#article img:not(.no-lightbox)");
-    images.forEach(img => {
-      img.style.cursor = "zoom-in";
-      img.addEventListener("click", () => openLightbox(img.src));
-    });
-
-    // Control Listeners
-    zoomInBtn.onclick = e => {
-      e.stopPropagation();
-      currentScale = Math.min(MAX_ZOOM, currentScale + ZOOM_STEP);
-      updateTransform();
-    };
-    zoomOutBtn.onclick = e => {
-      e.stopPropagation();
-      currentScale = Math.max(MIN_ZOOM, currentScale - ZOOM_STEP);
-      updateTransform();
-    };
-    closeBtn.onclick = closeLightbox;
-    lightbox.onclick = closeLightbox;
-    lightboxImg.onclick = e => {
-      e.stopPropagation();
-      // Only close on click if we haven't moved much (to allow panning)
-      const movedX = Math.abs(translateX - lastTranslateX);
-      const movedY = Math.abs(translateY - lastTranslateY);
-      if (movedX < 5 && movedY < 5) {
-        if (currentScale <= 1) closeLightbox();
+        document.body.appendChild(lightbox);
       }
-    };
 
-    // Keyboard support
-    const handleKeydown = e => {
-      if (!lightbox.classList.contains("active")) return;
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "+" || e.key === "=") zoomInBtn.click();
-      if (e.key === "-") zoomOutBtn.click();
-    };
-    document.addEventListener("keydown", handleKeydown);
+      const lightboxImg = document.getElementById("lightbox-img");
+      const zoomInBtn = lightbox.querySelector(".zoom-in");
+      const zoomOutBtn = lightbox.querySelector(".zoom-out");
+      const zoomVal = lightbox.querySelector(".lightbox-zoom-val");
+      const closeBtn = lightbox.querySelector(".lightbox-close");
 
-    // Touch Events for Panning & Pinch-to-Zoom
-    lightboxImg.addEventListener(
-      "touchstart",
-      e => {
-        if (e.touches.length === 1) {
-          isDragging = true;
-          startX = e.touches[0].pageX - lastTranslateX;
-          startY = e.touches[0].pageY - lastTranslateY;
-        } else if (e.touches.length === 2) {
+      // Touch, Pan & Zoom State
+      let currentScale = 1;
+      let translateX = 0;
+      let translateY = 0;
+      let lastTranslateX = 0;
+      let lastTranslateY = 0;
+      let initialDistance = 0;
+      let initialScale = 1;
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+
+      const ZOOM_STEP = 0.25;
+      const MAX_ZOOM = 4;
+      const MIN_ZOOM = 0.5;
+
+      function updateTransform() {
+        lightboxImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale})`;
+        zoomVal.innerText = `${Math.round(currentScale * 100)}%`;
+        zoomOutBtn.disabled = currentScale <= MIN_ZOOM;
+        zoomInBtn.disabled = currentScale >= MAX_ZOOM;
+      }
+
+      function openLightbox(src) {
+        lightboxImg.src = src;
+        currentScale = 1;
+        translateX = 0;
+        translateY = 0;
+        lastTranslateX = 0;
+        lastTranslateY = 0;
+        updateTransform();
+        lightboxImg.style.willChange = "transform";
+        lightbox.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("active");
+        document.body.style.overflow = "";
+        setTimeout(() => {
+          if (!lightbox.classList.contains("active")) {
+            lightboxImg.src = "";
+            translateX = 0;
+            translateY = 0;
+            lastTranslateX = 0;
+            lastTranslateY = 0;
+            currentScale = 1;
+          }
+        }, 300);
+      }
+
+      // Attach listeners to images in the article
+      // (these elements are replaced on swap → auto GC, but signal for safety)
+      const images = document.querySelectorAll(
+        "#article img:not(.no-lightbox)"
+      );
+      images.forEach(img => {
+        img.style.cursor = "zoom-in";
+        img.addEventListener("click", () => openLightbox(img.src), {
+          signal: ac.signal,
+        });
+      });
+
+      // Control Listeners
+      zoomInBtn.onclick = e => {
+        e.stopPropagation();
+        currentScale = Math.min(MAX_ZOOM, currentScale + ZOOM_STEP);
+        updateTransform();
+      };
+      zoomOutBtn.onclick = e => {
+        e.stopPropagation();
+        currentScale = Math.max(MIN_ZOOM, currentScale - ZOOM_STEP);
+        updateTransform();
+      };
+      closeBtn.onclick = closeLightbox;
+      lightbox.onclick = closeLightbox;
+      lightboxImg.onclick = e => {
+        e.stopPropagation();
+        // Only close on click if we haven't moved much (to allow panning)
+        const movedX = Math.abs(translateX - lastTranslateX);
+        const movedY = Math.abs(translateY - lastTranslateY);
+        if (movedX < 5 && movedY < 5) {
+          if (currentScale <= 1) closeLightbox();
+        }
+      };
+
+      // Keyboard support — on persistent `document`, use AbortSignal for cleanup
+      const handleKeydown = e => {
+        if (!lightbox.classList.contains("active")) return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "+" || e.key === "=") zoomInBtn.click();
+        if (e.key === "-") zoomOutBtn.click();
+      };
+      document.addEventListener("keydown", handleKeydown, {
+        signal: ac.signal,
+      });
+
+      // Touch Events for Panning & Pinch-to-Zoom
+      lightboxImg.addEventListener(
+        "touchstart",
+        e => {
+          if (e.touches.length === 1) {
+            isDragging = true;
+            startX = e.touches[0].pageX - lastTranslateX;
+            startY = e.touches[0].pageY - lastTranslateY;
+          } else if (e.touches.length === 2) {
+            isDragging = false;
+            initialDistance = Math.hypot(
+              e.touches[0].pageX - e.touches[1].pageX,
+              e.touches[0].pageY - e.touches[1].pageY
+            );
+            initialScale = currentScale;
+          }
+        },
+        { passive: false }
+      );
+
+      lightboxImg.addEventListener(
+        "touchmove",
+        e => {
+          if (isDragging && e.touches.length === 1) {
+            e.preventDefault();
+            translateX = e.touches[0].pageX - startX;
+            translateY = e.touches[0].pageY - startY;
+            updateTransform();
+          } else if (e.touches.length === 2) {
+            e.preventDefault();
+            const currentDistance = Math.hypot(
+              e.touches[0].pageX - e.touches[1].pageX,
+              e.touches[0].pageY - e.touches[1].pageY
+            );
+            const ratio = currentDistance / initialDistance;
+            currentScale = Math.min(
+              MAX_ZOOM,
+              Math.max(MIN_ZOOM, initialScale * ratio)
+            );
+            updateTransform();
+          }
+        },
+        { passive: false }
+      );
+
+      lightboxImg.addEventListener("touchend", () => {
+        isDragging = false;
+        lastTranslateX = translateX;
+        lastTranslateY = translateY;
+      });
+
+      // Also support mouse dragging
+      lightboxImg.addEventListener("mousedown", e => {
+        e.preventDefault();
+        isDragging = true;
+        startX = e.pageX - lastTranslateX;
+        startY = e.pageY - lastTranslateY;
+      });
+
+      // Mouse drag listeners on persistent `window` — use AbortSignal for cleanup
+      window.addEventListener(
+        "mousemove",
+        e => {
+          if (!isDragging) return;
+          translateX = e.pageX - startX;
+          translateY = e.pageY - startY;
+          updateTransform();
+        },
+        { signal: ac.signal }
+      );
+
+      window.addEventListener(
+        "mouseup",
+        () => {
           isDragging = false;
-          initialDistance = Math.hypot(
-            e.touches[0].pageX - e.touches[1].pageX,
-            e.touches[0].pageY - e.touches[1].pageY
-          );
-          initialScale = currentScale;
-        }
-      },
-      { passive: false }
-    );
-
-    lightboxImg.addEventListener(
-      "touchmove",
-      e => {
-        if (isDragging && e.touches.length === 1) {
-          e.preventDefault();
-          translateX = e.touches[0].pageX - startX;
-          translateY = e.touches[0].pageY - startY;
-          updateTransform();
-        } else if (e.touches.length === 2) {
-          e.preventDefault();
-          const currentDistance = Math.hypot(
-            e.touches[0].pageX - e.touches[1].pageX,
-            e.touches[0].pageY - e.touches[1].pageY
-          );
-          const ratio = currentDistance / initialDistance;
-          currentScale = Math.min(
-            MAX_ZOOM,
-            Math.max(MIN_ZOOM, initialScale * ratio)
-          );
-          updateTransform();
-        }
-      },
-      { passive: false }
-    );
-
-    lightboxImg.addEventListener("touchend", () => {
-      isDragging = false;
-      lastTranslateX = translateX;
-      lastTranslateY = translateY;
-    });
-
-    // Also support mouse dragging
-    lightboxImg.addEventListener("mousedown", e => {
-      e.preventDefault();
-      isDragging = true;
-      startX = e.pageX - lastTranslateX;
-      startY = e.pageY - lastTranslateY;
-    });
-
-    window.addEventListener("mousemove", e => {
-      if (!isDragging) return;
-      translateX = e.pageX - startX;
-      translateY = e.pageY - startY;
-      updateTransform();
-    });
-
-    window.addEventListener("mouseup", () => {
-      isDragging = false;
-      lastTranslateX = translateX;
-      lastTranslateY = translateY;
-    });
-  }
-  setupLightbox();
+          lastTranslateX = translateX;
+          lastTranslateY = translateY;
+        },
+        { signal: ac.signal }
+      );
+    }
+    setupLightbox();
+  })();
 </script>
 
 <script is:inline>
+  let mermaidObserver;
+
   function getMermaidTheme() {
     return document.documentElement.getAttribute("data-theme") === "dark"
       ? "dark"
@@ -527,6 +569,12 @@ const nextPost =
   }
 
   function setupMermaid() {
+    // Disconnect previous page's observer to prevent accumulation
+    if (mermaidObserver) {
+      mermaidObserver.disconnect();
+      mermaidObserver = null;
+    }
+
     // Shiki renders mermaid code blocks as <pre data-language="mermaid">
     const preBlocks = document.querySelectorAll("pre[data-language='mermaid']");
     const hasRendered = document.querySelector("[data-mermaid-source]");
@@ -547,22 +595,23 @@ const nextPost =
 
     if (!window.mermaid) {
       const script = document.createElement("script");
-      script.src =
-        "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js";
+      script.src = "/vendor/mermaid.min.js";
       script.onload = () => renderMermaid();
       document.head.appendChild(script);
     } else {
       renderMermaid();
     }
-  }
 
-  // Re-render diagrams when user toggles dark/light mode
-  new MutationObserver(() => {
-    if (document.querySelector("[data-mermaid-source]")) renderMermaid();
-  }).observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
-  });
+    // Re-render diagrams when user toggles dark/light mode
+    // (recreated per-page so exactly one observer is alive at a time)
+    mermaidObserver = new MutationObserver(() => {
+      if (document.querySelector("[data-mermaid-source]")) renderMermaid();
+    });
+    mermaidObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+  }
 
   document.addEventListener("astro:page-load", setupMermaid);
   setupMermaid();

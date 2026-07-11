@@ -5,7 +5,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://gist.github.com https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net; frame-src https://gist.github.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'self' https://github.com https://raw.githubusercontent.com https://*.github.com
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://gist.github.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net; frame-src https://gist.github.com https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'self'; media-src 'self' https://github.com https://raw.githubusercontent.com https://*.github.com
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
 # Hashed assets from Astro (JS, CSS, optimized images) — content-addressed, cache forever
@@ -29,3 +29,7 @@
 # Pagefind search index — short cache (rebuilt on every deploy)
 /pagefind/*
   Cache-Control: public, max-age=3600, stale-while-revalidate=600
+
+# Self-hosted vendored scripts (e.g. mermaid.min.js) — pinned, cache forever
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
