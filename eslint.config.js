@@ -16,5 +16,7 @@ export default [
   { rules: { "no-console": "error" } },
   // Build/utility scripts are allowed to log to the console
   { files: ["scripts/**"], rules: { "no-console": "off" } },
-  { ignores: ["dist/**", ".astro", "public/pagefind/**"] },
+  {
+    ignores: ["dist/**", ".astro", "public/pagefind/**", "public/vendor/**"],
+  },
 ];
