@@ -1,0 +1,206 @@
+<svg width="1312" height="736" viewBox="0 0 1312 736" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FAF6F0"/>
+      <stop offset="1" stop-color="#F3E9DD"/>
+    </linearGradient>
+
+    <!-- Phone Screen Background -->
+    <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#292524"/>
+      <stop offset="1" stop-color="#1C1917"/>
+    </linearGradient>
+
+    <!-- Lens HUD Background -->
+    <radialGradient id="hudGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2A0B0E"/>
+      <stop offset="70%" stop-color="#190608"/>
+      <stop offset="100%" stop-color="#0E0304"/>
+    </radialGradient>
+
+    <!-- Glowing Red & Amber Gradients -->
+    <linearGradient id="redNeon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF3D00"/>
+      <stop offset="1" stop-color="#D50000"/>
+    </linearGradient>
+
+    <linearGradient id="amberNeon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFC400"/>
+      <stop offset="1" stop-color="#FF9100"/>
+    </linearGradient>
+
+    <linearGradient id="honeyAccent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E8C8A0"/>
+      <stop offset="1" stop-color="#D4B28A"/>
+    </linearGradient>
+
+    <!-- Drop Shadows & Glow Filters -->
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#1C1917" flood-opacity="0.18"/>
+    </filter>
+
+    <filter id="lensGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#FF3D00" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1312" height="736" fill="url(#bg)"/>
+
+  <!-- Geometric Abstract Background Shapes -->
+  <g fill="#1C1917" opacity="0.04">
+    <polygon points="0,0 240,0 0,480"/>
+    <polygon points="1312,736 1072,736 1312,256"/>
+  </g>
+  <g stroke="#D4B28A" stroke-width="1.5" opacity="0.3">
+    <path d="M-40,120 L280,-40 M-20,160 L300,0 M1036,776 L1352,616 M1076,796 L1392,636"/>
+  </g>
+
+  <!-- Architectural Grid -->
+  <g stroke="#C2B2A3" stroke-opacity="0.25" stroke-width="1">
+    <path d="M0,92 H1312 M0,184 H1312 M0,276 H1312 M0,368 H1312 M0,460 H1312 M0,552 H1312 M0,644 H1312" />
+    <path d="M164,0 V736 M328,0 V736 M492,0 V736 M656,0 V736 M820,0 V736 M984,0 V736 M1148,0 V736" />
+  </g>
+
+  <!-- Left Side: UI Component Cards (External) with Jetpack Compose & Kotlin Easter Eggs -->
+  <g transform="translate(240, 190)" filter="url(#softShadow)">
+    <!-- Card 1: List UI -->
+    <g transform="translate(0, 0)">
+      <rect width="70" height="70" rx="16" fill="#1C1917"/>
+      <rect x="18" y="22" width="34" height="6" rx="3" fill="url(#honeyAccent)"/>
+      <rect x="18" y="34" width="24" height="6" rx="3" fill="url(#honeyAccent)"/>
+      <rect x="18" y="46" width="28" height="6" rx="3" fill="url(#honeyAccent)"/>
+      <circle cx="58" cy="58" r="8" fill="#10B981"/>
+    </g>
+
+    <!-- Card 2: Jetpack Compose Logo Easter Egg -->
+    <g transform="translate(0, 90)">
+      <rect width="70" height="70" rx="16" fill="#1C1917"/>
+      <!-- Jetpack Compose Arc Shapes -->
+      <path d="M22,25 C30,15 48,15 50,28 C52,41 32,45 30,55 C29,60 40,60 48,50" fill="none" stroke="url(#honeyAccent)" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="58" cy="58" r="8" fill="#10B981"/>
+    </g>
+
+    <!-- Card 3: Kotlin Logo Easter Egg -->
+    <g transform="translate(0, 180)">
+      <rect width="70" height="70" rx="16" fill="#1C1917"/>
+      <!-- Kotlin Polygon Logo -->
+      <polygon points="20,20 50,20 35,35 50,50 20,50" fill="none" stroke="url(#honeyAccent)" stroke-width="3.5" stroke-linejoin="round"/>
+      <circle cx="58" cy="58" r="8" fill="#10B981"/>
+    </g>
+
+    <!-- Card 4: Settings / System UI -->
+    <g transform="translate(0, 270)">
+      <rect width="70" height="70" rx="16" fill="#1C1917"/>
+      <circle cx="35" cy="35" r="12" fill="none" stroke="url(#honeyAccent)" stroke-width="3"/>
+      <path d="M35,18 V22 M35,48 V52 M18,35 H22 M48,35 H52" stroke="url(#honeyAccent)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="58" cy="58" r="8" fill="#10B981"/>
+    </g>
+  </g>
+
+  <!-- CENTER: Smartphone Screen -->
+  <g transform="translate(540, 368)" filter="url(#softShadow)">
+    <!-- Outer Phone Shell -->
+    <rect x="-180" y="-280" width="360" height="560" rx="44" fill="#F3E9DD" stroke="#1C1917" stroke-width="6"/>
+    <!-- Inner Display -->
+    <rect x="-160" y="-256" width="320" height="512" rx="30" fill="url(#screen)"/>
+
+    <!-- UI List Items on Phone -->
+    <g transform="translate(-135, -210)">
+      <!-- Item 1 -->
+      <rect x="0" y="0" width="270" height="90" rx="18" fill="#36322F"/>
+      <rect x="16" y="18" width="54" height="54" rx="14" fill="url(#honeyAccent)"/>
+      <rect x="86" y="28" width="120" height="12" rx="6" fill="#E7E5E4"/>
+      <rect x="86" y="50" width="80" height="10" rx="5" fill="#A89F96"/>
+
+      <!-- Item 2 -->
+      <rect x="0" y="110" width="270" height="90" rx="18" fill="#36322F"/>
+      <rect x="16" y="128" width="54" height="54" rx="14" fill="url(#honeyAccent)"/>
+      <rect x="86" y="138" width="130" height="12" rx="6" fill="#E7E5E4"/>
+      <rect x="86" y="160" width="90" height="10" rx="5" fill="#A89F96"/>
+
+      <!-- Item 3 -->
+      <rect x="0" y="220" width="270" height="90" rx="18" fill="#36322F"/>
+      <rect x="16" y="238" width="54" height="54" rx="14" fill="url(#honeyAccent)"/>
+      <rect x="86" y="248" width="110" height="12" rx="6" fill="#E7E5E4"/>
+      <rect x="86" y="270" width="75" height="10" rx="5" fill="#A89F96"/>
+
+      <!-- Item 4 -->
+      <rect x="0" y="330" width="270" height="90" rx="18" fill="#36322F"/>
+      <rect x="16" y="348" width="54" height="54" rx="14" fill="url(#honeyAccent)"/>
+      <rect x="86" y="358" width="140" height="12" rx="6" fill="#E7E5E4"/>
+      <rect x="86" y="380" width="100" height="10" rx="5" fill="#A89F96"/>
+    </g>
+  </g>
+
+  <!-- RIGHT: High-Tech X-Ray Magnifying Glass -->
+  <g transform="translate(680, 360)">
+    
+    <!-- Handle (Extending Down-Right) -->
+    <g transform="rotate(40)">
+      <rect x="150" y="-18" width="220" height="36" rx="18" fill="#1C1917" filter="url(#softShadow)"/>
+      <!-- Circuit Traces on Handle -->
+      <line x1="180" y1="0" x2="330" y2="0" stroke="url(#honeyAccent)" stroke-width="3" stroke-dasharray="20 10 40 10"/>
+      <circle cx="330" cy="0" r="4" fill="#D4B28A"/>
+    </g>
+
+    <!-- Outer Lens Bezel -->
+    <g filter="url(#lensGlow)">
+      <circle cx="0" cy="0" r="185" fill="url(#hudGlow)" stroke="#1C1917" stroke-width="8"/>
+      <!-- Glowing Bezel Rings -->
+      <circle cx="0" cy="0" r="180" fill="none" stroke="url(#redNeon)" stroke-width="4"/>
+      <circle cx="0" cy="0" r="172" fill="none" stroke="url(#amberNeon)" stroke-width="1.5" stroke-dasharray="30 15 60 15"/>
+      <circle cx="0" cy="0" r="162" fill="none" stroke="#FF3D00" stroke-width="1" opacity="0.4"/>
+    </g>
+
+    <!-- INSIDE X-RAY LENS: Recomposition UI Hierarchy Stack HUD -->
+    <g>
+      <!-- Target Reticle & Crosshairs -->
+      <line x1="-150" y1="0" x2="-120" y2="0" stroke="#FF3D00" stroke-width="2"/>
+      <line x1="120" y1="0" x2="150" y2="0" stroke="#FF3D00" stroke-width="2"/>
+      <line x1="0" y1="-150" x2="0" y2="-120" stroke="#FF3D00" stroke-width="2"/>
+      <line x1="0" y1="120" x2="0" y2="150" stroke="#FF3D00" stroke-width="2"/>
+
+      <!-- Glowing Overlapping Flat Isometric Composable UI Layers (UI Tree Stack) -->
+      <!-- Top Composable Layer -->
+      <g transform="translate(0, -55)">
+        <polygon points="-65,0 0,-26 65,0 0,26" fill="#FF1744" opacity="0.3" stroke="#FF3D00" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="-25" y1="-5" x2="25" y2="-5" stroke="#FFFFFF" stroke-width="2" opacity="0.7"/>
+      </g>
+
+      <!-- Middle Composable Layer (Active Recomposing Composable with ⚠️) -->
+      <g transform="translate(0, 5)">
+        <polygon points="-75,0 0,-30 75,0 0,30" fill="#FF9100" opacity="0.45" stroke="#FFC400" stroke-width="3" stroke-linejoin="round"/>
+        <line x1="-35" y1="-6" x2="15" y2="-6" stroke="#FFFFFF" stroke-width="2.5" opacity="0.9"/>
+        
+        <!-- Warning Icon -->
+        <text x="32" y="4" font-family="Inter, sans-serif" font-weight="900" font-size="16" fill="#FFFFFF" text-anchor="middle">⚠️</text>
+      </g>
+
+      <!-- Bottom Composable Layer -->
+      <g transform="translate(0, 65)">
+        <polygon points="-65,0 0,-26 65,0 0,26" fill="#FF1744" opacity="0.3" stroke="#FF3D00" stroke-width="2.5" stroke-linejoin="round"/>
+        <line x1="-25" y1="-5" x2="25" y2="-5" stroke="#FFFFFF" stroke-width="2" opacity="0.7"/>
+      </g>
+
+      <!-- UI Tree Hierarchy Connector Lines -->
+      <path d="M0,-29 L0,-25 M0,35 L0,39" stroke="#FFC400" stroke-width="2" stroke-dasharray="4 4"/>
+
+      <!-- HUD Label Badge (High-Contrast Pure White Text) -->
+      <g transform="translate(75, 5)">
+        <rect x="-10" y="-14" width="115" height="28" rx="6" fill="#FF1744" opacity="0.9"/>
+        <text x="47" y="4" font-family="JetBrains Mono, monospace" font-weight="800" font-size="10" fill="#FFFFFF" text-anchor="middle">RECOMPOSITION</text>
+      </g>
+
+      <!-- HUD Check Strategy Pill (High-Contrast Bright White Text) -->
+      <g transform="translate(-75, 5)">
+        <rect x="-85" y="-14" width="90" height="28" rx="6" fill="#1C1917" stroke="#FF3D00" stroke-width="1.5"/>
+        <text x="-40" y="4" font-family="JetBrains Mono, monospace" font-weight="800" font-size="11" fill="#FFFFFF" text-anchor="middle">=== FAIL</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Branding Footer -->
+  <text x="60" y="685" font-family="Inter, sans-serif" font-weight="600" font-size="14" fill="#A89F96" letter-spacing="2">BLOG.SHREYASPATIL.DEV</text>
+</svg>
