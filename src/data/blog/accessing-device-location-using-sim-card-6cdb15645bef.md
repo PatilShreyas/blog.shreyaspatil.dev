@@ -50,7 +50,7 @@ _In this article, we’ll learn to access the device’s cell tower location by 
 First of all, we’ll need to get API for accessing Geolocation information. I’ve seen two APIs for such use case 🤔:
 
 - [**Google’s Geolocation API**](https://developers.google.com/maps/documentation/geolocation/overview) — This API is good to go with but requires a billing account to be enabled for your project 🤑.
-- [**Unwiredlabs OpenCellID**](https://opencellid.org/) — This API is amazing and easy to use and the world’s largest open database of cell towers 😍. (We’re using this API for geolocation). Just go to above link and **Sign Up** your account and you’ll get **API key**. See API documentation [here](https://unwiredlabs.com/api#documentation) for more details about accessing API.
+- [**Unwiredlabs OpenCellID**](https://opencellid.org/) — This API is amazing and easy to use and the world’s largest open database of cell towers 😍. (We’re using this API for geolocation). Just go to above link and **Sign Up** your account and you’ll get **API key**. See the [Unwiredlabs API documentation](https://unwiredlabs.com/api#documentation) for more details about accessing API.
 
 ---
 

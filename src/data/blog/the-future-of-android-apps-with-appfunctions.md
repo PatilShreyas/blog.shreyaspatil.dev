@@ -21,11 +21,11 @@ For a decade, we’ve obsessively optimized for Deep Links and SEO to make our A
 
 ## What is AppFunctions?
 
-Android AppFunctions allows apps to share data and functionality with AI agents and assistants by enabling developers to create self-describing functions that agentic apps can discover and execute using natural language, providing an on-device solution for Android apps similar to backend capabilities declared via MCP cloud servers. Read more about it [here](https://android-developers.googleblog.com/2026/02/the-intelligent-os-making-ai-agents.html) on the official blog by Google.
+Android AppFunctions allows apps to share data and functionality with AI agents and assistants by enabling developers to create self-describing functions that agentic apps can discover and execute using natural language, providing an on-device solution for Android apps similar to backend capabilities declared via MCP cloud servers. Read more on [Google's official blog post about the Intelligent OS and AI agents](https://android-developers.googleblog.com/2026/02/the-intelligent-os-making-ai-agents.html).
 
 Last year, when I first encountered the API, [I shared my thoughts on it](https://x.com/imShreyasPatil/status/1917213070444863605?s=20), recognizing the vast array of potential use cases.
 
-[![](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-0df8cd0f.png)](https://x.com/imShreyasPatil/status/1917213070444863605?s=20)
+[![Post on X sharing early thoughts on the Android AppFunctions API](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-0df8cd0f.png)](https://x.com/imShreyasPatil/status/1917213070444863605?s=20)
 
 According to the official blog, while not every interaction has a dedicated integration yet, Google is developing a UI automation framework for AI agents and assistants to intelligently execute generic tasks on users' installed apps, ensuring user transparency and control. Unless an app wants to provide a structured communication method with greater control, implementing AppFunctions is optional.
 
@@ -172,7 +172,7 @@ adb shell cmd app_function list-app-functions --package dev.shreyaspatil.noty.co
 
 Upon running this, it could give output like this
 
-![](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-ff7018ec.png)
+![Terminal output listing all exposed Android AppFunctions on device](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-ff7018ec.png)
 
 This allows you to see the complete details of all functions, including their IDs, descriptions, parameter types and descriptions, types, nullability, and the same information for the return type model.
 
@@ -230,7 +230,7 @@ adb shell "cmd app_function execute-app-function \
 
 When you execute this command, the note is created in the app and might appear as follows:
 
-[![](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-76cc32d2.png)](https://github.com/PatilShreyas/NotyKT)
+[![Screenshot of NotyKT note created using AppFunctions terminal command](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-76cc32d2.png)](https://github.com/PatilShreyas/NotyKT)
 
 This is what testing looks like!
 
@@ -247,11 +247,11 @@ I attempted to mimic the agent app to get a sense of it ( _though it's not an ac
 Your browser does not support the video tag.
 </video>
 
-You can find this [sample app here](https://github.com/PatilShreyas/appfunctions-notyagent-app/) and play around it if interested.
+You can find this [NotyKT agent demo app on GitHub](https://github.com/PatilShreyas/appfunctions-notyagent-app/) and play around it if interested.
 
 However, this doesn't mean any random app can be installed as an agent app to invoke functions from any app that exposes them. If an app attempts this, a `SecurityException` will occur because this is a restricted API, accessible only to system apps. In the demo above, I installed the mock agent app as a system app in the emulator, which allowed me to experiment with it. The agent app must declare a permission in the manifest: `<uses-permission android:name="android.permission.EXECUTE_APP_FUNCTIONS" />`. Therefore, only official apps like those from Google/Gemini and OEMs are permitted to call these app functions. The agent apps can use [ _AppFunctionManager_ ](https://cs.android.com/androidx/platform/frameworks/support/+/androidx-main:appfunctions/appfunctions-stubs/src/main/java/com/android/extensions/appfunctions/AppFunctionManager.java;l=76;drc=622f19cc100e54fe063acd87c5cd468653abb795;bpv=0;bpt=0?q=AppFunctionManager&sq=&ss=androidx%2Fplatform%2Fframeworks%2Fsupport) to query all the apps and their exposed functions. It works as follows:
 
-![](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-8b8a458d.png)
+![Diagram showing AppFunctionManager querying and invoking functions](../../assets/images/content/the-future-of-android-apps-with-appfunctions/img-8b8a458d.png)
 
 What are your thoughts on this new thing? I'm genuinely excited about its potential widespread use in apps. With the advancements in voice support and AI agents, this could become a standout feature in the future trends of Android development. Can imagine how it could be used:
 

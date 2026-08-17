@@ -174,7 +174,7 @@ That's all about using PermissionFlow 😍 and it'll simplify things about handl
 
 If you want to check it out, see some [examples in the repository](https://github.com/PatilShreyas/permission-flow-android/blob/main/app/src/main/java/dev/shreyaspatil/permissionFlow/example/data/impl/AndroidDefaultContactRepository.kt) itself.
 
-[![](../../assets/images/content/permissionflow-a-reactive-api-for-knowing-the-status-of-android-app-permissions/img-1c854126.gif)](https://github.com/PatilShreyas/permission-flow-android/tree/main/app)
+[![Demo animation of PermissionFlow in Android application](../../assets/images/content/permissionflow-a-reactive-api-for-knowing-the-status-of-android-app-permissions/img-1c854126.gif)](https://github.com/PatilShreyas/permission-flow-android/tree/main/app)
 
 ---
 

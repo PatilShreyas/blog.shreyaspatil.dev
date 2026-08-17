@@ -32,10 +32,12 @@ const { sortedPosts } = {
       <h1 class="mb-8 text-3xl font-bold tracking-wide">All Posts</h1>
       <ul>
         {
-          page.data.map(data => (
+          page.data.map((data, index) => (
             <Card
-              variant="h3"
+              variant="h2"
               {...data}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "auto"}
               postNum={
                 sortedPosts.length -
                 sortedPosts.findIndex(p => p.id === data.id)

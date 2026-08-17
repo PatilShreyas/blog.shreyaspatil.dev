@@ -8,6 +8,7 @@
 
   .app-prose h1 {
     @apply mb-8 font-heading leading-tight font-black tracking-tighter text-foreground;
+    text-wrap: balance;
   }
 
   .app-prose h2,
@@ -15,6 +16,7 @@
   .app-prose h4,
   .app-prose th {
     @apply font-heading font-semibold tracking-tight text-foreground;
+    text-wrap: balance;
   }
 
   .app-prose h2 {
@@ -27,6 +29,10 @@
 
   .app-prose h4 {
     @apply mt-8 mb-2 text-base italic opacity-90 sm:text-lg;
+  }
+
+  .app-prose p {
+    text-wrap: pretty;
   }
 
   .app-prose p,
@@ -142,6 +148,12 @@
   /* ===== Code Blocks & Syntax Highlighting ===== */
   .astro-code {
     @apply flex bg-(--shiki-light-bg) text-(--shiki-light) [&_span]:text-(--shiki-light);
+  }
+
+  /* High-contrast WCAG AA compliance for light mode syntax tokens */
+  html[data-theme="light"] .astro-code span[style*="#E36209"],
+  html[data-theme="light"] .astro-code span[style*="#e36209"] {
+    color: #b54700 !important;
   }
 
   html[data-theme="dark"] .astro-code {

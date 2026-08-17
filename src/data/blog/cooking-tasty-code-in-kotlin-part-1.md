@@ -196,7 +196,7 @@ fun doSomething() {
 }
 ```
 
-There’s a lot more we can do with scope functions. Know more about Scope functions [here](https://kotlinlang.org/docs/reference/scope-functions.html).
+There’s a lot more we can do with scope functions. Know more in the [Kotlin Scope functions documentation](https://kotlinlang.org/docs/reference/scope-functions.html).
 
 ---
 
@@ -273,7 +273,7 @@ fun main() {
 }
 ```
 
-If you look, the first snippet looks bit confusing but the second snippet looks good and we get a clear idea of what’s happening. Know more about operator overloading [here](https://kotlinlang.org/docs/reference/operator-overloading.html).
+If you look, the first snippet looks bit confusing but the second snippet looks good and we get a clear idea of what’s happening. Know more in the [Kotlin Operator overloading documentation](https://kotlinlang.org/docs/reference/operator-overloading.html).
 
 ---
 

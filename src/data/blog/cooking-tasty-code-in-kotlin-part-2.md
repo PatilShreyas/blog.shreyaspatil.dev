@@ -323,7 +323,7 @@ class Car(val speed: Double): Vehicle {
 
 Here the **by** clause in the supertype list for `SportsBike` and `SportsCar` indicates that `bike` and `car` will be stored internally in objects of these classes and the compiler will generate all the methods of `Vehicle` that forward to the delegated objects.
 
-You can explore more about it [here](https://kotlinlang.org/docs/reference/delegation.html). Let’s see property delegations.
+You can explore more in the [Kotlin Delegation documentation](https://kotlinlang.org/docs/reference/delegation.html). Let’s see property delegations.
 
 ---
 

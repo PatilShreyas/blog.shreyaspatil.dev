@@ -245,7 +245,7 @@ At work, we manage numerous repositories, and I've been using git worktrees freq
 
 See it in action:
 
-[![](../../assets/images/content/session-bridge-i-made-two-claude-code-sessions-talk-to-each-other/img-3074d306.png)](https://github.com/PatilShreyas/claude-code-session-bridge)
+[![Terminal view of two Claude Code sessions communicating via Session Bridge](../../assets/images/content/session-bridge-i-made-two-claude-code-sessions-talk-to-each-other/img-3074d306.png)](https://github.com/PatilShreyas/claude-code-session-bridge)
 
 ---
 

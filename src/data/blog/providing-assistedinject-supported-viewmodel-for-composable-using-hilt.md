@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
 
 An entry point is a boundary from which you can get Dagger-provided instances from code that cannot use Dagger to inject its dependencies. It is the point where code first enters into the graph of objects managed by Dagger.
 
-You will need an entry point when interfacing with non-Dagger libraries or Android components that are not yet supported in Hilt and need to get access to Dagger instances. For e.g. _AssistedInject_ with _ViewModels_ is not yet supported by Hilt. Know more about EntryPoint [here](https://dagger.dev/hilt/entry-points.html).
+You will need an entry point when interfacing with non-Dagger libraries or Android components that are not yet supported in Hilt and need to get access to Dagger instances. For e.g. _AssistedInject_ with _ViewModels_ is not yet supported by Hilt. Know more about EntryPoint in the [Dagger Hilt Entry Points guide](https://dagger.dev/hilt/entry-points.html).
 
 Now the question is how to get EntryPoint and factory from it? Let’s see.
 
