@@ -87,7 +87,7 @@ You can refer to the following sample app project to try this out: [**PatilShrey
 
 ## Final notes
 
-As commented [here](https://issuetracker.google.com/issues/198323023#comment21), there are no plans from official teams to support this `BasicTextField` because it's going to be **_deprecated and replaced with_** `BasicTextField2`**_._** So if you need this to fulfill a use case, you anyway have to migrate to the new text field composable.
+As commented on the [Google Issue Tracker](https://issuetracker.google.com/issues/198323023#comment21), there are no plans from official teams to support this `BasicTextField` because it's going to be **_deprecated and replaced with_** `BasicTextField2`**_._** So if you need this to fulfill a use case, you anyway have to migrate to the new text field composable.
 
 ---
 

@@ -31,7 +31,7 @@ Last week, I published a blog [**_“Skipping the composition of intermediate co
 
 I found the following comment on Reddit, and it gave me an idea for an application where UI updates happen frequently across multiple components.
 
-[![](../../assets/images/content/benchmark-insights-direct-state-propagation-vs-lambda-based-state-in-jetpack-compose/img-929d6a9c.png)](https://www.reddit.com/r/androiddev/comments/1gosan5/comment/lwle3un/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button)
+[![Reddit comment discussing state propagation in Jetpack Compose](../../assets/images/content/benchmark-insights-direct-state-propagation-vs-lambda-based-state-in-jetpack-compose/img-929d6a9c.png)](https://www.reddit.com/r/androiddev/comments/1gosan5/comment/lwle3un/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button)
 
 I whipped up a quick prototype for a screen that shows the stock market. It includes basic stuff like market indices, an overview of investments, and holdings in a scrolling list. Here's what it looks like:
 
@@ -62,7 +62,7 @@ State model propagation through the Kotlin Lambda function references through th
 
 This is how the change looks between both the variants:
 
-[![](../../assets/images/content/benchmark-insights-direct-state-propagation-vs-lambda-based-state-in-jetpack-compose/img-b0f82ae9.png)](https://github.com/PatilShreyas/compose-benchmark-lambda/pull/1/files)
+[![Diff showing Compose direct state vs lambda-based state propagation](../../assets/images/content/benchmark-insights-direct-state-propagation-vs-lambda-based-state-in-jetpack-compose/img-b0f82ae9.png)](https://github.com/PatilShreyas/compose-benchmark-lambda/pull/1/files)
 
 Before running the benchmarks, I ensured that the composable functions of both branches are **_stable and that all restartable functions can be skipped_** with the help of compose compiler report.
 

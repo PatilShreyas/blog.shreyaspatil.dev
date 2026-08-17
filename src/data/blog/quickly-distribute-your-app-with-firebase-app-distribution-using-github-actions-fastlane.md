@@ -41,7 +41,7 @@ With this short introduction to the tools, we're going to use under our belt. le
 
 You can refer to [this repository](https://github.com/PatilShreyas/AndroidFastlaneCICD) as a reference. Everything in this article is already implemented there.
 
-Setting up Fastlane is quite easy. [Ruby](https://www.ruby-lang.org/en/downloads/) should be preinstalled on your system. (Alternatively, you can follow the process as described [here](https://docs.fastlane.tools/getting-started/android/setup/)).
+Setting up Fastlane is quite easy. [Ruby](https://www.ruby-lang.org/en/downloads/) should be preinstalled on your system. (Alternatively, you can follow the process in the [Fastlane Android setup documentation](https://docs.fastlane.tools/getting-started/android/setup/)).
 
 - Create a `Gemfile` in the root directory of your Android project as below:
 
@@ -62,7 +62,7 @@ Now you can see the newly created `fastlane` directory in your project with the 
 
 ### Add the Firebase plugin 🔥
 
-You can refer to the steps described [here](https://firebase.google.com/docs/app-distribution/android/distribute-fastlane) for adding plugin using a variety of available authentication options. Run the following command to add the Firebase App Distribution plugin using Fastlane:
+You can refer to the steps described in the [Firebase App Distribution Fastlane documentation](https://firebase.google.com/docs/app-distribution/android/distribute-fastlane) for adding plugin using a variety of available authentication options. Run the following command to add the Firebase App Distribution plugin using Fastlane:
 
 ```bash
 fastlane add_plugin firebase_app_distribution

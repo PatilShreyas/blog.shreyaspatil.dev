@@ -48,7 +48,7 @@ You can simply [clone or refer this repository](https://github.com/PatilShreyas/
 
 We’ll develop a sample Android application which stores a UI mode preference from user i.e. 🌞 _Light Mode_ or 🌑 _Dark Mode_.
 
-First of all, let’s add a Gradle dependency in `build.gradle` of your app module. Currently `1.0.0-alpha01` is the latest release. You can keep an eye [here](https://developer.android.com/topic/libraries/architecture/datastore) to get info about the latest version.
+First of all, let’s add a Gradle dependency in `build.gradle` of your app module. Currently `1.0.0-alpha01` is the latest release. You can check the [Android Jetpack DataStore documentation](https://developer.android.com/topic/libraries/architecture/datastore) to get info about the latest version.
 
 ```groovy
 dependencies {

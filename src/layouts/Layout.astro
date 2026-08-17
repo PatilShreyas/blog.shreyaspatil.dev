@@ -90,11 +90,11 @@ const structuredData = isArticle
     />
 
     {
-      (PUBLIC_GA_ID || SITE.googleAnalyticsId) && (
+      import.meta.env.PROD && (PUBLIC_GA_ID || SITE.googleAnalyticsId) && (
         <>
           <script
             is:inline
-            async
+            defer
             src={`https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_ID || SITE.googleAnalyticsId}`}
           />
           <script

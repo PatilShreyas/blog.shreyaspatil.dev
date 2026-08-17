@@ -81,10 +81,12 @@ const paginatedRecentPosts = recentPosts.slice(0, SITE.postPerPage);
         >
           <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
           <ul>
-            {featuredPosts.map(data => (
+            {featuredPosts.map((data, index) => (
               <Card
                 variant="h3"
                 {...data}
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchpriority={index === 0 ? "high" : "auto"}
                 postNum={sortedPosts.length - sortedPosts.indexOf(data)}
               />
             ))}
@@ -98,10 +100,12 @@ const paginatedRecentPosts = recentPosts.slice(0, SITE.postPerPage);
         <section id="recent-posts" class="pt-12 pb-6">
           <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
           <ul>
-            {paginatedRecentPosts.map(data => (
+            {paginatedRecentPosts.map((data, index) => (
               <Card
                 variant="h3"
                 {...data}
+                loading={featuredPosts.length === 0 && index === 0 ? "eager" : "lazy"}
+                fetchpriority={featuredPosts.length === 0 && index === 0 ? "high" : "auto"}
                 postNum={
                   sortedPosts.length -
                   sortedPosts.findIndex(p => p.id === data.id)

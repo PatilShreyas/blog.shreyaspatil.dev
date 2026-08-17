@@ -24,7 +24,7 @@ Hey Androiders 👋🏻, If you're building an app with Jetpack Compose, you mig
 
 To do this, the [Compose compiler report](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#compose-compiler) helps you check the status of a _Composable_ function, whether it's a restartable function or a skippable function. The report includes statistics of composable functions based on various parameters, details of classes, and **specifics of a composable function** (_which is our main focus_).
 
-After following the steps mentioned [here](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#setup) for generating a report, the report of composable functions looks like this (_this is a sample report_) ⬇️.
+After following the steps in the [official Compose compiler metrics setup guide](https://developer.android.com/develop/ui/compose/performance/stability/diagnose#setup) for generating a report, the report of composable functions looks like this (_this is a sample report_) ⬇️.
 
 ![](../../assets/images/content/effortless-compose-compiler-report-analysis/img-b6660eb4.png)
 

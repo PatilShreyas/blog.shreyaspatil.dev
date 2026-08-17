@@ -23,7 +23,7 @@ In the end, you will see app like this 👇. After clicking on one of the button
 
 ## 🔥 About FirebaseUI 😃
 
-*FirebaseUI is an open-source library for Android that allows you to quickly connect common UI elements to Firebase APIs. (*see [here](https://github.com/firebase/FirebaseUI-Android)*)*It makes it easy to bind data from Firebase Realtime Database\*\* or Cloud Firestore to your app’s UI 🎨.
+*FirebaseUI is an open-source library for Android that allows you to quickly connect common UI elements to Firebase APIs. *(see [FirebaseUI-Android on GitHub](https://github.com/firebase/FirebaseUI-Android))**It makes it easy to bind data from Firebase Realtime Database\*\* or Cloud Firestore to your app’s UI 🎨.
 
 FirebaseUI-Android provides a number of adapters, such as:
 
@@ -59,7 +59,7 @@ implementation 'android.arch.paging:runtime:1.0.1'
 }
 ```
 
-> If you’re unsure how to use _FirebaseUI_ 🔥, check out the official source [here](https://github.com/firebase/FirebaseUI-Android/). Or, take a look at the official sample👇.
+> If you’re unsure how to use _FirebaseUI_ 🔥, check out the [official FirebaseUI-Android repository on GitHub](https://github.com/firebase/FirebaseUI-Android/). Or, take a look at the official sample👇.
 
 [https://github.com/firebase/quickstart-android](https://github.com/firebase/quickstart-android)
 

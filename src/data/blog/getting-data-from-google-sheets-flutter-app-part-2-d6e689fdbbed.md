@@ -104,7 +104,7 @@ Now just go to **form_controller.dart** and we’ll create a new method called `
 
 Okay! We’re now done with data controlling part. Now let’s develop UI for it. Create another dart file for UI let’s say **feedback_list.dart** as below.
 
-> You can refer full code from GitHub repository [here](https://github.com/PatilShreyas/Flutter2GoogleSheets-Demo). Here I’m just showing an important part of code.
+> You can refer full code on the [Flutter2GoogleSheets GitHub repository](https://github.com/PatilShreyas/Flutter2GoogleSheets-Demo). Here I’m just showing an important part of code.
 
 ```dart
 class _FeedbackListPageState extends State<FeedbackListPage> {
@@ -172,7 +172,7 @@ Run command — `flutter run` and see the magic! 💙
 
 ## Wanna try it right now? 🤷‍♂️
 
-You can try the web version of this app [here](https://patilshreyas.github.io/Flutter2GoogleSheets-Demo/demo/).
+You can try the [interactive web demo of this Flutter app](https://patilshreyas.github.io/Flutter2GoogleSheets-Demo/demo/).
 
 > If you found this project useful, then please consider giving it a ⭐️ on GitHub and sharing it with your friends via social media.
 >

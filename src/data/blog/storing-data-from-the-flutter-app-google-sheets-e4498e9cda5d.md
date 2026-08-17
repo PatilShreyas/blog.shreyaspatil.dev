@@ -17,7 +17,7 @@ Hello everyone, This is my first ever article on Flutter. Google Sheets is a ver
 
 Here we’ll develop a sample flutter application, which simply takes user User Feedback, makes HTTP request to Google AppScript and then stores that feedback in Google Sheets. So, let’s start. 😃
 
-**You can try the web version of this app [here](https://patilshreyas.github.io/Flutter2GoogleSheets-Demo/demo/).**
+**You can try the [web demo of this Flutter app](https://patilshreyas.github.io/Flutter2GoogleSheets-Demo/demo/).**
 
 Here’s the [link for Part 2](https://medium.com/scalereal/getting-data-from-google-sheets-flutter-app-part-2-d6e689fdbbed) of this article.
 

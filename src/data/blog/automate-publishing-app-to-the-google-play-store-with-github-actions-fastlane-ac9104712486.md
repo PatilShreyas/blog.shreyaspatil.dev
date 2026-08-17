@@ -55,7 +55,7 @@ Thus you’ve successfully set up Google play credentials. Keep that file with y
 
 You can refer to [this repository](https://github.com/PatilShreyas/AndroidFastlaneCICD) as a reference. Everything in this article is already implemented there.
 
-Setting up Fastlane is so easy. [Ruby](https://www.ruby-lang.org/en/downloads/) should be preinstalled on the system. (Alternatively, you can follow the process as described [here](https://docs.fastlane.tools/getting-started/android/setup/)).
+Setting up Fastlane is so easy. [Ruby](https://www.ruby-lang.org/en/downloads/) should be preinstalled on the system. (Alternatively, you can follow the process in the [Fastlane Android setup documentation](https://docs.fastlane.tools/getting-started/android/setup/)).
 
 - Create a `Gemfile` in the root directory of your Android project as below:
 

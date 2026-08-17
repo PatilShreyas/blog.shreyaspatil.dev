@@ -7,9 +7,19 @@ import Datetime from "./Datetime.astro";
 type Props = {
   variant?: "h2" | "h3";
   postNum?: number;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "auto";
 } & CollectionEntry<"blog">;
 
-const { variant: Heading = "h2", id, data, filePath, postNum } = Astro.props;
+const {
+  variant: Heading = "h2",
+  id,
+  data,
+  filePath,
+  postNum,
+  loading = "lazy",
+  fetchpriority = "auto",
+} = Astro.props;
 
 const { title, description, coverImage, ...props } = data;
 ---
@@ -31,6 +41,9 @@ const { title, description, coverImage, ...props } = data;
           alt=""
           width={600}
           height={338}
+          loading={loading}
+          fetchpriority={fetchpriority}
+          decoding="async"
           class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </a>
@@ -49,7 +62,7 @@ const { title, description, coverImage, ...props } = data;
       <Heading>
         {
           postNum && (
-            <span class="mr-2 font-mono text-base text-accent/80 sm:text-lg">
+            <span class="mr-2 font-mono text-base text-accent sm:text-lg">
               #{postNum}
             </span>
           )
