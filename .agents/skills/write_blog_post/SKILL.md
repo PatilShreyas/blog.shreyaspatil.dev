@@ -173,7 +173,7 @@ fun updateState() {
 
 ## 5. Rich Tech Diagrams (Mermaid.js Flowcharts)
 
-The blog has native, built-in support for **Mermaid.js** diagrams.
+The blog has native, built-in support for **Mermaid.js** diagrams with seamless Light/Dark mode adaptability.
 *   Write your diagrams using standard markdown code fences with the `mermaid` language identifier:
     ````markdown
     ```mermaid
@@ -184,7 +184,26 @@ The blog has native, built-in support for **Mermaid.js** diagrams.
         C -->|No| E[Skip Invocation]
     ```
     ````
-*   The system automatically parses these blocks, loads the lightweight Mermaid library asynchronously, renders a beautifully centered, theme-adapted vector flowchart (SVG), and excludes it from the "Copy Code" overlay.
+*   **Semantic Color Classes**: When highlighting specific nodes with colors (e.g., blue checks, orange decisions, green successes, red failures), use standard class names (`blue`, `orange`, `green`, `red`, `purple`). The blog provides automatic theme-adapted styles for both light and dark modes:
+    ````markdown
+    ```mermaid
+    flowchart TD
+        Start([Start]) --> Check{"Valid?"}
+        Check -->|Yes| Success[Success]
+        Check -->|No| Error[Error]
+
+        classDef blue fill:#e0f2fe,stroke:#0284c7,color:#0369a1;
+        classDef orange fill:#ffedd5,stroke:#ea580c,color:#c2410c;
+        classDef green fill:#dcfce7,stroke:#16a34a,color:#15803d;
+        classDef red fill:#fee2e2,stroke:#dc2626,color:#b91c1c;
+
+        class Start blue;
+        class Check orange;
+        class Success green;
+        class Error red;
+    ```
+    ````
+*   The system automatically parses these blocks, loads Mermaid asynchronously, renders a beautifully centered vector SVG adapted to the blog's typography and color palette, and excludes it from the "Copy Code" overlay.
 
 ---
 
