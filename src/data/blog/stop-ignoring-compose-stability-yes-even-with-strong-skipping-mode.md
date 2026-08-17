@@ -187,7 +187,7 @@ Notice what happens:
 Here is a simple flowchart summarizing how Strong Skipping Mode evaluates both composables during recomposition:
 
 ```mermaid
-graph TD
+flowchart TD
     Action["⚡ Parent Recomposes / New State Emitted"] --> IsRestartable{"Is Composable Restartable?"}
 
     IsRestartable -- "No (e.g., inline functions)" --> Recompose["🔴 RECOMPOSED!"]
@@ -199,10 +199,15 @@ graph TD
     Choice -- "Yes (ImmutableList<T>)" --> StableCheck["Check Structural Equality (.equals())"]
     StableCheck -- "Identical Content (old == new)" --> Skip["🟢 SKIPPED!"]
 
-    style IsRestartable fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
-    style Choice fill:#fff3e0,stroke:#f57c00,color:#e65100
-    style Recompose fill:#ffebee,stroke:#c62828,color:#b71c1c
-    style Skip fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef blue fill:#e0f2fe,stroke:#0284c7,color:#0369a1;
+    classDef orange fill:#ffedd5,stroke:#ea580c,color:#c2410c;
+    classDef red fill:#fee2e2,stroke:#dc2626,color:#b91c1c;
+    classDef green fill:#dcfce7,stroke:#16a34a,color:#15803d;
+
+    class IsRestartable blue;
+    class Choice orange;
+    class Recompose red;
+    class Skip green;
 ```
 
 ---

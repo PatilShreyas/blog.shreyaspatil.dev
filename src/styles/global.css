@@ -127,17 +127,231 @@ pre::-webkit-scrollbar-thumb {
 }
 
 /* Mermaid diagrams: center in the column and scale the SVG to a readable,
-   bounded size. Without this, narrow columns render the SVG too small and
-   wide diagrams overflow horizontally. */
+   bounded size with responsive overflow handling. */
 .mermaid {
-  @apply my-8 flex justify-center;
+  @apply my-8 flex justify-center overflow-x-auto py-2;
 }
 
 .mermaid svg {
-  max-width: min(100%, 520px);
+  max-width: min(100%, 650px);
   height: auto;
-  font-size: 15px;
-  font-weight: 500;
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-size: 14px;
+}
+
+/* Ensure text inside nodes inherits colors cleanly */
+.mermaid .node .label,
+.mermaid .node .label span,
+.mermaid .node .label p,
+.mermaid .node .nodeLabel {
+  color: inherit;
+}
+
+/* Ensure edge labels float cleanly above lines */
+.mermaid .edgeLabel rect {
+  opacity: 1 !important;
+}
+
+/* --- Semantic Node Classes (Light Mode Defaults) --- */
+.mermaid .blue rect,
+.mermaid .blue polygon,
+.mermaid .blue circle,
+.mermaid .blue path,
+.mermaid .node-blue rect,
+.mermaid .node-blue polygon,
+.mermaid .node-blue circle,
+.mermaid .node-blue path {
+  fill: #e0f2fe !important;
+  stroke: #0284c7 !important;
+}
+.mermaid .blue .label,
+.mermaid .blue .label span,
+.mermaid .blue .nodeLabel,
+.mermaid .node-blue .label,
+.mermaid .node-blue .label span,
+.mermaid .node-blue .nodeLabel {
+  color: #0369a1 !important;
+}
+
+.mermaid .orange rect,
+.mermaid .orange polygon,
+.mermaid .orange circle,
+.mermaid .orange path,
+.mermaid .node-orange rect,
+.mermaid .node-orange polygon,
+.mermaid .node-orange circle,
+.mermaid .node-orange path {
+  fill: #ffedd5 !important;
+  stroke: #ea580c !important;
+}
+.mermaid .orange .label,
+.mermaid .orange .label span,
+.mermaid .orange .nodeLabel,
+.mermaid .node-orange .label,
+.mermaid .node-orange .label span,
+.mermaid .node-orange .nodeLabel {
+  color: #c2410c !important;
+}
+
+.mermaid .green rect,
+.mermaid .green polygon,
+.mermaid .green circle,
+.mermaid .green path,
+.mermaid .node-green rect,
+.mermaid .node-green polygon,
+.mermaid .node-green circle,
+.mermaid .node-green path {
+  fill: #dcfce7 !important;
+  stroke: #16a34a !important;
+}
+.mermaid .green .label,
+.mermaid .green .label span,
+.mermaid .green .nodeLabel,
+.mermaid .node-green .label,
+.mermaid .node-green .label span,
+.mermaid .node-green .nodeLabel {
+  color: #15803d !important;
+}
+
+.mermaid .red rect,
+.mermaid .red polygon,
+.mermaid .red circle,
+.mermaid .red path,
+.mermaid .node-red rect,
+.mermaid .node-red polygon,
+.mermaid .node-red circle,
+.mermaid .node-red path {
+  fill: #fee2e2 !important;
+  stroke: #dc2626 !important;
+}
+.mermaid .red .label,
+.mermaid .red .label span,
+.mermaid .red .nodeLabel,
+.mermaid .node-red .label,
+.mermaid .node-red .label span,
+.mermaid .node-red .nodeLabel {
+  color: #b91c1c !important;
+}
+
+.mermaid .purple rect,
+.mermaid .purple polygon,
+.mermaid .purple circle,
+.mermaid .purple path,
+.mermaid .node-purple rect,
+.mermaid .node-purple polygon,
+.mermaid .node-purple circle,
+.mermaid .node-purple path {
+  fill: #f3e8ff !important;
+  stroke: #9333ea !important;
+}
+.mermaid .purple .label,
+.mermaid .purple .label span,
+.mermaid .purple .nodeLabel,
+.mermaid .node-purple .label,
+.mermaid .node-purple .label span,
+.mermaid .node-purple .nodeLabel {
+  color: #7e22ce !important;
+}
+
+/* --- Semantic Node Classes (Dark Mode Overrides: Rich jewel-tones + crisp light text) --- */
+html[data-theme="dark"] .mermaid .blue rect,
+html[data-theme="dark"] .mermaid .blue polygon,
+html[data-theme="dark"] .mermaid .blue circle,
+html[data-theme="dark"] .mermaid .blue path,
+html[data-theme="dark"] .mermaid .node-blue rect,
+html[data-theme="dark"] .mermaid .node-blue polygon,
+html[data-theme="dark"] .mermaid .node-blue circle,
+html[data-theme="dark"] .mermaid .node-blue path {
+  fill: #0c2d48 !important;
+  stroke: #38bdf8 !important;
+}
+html[data-theme="dark"] .mermaid .blue .label,
+html[data-theme="dark"] .mermaid .blue .label span,
+html[data-theme="dark"] .mermaid .blue .nodeLabel,
+html[data-theme="dark"] .mermaid .node-blue .label,
+html[data-theme="dark"] .mermaid .node-blue .label span,
+html[data-theme="dark"] .mermaid .node-blue .nodeLabel {
+  color: #bae6fd !important;
+}
+
+html[data-theme="dark"] .mermaid .orange rect,
+html[data-theme="dark"] .mermaid .orange polygon,
+html[data-theme="dark"] .mermaid .orange circle,
+html[data-theme="dark"] .mermaid .orange path,
+html[data-theme="dark"] .mermaid .node-orange rect,
+html[data-theme="dark"] .mermaid .node-orange polygon,
+html[data-theme="dark"] .mermaid .node-orange circle,
+html[data-theme="dark"] .mermaid .node-orange path {
+  fill: #431407 !important;
+  stroke: #fb923c !important;
+}
+html[data-theme="dark"] .mermaid .orange .label,
+html[data-theme="dark"] .mermaid .orange .label span,
+html[data-theme="dark"] .mermaid .orange .nodeLabel,
+html[data-theme="dark"] .mermaid .node-orange .label,
+html[data-theme="dark"] .mermaid .node-orange .label span,
+html[data-theme="dark"] .mermaid .node-orange .nodeLabel {
+  color: #fed7aa !important;
+}
+
+html[data-theme="dark"] .mermaid .green rect,
+html[data-theme="dark"] .mermaid .green polygon,
+html[data-theme="dark"] .mermaid .green circle,
+html[data-theme="dark"] .mermaid .green path,
+html[data-theme="dark"] .mermaid .node-green rect,
+html[data-theme="dark"] .mermaid .node-green polygon,
+html[data-theme="dark"] .mermaid .node-green circle,
+html[data-theme="dark"] .mermaid .node-green path {
+  fill: #052e16 !important;
+  stroke: #4ade80 !important;
+}
+html[data-theme="dark"] .mermaid .green .label,
+html[data-theme="dark"] .mermaid .green .label span,
+html[data-theme="dark"] .mermaid .green .nodeLabel,
+html[data-theme="dark"] .mermaid .node-green .label,
+html[data-theme="dark"] .mermaid .node-green .label span,
+html[data-theme="dark"] .mermaid .node-green .nodeLabel {
+  color: #bbf7d0 !important;
+}
+
+html[data-theme="dark"] .mermaid .red rect,
+html[data-theme="dark"] .mermaid .red polygon,
+html[data-theme="dark"] .mermaid .red circle,
+html[data-theme="dark"] .mermaid .red path,
+html[data-theme="dark"] .mermaid .node-red rect,
+html[data-theme="dark"] .mermaid .node-red polygon,
+html[data-theme="dark"] .mermaid .node-red circle,
+html[data-theme="dark"] .mermaid .node-red path {
+  fill: #450a0a !important;
+  stroke: #f87171 !important;
+}
+html[data-theme="dark"] .mermaid .red .label,
+html[data-theme="dark"] .mermaid .red .label span,
+html[data-theme="dark"] .mermaid .red .nodeLabel,
+html[data-theme="dark"] .mermaid .node-red .label,
+html[data-theme="dark"] .mermaid .node-red .label span,
+html[data-theme="dark"] .mermaid .node-red .nodeLabel {
+  color: #fecaca !important;
+}
+
+html[data-theme="dark"] .mermaid .purple rect,
+html[data-theme="dark"] .mermaid .purple polygon,
+html[data-theme="dark"] .mermaid .purple circle,
+html[data-theme="dark"] .mermaid .purple path,
+html[data-theme="dark"] .mermaid .node-purple rect,
+html[data-theme="dark"] .mermaid .node-purple polygon,
+html[data-theme="dark"] .mermaid .node-purple circle,
+html[data-theme="dark"] .mermaid .node-purple path {
+  fill: #3b0764 !important;
+  stroke: #c084fc !important;
+}
+html[data-theme="dark"] .mermaid .purple .label,
+html[data-theme="dark"] .mermaid .purple .label span,
+html[data-theme="dark"] .mermaid .purple .nodeLabel,
+html[data-theme="dark"] .mermaid .node-purple .label,
+html[data-theme="dark"] .mermaid .node-purple .label span,
+html[data-theme="dark"] .mermaid .node-purple .nodeLabel {
+  color: #e9d5ff !important;
 }
 
 /* Responsive Video Embeds */

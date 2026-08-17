@@ -551,10 +551,89 @@ const nextPost =
 <script is:inline>
   let mermaidObserver;
 
-  function getMermaidTheme() {
-    return document.documentElement.getAttribute("data-theme") === "dark"
-      ? "dark"
-      : "default";
+  function getMermaidConfig() {
+    const isDark =
+      document.documentElement.getAttribute("data-theme") === "dark";
+
+    return {
+      startOnLoad: false,
+      theme: "base",
+      themeVariables: isDark
+        ? {
+            darkMode: true,
+            fontFamily: "Inter, system-ui, -apple-system, sans-serif",
+            fontSize: "14px",
+            background: "transparent",
+            primaryColor: "#292524",
+            primaryTextColor: "#e7e5e4",
+            primaryBorderColor: "#44403c",
+            lineColor: "#a8a29e",
+            arrowheadColor: "#a8a29e",
+            secondaryColor: "#1c1917",
+            secondaryTextColor: "#e7e5e4",
+            secondaryBorderColor: "#44403c",
+            tertiaryColor: "#292524",
+            tertiaryTextColor: "#e7e5e4",
+            tertiaryBorderColor: "#44403c",
+            mainBkg: "#292524",
+            nodeBorder: "#44403c",
+            nodeTextColor: "#e7e5e4",
+            clusterBkg: "#23201d",
+            clusterBorder: "#44403c",
+            titleColor: "#e7e5e4",
+            edgeLabelBackground: "#1c1917",
+            actorBorder: "#44403c",
+            actorBkg: "#292524",
+            actorTextColor: "#e7e5e4",
+            actorLineColor: "#a8a29e",
+            signalColor: "#e7e5e4",
+            signalTextColor: "#e7e5e4",
+            labelBoxBkgColor: "#292524",
+            labelBoxBorderColor: "#44403c",
+            labelTextColor: "#e7e5e4",
+            loopTextColor: "#e7e5e4",
+            noteBkgColor: "#292524",
+            noteTextColor: "#e7e5e4",
+            noteBorderColor: "#44403c",
+          }
+        : {
+            darkMode: false,
+            fontFamily: "Inter, system-ui, -apple-system, sans-serif",
+            fontSize: "14px",
+            background: "transparent",
+            primaryColor: "#f5f0eb",
+            primaryTextColor: "#1a1a1a",
+            primaryBorderColor: "#d9cfc7",
+            lineColor: "#78716c",
+            arrowheadColor: "#78716c",
+            secondaryColor: "#efe9e3",
+            secondaryTextColor: "#1a1a1a",
+            secondaryBorderColor: "#d9cfc7",
+            tertiaryColor: "#f9f8f6",
+            tertiaryTextColor: "#1a1a1a",
+            tertiaryBorderColor: "#d9cfc7",
+            mainBkg: "#f5f0eb",
+            nodeBorder: "#d9cfc7",
+            nodeTextColor: "#1a1a1a",
+            clusterBkg: "#f0eae3",
+            clusterBorder: "#d9cfc7",
+            titleColor: "#1a1a1a",
+            edgeLabelBackground: "#f9f8f6",
+            actorBorder: "#d9cfc7",
+            actorBkg: "#f5f0eb",
+            actorTextColor: "#1a1a1a",
+            actorLineColor: "#78716c",
+            signalColor: "#1a1a1a",
+            signalTextColor: "#1a1a1a",
+            labelBoxBkgColor: "#f5f0eb",
+            labelBoxBorderColor: "#d9cfc7",
+            labelTextColor: "#1a1a1a",
+            loopTextColor: "#1a1a1a",
+            noteBkgColor: "#f5f0eb",
+            noteTextColor: "#1a1a1a",
+            noteBorderColor: "#d9cfc7",
+          },
+    };
   }
 
   function renderMermaid() {
@@ -564,7 +643,7 @@ const nextPost =
       el.removeAttribute("data-processed");
       el.textContent = el.getAttribute("data-mermaid-source") || "";
     });
-    window.mermaid.initialize({ startOnLoad: false, theme: getMermaidTheme() });
+    window.mermaid.initialize(getMermaidConfig());
     window.mermaid.run();
   }
 
