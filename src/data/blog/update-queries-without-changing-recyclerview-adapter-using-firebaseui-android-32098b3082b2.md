@@ -23,7 +23,7 @@ In the end, you will see app like this 👇. After clicking on one of the button
 
 ## 🔥 About FirebaseUI 😃
 
-*FirebaseUI is an open-source library for Android that allows you to quickly connect common UI elements to Firebase APIs. *(see [FirebaseUI-Android on GitHub](https://github.com/firebase/FirebaseUI-Android))**It makes it easy to bind data from Firebase Realtime Database\*\* or Cloud Firestore to your app’s UI 🎨.
+_FirebaseUI is an open-source library for Android that allows you to quickly connect common UI elements to Firebase APIs. _(see [FirebaseUI-Android on GitHub](https://github.com/firebase/FirebaseUI-Android))\*\*It makes it easy to bind data from Firebase Realtime Database\*\* or Cloud Firestore to your app’s UI 🎨.
 
 FirebaseUI-Android provides a number of adapters, such as:
 

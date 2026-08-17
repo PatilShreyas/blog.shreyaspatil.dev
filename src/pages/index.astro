@@ -104,8 +104,12 @@ const paginatedRecentPosts = recentPosts.slice(0, SITE.postPerPage);
               <Card
                 variant="h3"
                 {...data}
-                loading={featuredPosts.length === 0 && index === 0 ? "eager" : "lazy"}
-                fetchpriority={featuredPosts.length === 0 && index === 0 ? "high" : "auto"}
+                loading={
+                  featuredPosts.length === 0 && index === 0 ? "eager" : "lazy"
+                }
+                fetchpriority={
+                  featuredPosts.length === 0 && index === 0 ? "high" : "auto"
+                }
                 postNum={
                   sortedPosts.length -
                   sortedPosts.findIndex(p => p.id === data.id)
