@@ -18,6 +18,11 @@ type Props = {
   pubDatetime?: Date;
   modDatetime?: Date | null;
   tags?: string[];
+  coverImagePreload?: {
+    src: string;
+    srcSet: { attribute: string };
+    sizes: string;
+  };
 };
 
 const {
@@ -30,6 +35,7 @@ const {
   pubDatetime,
   modDatetime,
   tags,
+  coverImagePreload,
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.url);
@@ -73,40 +79,65 @@ const structuredData = isArticle
     <meta name="generator" content={Astro.generator} />
 
     <!-- Load Font: Inter (Sans-serif) for Headings -->
-    <Font
-      cssVariable="--font-inter"
-      preload={[
-        { subset: "latin", weight: 400, style: "normal" },
-        { subset: "latin", weight: 700, style: "normal" },
-      ]}
-    />
+    <Font cssVariable="--font-inter" preload={[]} />
     <!-- Load Font: Lora (Serif) for Body -->
     <Font
       cssVariable="--font-lora"
-      preload={[
-        { subset: "latin", weight: 400, style: "normal" },
-        { subset: "latin", weight: 700, style: "normal" },
-      ]}
+      preload={[{ subset: "latin", weight: 400, style: "normal" }]}
     />
 
     {
+      coverImagePreload && (
+        <link
+          rel="preload"
+          as="image"
+          href={coverImagePreload.src}
+          imagesrcset={coverImagePreload.srcSet.attribute}
+          imagesizes={coverImagePreload.sizes}
+          fetchpriority="high"
+        />
+      )
+    }
+
+    {
       import.meta.env.PROD && (PUBLIC_GA_ID || SITE.googleAnalyticsId) && (
-        <>
-          <script
-            is:inline
-            defer
-            src={`https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_ID || SITE.googleAnalyticsId}`}
-          />
-          <script
-            is:inline
-            set:html={`
+        <script
+          is:inline
+          set:html={`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${PUBLIC_GA_ID || SITE.googleAnalyticsId}');
+            function gtag() {
+              window.dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", "${PUBLIC_GA_ID || SITE.googleAnalyticsId}");
+
+            function loadGA() {
+              if (window._gaLoaded) return;
+              window._gaLoaded = true;
+              ["pointerdown", "touchstart", "scroll", "keydown"].forEach(function(e) {
+                window.removeEventListener(e, loadGA);
+              });
+              const s = document.createElement("script");
+              s.async = true;
+              s.src = "https://www.googletagmanager.com/gtag/js?id=${PUBLIC_GA_ID || SITE.googleAnalyticsId}";
+              document.head.appendChild(s);
+            }
+
+            ["pointerdown", "touchstart", "scroll", "keydown"].forEach(function(e) {
+              window.addEventListener(e, loadGA, { once: true, passive: true });
+            });
+
+            if ("requestIdleCallback" in window) {
+              requestIdleCallback(function() {
+                setTimeout(loadGA, 5000);
+              });
+            } else {
+              window.addEventListener("load", function() {
+                setTimeout(loadGA, 5000);
+              });
+            }
           `}
-          />
-        </>
+        />
       )
     }
 
