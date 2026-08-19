@@ -311,7 +311,7 @@ const nextPost =
         // Skip mermaid blocks — they get replaced and don't need a copy button
         if (codeBlock.getAttribute("data-language") === "mermaid") continue;
         const wrapper = document.createElement("div");
-        wrapper.style.position = "relative";
+        wrapper.className = "relative w-full max-w-full";
 
         // Check if --file-name-offset custom property exists
         const computedStyle = getComputedStyle(codeBlock);

@@ -63,7 +63,7 @@
   }
 
   .app-prose a {
-    @apply wrap-break-word text-foreground decoration-accent/40 underline-offset-4 hover:text-accent hover:decoration-accent focus-visible:no-underline;
+    @apply break-words text-foreground decoration-accent/40 underline-offset-4 hover:text-accent hover:decoration-accent focus-visible:no-underline;
   }
 
   .app-prose ul {
@@ -91,7 +91,8 @@
   }
 
   .app-prose table {
-    @apply my-8 w-full border-collapse text-left;
+    @apply my-8 block w-full min-w-full border-collapse overflow-x-auto text-left;
+    -webkit-overflow-scrolling: touch;
   }
 
   .app-prose table th,
@@ -178,7 +179,8 @@
 
 /* Code Block Styling */
 pre {
-  @apply rounded-xl p-4 shadow-sm transition-all duration-300;
+  @apply max-w-full overflow-x-auto rounded-xl p-4 shadow-sm transition-all duration-300;
+  -webkit-overflow-scrolling: touch;
 }
 
 html[data-theme="light"] pre {
@@ -205,20 +207,27 @@ pre code {
   @apply bg-transparent p-0 text-inherit;
 }
 
-/* Custom Scrollbar for Code Blocks */
-pre::-webkit-scrollbar {
-  height: 8px;
+/* Custom Scrollbar for Code Blocks & Tables */
+pre::-webkit-scrollbar,
+.app-prose table::-webkit-scrollbar {
+  height: 6px;
 }
-pre::-webkit-scrollbar-track {
+pre::-webkit-scrollbar-track,
+.app-prose table::-webkit-scrollbar-track {
   @apply bg-transparent;
 }
-pre::-webkit-scrollbar-thumb {
+pre::-webkit-scrollbar-thumb,
+.app-prose table::-webkit-scrollbar-thumb {
   @apply rounded-full bg-muted/80 hover:bg-accent/50;
 }
 
 /* Auto-generated video (GIF replacements) render like inline images */
 .gif-video {
   @apply mx-auto my-4 block max-w-full rounded-lg border border-border shadow-sm;
+}
+
+.app-prose video {
+  @apply max-w-full;
 }
 
 /* Mermaid diagrams: center in the column and scale the SVG to a readable,
@@ -471,7 +480,7 @@ html[data-theme="dark"] .mermaid .node-purple .nodeLabel {
 
 /* Native Post Callouts */
 .post-callout {
-  @apply my-8 flex items-start gap-4 rounded-2xl border border-accent/20 bg-accent/5 p-6 font-medium text-foreground/90 shadow-sm transition-all hover:shadow-md;
+  @apply my-8 flex max-w-full items-start gap-3 overflow-hidden rounded-2xl border border-accent/20 bg-accent/5 p-4 font-medium text-foreground/90 shadow-sm transition-all hover:shadow-md sm:gap-4 sm:p-6;
 }
 
 .post-callout .emoji {

@@ -52,9 +52,11 @@
   }
   html {
     @apply overflow-y-scroll;
+    overflow-x: clip;
   }
   body {
     @apply flex min-h-svh flex-col bg-background font-app text-foreground transition-colors duration-300 selection:bg-accent/30 selection:text-foreground;
+    overflow-x: clip;
   }
   p {
     text-wrap: pretty;
