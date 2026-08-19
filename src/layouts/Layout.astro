@@ -331,17 +331,47 @@ const structuredData = isArticle
       document.addEventListener("astro:before-preparation", startProgress);
       document.addEventListener("astro:page-load", finishProgress);
 
-      // Fix for autoplay videos not playing on ViewTransition navigation
+      // Fix for autoplay videos: only play when in viewport (preserves bandwidth & CPU)
+      let videoObserver: IntersectionObserver | null = null;
       document.addEventListener("astro:page-load", () => {
-        document
-          .querySelectorAll<HTMLVideoElement>("video[autoplay]")
-          .forEach(video => {
-            video.load();
+        if (videoObserver) {
+          videoObserver.disconnect();
+          videoObserver = null;
+        }
+
+        const videos =
+          document.querySelectorAll<HTMLVideoElement>("video[autoplay]");
+        if (videos.length === 0) return;
+
+        if ("IntersectionObserver" in window) {
+          videoObserver = new IntersectionObserver(
+            entries => {
+              entries.forEach(entry => {
+                const video = entry.target as HTMLVideoElement;
+                if (entry.isIntersecting) {
+                  const playPromise = video.play();
+                  if (playPromise !== undefined) {
+                    playPromise.catch(() => {});
+                  }
+                } else {
+                  if (!video.paused) {
+                    video.pause();
+                  }
+                }
+              });
+            },
+            { rootMargin: "200px 0px", threshold: 0.1 }
+          );
+
+          videos.forEach(video => videoObserver?.observe(video));
+        } else {
+          videos.forEach(video => {
             const playPromise = video.play();
             if (playPromise !== undefined) {
               playPromise.catch(() => {});
             }
           });
+        }
       });
     </script>
 

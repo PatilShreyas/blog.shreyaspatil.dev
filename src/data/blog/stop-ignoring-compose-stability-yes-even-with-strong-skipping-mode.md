@@ -167,7 +167,7 @@ fun ImmutableListCard(items: ImmutableList<Item>) {
 Here is a live screen recording from the app testing both actions:
 
 <div class="flex justify-center">
-  <video controls autoplay loop muted playsinline class="max-h-[480px] w-auto rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 object-contain">
+  <video controls autoplay loop muted playsinline preload="none" class="max-h-[480px] w-auto rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 object-contain">
     <source src="/videos/content/why-compose-stability-still-matters-in-strong-skipping-mode/demo.webm" type="video/webm">
     Your browser does not support the video tag.
   </video>
