@@ -589,6 +589,7 @@ const nextPost =
 
 <script is:inline>
   let mermaidObserver;
+  let isMermaidLoading = false;
 
   function getMermaidConfig() {
     const isDark =
@@ -711,13 +712,53 @@ const nextPost =
       block.parentNode.replaceChild(div, block);
     });
 
-    if (!window.mermaid) {
+    function loadAndRenderMermaid() {
+      if (window.mermaid) {
+        renderMermaid();
+        return;
+      }
+      if (isMermaidLoading) return;
+      isMermaidLoading = true;
       const script = document.createElement("script");
       script.src = "/vendor/mermaid.min.js";
-      script.onload = () => renderMermaid();
+      script.onload = () => {
+        isMermaidLoading = false;
+        renderMermaid();
+      };
+      script.onerror = () => {
+        isMermaidLoading = false;
+      };
       document.head.appendChild(script);
-    } else {
-      renderMermaid();
+    }
+
+    // Lazy load mermaid when diagrams approach viewport
+    const mermaidElements = document.querySelectorAll(".mermaid");
+    if (mermaidElements.length > 0) {
+      if ("IntersectionObserver" in window) {
+        const diagramObserver = new IntersectionObserver(
+          (entries, obs) => {
+            if (entries.some(e => e.isIntersecting)) {
+              obs.disconnect();
+              loadAndRenderMermaid();
+            }
+          },
+          { rootMargin: "400px 0px" }
+        );
+        mermaidElements.forEach(el => diagramObserver.observe(el));
+      } else {
+        loadAndRenderMermaid();
+      }
+
+      // Fallback: load during idle time after 3 seconds
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(() => {
+          setTimeout(() => {
+            if (!window.mermaid && document.querySelector(".mermaid")) {
+              loadAndRenderMermaid();
+            }
+          }, 3000);
+        });
+      }
     }
 
     // Re-render diagrams when user toggles dark/light mode
