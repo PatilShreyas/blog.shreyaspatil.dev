@@ -1,39 +1,44 @@
 @import "tailwindcss";
+@import "./theme.css";
+@plugin "@tailwindcss/typography";
 @import "./typography.css";
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
-:root {
-  color-scheme: light dark;
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
-:root,
-html[data-theme="light"] {
-  color-scheme: light;
-  --background: #f9f8f6;
-  --foreground: #1a1a1a; /* Darker for better contrast */
-  --accent: #674e37; /* Darkened for AAA contrast (7.3:1) against light background */
-  --muted: #efe9e3;
-  --border: #d9cfc7;
+.img-shimmer {
+  background-image: linear-gradient(
+    90deg,
+    var(--muted) 0%,
+    var(--border) 50%,
+    var(--muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
 }
 
-html[data-theme="dark"] {
-  color-scheme: dark;
-  --background: #1c1917; /* Stone-900: near-black with subtle warm undertone */
-  --foreground: #e7e5e4; /* Stone-200: easy long-form reading */
-  --accent: #d4b28a; /* Warm honey, AAA contrast (~7.5:1) */
-  --muted: #292524; /* Stone-800: same family, one step up for surfaces */
-  --border: #44403c; /* Stone-700: visible on stone-900 without glowing */
+@utility max-w-app {
+  @apply max-w-2xl;
 }
 
-@theme inline {
-  --font-app: var(--font-lora);
-  --font-heading: var(--font-inter);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
+@utility app-layout {
+  @apply mx-auto w-full max-w-app px-4;
+}
+
+.active-nav {
+  @apply underline decoration-wavy decoration-2 underline-offset-8;
+}
+
+/* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
+/* Anything that has been anchored to should have extra scroll margin */
+:target {
+  scroll-margin-block: 1rem;
 }
 
 @layer base {
@@ -43,13 +48,15 @@ html[data-theme="dark"] {
     scrollbar-color: var(--color-muted) transparent;
   }
   img {
-    @apply mx-auto img-shimmer rounded-lg border border-border;
+    @apply mx-auto rounded-lg border border-border;
   }
   html {
     @apply overflow-y-scroll;
+    overflow-x: clip;
   }
   body {
     @apply flex min-h-svh flex-col bg-background font-app text-foreground transition-colors duration-300 selection:bg-accent/30 selection:text-foreground;
+    overflow-x: clip;
   }
   p {
     text-wrap: pretty;
@@ -71,400 +78,6 @@ html[data-theme="dark"] {
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
-}
-
-@utility max-w-app {
-  @apply max-w-2xl;
-}
-
-@utility app-layout {
-  @apply mx-auto w-full max-w-app px-4;
-}
-
-.active-nav {
-  @apply underline decoration-wavy decoration-2 underline-offset-8;
-}
-
-/* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
-/* Anything that has been anchored to should have extra scroll margin */
-:target {
-  scroll-margin-block: 1rem;
-}
-
-/* Code Block Styling */
-pre {
-  @apply rounded-xl p-4 shadow-sm transition-all duration-300;
-}
-
-html[data-theme="light"] pre {
-  @apply border border-border/40 bg-white shadow-sm;
-}
-
-html[data-theme="dark"] pre {
-  @apply border border-white/5 bg-[#0c0a09] shadow-inner;
-}
-
-pre:hover {
-  @apply shadow-md ring-1 ring-accent/20;
-}
-
-code {
-  @apply rounded-md bg-muted/50 px-1.5 py-0.5 font-mono text-sm font-medium;
-}
-
-html[data-theme="dark"] code:not(pre code) {
-  @apply border! border-white/10! bg-accent/15!;
-}
-
-pre code {
-  @apply bg-transparent p-0 text-inherit;
-}
-
-/* Custom Scrollbar for Code Blocks */
-pre::-webkit-scrollbar {
-  height: 8px;
-}
-pre::-webkit-scrollbar-track {
-  @apply bg-transparent;
-}
-pre::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-muted/80 hover:bg-accent/50;
-}
-
-/* Auto-generated video (GIF replacements) render like inline images */
-.gif-video {
-  @apply mx-auto my-4 block max-w-full rounded-lg border border-border shadow-sm;
-}
-
-/* Mermaid diagrams: center in the column and scale the SVG to a readable,
-   bounded size with responsive overflow handling. */
-.mermaid {
-  @apply my-8 flex justify-center overflow-x-auto py-2;
-}
-
-.mermaid svg {
-  max-width: min(100%, 650px);
-  height: auto;
-  font-family: var(--font-heading), system-ui, sans-serif;
-  font-size: 14px;
-}
-
-/* Ensure text inside nodes inherits colors cleanly */
-.mermaid .node .label,
-.mermaid .node .label span,
-.mermaid .node .label p,
-.mermaid .node .nodeLabel {
-  color: inherit;
-}
-
-/* Ensure edge labels float cleanly above lines */
-.mermaid .edgeLabel rect {
-  opacity: 1 !important;
-}
-
-/* --- Semantic Node Classes (Light Mode Defaults) --- */
-.mermaid .blue rect,
-.mermaid .blue polygon,
-.mermaid .blue circle,
-.mermaid .blue path,
-.mermaid .node-blue rect,
-.mermaid .node-blue polygon,
-.mermaid .node-blue circle,
-.mermaid .node-blue path {
-  fill: #e0f2fe !important;
-  stroke: #0284c7 !important;
-}
-.mermaid .blue .label,
-.mermaid .blue .label span,
-.mermaid .blue .nodeLabel,
-.mermaid .node-blue .label,
-.mermaid .node-blue .label span,
-.mermaid .node-blue .nodeLabel {
-  color: #0369a1 !important;
-}
-
-.mermaid .orange rect,
-.mermaid .orange polygon,
-.mermaid .orange circle,
-.mermaid .orange path,
-.mermaid .node-orange rect,
-.mermaid .node-orange polygon,
-.mermaid .node-orange circle,
-.mermaid .node-orange path {
-  fill: #ffedd5 !important;
-  stroke: #ea580c !important;
-}
-.mermaid .orange .label,
-.mermaid .orange .label span,
-.mermaid .orange .nodeLabel,
-.mermaid .node-orange .label,
-.mermaid .node-orange .label span,
-.mermaid .node-orange .nodeLabel {
-  color: #c2410c !important;
-}
-
-.mermaid .green rect,
-.mermaid .green polygon,
-.mermaid .green circle,
-.mermaid .green path,
-.mermaid .node-green rect,
-.mermaid .node-green polygon,
-.mermaid .node-green circle,
-.mermaid .node-green path {
-  fill: #dcfce7 !important;
-  stroke: #16a34a !important;
-}
-.mermaid .green .label,
-.mermaid .green .label span,
-.mermaid .green .nodeLabel,
-.mermaid .node-green .label,
-.mermaid .node-green .label span,
-.mermaid .node-green .nodeLabel {
-  color: #15803d !important;
-}
-
-.mermaid .red rect,
-.mermaid .red polygon,
-.mermaid .red circle,
-.mermaid .red path,
-.mermaid .node-red rect,
-.mermaid .node-red polygon,
-.mermaid .node-red circle,
-.mermaid .node-red path {
-  fill: #fee2e2 !important;
-  stroke: #dc2626 !important;
-}
-.mermaid .red .label,
-.mermaid .red .label span,
-.mermaid .red .nodeLabel,
-.mermaid .node-red .label,
-.mermaid .node-red .label span,
-.mermaid .node-red .nodeLabel {
-  color: #b91c1c !important;
-}
-
-.mermaid .purple rect,
-.mermaid .purple polygon,
-.mermaid .purple circle,
-.mermaid .purple path,
-.mermaid .node-purple rect,
-.mermaid .node-purple polygon,
-.mermaid .node-purple circle,
-.mermaid .node-purple path {
-  fill: #f3e8ff !important;
-  stroke: #9333ea !important;
-}
-.mermaid .purple .label,
-.mermaid .purple .label span,
-.mermaid .purple .nodeLabel,
-.mermaid .node-purple .label,
-.mermaid .node-purple .label span,
-.mermaid .node-purple .nodeLabel {
-  color: #7e22ce !important;
-}
-
-/* --- Semantic Node Classes (Dark Mode Overrides: Rich jewel-tones + crisp light text) --- */
-html[data-theme="dark"] .mermaid .blue rect,
-html[data-theme="dark"] .mermaid .blue polygon,
-html[data-theme="dark"] .mermaid .blue circle,
-html[data-theme="dark"] .mermaid .blue path,
-html[data-theme="dark"] .mermaid .node-blue rect,
-html[data-theme="dark"] .mermaid .node-blue polygon,
-html[data-theme="dark"] .mermaid .node-blue circle,
-html[data-theme="dark"] .mermaid .node-blue path {
-  fill: #0c2d48 !important;
-  stroke: #38bdf8 !important;
-}
-html[data-theme="dark"] .mermaid .blue .label,
-html[data-theme="dark"] .mermaid .blue .label span,
-html[data-theme="dark"] .mermaid .blue .nodeLabel,
-html[data-theme="dark"] .mermaid .node-blue .label,
-html[data-theme="dark"] .mermaid .node-blue .label span,
-html[data-theme="dark"] .mermaid .node-blue .nodeLabel {
-  color: #bae6fd !important;
-}
-
-html[data-theme="dark"] .mermaid .orange rect,
-html[data-theme="dark"] .mermaid .orange polygon,
-html[data-theme="dark"] .mermaid .orange circle,
-html[data-theme="dark"] .mermaid .orange path,
-html[data-theme="dark"] .mermaid .node-orange rect,
-html[data-theme="dark"] .mermaid .node-orange polygon,
-html[data-theme="dark"] .mermaid .node-orange circle,
-html[data-theme="dark"] .mermaid .node-orange path {
-  fill: #431407 !important;
-  stroke: #fb923c !important;
-}
-html[data-theme="dark"] .mermaid .orange .label,
-html[data-theme="dark"] .mermaid .orange .label span,
-html[data-theme="dark"] .mermaid .orange .nodeLabel,
-html[data-theme="dark"] .mermaid .node-orange .label,
-html[data-theme="dark"] .mermaid .node-orange .label span,
-html[data-theme="dark"] .mermaid .node-orange .nodeLabel {
-  color: #fed7aa !important;
-}
-
-html[data-theme="dark"] .mermaid .green rect,
-html[data-theme="dark"] .mermaid .green polygon,
-html[data-theme="dark"] .mermaid .green circle,
-html[data-theme="dark"] .mermaid .green path,
-html[data-theme="dark"] .mermaid .node-green rect,
-html[data-theme="dark"] .mermaid .node-green polygon,
-html[data-theme="dark"] .mermaid .node-green circle,
-html[data-theme="dark"] .mermaid .node-green path {
-  fill: #052e16 !important;
-  stroke: #4ade80 !important;
-}
-html[data-theme="dark"] .mermaid .green .label,
-html[data-theme="dark"] .mermaid .green .label span,
-html[data-theme="dark"] .mermaid .green .nodeLabel,
-html[data-theme="dark"] .mermaid .node-green .label,
-html[data-theme="dark"] .mermaid .node-green .label span,
-html[data-theme="dark"] .mermaid .node-green .nodeLabel {
-  color: #bbf7d0 !important;
-}
-
-html[data-theme="dark"] .mermaid .red rect,
-html[data-theme="dark"] .mermaid .red polygon,
-html[data-theme="dark"] .mermaid .red circle,
-html[data-theme="dark"] .mermaid .red path,
-html[data-theme="dark"] .mermaid .node-red rect,
-html[data-theme="dark"] .mermaid .node-red polygon,
-html[data-theme="dark"] .mermaid .node-red circle,
-html[data-theme="dark"] .mermaid .node-red path {
-  fill: #450a0a !important;
-  stroke: #f87171 !important;
-}
-html[data-theme="dark"] .mermaid .red .label,
-html[data-theme="dark"] .mermaid .red .label span,
-html[data-theme="dark"] .mermaid .red .nodeLabel,
-html[data-theme="dark"] .mermaid .node-red .label,
-html[data-theme="dark"] .mermaid .node-red .label span,
-html[data-theme="dark"] .mermaid .node-red .nodeLabel {
-  color: #fecaca !important;
-}
-
-html[data-theme="dark"] .mermaid .purple rect,
-html[data-theme="dark"] .mermaid .purple polygon,
-html[data-theme="dark"] .mermaid .purple circle,
-html[data-theme="dark"] .mermaid .purple path,
-html[data-theme="dark"] .mermaid .node-purple rect,
-html[data-theme="dark"] .mermaid .node-purple polygon,
-html[data-theme="dark"] .mermaid .node-purple circle,
-html[data-theme="dark"] .mermaid .node-purple path {
-  fill: #3b0764 !important;
-  stroke: #c084fc !important;
-}
-html[data-theme="dark"] .mermaid .purple .label,
-html[data-theme="dark"] .mermaid .purple .label span,
-html[data-theme="dark"] .mermaid .purple .nodeLabel,
-html[data-theme="dark"] .mermaid .node-purple .label,
-html[data-theme="dark"] .mermaid .node-purple .label span,
-html[data-theme="dark"] .mermaid .node-purple .nodeLabel {
-  color: #e9d5ff !important;
-}
-
-/* Responsive Video Embeds */
-.video-container {
-  position: relative;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  height: 0;
-  overflow: hidden;
-  max-width: 100%;
-  margin: 2rem 0;
-}
-.video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  border-radius: 0.75rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-@utility img-shimmer {
-  background-image: linear-gradient(
-    90deg,
-    var(--muted) 0%,
-    var(--border) 50%,
-    var(--muted) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite linear;
-}
-
-/* Native Post Callouts */
-.post-callout {
-  @apply my-8 flex items-start gap-4 rounded-2xl border border-accent/20 bg-accent/5 p-6 font-medium text-foreground/90 shadow-sm transition-all hover:shadow-md;
-}
-
-.post-callout .emoji {
-  @apply text-2xl grayscale-[0.2] filter select-none;
-}
-
-.post-callout .content {
-  @apply flex-1 leading-relaxed;
-}
-
-/* Dark mode refinement */
-html[data-theme="dark"] .post-callout {
-  @apply border-white/10 bg-white/5 text-foreground;
-}
-
-/* Native Highlight (mark) */
-mark {
-  @apply rounded-sm bg-accent/25 px-1 text-inherit transition-colors;
-}
-
-html[data-theme="dark"] mark {
-  @apply bg-accent/40;
-}
-
-/* Image Lightbox */
-#lightbox {
-  @apply pointer-events-none fixed inset-0 z-50 flex flex-col items-center justify-center bg-background/90 opacity-0 backdrop-blur-md transition-opacity duration-300;
-}
-
-#lightbox.active {
-  @apply pointer-events-auto opacity-100;
-}
-
-#lightbox-img {
-  @apply max-h-[85vh] max-w-[90vw] cursor-grab object-contain;
-  transition: opacity 0.3s ease;
-  touch-action: none;
-  user-select: none;
-}
-
-#lightbox-img:active {
-  @apply cursor-grabbing;
-}
-
-.lightbox-close {
-  @apply absolute top-6 right-6 p-2 text-foreground transition-colors hover:text-accent;
-}
-
-.lightbox-controls {
-  @apply absolute bottom-8 left-1/2 flex -translate-x-1/2 items-center gap-4 rounded-full border border-border bg-muted/80 px-6 py-3 shadow-2xl backdrop-blur-sm;
-}
-
-.lightbox-btn {
-  @apply p-2 text-foreground transition-colors hover:text-accent disabled:pointer-events-none disabled:opacity-30;
-}
-
-.lightbox-zoom-val {
-  @apply min-w-[3rem] text-center font-mono text-sm font-medium;
 }
 
 @media (prefers-reduced-motion: reduce) {

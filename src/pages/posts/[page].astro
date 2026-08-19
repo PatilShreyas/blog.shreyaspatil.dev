@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import type { GetStaticPathsOptions } from "astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
@@ -23,9 +24,24 @@ const { page } = Astro.props;
 const { sortedPosts } = {
   sortedPosts: getSortedPosts(await getCollection("blog")),
 };
+
+const firstCover = page.data[0]?.data?.coverImage;
+const coverImagePreload = firstCover
+  ? {
+      ...(await getImage({
+        src: firstCover,
+        widths: [360, 480, 600],
+        format: "webp",
+      })),
+      sizes: "(max-width: 640px) 100vw, 256px",
+    }
+  : undefined;
 ---
 
-<Layout title={`Posts Page ${page.currentPage} | ${SITE.title}`}>
+<Layout
+  title={`Posts Page ${page.currentPage} | ${SITE.title}`}
+  {coverImagePreload}
+>
   <Header />
   <main id="main-content" class="app-layout pt-12">
     <section id="posts" class="pb-6">

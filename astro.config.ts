@@ -22,6 +22,9 @@ import { SITE } from "./src/config";
 const config = {
   devToolbar: { enabled: false },
   site: SITE.website,
+  build: {
+    inlineStylesheets: "always",
+  },
   integrations: [
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
@@ -81,7 +84,7 @@ const config = {
   },
   image: {
     service: sharpImageService(),
-    responsiveStyles: true,
+    responsiveStyles: false,
     layout: "constrained",
   },
   env: {
@@ -105,8 +108,8 @@ const config = {
       provider: fontProviders.google(),
       fallbacks: ["sans-serif"],
       display: "swap",
-      weights: [300, 400, 500, 600, 700],
-      styles: ["normal", "italic"],
+      weights: [400, 600, 700],
+      styles: ["normal"],
     },
     {
       name: "Lora",
@@ -114,7 +117,7 @@ const config = {
       provider: fontProviders.google(),
       fallbacks: ["serif"],
       display: "swap",
-      weights: [400, 500, 600, 700],
+      weights: [400, 600, 700],
       styles: ["normal", "italic"],
     },
   ],

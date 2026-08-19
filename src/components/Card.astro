@@ -32,7 +32,7 @@ const { title, description, coverImage, ...props } = data;
       <a
         href={getPath(id, filePath)}
         data-astro-prefetch="hover"
-        class="aspect-video w-full flex-shrink-0 img-shimmer overflow-hidden rounded-xl border border-border/50 sm:w-64"
+        class="img-shimmer aspect-video w-full flex-shrink-0 overflow-hidden rounded-xl border border-border/50 sm:w-64"
         aria-hidden="true"
         tabindex="-1"
       >
@@ -41,9 +41,11 @@ const { title, description, coverImage, ...props } = data;
           alt=""
           width={600}
           height={338}
+          widths={[360, 480, 600]}
+          sizes="(max-width: 640px) 100vw, 256px"
           loading={loading}
           fetchpriority={fetchpriority}
-          decoding="async"
+          decoding={loading === "eager" ? "sync" : "async"}
           class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </a>

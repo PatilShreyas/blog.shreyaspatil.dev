@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -19,9 +20,22 @@ const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 const paginatedRecentPosts = recentPosts.slice(0, SITE.postPerPage);
+
+const heroPost = featuredPosts[0] || paginatedRecentPosts[0];
+const heroCover = heroPost?.data?.coverImage;
+const coverImagePreload = heroCover
+  ? {
+      ...(await getImage({
+        src: heroCover,
+        widths: [360, 480, 600],
+        format: "webp",
+      })),
+      sizes: "(max-width: 640px) 100vw, 256px",
+    }
+  : undefined;
 ---
 
-<Layout>
+<Layout {coverImagePreload}>
   <Header />
   <main id="main-content" data-layout="index" class="app-layout">
     <section id="hero" class:list={["pt-8 pb-6", "border-b border-border"]}>

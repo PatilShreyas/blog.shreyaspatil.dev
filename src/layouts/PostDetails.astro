@@ -1,6 +1,6 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -59,6 +59,17 @@ const ogImage = ogImageUrl
   ? new URL(ogImageUrl, Astro.url.origin).href
   : undefined;
 
+const coverImagePreload = coverImage
+  ? {
+      ...(await getImage({
+        src: coverImage,
+        widths: [360, 480, 680, 800],
+        format: "webp",
+      })),
+      sizes: "(max-width: 672px) 100vw, 672px",
+    }
+  : undefined;
+
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
   author,
@@ -68,6 +79,7 @@ const layoutProps = {
   canonicalURL,
   ogImage,
   tags,
+  coverImagePreload,
 };
 
 const breadcrumbSchema = {
@@ -78,9 +90,10 @@ const breadcrumbSchema = {
     {
       "@type": "ListItem",
       position: 2,
-      name: title,
-      item: new URL(Astro.url.pathname, SITE.website).href,
+      name: "Posts",
+      item: `${SITE.website}/posts/`,
     },
+    { "@type": "ListItem", position: 3, name: title, item: canonicalURL },
   ],
 };
 
@@ -106,6 +119,20 @@ const nextPost =
     set:html={JSON.stringify(breadcrumbSchema)}
   />
   <Header />
+  {
+    SITE.showBackButton && (
+      <div class="app-layout mt-8">
+        <button
+          type="button"
+          onclick="history.back()"
+          class="focus-outline inline-flex items-center gap-1 text-sm font-medium text-foreground/80 transition-colors hover:text-accent focus:outline-none"
+        >
+          <IconChevronLeft class="inline-block size-5 fill-current" />
+          <span>Go back</span>
+        </button>
+      </div>
+    )
+  }
 
   <main
     id="main-content"
@@ -124,11 +151,14 @@ const nextPost =
         <Image
           src={coverImage}
           alt={`Cover image for ${title}`}
-          class="my-8 w-full img-shimmer rounded-lg border border-border object-cover shadow-lg"
-          width={1200}
-          height={630}
+          class="img-shimmer my-8 w-full rounded-lg border border-border object-cover shadow-lg"
+          width={800}
+          height={420}
+          widths={[360, 480, 680, 800]}
+          sizes="(max-width: 672px) 100vw, 672px"
           loading="eager"
           fetchpriority="high"
+          decoding="sync"
         />
       )
     }
@@ -281,7 +311,7 @@ const nextPost =
         // Skip mermaid blocks — they get replaced and don't need a copy button
         if (codeBlock.getAttribute("data-language") === "mermaid") continue;
         const wrapper = document.createElement("div");
-        wrapper.style.position = "relative";
+        wrapper.className = "relative w-full max-w-full";
 
         // Check if --file-name-offset custom property exists
         const computedStyle = getComputedStyle(codeBlock);
