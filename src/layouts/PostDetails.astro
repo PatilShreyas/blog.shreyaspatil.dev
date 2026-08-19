@@ -725,6 +725,9 @@ const nextPost =
         isMermaidLoading = false;
         renderMermaid();
       };
+      script.onerror = () => {
+        isMermaidLoading = false;
+      };
       document.head.appendChild(script);
     }
 
