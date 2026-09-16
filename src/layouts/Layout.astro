@@ -41,6 +41,18 @@ const {
 const socialImageURL = new URL(ogImage, Astro.url);
 const isArticle = Boolean(pubDatetime);
 
+const resolvedCanonicalURL =
+  typeof canonicalURL === "string"
+    ? new URL(canonicalURL, Astro.site ?? Astro.url)
+    : canonicalURL;
+
+const markdownURL = new URL(
+  resolvedCanonicalURL.pathname.endsWith("/")
+    ? `${resolvedCanonicalURL.pathname}index.md`
+    : `${resolvedCanonicalURL.pathname}/index.md`,
+  resolvedCanonicalURL
+);
+
 const structuredData = isArticle
   ? {
       "@context": "https://schema.org",
@@ -205,6 +217,10 @@ const structuredData = isArticle
       title={SITE.title}
       href={new URL("rss.xml", Astro.site)}
     />
+
+    <!-- Enable Markdown for Agents auto-discovery -->
+    <!-- https://developers.cloudflare.com/fundamentals/reference/markdown-for-agents/ -->
+    <link rel="alternate" type="text/markdown" href={markdownURL.href} />
 
     <meta name="theme-color" content="" />
 

@@ -11,6 +11,7 @@
     "format:check": "prettier --check .",
     "format": "prettier --write .",
     "lint": "eslint .",
+    "test": "node --test --experimental-strip-types tests/**/*.test.ts",
     "optimize-images": "node scripts/optimize-images.mjs",
     "optimize-gifs": "node scripts/optimize-gifs.mjs"
   },
