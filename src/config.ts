@@ -17,7 +17,7 @@ export const SITE = {
     url: "https://github.com/PatilShreyas/blog.shreyaspatil.dev/edit/main/",
   },
   googleAnalyticsId: "G-FNY48L5LDH", // Add your GA Tracking ID here (e.g. G-XXXXXXXXXX)
-  dynamicOgImage: true,
+  dynamicOgImage: process.env.DYNAMIC_OG_IMAGE !== "false",
   dir: "ltr", // "rtl" | "auto"
   lang: "en", // html lang code. Set this empty and default will be "en"
   timezone: "Asia/Kolkata", // Default global timezone (IANA format) https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
