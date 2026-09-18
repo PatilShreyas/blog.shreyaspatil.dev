@@ -453,5 +453,162 @@ test("robots.txt.ts includes Content-Signal directive under User-agent block", a
   assert.ok(robotsTs.includes("${SITE.contentSignal}"));
 });
 
+test("worker.fetch serves /.well-known/api-catalog with application/linkset+json and valid RFC 9727 linkset", async () => {
+  const env: Env = {
+    ASSETS: {
+      fetch: async () => new Response("Not found", { status: 404 }),
+    },
+  };
 
+  const req = new Request("https://blog.shreyaspatil.dev/.well-known/api-catalog");
+  const res = await worker.fetch(req, env);
 
+  assert.strictEqual(res.status, 200);
+  assert.strictEqual(res.headers.get("content-type"), "application/linkset+json");
+  assert.strictEqual(
+    res.headers.get("link"),
+    '</.well-known/api-catalog>; rel="api-catalog"'
+  );
+  assert.strictEqual(res.headers.get("access-control-allow-origin"), "*");
+
+  const data = (await res.json()) as {
+    linkset: Array<{
+      anchor: string;
+      "service-desc"?: unknown[];
+      "service-doc"?: unknown[];
+      status?: unknown[];
+      [key: string]: unknown;
+    }>;
+  };
+  assert.ok(Array.isArray(data.linkset), "linkset must be an array");
+  assert.ok(data.linkset.length >= 2, "linkset should have at least 2 entries");
+
+  for (const entry of data.linkset) {
+    assert.ok(
+      typeof entry.anchor === "string" && entry.anchor.length > 0,
+      "anchor must be a non-empty string"
+    );
+    assert.ok(
+      Array.isArray(entry["service-desc"]),
+      "service-desc must be an array"
+    );
+    assert.ok(
+      Array.isArray(entry["service-doc"]),
+      "service-doc must be an array"
+    );
+    assert.ok(Array.isArray(entry.status), "status must be an array");
+  }
+});
+
+test("worker.fetch handles HEAD /.well-known/api-catalog per RFC 9727", async () => {
+  const env: Env = {
+    ASSETS: {
+      fetch: async () => new Response("Not found", { status: 404 }),
+    },
+  };
+
+  const req = new Request(
+    "https://blog.shreyaspatil.dev/.well-known/api-catalog",
+    {
+      method: "HEAD",
+    }
+  );
+  const res = await worker.fetch(req, env);
+
+  assert.strictEqual(res.status, 200);
+  assert.strictEqual(res.headers.get("content-type"), "application/linkset+json");
+  assert.strictEqual(
+    res.headers.get("link"),
+    '</.well-known/api-catalog>; rel="api-catalog"'
+  );
+  const text = await res.text();
+  assert.strictEqual(text, "");
+});
+
+test("worker.fetch handles GET /api/health", async () => {
+  const env: Env = {
+    ASSETS: {
+      fetch: async () => new Response("Not found", { status: 404 }),
+    },
+  };
+
+  const req = new Request("https://blog.shreyaspatil.dev/api/health");
+  const res = await worker.fetch(req, env);
+
+  assert.strictEqual(res.status, 200);
+  assert.ok(res.headers.get("content-type")?.includes("application/json"));
+  const json = (await res.json()) as { status: string };
+  assert.strictEqual(json.status, "ok");
+});
+
+test("worker.fetch handles GET /api", async () => {
+  const env: Env = {
+    ASSETS: {
+      fetch: async () => new Response("Not found", { status: 404 }),
+    },
+  };
+
+  const req = new Request("https://blog.shreyaspatil.dev/api");
+  const res = await worker.fetch(req, env);
+
+  assert.strictEqual(res.status, 200);
+  assert.ok(res.headers.get("content-type")?.includes("application/json"));
+  const json = (await res.json()) as {
+    catalog: string;
+    openapi: string;
+    posts: string;
+    feed: string;
+    health: string;
+  };
+  assert.ok(json.catalog.includes("/.well-known/api-catalog"));
+  assert.ok(json.openapi.includes("/openapi.json"));
+  assert.ok(json.health.includes("/api/health"));
+});
+
+test("public/openapi.json contains valid OpenAPI 3.1 specification", async () => {
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+  const openapiContent = fs.readFileSync(
+    path.resolve("public/openapi.json"),
+    "utf-8"
+  );
+  const spec = JSON.parse(openapiContent);
+
+  assert.strictEqual(spec.openapi, "3.1.0");
+  assert.ok(spec.info?.title);
+  assert.ok(spec.paths["/posts"]);
+  assert.ok(spec.paths["/{slug}"]);
+  assert.ok(spec.paths["/rss.xml"]);
+  assert.ok(spec.paths["/api/health"]);
+  assert.ok(spec.paths["/.well-known/api-catalog"]);
+});
+
+test("public/.well-known/api-catalog matches RFC 9727 linkset format", async () => {
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+  const catalogContent = fs.readFileSync(
+    path.resolve("public/.well-known/api-catalog"),
+    "utf-8"
+  );
+  const catalog = JSON.parse(catalogContent);
+
+  assert.ok(Array.isArray(catalog.linkset));
+  assert.ok(catalog.linkset.length >= 2);
+  for (const entry of catalog.linkset) {
+    assert.ok(entry.anchor.startsWith("https://blog.shreyaspatil.dev"));
+    assert.ok(Array.isArray(entry["service-desc"]));
+    assert.ok(Array.isArray(entry["service-doc"]));
+  }
+});
+
+test("Layout.astro includes RFC 9727 rel=api-catalog link header", async () => {
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+  const layout = fs.readFileSync(
+    path.resolve("src/layouts/Layout.astro"),
+    "utf-8"
+  );
+  assert.ok(layout.includes('rel="api-catalog"'));
+  assert.ok(layout.includes('type="application/linkset+json"'));
+  assert.ok(layout.includes(".well-known/api-catalog"));
+});

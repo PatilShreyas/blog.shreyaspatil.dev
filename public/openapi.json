@@ -1,0 +1,116 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Shreyas Patil's Blog API",
+    "version": "1.0.0",
+    "description": "Public content and syndication APIs for Shreyas Patil's Blog. Supports markdown content negotiation for AI agents.",
+    "contact": {
+      "name": "Shreyas Patil",
+      "url": "https://shreyaspatil.dev"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://blog.shreyaspatil.dev",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/posts": {
+      "get": {
+        "summary": "List blog posts",
+        "description": "Returns the paginated blog post listings. Returns HTML for browsers, or Markdown when requested via Accept: text/markdown.",
+        "responses": {
+          "200": {
+            "description": "List of blog posts",
+            "content": {
+              "text/html": {},
+              "text/markdown": {}
+            }
+          }
+        }
+      }
+    },
+    "/{slug}": {
+      "get": {
+        "summary": "Retrieve blog post",
+        "description": "Returns an individual blog post by slug. Supports Markdown for Agents via Accept: text/markdown or explicit .md extension.",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "description": "Slug of the blog post",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog post content",
+            "content": {
+              "text/html": {},
+              "text/markdown": {}
+            }
+          },
+          "404": {
+            "description": "Post not found"
+          }
+        }
+      }
+    },
+    "/rss.xml": {
+      "get": {
+        "summary": "RSS 2.0 Feed",
+        "description": "Returns the RSS 2.0 XML syndication feed of blog posts.",
+        "responses": {
+          "200": {
+            "description": "RSS feed",
+            "content": {
+              "application/xml": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Health status",
+        "description": "Returns health check status of the application.",
+        "responses": {
+          "200": {
+            "description": "Health status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/.well-known/api-catalog": {
+      "get": {
+        "summary": "RFC 9727 API Catalog",
+        "description": "Returns the RFC 9727 Linkset API catalog for automated API discovery.",
+        "responses": {
+          "200": {
+            "description": "API Catalog Linkset",
+            "content": {
+              "application/linkset+json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
