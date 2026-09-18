@@ -434,4 +434,24 @@ test("worker.fetch handles HEAD requests with markdown negotiation", async () =>
   assert.strictEqual(text, "");
 });
 
+test("SITE.contentSignal defines valid Content-Signal directives", async () => {
+  const { SITE } = await import("../src/config.ts");
+  assert.ok(SITE.contentSignal, "contentSignal must be defined");
+  assert.match(SITE.contentSignal, /ai-train=(yes|no)/);
+  assert.match(SITE.contentSignal, /search=(yes|no)/);
+  assert.match(SITE.contentSignal, /ai-input=(yes|no)/);
+});
+
+test("robots.txt.ts includes Content-Signal directive under User-agent block", async () => {
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+  const robotsTs = fs.readFileSync(
+    path.resolve("src/pages/robots.txt.ts"),
+    "utf-8"
+  );
+  assert.ok(robotsTs.includes("Content-Signal:"));
+  assert.ok(robotsTs.includes("${SITE.contentSignal}"));
+});
+
+
 

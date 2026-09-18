@@ -1,5 +1,7 @@
 export const SITE = {
-  website: import.meta.env.SITE_URL || "https://blog.shreyaspatil.dev/",
+  website:
+    (typeof import.meta.env !== "undefined" && import.meta.env?.SITE_URL) ||
+    "https://blog.shreyaspatil.dev/",
   author: "Shreyas Patil",
   profile: "https://shreyaspatil.dev/",
   desc: "Senior Android Engineer @ Deliveroo. Google Developer Expert for Android. Writing about Android, Kotlin, and AI.",
@@ -25,4 +27,5 @@ export const SITE = {
     light: "#f9f8f6",
     dark: "#1c1917",
   },
+  contentSignal: "ai-train=yes, search=yes, ai-input=yes",
 } as const;
