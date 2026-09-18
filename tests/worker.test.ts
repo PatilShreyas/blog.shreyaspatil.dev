@@ -1,7 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { htmlToMarkdown, estimateTokens } from "../worker/markdown.ts";
-import worker, { type Env } from "../worker/index.ts";
+import worker, {
+  type Env,
+  DISCOVERY_LINK_HEADERS,
+  applyDiscoveryLinkHeaders,
+} from "../worker/index.ts";
 
 test("estimateTokens returns reasonable approximation", () => {
   assert.strictEqual(estimateTokens(""), 0);
@@ -175,6 +179,11 @@ test("worker.fetch serves HTML with Vary header for normal browser requests", as
   assert.strictEqual(res.status, 200);
   assert.ok(res.headers.get("content-type")?.includes("text/html"));
   assert.strictEqual(res.headers.get("vary"), "Accept");
+  const linkHeader = res.headers.get("link") || "";
+  assert.ok(linkHeader.includes('rel="api-catalog"'));
+  assert.ok(linkHeader.includes('rel="service-desc"'));
+  assert.ok(linkHeader.includes('rel="service-doc"'));
+  assert.ok(linkHeader.includes('rel="describedby"'));
   const body = await res.text();
   assert.strictEqual(body, mockHtml);
 });
@@ -611,4 +620,47 @@ test("Layout.astro includes RFC 9727 rel=api-catalog link header", async () => {
   assert.ok(layout.includes('rel="api-catalog"'));
   assert.ok(layout.includes('type="application/linkset+json"'));
   assert.ok(layout.includes(".well-known/api-catalog"));
+  assert.ok(layout.includes('rel="service-desc"'));
+  assert.ok(layout.includes('rel="service-doc"'));
+  assert.ok(layout.includes('rel="describedby"'));
 });
+
+test("applyDiscoveryLinkHeaders sets DISCOVERY_LINK_HEADERS when no Link header exists", () => {
+  const headers = new Headers();
+  applyDiscoveryLinkHeaders(headers);
+  const link = headers.get("Link");
+  assert.strictEqual(link, DISCOVERY_LINK_HEADERS);
+  assert.ok(link?.includes('rel="api-catalog"'));
+  assert.ok(link?.includes('rel="service-desc"'));
+  assert.ok(link?.includes('rel="service-doc"'));
+  assert.ok(link?.includes('rel="describedby"'));
+});
+
+test("applyDiscoveryLinkHeaders merges missing relations with existing Link headers without duplicates", () => {
+  const headers = new Headers();
+  headers.set("Link", '</.well-known/api-catalog>; rel="api-catalog"');
+  applyDiscoveryLinkHeaders(headers);
+  const link = headers.get("Link") || "";
+  assert.ok(link.includes('rel="api-catalog"'));
+  assert.ok(link.includes('rel="service-desc"'));
+  assert.ok(link.includes('rel="service-doc"'));
+  assert.ok(link.includes('rel="describedby"'));
+
+  // Ensure rel="api-catalog" was not duplicated
+  const matches = link.match(/rel="api-catalog"/g);
+  assert.strictEqual(matches?.length, 1);
+});
+
+test("public/_headers contains Link header with api-catalog, service-desc, service-doc, describedby", async () => {
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+  const headersContent = fs.readFileSync(
+    path.resolve("public/_headers"),
+    "utf-8"
+  );
+  assert.ok(headersContent.includes('rel="api-catalog"'));
+  assert.ok(headersContent.includes('rel="service-desc"'));
+  assert.ok(headersContent.includes('rel="service-doc"'));
+  assert.ok(headersContent.includes('rel="describedby"'));
+});
+
