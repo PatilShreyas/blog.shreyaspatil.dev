@@ -1,4 +1,5 @@
 import { htmlToMarkdown, estimateTokens } from "./markdown.ts";
+import { getApiCatalog } from "./catalog.ts";
 
 export interface Env {
   ASSETS: {
@@ -9,6 +10,67 @@ export interface Env {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+
+    // RFC 9727 API Catalog
+    if (url.pathname === "/.well-known/api-catalog") {
+      const isHead = request.method === "HEAD";
+      const catalog = getApiCatalog(url.origin);
+      const headers = new Headers();
+      headers.set("Content-Type", "application/linkset+json");
+      headers.set("Link", '</.well-known/api-catalog>; rel="api-catalog"');
+      headers.set("Access-Control-Allow-Origin", "*");
+      headers.set(
+        "Cache-Control",
+        "public, max-age=3600, stale-while-revalidate=86400"
+      );
+
+      return new Response(isHead ? null : JSON.stringify(catalog, null, 2), {
+        status: 200,
+        headers,
+      });
+    }
+
+    // Health check endpoint
+    if (url.pathname === "/api/health") {
+      const isHead = request.method === "HEAD";
+      const headers = new Headers();
+      headers.set("Content-Type", "application/json; charset=utf-8");
+      headers.set("Access-Control-Allow-Origin", "*");
+      headers.set("Cache-Control", "public, max-age=60");
+
+      return new Response(isHead ? null : JSON.stringify({ status: "ok" }), {
+        status: 200,
+        headers,
+      });
+    }
+
+    // API index discovery
+    if (url.pathname === "/api" || url.pathname === "/api/") {
+      const isHead = request.method === "HEAD";
+      const base = url.origin;
+      const headers = new Headers();
+      headers.set("Content-Type", "application/json; charset=utf-8");
+      headers.set("Access-Control-Allow-Origin", "*");
+      headers.set(
+        "Cache-Control",
+        "public, max-age=3600, stale-while-revalidate=86400"
+      );
+
+      const body = {
+        name: "Shreyas Patil's Blog API",
+        catalog: `${base}/.well-known/api-catalog`,
+        openapi: `${base}/openapi.json`,
+        posts: `${base}/posts`,
+        feed: `${base}/rss.xml`,
+        health: `${base}/api/health`,
+      };
+
+      return new Response(isHead ? null : JSON.stringify(body, null, 2), {
+        status: 200,
+        headers,
+      });
+    }
+
     const acceptHeader = request.headers.get("accept") || "";
     const isMarkdownRequested = acceptHeader.includes("text/markdown");
     const isExplicitMarkdown = url.pathname.endsWith(".md");

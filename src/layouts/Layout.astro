@@ -222,6 +222,14 @@ const structuredData = isArticle
     <!-- https://developers.cloudflare.com/fundamentals/reference/markdown-for-agents/ -->
     <link rel="alternate" type="text/markdown" href={markdownURL.href} />
 
+    <!-- Enable RFC 9727 API Catalog auto-discovery -->
+    <!-- https://www.rfc-editor.org/rfc/rfc9727#section-3 -->
+    <link
+      rel="api-catalog"
+      type="application/linkset+json"
+      href={new URL(".well-known/api-catalog", Astro.site)}
+    />
+
     <meta name="theme-color" content="" />
 
     {

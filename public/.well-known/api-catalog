@@ -1,0 +1,46 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://blog.shreyaspatil.dev/posts",
+      "service-desc": [
+        {
+          "href": "https://blog.shreyaspatil.dev/openapi.json",
+          "type": "application/vnd.oai.openapi+json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://blog.shreyaspatil.dev/about",
+          "type": "text/html"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://blog.shreyaspatil.dev/api/health",
+          "type": "application/json"
+        }
+      ]
+    },
+    {
+      "anchor": "https://blog.shreyaspatil.dev/rss.xml",
+      "service-desc": [
+        {
+          "href": "https://blog.shreyaspatil.dev/openapi.json",
+          "type": "application/vnd.oai.openapi+json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://blog.shreyaspatil.dev/about",
+          "type": "text/html"
+        }
+      ],
+      "status": [
+        {
+          "href": "https://blog.shreyaspatil.dev/api/health",
+          "type": "application/json"
+        }
+      ]
+    }
+  ]
+}

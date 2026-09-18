@@ -9,6 +9,7 @@
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
   Vary: Accept
   Content-Signal: ai-train=yes, search=yes, ai-input=yes
+  Link: </.well-known/api-catalog>; rel="api-catalog"
 
 # Hashed assets from Astro (JS, CSS, optimized images) — content-addressed, cache forever
 /_astro/*
@@ -35,3 +36,23 @@
 # Self-hosted vendored scripts (e.g. mermaid.min.js) — pinned, cache forever
 /vendor/*
   Cache-Control: public, max-age=31536000, immutable
+
+# RFC 9727 API Catalog
+/.well-known/api-catalog
+  Content-Type: application/linkset+json
+  Access-Control-Allow-Origin: *
+  Link: </.well-known/api-catalog>; rel="api-catalog"
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# OpenAPI specification
+/openapi.json
+  Content-Type: application/json; charset=utf-8
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# Health check
+/api/health
+  Content-Type: application/json; charset=utf-8
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=60
+
