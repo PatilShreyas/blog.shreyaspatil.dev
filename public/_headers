@@ -9,7 +9,7 @@
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
   Vary: Accept
   Content-Signal: ai-train=yes, search=yes, ai-input=yes
-  Link: </.well-known/api-catalog>; rel="api-catalog"
+  Link: </.well-known/api-catalog>; rel="api-catalog", </openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json", </about>; rel="service-doc"; type="text/html", </openapi.json>; rel="describedby"; type="application/vnd.oai.openapi+json"
 
 # Hashed assets from Astro (JS, CSS, optimized images) — content-addressed, cache forever
 /_astro/*

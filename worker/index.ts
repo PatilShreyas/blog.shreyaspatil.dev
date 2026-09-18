@@ -7,6 +7,40 @@ export interface Env {
   };
 }
 
+export const DISCOVERY_LINK_HEADERS = [
+  '</.well-known/api-catalog>; rel="api-catalog"',
+  '</openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json"',
+  '</about>; rel="service-doc"; type="text/html"',
+  '</openapi.json>; rel="describedby"; type="application/vnd.oai.openapi+json"',
+].join(", ");
+
+export function applyDiscoveryLinkHeaders(headers: Headers): void {
+  const existing = headers.get("Link");
+  if (!existing) {
+    headers.set("Link", DISCOVERY_LINK_HEADERS);
+    return;
+  }
+
+  const links = [
+    '</.well-known/api-catalog>; rel="api-catalog"',
+    '</openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json"',
+    '</about>; rel="service-doc"; type="text/html"',
+    '</openapi.json>; rel="describedby"; type="application/vnd.oai.openapi+json"',
+  ];
+
+  const toAdd: string[] = [];
+  for (const link of links) {
+    const relMatch = link.match(/rel="([^"]+)"/);
+    if (relMatch && !existing.includes(`rel="${relMatch[1]}"`)) {
+      toAdd.push(link);
+    }
+  }
+
+  if (toAdd.length > 0) {
+    headers.set("Link", `${existing}, ${toAdd.join(", ")}`);
+  }
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -84,6 +118,7 @@ export default {
       if (contentType.includes("text/html")) {
         const headers = new Headers(response.headers);
         headers.set("Vary", "Accept");
+        applyDiscoveryLinkHeaders(headers);
         return new Response(response.body, {
           status: response.status,
           statusText: response.statusText,
@@ -127,6 +162,7 @@ export default {
       const headers = new Headers(response.headers);
       headers.set("Content-Type", "text/markdown; charset=utf-8");
       headers.set("Vary", "Accept");
+      applyDiscoveryLinkHeaders(headers);
       headers.set("x-markdown-tokens", markdownTokens.toString());
       headers.set("x-original-tokens", originalTokens.toString());
 
